@@ -1,0 +1,450 @@
+.p-sticky {
+    top: calc(var(--header-base) + var(--offset, 0px));
+}
+
+.br-xs {
+    border-radius: 5px;
+}
+
+.br-s {
+    border-radius: 10px;
+}
+
+.br-m {
+    border-radius: 15px;
+}
+
+.br-l {
+    border-radius: 25px;
+}
+
+.bg-to-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+}
+
+.notification {
+    display: inline-flex;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    vertical-align: text-top;
+    background-color: var(--color-current, var(--color-onyx));
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-dashed {
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+
+.ft-hand, .ft-hand-xs, .ft-hand-s, .ft-hand-m, .ft-hand-l, .ft-hand-xl {
+    text-transform: uppercase;
+}
+
+.down-leave-active,
+.down-enter-active,
+.up-leave-active,
+.up-enter-active {
+    transition: all 250ms;
+}
+
+.up-leave-to,
+.up-enter {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.down-enter-to,
+.up-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.down-leave-to,
+.down-enter {
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.fade-h-enter-active,
+.fade-h-leave-active,
+.fade-enter-active {
+    transition: all 250ms;
+}
+
+.fade-leave, .fade-leave-to {
+    transition: none;
+    display: none;
+}
+
+.fade-enter {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.fade-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-h-enter {
+    opacity: 0;
+    transform: translateX(-5px);
+}
+
+.fade-h-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-h-leave-to {
+    opacity: 0;
+    transform: translateX(5px);
+}
+
+.fade-h-leave-active {
+    position: absolute;
+}
+
+.fade-right-enter-active,
+.fade-right-leave-active,
+.fade-left-enter-active,
+.fade-left-leave-active {
+    transition: all 200ms ease;
+}
+
+.fade-right-leave-to,
+.fade-left-enter {
+    opacity: 0;
+    transform: translateX(-25px);
+}
+
+.fade-left-leave-to,
+.fade-right-enter {
+    opacity: 0;
+    transform: translateX(25px);
+}
+
+.spin {
+    animation: spin 1000ms cubic-bezier(0.39, 0.32, 0.18, 0.87) 0s infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+// 
+
+.default-enter {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.default-leave-to {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.default-enter-to {
+    opacity: 1;
+    transform: none;
+}
+
+.default-leave-active {
+    position: absolute;
+    width: 100%;
+    transition: all ease-in-out 300ms;
+    z-index: 1;
+}
+
+.default-move {
+    position: relative;
+    z-index: 2;
+    transition: all ease-in-out 300ms;
+}
+
+.round,
+.round-s,
+.round-xs {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    font: var(--ft-s-medium);
+    line-height: 1;
+}
+
+.line-2 {
+    line-height: 1.2;
+}
+
+.round-s {
+    font-size: 13px;
+    width: 25px;
+    height: 25px;
+}
+
+.round-xs {
+    width: 20px;
+    height: 20px;
+    font: var(--ft-xs-medium);
+    line-height: 1;
+}
+
+@each $color in $main-colors {
+
+    .fill-#{$color} {
+        fill: var(--color-#{$color});
+
+        svg, path {
+            fill: var(--color-#{$color});
+        }
+    }
+}
+
+@each $color in $main-colors {
+    
+    .is-#{$color} {
+        --color-current-xstrong: var(--color-#{$color}-xstrong);
+        --color-current-strong: var(--color-#{$color}-strong);
+        --color-current: var(--color-#{$color});
+        --color-current-weak: var(--color-#{$color}-weak);
+        --color-current-xweak: var(--color-#{$color}-xweak);
+        --color-current-xweak-0: var(--color-#{$color}-xweak-0);
+        --color-current-xweak-25: var(--color-#{$color}-xweak-25);
+        --color-current-xweak-50: var(--color-#{$color}-xweak-50);
+        --color-current-xweak-75: var(--color-#{$color}-xweak-75);
+        --color-current-0: var(--color-#{$color}-0);
+        --color-current-25: var(--color-#{$color}-25);
+        --color-current-50: var(--color-#{$color}-50);
+        --color-current-75: var(--color-#{$color}-75);
+    }
+}
+
+.is-light {
+    --color-current: var(--color-gum);
+    --color-current-weak: var(--color-gum-weak);
+    --color-current-xweak: var(--color-bg-light);
+}
+
+.Separator {
+    border: none;
+    height: 1px;
+    background-color: var(--color-current-weak, var(--color-border));
+}
+
+.color-current { color: var(--color-current, var(--color-pond)); }
+.fill-current { fill: var(--color-current, var(--color-pond)); }
+.color-current-weak { color: var(--color-current-weak, var(--color-pond-weak)); }
+.color-current-xstrong { color: var(--color-current-xstrong, var(--color-pond-xstrong)); }
+.color-current-strong { color: var(--color-current-strong, var(--color-pond-strong)); }
+.color-current-50 { color: var(--color-current-50); }
+.color-current-75 { color: var(--color-current-50); }
+
+.bg-current { background-color: var(--color-current, var(--color-pond)); }
+.bg-current-weak { background-color: var(--color-current-weak, var(--color-pond-weak)); }
+.bg-current-xweak { background-color: var(--color-current-xweak, var(--color-pond-xweak)); }
+
+
+.link {
+    font-weight: 500;
+    color: var(--color-ft);
+    
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.label {
+    display: inline-block;
+    font: var(--ft-xs-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 6px;
+    color: var(--color-current);
+    border-radius: 4px;
+    background-color: var(--color-current-xweak);
+}
+
+.text-upper {
+    text-transform: uppercase;
+}
+
+.marker {
+    line-height: 1;
+    position: absolute;
+    z-index: 10;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    transform: translate3d(-10%, -110%, 0) rotate(-10deg);
+}
+
+.strike {
+    text-decoration: line-through;
+}
+
+@include breakpoint-s {
+    .fx-dir-column-reverse\@s { flex-direction: column-reverse; }
+    .height-auto\@s { height: auto; } 
+}
+
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.glow {
+    position: relative;
+    overflow: hidden;
+    color: var(--color-ft-light);
+
+    & > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background-color: var(--color-current-strong);
+        background: linear-gradient(90deg, var(--color-current), var(--color-current-weak));
+        transform-origin: center;
+        animation: glow 6s ease-in-out 0s infinite;
+    }
+}
+
+@keyframes glow {
+    0% {transform: rotate(0deg) translate3d(0, 0, 0); }
+    15% {transform: rotate(-4deg) translate3d(-5%, -5%, 0); }
+    30% {transform: rotate(3deg) translate3d(-20%, 3%, 0); }
+    50% {transform: rotate(5deg) translate3d(8%, -2%, 0); }
+    65% {transform: rotate(-4deg) translate3d(15%, -6%, 0); }
+    80% {transform: rotate(2deg) translate3d(3%, 3%, 0); }
+    100% {transform: rotate(0deg) translate3d(0, 0, 0); }
+}
+
+.checklist {
+    padding: 0;
+
+    li {
+        display: flex;
+        list-style-type: none;
+        margin: 0;
+        font-weight: 500;
+
+        &::before {
+            content: "\f00c";
+            font: var(--ft-icon-m);
+            line-height: 1.75;
+            margin-right: 10px;
+        }
+
+        &.is-plus::before {
+            content: "\2b";
+        }
+    }
+}
+
+.ellipsis-break {
+    word-break: break-all;
+}
+
+.image-block {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-current-xweak, var(--color-bg-weak));
+
+    &::before {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+    }
+}
+
+.vehicle {
+    i {
+        display: block;
+        line-height: 1;
+        animation: vehicle 2500ms ease 0s infinite;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        margin: 0 auto;
+        width: 50px;
+        height: 1px;
+        background: var(--color-onyx);
+    }
+}
+
+@keyframes vehicle {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    10% {
+        transform: translate3d(1px, 0, 0) rotate(0deg);
+    }
+
+    20% {
+        transform: translate3d(3px, 1px, 0) rotate(1deg);
+    }
+
+    30% {
+        transform: translate3d(5px, 0, 0) rotate(-2deg);
+    }
+    
+    40% {
+        transform: translate3d(6px, -2px, 0) rotate(-1deg);
+    }
+    
+    50% {
+        transform: translate3d(5px, -1px, 0) rotate(0deg);
+    }
+
+    60% {
+        transform: translate3d(5px, 1px, 0) rotate(1deg);
+    }
+    
+    70% {
+        transform: translate3d(4px, 0, 0) rotate(0deg);
+    }
+    
+    80% {
+        transform: translate3d(3px, 0, 0) rotate(0deg);
+    }
+
+    90% {
+        transform: translate3d(2px, 0, 0) rotate(-1deg);
+    }
+    
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+}

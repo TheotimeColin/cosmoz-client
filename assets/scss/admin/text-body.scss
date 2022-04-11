@@ -1,0 +1,290 @@
+.TextBody {
+    font: var(--ft-l);
+    line-height: 1.6;
+    color: var(--color-ft);
+    white-space: normal;
+
+    .ProseMirror {
+        outline: none;
+    }
+
+    h1, h2, h3, h4 {
+        color: var(--color-current);
+        max-width: 85%;
+        margin-left: -30px;
+    }
+
+    h1 {
+        font: var(--ft-3xl);
+        font-weight: bold;
+        margin-top: 80px;
+        margin-bottom: 20px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    h2 {
+        font: var(--ft-2xl);
+        font-weight: bold;
+        margin-top: 60px;
+        margin-bottom: 30px;
+        color: var(--color-ft);
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    h2 + h3 {
+        margin-top: 30px;
+    }
+
+    h3 {
+        font: var(--ft-xl);
+        margin-left: 0px;
+        font-weight: bold;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        width: auto;
+        margin-bottom: 20px;
+    }
+
+    blockquote {
+        font: var(--ft-l);
+        color: var(--color-ft);
+        line-height: 1.5;
+        padding: 0 0 0 40px;
+        width: 80%;
+        margin: 50px 0;
+        border-left: 3px solid var(--color-border);
+    }
+
+    p + p {
+        margin-top: 20px;
+    }
+
+    .Insert {
+
+        p + p {
+            margin-top: 0;
+        }
+    }
+
+    & > img,
+    p > img {
+        max-width: calc(100% + 60px);
+        margin: 40px -30px;
+        display: block;
+    }
+
+    .GalleryCompact {
+        width: calc(100% + 60px);
+        margin: 40px -30px;
+    }
+
+    ul, ol {
+        margin: 10px 0 20px 0;
+
+        li {
+            margin: 20px 0 20px 40px;
+            line-height: 1.6;
+
+            &:last-child {
+                // margin-bottom: 0;
+            }
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+    .Accordion {
+        margin: 40px 0;
+    }
+
+    .Block {
+        max-width: calc(100% + 60px);
+        margin: 40px -30px;
+        padding: 20px;
+    }
+
+    .VideoIframe {
+        @include ratio(60.8);
+        position: relative;
+        max-width: calc(100% + 60px);
+        margin: 40px -30px;
+
+        iframe {
+            @include absolute-fill;
+        }
+    }
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.ProseMirror {
+    white-space: normal;
+}
+
+.TextBody--simple {
+
+    .Block {
+        max-width: 100%;
+        margin: 40px 0;
+    }
+
+    h1, h2, h3, h4 {
+        max-width: 10%;
+        margin-left: 0;
+    }
+}
+
+.TextEditor .TextBody {
+    font: var(--ft-l);
+    line-height: 1.4;
+    
+    .ProseMirror {
+        padding: 40px;
+    }
+
+    h1 {
+        font: var(--ft-xl-bold);
+    }
+
+    h2 {
+        font: var(--ft-xl-bold);
+    }
+
+    h3 {
+        font: var(--ft-l-bold);
+    }
+
+    h1, h2, h3, h4 {
+        max-width: 100%;
+        margin-left: 0px;
+        color: var(--color-ft);
+    }
+
+    .VideoIframe {
+        margin: 40px 0px;
+        max-width: 100%;
+    }
+
+    blockquote {
+        font: var(--ft-m);
+        width: 100%;
+    }
+
+    .Block {
+        width: 100%;
+        margin: 40px 0;
+    }
+
+    & > img,
+    p > img {
+        max-width: 100%;
+        margin: 40px 0;
+    }
+
+    .Block--image {
+
+        img {
+            margin: 0;
+        }
+    }
+
+}
+
+.TextBody--s {
+    font: var(--ft-m);
+    color: var(--color-ft);
+
+    h2 {
+        font: var(--ft-l);
+        font-weight: bold;
+        color: var(--color-ft);
+        margin-top: 20px;
+        margin-bottom: 10px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    h3 {
+        font: var(--ft-m);
+        color: var(--color-ft);
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    p + p {
+        margin-top: 10px;
+    }
+
+    ul, ol {
+        margin: 10px 0 20px 0;
+
+        li {
+            margin: 5px 0 5px 40px;
+        }
+    }
+}
+
+
+@include breakpoint-s {
+
+    .TextBody {
+    
+        h1, h2, h3, h4 {
+            max-width: 100%;
+            margin-left: 0px;
+        }
+
+        h1 {
+            font: var(--ft-xl-bold);
+        }
+    
+        h2 {
+            font: var(--ft-xl-bold);
+        }
+    
+        h3 {
+            font: var(--ft-l-bold);
+        }
+
+        .VideoIframe {
+            max-width: 100%;
+            margin: 40px 0;
+            padding-bottom: 56.5%;
+        }
+
+        & > img,
+        p > img {
+            max-width: 100%;
+            margin: 40px 0;
+        }
+
+        blockquote {
+            font: var(--ft-l);
+            line-height: 1.5;
+            padding: 0 0 0 20px;
+            width: auto;
+            margin: 40px 0;
+        }
+    }
+
+}

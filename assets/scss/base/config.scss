@@ -1,0 +1,173 @@
+$breakpoints: (
+    "": 99999px,
+    "m": 1200px,
+    "s": 900px,
+    "xs": 600px
+);
+
+$block-widths: (
+    "5xs": 50,
+    "4xs": 70,
+    "3xs": 100,
+    "2xs": 180,
+    "xs": 280,
+    "s": 320,
+    "m": 500,
+    "l": 700
+);
+
+$spacings: (
+    "none": 0,
+    "3xs": 3,
+    "2xs": 5,
+    "xs": 10,
+    "s": 15,
+    "s-m": 20,
+    "s-l": 30,
+    "m": 40,
+    "l": 60,
+    "xl": 100,
+    "2xl": 150,
+    "3xl": 200
+);
+
+$gutters: (
+    "xl": 60,
+    "l": 30,
+    "m": 20,
+    "s": 10,
+    "xs": 5,
+    "2xs": 2,
+    "none": 0
+);
+
+$colors: (
+    "ft-strong": #000000,
+    "ft": #000000,
+    "ft-weak": #757575,
+    "ft-xweak": #c9c9c9,
+    "ft-light": #ffffff,
+    
+    "white-strong": #ffffff,
+    "white": #ffffff,
+    "white-weak": #ffffff,
+    "white-xweak": #ffffff,
+    
+    "precious-xstrong": #3811bc,
+    "precious-strong": #4b39f6,
+    "precious": #6b4bff,
+    "precious-weak": #e7d2ff,
+    "precious-xweak": #ffeffc,
+
+    "ice-xstrong": #0026a2,
+    "ice-strong": #2978ef,
+    "ice": #3399ff,
+    "ice-weak": #ceeeff,
+    "ice-xweak": #e6ffff,
+
+    "pond-xstrong": #005d7a,
+    "pond-strong": #48b0bc,
+    "pond": #3ec9ce,
+    "pond-weak": #cefffd,
+    "pond-xweak": #eefefa,
+    
+    "gum-xstrong": #950b27,
+    "gum-strong": #e65380,
+    "gum": #ff5482,
+    "gum-weak": #ffe2ef,
+    "gum-xweak": #fff1f4,
+    
+    "duck-xstrong": #5B3C13,
+    "duck-strong": #f5c62d,
+    "duck": #ffde3b,
+    "duck-weak": #fff69c,
+    "duck-xweak": #ffffe1,
+    
+    "emerald-xstrong": #006e2c,
+    "emerald-strong": #33d283,
+    "emerald": #43de9b,
+    "emerald-weak": #ceffda,
+    "emerald-xweak": #f0ffef,
+    
+    "sunset-xstrong": #c43600,
+    "sunset-strong": #e97d35,
+    "sunset": #ff913d,
+    "sunset-weak": #ffe4c6,
+    "sunset-xweak": #fff5e5,
+
+    "pepper-xstrong": #7d0012,
+    "pepper-strong": #e81a36,
+    "pepper": #ff2a38,
+    "pepper-weak": #ffc5c5,
+    "pepper-xweak": #FFF4F3,
+    
+    "onyx": #000000,
+    "onyx-weak": #c2c2c2,
+    "onyx-xweak": #f2f2f2,
+    "onyx-2xweak": #f0f0f0,
+
+    "bg-light": #ffffff,
+    "bg-weak": #C6C6C6,
+    "bg-xweak": #f5f5f5,
+
+    "border": #e4e4e4,
+    "border-weak": #fafafa,
+    "border-strong": #B3B3B3,
+
+    "disabled": #d3d4dc,
+    "error": #FF2D42,
+    "success": #10c773,
+
+    "canva": #08c1da,
+    "canva-blue": #3034a6,
+    "canva-purple": #7b28e5,
+
+    "shadow": rgba(207, 215, 231, 0.3)
+);
+
+$main-colors: ("gum", "duck", "pond", "ice", "precious", "sunset", "emerald", "pepper", "onyx", "white");
+
+$fonts: (
+    "ft": (
+        "name": "Rubik, sans-serif",
+        "sizes": (
+            "2xs": "9px/1.5",
+            "xs": "12px/1.5",
+            "s": "14px/1.5",
+            "m": "16px/1.5",
+            "l": "18px/1.4",
+            "xl": "20px/1.4",
+            "2xl": "26px/1.4",
+            "3xl": "34px/1.25",
+            "4xl": "40px/0.75",
+            "5xl": "70px/0.75",
+        ),
+        "weights": (
+            "regular": 400,
+            "medium": 500,
+            "bold": 700
+        )
+    ),
+    "ft-hand": (
+        "name": "'Lazydog'",
+        "sizes": (
+            "2xs": "18px/1",
+            "xs": "25px/1",
+            "s": "30px/1.1",
+            "m": "35px/1",
+            "l": "50px/1.2",
+            "xl": "60px/1.2"
+        )
+    ),
+    "ft-icon": (
+        "name": "'Font Awesome 6 Pro'",
+        "sizes": (
+            "xs": "12px/1",
+            "s": "14px/1",
+            "m": "16px/1"
+        ),
+        "weights": (
+            "regular": 300
+        )
+    )
+);

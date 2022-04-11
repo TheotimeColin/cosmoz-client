@@ -1,0 +1,24 @@
+.InputBase {
+    border-radius: 6px;
+    align-items: stretch;
+    
+    &.is-focused {
+
+        .InputBase_element::placeholder {
+            opacity: 1;
+        }
+    }
+}
+
+.InputBase_element {
+    border-radius: 6px;
+
+    &::placeholder {
+        color: var(--color-ft-xweak);
+        opacity: 0;
+    }
+}
+
+.Inputbase_helpers {
+    border-radius: 6px;
+}

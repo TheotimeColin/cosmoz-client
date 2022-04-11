@@ -1,0 +1,88 @@
+.LinkBase {
+    font: var(--ft-s-medium);
+    line-height: 1;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-onyx);
+        transition: all 100ms ease;
+        pointer-events: none;
+        transform-origin: left;
+    }
+
+    &:hover {
+        opacity: 0.75;
+
+        &::before {
+            transform: scaleX(0.95);
+        }
+    }
+
+    &:active {
+        opacity: 0.5;
+
+        &::before {
+            transform: scaleX(0.9);
+        }
+    }
+}
+
+.LinkBase_content {
+    position: relative;
+    transition: all 100ms ease;
+}
+
+.LinkBase--s {
+    font: var(--ft-xs-medium);
+    line-height: 1;
+
+    &::before {
+        bottom: -4px;
+    }
+}
+
+.LinkBase--ellipsis {
+    white-space: normal;
+
+    .LinkBase_content {
+        word-break: break-all;
+        @extend .ellipsis-1;
+    }
+}
+
+.LinkBase--light {
+    color: var(--color-ft-light);
+
+    &::before {
+        background-color: var(--color-ft-light);
+    }
+}
+
+@each $color in $main-colors {
+
+    .LinkBase--#{$color} {
+        color: var(--color-#{$color});
+    
+        &::before {
+            background-color: var(--color-#{$color});
+        }
+    }
+}
+
+.LinkBase--current {
+    color: var(--color-current);
+
+    &::before {
+        background-color: var(--color-current);
+    }
+}
