@@ -24,6 +24,31 @@ Vue.mixin({
         round: (value, decimals = 2) => {
             return (Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)).toFixed(decimals)
         },
+        toHTML: (value) => {
+            if (!value || process.server) return ''
+
+            let regexes = [
+                { regex: /\--(.*?)\--/g, wrap: '<span class="text-through">*</span>' },
+                { regex: /\*(.*?)\*/g, wrap: '<span class="secondary">*</span>' }
+            ]
+
+            regexes.forEach(regex => {
+                let matched = regex.regex.exec(value)
+
+                if (matched) {
+                    let wrap = regex.wrap.replace('*', matched[1])
+                    value = value.replace(matched[0], wrap)
+                }
+            })
+
+            let characters = ['?', '!', ':']
+            
+            characters.forEach(char => {
+                value = value.replaceAll(' ' + char, ' ' + char)
+            })
+
+            return value
+        },
         fixed: (value) => {
             return ('0' + value).slice(-2)
         }

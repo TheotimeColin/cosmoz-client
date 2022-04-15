@@ -27,7 +27,7 @@ export default {
                 // ] }
             ] },
             { color: 'cream', steps: [
-                { title: "Pour ce tour, tu as le rôle l'interviewer.", subtitle: "Et c'est toi qui va pouvoir choisir les questions à poser à tes -victimes- amis." },
+                { title: "Pour ce tour, tu as le rôle l'interviewer.", subtitle: "Et c'est toi qui va pouvoir choisir les questions à poser à tes --victimes-- amis." },
                 { title: "Commence par la personne à ta gauche.", subtitle: "Demande-lui son prénom, puis choisis l'une des 3 questions que l'on te propose ci-dessous." }
             ] },
             { color: 'memo', steps: [

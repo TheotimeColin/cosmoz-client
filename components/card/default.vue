@@ -4,9 +4,9 @@
             <div class="Card_step" :class="{ 'is-active': currentStep == step - 1 }" v-for="step in steps.length" :key="step"></div>
         </div>
 
-        <div class="Card_title" v-if="title || subtitle">
-            {{ title|specials }}
-            <p class="Card_subtitle" v-if="subtitle">{{ subtitle|specials }}</p>
+        <div class="Card_titleContainer" v-if="title || subtitle">
+            <div class="Card_title" v-html="$options.filters.toHTML(title)"></div>
+            <div class="Card_subtitle" v-html="$options.filters.toHTML(subtitle)" v-if="subtitle"></div>
         </div>
 
         <div v-if="choices">
@@ -62,14 +62,18 @@ export default {
 
     &.is-steps {
         
-        .Card_title {
+        .Card_titleContainer {
             margin-top: 30px;
         }
     }
 }
 
-.Card_title {
+.Card_titleContainer {
     margin: 0 0 20px;
+}
+
+.Card_title ::v-deep .secondary {
+    color: var(--color-current-strong);
 }
 
 .Card_subtitle {
@@ -126,7 +130,7 @@ export default {
 
 .CardDefault.is-sections {
 
-    .Card_title {
+    .Card_titleContainer {
         font: var(--ft-m-medium);
         text-align: center;
         margin: 0;
