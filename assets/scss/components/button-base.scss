@@ -1,0 +1,42 @@
+.ButtonBase {
+    font: var(--ft-s-medium);
+    text-transform: uppercase;
+    color: var(--color-ft);
+    border: 2px solid var(--color-ft);
+    padding: 10px 15px;
+    border-radius: 40px;
+    transition: all 150ms ease;
+    
+    &:hover,
+    &:active {
+        color: var(--color-ft-light);
+        background-color: var(--color-ft);
+    }
+
+    &:active {
+        transform: scale(0.96);
+    }
+}
+
+.ButtonBase--current {
+    border-color: var(--color-current-strong);
+    color: var(--color-current-strong);
+
+    &:hover,
+    &:active {
+        color: var(--color-ft-light);
+        background-color: var(--color-current-strong);
+    }
+
+    &:active {
+        border-color: var(--color-current-xstrong);
+        background-color: var(--color-current-xstrong);
+    }
+}
+
+.ButtonBase--full {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
