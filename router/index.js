@@ -2,7 +2,7 @@ import Router from "vue-router";
 
 let subdomains = [
   { sub: 'boutique', directory: 'shop' },
-  { sub: 'mon', directory: 'dashboard' },
+  { sub: 'app', directory: 'app' },
   { sub: 'blog', directory: 'blog' }
 ]
 

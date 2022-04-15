@@ -1,5 +1,13 @@
 @import "../../node_modules/@fortawesome/fontawesome-pro/css/all.css";
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+
+@font-face {
+    font-family: 'Ramillas';
+    src: url('../fonts/ramillas/tt_ramillas.woff2') format('woff2'),
+        url('../fonts/ramillas/tt_ramillas.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
 
 @mixin box-shadow() {
     box-shadow: 0 3px 6px 0 var(--color-shadow);

@@ -47,64 +47,12 @@ $colors: (
     "ft-weak": #757575,
     "ft-xweak": #c9c9c9,
     "ft-light": #ffffff,
-    
-    "white-strong": #ffffff,
-    "white": #ffffff,
-    "white-weak": #ffffff,
-    "white-xweak": #ffffff,
-    
-    "precious-xstrong": #3811bc,
-    "precious-strong": #4b39f6,
-    "precious": #6b4bff,
-    "precious-weak": #e7d2ff,
-    "precious-xweak": #ffeffc,
 
-    "ice-xstrong": #0026a2,
-    "ice-strong": #2978ef,
-    "ice": #3399ff,
-    "ice-weak": #ceeeff,
-    "ice-xweak": #e6ffff,
-
-    "pond-xstrong": #005d7a,
-    "pond-strong": #48b0bc,
-    "pond": #3ec9ce,
-    "pond-weak": #cefffd,
-    "pond-xweak": #eefefa,
-    
-    "gum-xstrong": #950b27,
-    "gum-strong": #e65380,
-    "gum": #ff5482,
-    "gum-weak": #ffe2ef,
-    "gum-xweak": #fff1f4,
-    
-    "duck-xstrong": #5B3C13,
-    "duck-strong": #f5c62d,
-    "duck": #ffde3b,
-    "duck-weak": #fff69c,
-    "duck-xweak": #ffffe1,
-    
-    "emerald-xstrong": #006e2c,
-    "emerald-strong": #33d283,
-    "emerald": #43de9b,
-    "emerald-weak": #ceffda,
-    "emerald-xweak": #f0ffef,
-    
-    "sunset-xstrong": #c43600,
-    "sunset-strong": #e97d35,
-    "sunset": #ff913d,
-    "sunset-weak": #ffe4c6,
-    "sunset-xweak": #fff5e5,
-
-    "pepper-xstrong": #7d0012,
-    "pepper-strong": #e81a36,
-    "pepper": #ff2a38,
-    "pepper-weak": #ffc5c5,
-    "pepper-xweak": #FFF4F3,
-    
-    "onyx": #000000,
-    "onyx-weak": #c2c2c2,
-    "onyx-xweak": #f2f2f2,
-    "onyx-2xweak": #f0f0f0,
+    "cream-xweak": #F6F4F1,
+    "cream-weak": #EBEAE8,
+    "cream": #CAC6BE,
+    "cream-strong": #aca69a,
+    "cream-xstrong": #565049,
 
     "bg-light": #ffffff,
     "bg-weak": #C6C6C6,
@@ -118,14 +66,10 @@ $colors: (
     "error": #FF2D42,
     "success": #10c773,
 
-    "canva": #08c1da,
-    "canva-blue": #3034a6,
-    "canva-purple": #7b28e5,
-
     "shadow": rgba(207, 215, 231, 0.3)
 );
 
-$main-colors: ("gum", "duck", "pond", "ice", "precious", "sunset", "emerald", "pepper", "onyx", "white");
+$main-colors: ("cream");
 
 $fonts: (
     "ft": (
@@ -148,15 +92,15 @@ $fonts: (
             "bold": 700
         )
     ),
-    "ft-hand": (
-        "name": "'Lazydog'",
+    "ft-title": (
+        "name": "'Ramillas'",
         "sizes": (
-            "2xs": "18px/1",
-            "xs": "25px/1",
-            "s": "30px/1.1",
-            "m": "35px/1",
-            "l": "50px/1.2",
-            "xl": "60px/1.2"
+            "2xs": "16px/1",
+            "xs": "18px/1",
+            "s": "20px/1.1",
+            "m": "24px/1.25",
+            "l": "30px/1.2",
+            "xl": "50px/1.2"
         )
     ),
     "ft-icon": (
