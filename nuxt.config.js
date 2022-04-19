@@ -38,7 +38,7 @@ export default {
     components: {
         dirs: [
             '~/components',
-            '~/components/admin',
+            '~/components/partials',
             '~/components/base',
             '~/components/forms',
             '~/components/interactive',

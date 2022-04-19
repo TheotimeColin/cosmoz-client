@@ -3,7 +3,8 @@ import Router from "vue-router";
 let subdomains = [
   { sub: 'boutique', directory: 'shop' },
   { sub: 'app', directory: 'app' },
-  { sub: 'blog', directory: 'blog' }
+  { sub: 'blog', directory: 'blog' },
+  { sub: 'admin', directory: 'admin' }
 ]
 
 export function createRouter(ssrContext, createDefaultRouter, routerOptions) {

@@ -1,7 +1,8 @@
 <template>
     <nav class="NavAdmin" :class="[]">
         <nuxt-link to="/" class="NavAdmin_logo">
-            <icon-base name="logo/logo-main" :height="50" />
+            <!-- <icon-base name="logo/logo-main" :height="50" /> -->
+            Gatherings
         </nuxt-link>
 
         <div class="NavAdmin_items">
@@ -27,11 +28,15 @@ export default {
     name: 'NavAdmin',
     data: () => ({
         items: [
-            { label: 'Tableau de bord', icon: 'mug-tea', exact: true, link: 'admin' },
-            { label: 'Blog', icon: 'newspaper', link: 'admin-articles' },
-            { label: 'Catalogue', icon: 'shopping-cart', link: 'admin-catalogue' },
-            { label: 'Utilisateurs', icon: 'scroll', link: 'admin-users' },
-            { label: 'Bibliothèque de médias', icon: 'image', link: 'admin-other-medias' }
+            { label: 'Tableau de bord', icon: 'mug-tea', exact: true, link: '' },
+
+            { label: 'Gatherings', icon: 'calendar-alt', link: 'gatherings' },
+            { label: 'Expériences', icon: 'sparkles', link: 'experiences' },
+            { label: 'Lieux partenaires', icon: 'map-marker-alt', link: 'locations' },
+            
+            // { label: 'Blog', icon: 'newspaper', link: 'articles' },
+            // { label: 'Utilisateurs', icon: 'users', link: 'users' },
+            { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' }
         ]
     })
 }
