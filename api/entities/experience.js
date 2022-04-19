@@ -7,7 +7,7 @@ let Experience = {
         sequences: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'sequence' }
         ]
-    })
+    }, { timestamps: true })
 }
 
 Experience.model = global.Experience ? global.Experience.model : mongoose.model('experience', Experience.fields)

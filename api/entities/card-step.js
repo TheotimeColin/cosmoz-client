@@ -8,7 +8,7 @@ let CardStep = {
         subtitle: { type: String, default: '', write: 'editor' },
         sections: { type: Array, default: [], write: 'editor' },
         choices: { type: Array, default: [], write: 'editor' },
-    })
+    }, { timestamps: true })
 }
 
 CardStep.model = global.CardStep ? global.CardStep.model : mongoose.model('cardStep', CardStep.fields)

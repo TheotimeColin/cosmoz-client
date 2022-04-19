@@ -11,7 +11,7 @@ let MediaCollection = {
         medias: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'media' }
         ]
-    })
+    }, { timestamps: true })
 }
 
 MediaCollection.fields.post('findOneAndDelete', async function (doc, next) {

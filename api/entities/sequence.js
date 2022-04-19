@@ -7,7 +7,7 @@ let Sequence = {
         blocks: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'sequenceBlock' }
         ]
-    })
+    }, { timestamps: true })
 }
 
 Sequence.model = global.Sequence ? global.Sequence.model : mongoose.model('sequence', Sequence.fields)

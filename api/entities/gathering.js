@@ -7,7 +7,7 @@ let Gathering = {
         dateStart: { type: Date },
         location: { type: mongoose.Schema.Types.ObjectId, ref: 'location' },
         experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' }
-    })
+    }, { timestamps: true })
 }
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

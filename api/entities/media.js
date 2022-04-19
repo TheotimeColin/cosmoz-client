@@ -9,7 +9,7 @@ let Media = {
         height: { type: Number, write: 'editor' },
         size: { type: String, write: 'editor' },
         src: { type: String, write: 'editor' }
-    })
+    }, { timestamps: true })
 }
 
 Media.model = global.Media ? global.Media.model : mongoose.model('media', Media.fields)

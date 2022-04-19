@@ -4,11 +4,11 @@ let Location = {
     write: 'editor',
     read: 'public',
     fields: new mongoose.Schema({
-        title: { type: String,  },
+        title: { type: String },
         experiences: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'experience' }
         ]
-    })
+    }, { timestamps: true })
 }
 
 Location.model = global.Location ? global.Location.model : mongoose.model('location', Location.fields)

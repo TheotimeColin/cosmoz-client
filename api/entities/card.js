@@ -7,8 +7,8 @@ let Card = {
         color: { type: String, default: 'cream' },
         steps: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'cardStep' }
-        ]
-    })
+     , { timestamps: true }   ]
+    }, { timestamps: true })
 }
 
 Card.model = global.Card ? global.Card.model : mongoose.model('card', Card.fields)
