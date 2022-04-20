@@ -8,9 +8,9 @@
     >
         <template slot="content">
             <div class="p-40">
-                <file-uploader @upload="onUpload" v-if="selected.length <= 0"/>
+                <file-uploader @upload="onUpload" />
                 
-                <div v-else>
+                <div v-if="selected.length > 0 && max > 1">
                     <p class="ft-m-bold mb-20">Sélectionnés</p>
 
                     <div class="row-xs">
@@ -118,3 +118,24 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.MediaLibrary_media {
+    background-image: var(--background);
+    background-size: contain;
+    background-color: var(--color-bg-weak);
+    background-repeat: no-repeat;
+    background-position: center;
+    @include ratio(50);
+}
+
+.MediaLibrary_item {
+    border: 1px solid var(--color-border);
+}
+
+.MediaLibrary_itemImage {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+}
+</style>

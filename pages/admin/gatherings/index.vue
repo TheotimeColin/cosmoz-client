@@ -3,7 +3,12 @@
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
                 <div class="row-s">
-
+                    <div class="col-6 col-12@s mb-40" v-for="gathering in gatherings" :key="gathering._id">
+                        <block-gathering
+                            v-bind="gathering"
+                            :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -13,10 +18,10 @@
                     :modifiers="['light']"
                     icon-before="plus"        
                     :attrs="{
-                        to: localePath({ name: 'pages-id', params: { id: 'new' } })
+                        to: localePath({ name: 'gatherings-id', params: { id: 'new' } })
                     }"
                 >
-                    Créer une page
+                    Créer un nouveau Gathering
                 </button-base>
             </div>
         </div>
@@ -29,10 +34,12 @@ export default {
     layout: 'admin',
     middleware: 'admin',
     async fetch () {
-
+        await this.$store.dispatch('gathering/fetch', {
+            query: {}
+        })
     },
     computed: {
-
+        gatherings () { return this.$store.getters['gathering/find']() },
     }
 }
 </script>

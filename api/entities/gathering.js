@@ -4,11 +4,20 @@ let Gathering = {
     write: 'editor',
     read: 'public',
     fields: new mongoose.Schema({
-        dateStart: { type: Date },
-        location: { type: mongoose.Schema.Types.ObjectId, ref: 'location' },
+        title: { type: String },
+        subtitle: { type: String },
+        meetup: { type: String },
+        dates: { type: Array, default: [] },
+        location: { type: String },
+        cover: { type: mongoose.Schema.Types.ObjectId, ref: 'mediaCollection' },
         experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' }
     }, { timestamps: true })
 }
+
+
+Gathering.fields.pre('find', function () {
+    this.populate('cover')
+})
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)
 global.Gathering = Gathering

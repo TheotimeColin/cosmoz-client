@@ -1,6 +1,8 @@
 <template>
     <div>
-        Hello
+        <div class="Wrapper">
+            Hello
+        </div>
     </div>
 </template>
 

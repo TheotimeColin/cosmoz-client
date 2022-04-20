@@ -5,12 +5,21 @@
                 <div>
                     <component
                         v-for="input in form"
+                        class="EntityEditor_input"
                         :is="getInput(input)"
                         v-model="formData[input.key]"
                         v-bind="input"
                         :key="input.key"
                     />
                 </div>
+
+                <component
+                    :is="blockType.type"
+                    class="mt-20"
+                    :class="blockType.classes"
+                    v-bind="formData"
+                    v-if="blockType.type"
+                />
             </div>
             <div class="col-4">
                 <div class="p-sticky" style="--offset: 40px;">
@@ -25,6 +34,7 @@
 
 <script>
 import { InputBase, SelectBase } from 'instant-coffee-core'
+import Decoders from '@/utils/decoders'
 
 export default {
     name: 'EntityEditor',
@@ -35,6 +45,7 @@ export default {
     props: {
         _id: { type: String, default: '' },
         entityType: { type: String },
+        blockType: { type: Object, default: () => {} },
         form: { type: Array, default: () => [] }
     },
     data: () => ({
@@ -82,24 +93,21 @@ export default {
             return this.form.reduce((form, input) => {
                 let result = null
 
-                if (input.type == 'string') result = 'lol'
+                if (input.type == 'string') result = ''
                 if (input.type == 'medias') result = []
 
                 return { ...form, [input.key]: result }
             }, {})
         },
         getInput (input) {
-            return 'input-base'
+
+            return input.type == 'media' ? 'input-media' : 'input-base'
         },
         decodeForm (form) {
-            return {
-                ...form
-            }
+            return Decoders[this.entityType].decode(form)
         },
         parseForm (form) {
-            return {
-                ...form
-            }
+            return Decoders[this.entityType].parse(form)
         },
         async deleteEntity () {
             // let response = await this.$store.dispatch('articles/delete', this.$data._id)
@@ -127,3 +135,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.EntityEditor_input {
+
+    & + & {
+        margin-top: 10px;
+    }
+}
+</style>

@@ -1,5 +1,7 @@
 <template>
     <div class="Layout LayoutDefault" :class="[ classes ]">
+        <default-header />
+        
         <div class="LayoutDefault_content">
             <Nuxt />
         </div>

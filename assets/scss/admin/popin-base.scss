@@ -6,6 +6,7 @@
     border-radius: 15px;
     overflow: hidden;
     transition: all 350ms ease;
+    background-color: var(--color-bg);
 }
 
 .PopinBase_content {
@@ -63,22 +64,6 @@
 
     &.is-disabled {
         pointer-events: none;
-    }
-}
-
-@each $color in $main-colors {
-    
-
-    .PopinBase--#{$color} {
-        
-        &.is-active .PopinBase_hider {
-            background-color: var(--color-#{$color}-xweak-75);
-        }
-
-        .PopinBase_body {    
-            box-shadow: 2px 6px 10px 0 var(--color-#{$color}-strong-25);
-            border-color: var(--color-border);
-        }
     }
 }
 

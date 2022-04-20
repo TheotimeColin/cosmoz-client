@@ -6,7 +6,8 @@
 .LayoutAdmin {
     display: flex;
     min-height: 100vh;
-    background-color: var(--color-bg-xweak);
+    // background-color: var(--color-bg-xweak);
+    // color: var(--color-ft-light);
 }
 
 .LayoutAdmin_body {
@@ -23,7 +24,6 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    background: var(--color-bg-light);
 }
 
 .LayoutAdmin_title {
@@ -84,4 +84,8 @@
 
 .Page_content {
     display: flex;
+}
+
+.Page_side {
+    margin-left: 40px;
 }

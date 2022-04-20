@@ -19,11 +19,11 @@
                     
                 </div>
 
-                <action-menu
+                <!-- <action-menu
                     :sub-items="[
                         { label: 'Supprimer', icon: 'times', onClick: () => $emit('delete', image.collection._id) }
                     ]"
-                />
+                /> -->
             </div>
         </div>
     </div>

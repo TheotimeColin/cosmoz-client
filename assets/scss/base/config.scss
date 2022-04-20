@@ -44,7 +44,7 @@ $gutters: (
 $colors: (
     "ft-strong": #000000,
     "ft": #000000,
-    "ft-weak": #757575,
+    "ft-weak": #929292,
     "ft-xweak": #c9c9c9,
     "ft-light": #ffffff,
 
@@ -77,12 +77,13 @@ $colors: (
     "tulip": #c6b5c2,
     "tulip-strong": #aa8da6,
     "tulip-xstrong": #664b64,
-
+    
+    "bg": #1D1D1D,
     "bg-light": #ffffff,
-    "bg-weak": #C6C6C6,
-    "bg-xweak": #f5f5f5,
+    "bg-weak": #2b2b2b,
+    "bg-xweak": #373737,
 
-    "border": #e4e4e4,
+    "border": #3A3A3A,
     "border-weak": #fafafa,
     "border-strong": #B3B3B3,
 
@@ -102,7 +103,7 @@ $fonts: (
             "2xs": "9px/1.5",
             "xs": "12px/1.5",
             "s": "14px/1.5",
-            "m": "16px/1.5",
+            "m": "15px/1.5",
             "l": "18px/1.4",
             "xl": "20px/1.4",
             "2xl": "26px/1.4",
