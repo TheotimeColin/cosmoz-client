@@ -6,6 +6,7 @@
                     <div class="col-6 col-12@s mb-40" v-for="gathering in gatherings" :key="gathering._id">
                         <block-gathering
                             v-bind="gathering"
+                            :hide-dates="true"
                             :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>

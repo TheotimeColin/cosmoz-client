@@ -12,20 +12,23 @@
                         :key="input.key"
                     />
                 </div>
-
-                <component
-                    :is="blockType.type"
-                    class="mt-20"
-                    :class="blockType.classes"
-                    v-bind="formData"
-                    v-if="blockType.type"
-                />
             </div>
             <div class="col-4">
                 <div class="p-sticky" style="--offset: 40px;">
-                    <button-base @click="update">
-                        Sauvegarder
-                    </button-base>
+                    <component
+                        :is="blockType.type"
+                        :class="blockType.classes"
+                        v-bind="formData"
+                        v-if="blockType.type"
+                    />
+
+                    <hr class="Separator mv-20">
+
+                    <div class="text-right">
+                        <button-base @click="update">
+                            Sauvegarder
+                        </button-base>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,8 +103,12 @@ export default {
             }, {})
         },
         getInput (input) {
+            let type = 'input-base'
 
-            return input.type == 'media' ? 'input-media' : 'input-base'
+            if (input.type == 'media') type = 'input-media'
+            if (input.type == 'gathering-date') type = 'input-gathering-date'
+
+            return type
         },
         decodeForm (form) {
             return Decoders[this.entityType].decode(form)

@@ -1,4 +1,5 @@
 .ButtonBase {
+    display: inline-flex;
     font: var(--ft-s-medium);
     text-transform: uppercase;
     color: var(--color-ft-light);
@@ -44,4 +45,9 @@
     justify-content: center;
     text-align: center;
     width: 100%;
+}
+
+.ButtonBase--s {
+    padding: 8px 12px;
+    font: var(--ft-xs-medium);
 }

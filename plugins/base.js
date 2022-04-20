@@ -21,6 +21,19 @@ Vue.mixin({
         striptags: (value) => {
             return value ? value.replace(/(<([^>]+)>)/gi, '') : ''
         },
+        verticalize: (value) => {
+            if (!value || process.server) return ''
+
+            let characters = [
+                { char: ',', replace: ',<br>' }
+            ]
+            
+            characters.forEach(char => {
+                value = value.replaceAll(char.char, char.replace)
+            })
+
+            return value
+        },
         round: (value, decimals = 2) => {
             return (Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals)).toFixed(decimals)
         },

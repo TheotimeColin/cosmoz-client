@@ -78,6 +78,7 @@ $colors: (
     "tulip-strong": #aa8da6,
     "tulip-xstrong": #664b64,
     
+    "bg-strong": #000000,
     "bg": #1D1D1D,
     "bg-light": #ffffff,
     "bg-weak": #2b2b2b,
@@ -120,8 +121,9 @@ $fonts: (
     "ft-title": (
         "name": "'Ramillas'",
         "sizes": (
+            "3xs": "13px/1",
             "2xs": "16px/1",
-            "xs": "18px/1",
+            "xs": "18px/1.25",
             "s": "22px/1.25",
             "m": "24px/1.25",
             "l": "30px/1.2",

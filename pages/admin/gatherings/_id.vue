@@ -36,6 +36,9 @@ export default {
                 key: 'location',
                 type: 'string',
                 label: `Zone`
+            }, {
+                key: 'dates',
+                type: 'gathering-date'
             }
         ]
     }),

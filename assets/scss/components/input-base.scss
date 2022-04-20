@@ -7,3 +7,28 @@
     color: var(--color-ft-weak);
     background-color: var(--color-bg) !important;
 }
+
+.InputBase_element {
+    
+    &::placeholder {
+        color: var(--color-ft-weak);
+        opacity: 1;
+    }
+}
+
+.Inputbase_helpers {
+    background-color: var(--color-bg) !important;
+}
+
+.SelectBase_options {
+    background-color: var(--color-bg) !important;
+}
+
+.SelectBase_option {
+    color: var(--color-ft-light);
+
+    &.is-selected {
+        color: var(--color-ft);
+        background-color: var(--color-bg-light);
+    }
+}
