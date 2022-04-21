@@ -12,7 +12,12 @@
         </div>
         
         <div class="BlockGathering_content">
-            <p class="BlockGathering_location">{{ isPast ? 'De retour bientôt' : location }}</p>
+            <div class="BlockGathering_location fx-center">
+                <p class="">{{ isPast ? 'De retour bientôt' : location }}</p>
+                
+                <div class="d-flex fill-ft-light color-ft-light">{{ favorites }} <icon-base class="ml-5" name="icon/heart-solid" :width="10" /></div>
+            </div>
+
             <h3 class="BlockGathering_title">
                 {{ subtitle }}
             </h3>

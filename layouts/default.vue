@@ -46,7 +46,7 @@ export default {
         setInterval(() => {
             let m = this.$moment.duration(this.$moment('18-05-2022 18:00', 'DD-MM-YYYY HH:mm').diff(this.$moment()))
             
-            this.countdown = `${m.days()}j ${m.hours()}h ${m.minutes()}m ${m.seconds()}s`
+            this.countdown = `${this.$options.filters.fixed(m.days())}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
         }, 500)
         
         if (process.server) return
@@ -61,6 +61,6 @@ export default {
 
 <style lang="scss" scoped>
 .timer {
-    width: 155px;
+    width: 180px;
 }
 </style>
