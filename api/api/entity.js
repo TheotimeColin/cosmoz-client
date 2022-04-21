@@ -242,9 +242,15 @@ const parseQuery = function (query, user) {
                 cancel = true
             }
         }
-        if (typeof value === 'string' && value.startsWith('$in')) {
+
+        if (typeof value === 'string' && value == '$inc') {
+            parsedQuery['$inc'] = { [key]: 1 }
+            delete parsedQuery[key]
+        } else if (typeof value === 'string' && value.startsWith('$in')) {
             parsedQuery[key] = { '$in': value.replace('$in', '').split(',') }
         }
+
+        console.log(parsedQuery)
     })
 
     if (query['$sort']) {

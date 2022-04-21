@@ -9,6 +9,7 @@ let Gathering = {
         meetup: { type: String },
         dates: { type: Array, default: [] },
         location: { type: String },
+        favorites: { type: Number, default: 0, write: 'public' },
         cover: { type: mongoose.Schema.Types.ObjectId, ref: 'mediaCollection' },
         experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' }
     }, { timestamps: true })

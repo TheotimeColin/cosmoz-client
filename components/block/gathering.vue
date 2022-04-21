@@ -5,6 +5,10 @@
             </div>
 
             <span v-html="$options.filters.verticalize(title)"></span>
+
+            <div class="BlockGathering_heart" @click="onFavorite">
+                <icon-base name="icon/heart-light" width="25" /> <b class="ft-title-s ml-10" v-if="favorites">{{ favorites }}</b>
+            </div>
         </div>
         
         <div class="BlockGathering_content">
@@ -40,10 +44,12 @@
 export default {
     name: 'BlockGathering',
     props: {
+        _id: { type: String },
         title: { type: String },
         subtitle: { type: String },
         place: { type: String },
         location: { type: String },
+        favorites: { type: Number, default: 0 },
         dates: { type: Array, default: () => [] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false },
@@ -58,6 +64,14 @@ export default {
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
+        }
+    },
+    methods: {
+        async onFavorite () {
+            await this.$store.dispatch('gathering/create', {
+                _id: this._id,
+                params: { favorites: '$inc' }
+            })
         }
     }
 }
@@ -75,37 +89,46 @@ export default {
         .BlockGathering_cover span {
             transform: scale(0.95);
         }
+
+        .BlockGathering_heart {
+            transform: scale(1);
+            opacity: 1;
+            filter: none;
+            transition-delay: 100ms;
+        }
     }
 
     &.is-past {
 
-        .BlockGathering_cover {
-            background-color: var(--color-bg-weak);
-            color: var(--color-ft-weak);
-        }
+        // .BlockGathering_cover {
+        //     background-color: var(--color-bg-weak);
+        //     color: var(--color-ft-weak);
+        // }
 
-        .BlockGathering_coverImage {
-            opacity: 0.25;
-        }
+        // .BlockGathering_coverImage {
+        //     opacity: 0.25;
+        // }
 
-        .BlockGathering_title {
-            color: var(--color-ft-weak);
-        }
+        // .BlockGathering_title {
+        //     color: var(--color-ft-weak);
+        // }
 
         &:hover {
 
             .BlockGathering_cover span {
-                transform: none;
+                // transform: none;
+                opacity: 0.35;
                 color: var(--color-ft-light);
+                filter: blur(2px);
             }
 
             .BlockGathering_title {
                 color: var(--color-ft-light);
             }
 
-            .BlockGathering_coverImage {
-                opacity: 0.25;
-            }
+            // .BlockGathering_coverImage {
+            //     opacity: 0.25;
+            // }
         }
     }
 }
@@ -133,7 +156,7 @@ export default {
     position: relative;
 
     span {
-        padding: 0 10px;
+        padding: 0 15px;
         position: relative;
         transition: all 150ms ease;
     }
@@ -141,6 +164,22 @@ export default {
     &::before {
         @include ratio(60);
     }
+}
+
+.BlockGathering_heart {
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: auto;
+    font-size: 25px;
+    fill: var(--color-ft-light);
+    margin: -12px auto 0;
+    cursor: pointer;
+    display: inline-flex;
+    filter: blur(1px);
+    transform: scale(1.2);
+    opacity: 0;
+    transition: all 150ms ease;
 }
 
 .BlockGathering_content {

@@ -1,9 +1,10 @@
 <template>
     <div class="InputDate">
-        <div class="d-flex mb-10" v-for="(row, i) in localValue" :key="i">
+        <div class="fx-center mb-10" v-for="(row, i) in localValue" :key="i">
             <input-base type="datetime-local" class="mr-5" v-model="row.date" />
             <select-base class="mr-5" v-model="row.category" :options="CATEGORIES" />
-            <input-base type="text" placeholder="Lien Meetup" v-model="row.link" />
+            <input-base type="text" placeholder="Lien Meetup" class="mr-5" v-model="row.link" />
+            <button-base :modifiers="['round', 'xs']" icon-before="trash-alt" @click="onDelete(i)" />
         </div>
 
         <div class="text-center">
@@ -54,6 +55,9 @@ export default {
         }
     },
     methods: {
+        onDelete (id) {
+            this.localValue.splice(id, 1)
+        },
         onAdd () {
             this.localValue = [
                 ...this.localValue,

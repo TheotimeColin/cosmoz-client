@@ -97,7 +97,7 @@ export default {
                 let result = null
 
                 if (input.type == 'string') result = ''
-                if (input.type == 'medias') result = []
+                if (input.type == 'medias' || input.type == 'gathering-date') result = []
 
                 return { ...form, [input.key]: result }
             }, {})
