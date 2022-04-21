@@ -1,5 +1,5 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast }">
+    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast, 'is-favorite': hasFavorited }">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
@@ -7,7 +7,7 @@
             <span v-html="$options.filters.verticalize(title)"></span>
 
             <div class="BlockGathering_heart" @click="onFavorite">
-                <icon-base name="icon/heart-light" width="25" /> <b class="ft-title-s ml-10" v-if="favorites">{{ favorites }}</b>
+                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favorites">{{ favorites }}</b>
             </div>
         </div>
         
@@ -55,6 +55,12 @@ export default {
         link: { type: [Object, Boolean], default: false },
         hideDates: { type: Boolean, default: false }
     },
+    data: () => ({
+        hasFavorited: false
+    }),
+    created () {
+        if (this.$cookies.get('fav-' + this._id)) this.hasFavorited = true
+    },
     computed: {
         isPast () {
             return this.dates.length == 0 || !this.dates.reduce((hasDate, date) => {
@@ -68,6 +74,11 @@ export default {
     },
     methods: {
         async onFavorite () {
+            if (this.hasFavorited) return
+
+            this.$cookies.set('fav-' + this._id, true)
+            this.hasFavorited = true
+
             await this.$store.dispatch('gathering/create', {
                 _id: this._id,
                 params: { favorites: '$inc' }
@@ -96,6 +107,10 @@ export default {
             filter: none;
             transition-delay: 100ms;
         }
+    }
+
+    &.is-favorite {
+
     }
 
     &.is-past {

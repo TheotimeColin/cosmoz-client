@@ -249,8 +249,6 @@ const parseQuery = function (query, user) {
         } else if (typeof value === 'string' && value.startsWith('$in')) {
             parsedQuery[key] = { '$in': value.replace('$in', '').split(',') }
         }
-
-        console.log(parsedQuery)
     })
 
     if (query['$sort']) {
