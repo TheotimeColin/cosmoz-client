@@ -1,7 +1,6 @@
 .TextBody {
     font: var(--ft-l);
-    line-height: 1.6;
-    color: var(--color-ft);
+    color: var(--color-ft-light);
     white-space: normal;
 
     .ProseMirror {
@@ -9,13 +8,11 @@
     }
 
     h1, h2, h3, h4 {
-        color: var(--color-current);
-        max-width: 85%;
-        margin-left: -30px;
+        color: var(--color-ft-light);
     }
 
     h1 {
-        font: var(--ft-3xl);
+        font: var(--ft-title-xl);
         font-weight: bold;
         margin-top: 80px;
         margin-bottom: 20px;
@@ -26,11 +23,9 @@
     }
 
     h2 {
-        font: var(--ft-2xl);
-        font-weight: bold;
-        margin-top: 60px;
-        margin-bottom: 30px;
-        color: var(--color-ft);
+        font: var(--ft-title-m);
+        margin-top: 40px;
+        margin-bottom: 20px;
 
         &:first-child {
             margin-top: 0;
@@ -42,9 +37,8 @@
     }
 
     h3 {
-        font: var(--ft-xl);
+        font: var(--ft-title-xs);
         margin-left: 0px;
-        font-weight: bold;
         margin-top: 60px;
         margin-bottom: 20px;
     }

@@ -3,7 +3,7 @@
 }
 
 .PopinBase_body {
-    border-radius: 15px;
+    border-radius: 5px;
     overflow: hidden;
     transition: all 350ms ease;
     background-color: var(--color-bg);
@@ -26,7 +26,7 @@
 
 .PopinBase_close {
     font-size: 26px;
-    color: var(--color-ft);
+    color: var(--color-ft-light);
 }
 
 .PopinBase_footerAction {

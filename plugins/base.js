@@ -24,11 +24,17 @@ Vue.mixin({
         verticalize: (value) => {
             if (!value || process.server) return ''
 
+            let done = false
+
             let characters = [
+                { char: '&', replace: '<br>&' },
                 { char: ',', replace: ',<br>' }
             ]
             
             characters.forEach(char => {
+                if (done) return
+                 
+                if (value.includes(char.char)) done = true
                 value = value.replaceAll(char.char, char.replace)
             })
 

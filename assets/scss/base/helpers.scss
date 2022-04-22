@@ -50,6 +50,26 @@
     text-transform: uppercase;
 }
 
+.tape {
+    display: inline-block;
+    text-align: center;
+    transform: rotate(-1.5deg);
+    color: var(--color-ft);
+    padding: 5px 10px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('./../img/texture/holo-s.webp');
+
+    &:nth-child(odd) {
+        transform: rotate(0.5deg);
+    }
+}
+
+.tape-strong  {
+    color: var(--color-ft-light);
+    background: var(--color-bg-strong);
+}
+
 .down-leave-active,
 .down-enter-active,
 .up-leave-active,

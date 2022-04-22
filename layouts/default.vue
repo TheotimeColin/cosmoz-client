@@ -1,6 +1,6 @@
 <template>
     <div class="Layout LayoutDefault" :class="[ classes ]">
-        <div class="bg-ocean-xstrong pv-10">
+        <!-- <div class="bg-ocean-xstrong pv-15">
             <div class="Wrapper fx-center">
                 <div class="d-flex fx-align-center">
                     <div class="ft-title-s fx-no-shrink timer">{{ countdown }}</div>
@@ -15,7 +15,8 @@
                     Me prévenir
                 </button-base>
             </div>
-        </div>
+        </div> -->
+
         <default-header />
         
         <div class="LayoutDefault_content">

@@ -99,11 +99,14 @@ export default {
     &:hover {
 
         .BlockGathering_coverImage {
-            opacity: 0.5;
+            opacity: 0.25;
         }
 
         .BlockGathering_cover span {
             transform: scale(0.95);
+            opacity: 0.35;
+            color: var(--color-ft-light);
+            filter: blur(2px);
         }
 
         .BlockGathering_heart {
@@ -111,44 +114,6 @@ export default {
             opacity: 1;
             filter: none;
             transition-delay: 100ms;
-        }
-    }
-
-    &.is-favorite {
-
-    }
-
-    &.is-past {
-
-        // .BlockGathering_cover {
-        //     background-color: var(--color-bg-weak);
-        //     color: var(--color-ft-weak);
-        // }
-
-        // .BlockGathering_coverImage {
-        //     opacity: 0.25;
-        // }
-
-        // .BlockGathering_title {
-        //     color: var(--color-ft-weak);
-        // }
-
-        &:hover {
-
-            .BlockGathering_cover span {
-                // transform: none;
-                opacity: 0.35;
-                color: var(--color-ft-light);
-                filter: blur(2px);
-            }
-
-            .BlockGathering_title {
-                color: var(--color-ft-light);
-            }
-
-            // .BlockGathering_coverImage {
-            //     opacity: 0.25;
-            // }
         }
     }
 }
@@ -159,7 +124,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.9;
+    opacity: 0.5;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;

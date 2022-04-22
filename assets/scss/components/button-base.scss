@@ -40,6 +40,18 @@
     }
 }
 
+.ButtonBase--light {
+    background-color: var(--color-ft-light);
+    border-color: var(--color-ft-light);
+    color: var(--color-ft);
+
+    &:hover,
+    &:active {
+        color: var(--color-ft-light);
+        background-color: transparent;
+    }
+}
+
 .ButtonBase--full {
     display: flex;
     justify-content: center;
