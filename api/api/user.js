@@ -190,3 +190,25 @@ exports.resetPassword = async function (req, res) {
         errors
     })
 }
+
+exports.subscribeNewsletter = async function (req, res) {
+    let errors = []
+
+    try {
+        let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
+        let createContact = new req.app.locals.sendinBlue.CreateContact()
+
+        createContact.email = req.body.email
+        createContact.listIds = [2, 3]
+
+        createContact.attributes = {
+            PRENOM: req.body.name
+        }
+        // if (process.env.NODE_ENV == "PRODUCTION") 
+        await apiInstance.createContact(createContact)
+    } catch (e) {
+        console.error(e)
+    }
+
+    res.send({ errors, status: errors.length > 0 ? 0 : 1 })
+}

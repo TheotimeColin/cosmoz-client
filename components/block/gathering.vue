@@ -7,7 +7,7 @@
             <span v-html="$options.filters.verticalize(title)"></span>
 
             <div class="BlockGathering_heart" @click="onFavorite">
-                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favorites">{{ favorites }}</b>
+                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favoritesNumber">{{ favoritesNumber }}</b>
             </div>
         </div>
         
@@ -15,7 +15,7 @@
             <div class="BlockGathering_location fx-center">
                 <p class="">{{ isPast ? 'De retour bientôt' : location }}</p>
                 
-                <div class="d-flex fill-ft-light color-ft-light">{{ favorites }} <icon-base class="ml-5" name="icon/heart-solid" :width="10" /></div>
+                <div class="d-flex fill-ft-light color-ft-light">{{ favoritesNumber }} <icon-base class="ml-5" name="icon/heart-solid" :width="10" /></div>
             </div>
 
             <h3 class="BlockGathering_title">
@@ -61,7 +61,8 @@ export default {
         hideDates: { type: Boolean, default: false }
     },
     data: () => ({
-        hasFavorited: false
+        hasFavorited: false,
+        hasPendingFavorite: false
     }),
     created () {
         if (this.$cookies.get('fav-' + this._id)) this.hasFavorited = true
@@ -75,6 +76,9 @@ export default {
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
+        },
+        favoritesNumber () {
+            return this.favorites + (this.hasPendingFavorite ? 1 : 0)
         }
     },
     methods: {
@@ -82,12 +86,15 @@ export default {
             if (this.hasFavorited) return
 
             this.$cookies.set('fav-' + this._id, true)
+            this.hasPendingFavorite = true
             this.hasFavorited = true
 
             await this.$store.dispatch('gathering/create', {
                 _id: this._id,
                 params: { favorites: '$inc' }
             })
+
+            this.hasPendingFavorite = false
         }
     }
 }

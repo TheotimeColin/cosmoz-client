@@ -50,6 +50,36 @@
     text-transform: uppercase;
 }
 
+.bg-plastic-black { --background: url('./../img/texture/plastic-black.webp'); }
+.bg-bubble-gum { --background: url('./../img/texture/bubble-gum.webp'); }
+.bg-ice-cream { --background: url('./../img/texture/ice-cream.webp'); }
+.bg-denim { --background: url('./../img/texture/denim.webp'); }
+.bg-denim-s { --background: url('./../img/texture/denim-s.webp'); }
+.bg-aluminium { --background: url('./../img/texture/aluminium.webp'); }
+.bg-aluminium-s { --background: url('./../img/texture/aluminium-s.webp'); }
+
+.bg-cover {
+    position: relative;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        background-size: cover;
+        background-position: center;
+        background-image: var(--background);
+    }
+
+    & > * {
+        position: relative;
+    }
+}
+
 .tape {
     display: inline-block;
     text-align: center;
@@ -68,6 +98,19 @@
 .tape-strong  {
     color: var(--color-ft-light);
     background: var(--color-bg-strong);
+}
+
+.tape-1 {
+    color: var(--color-ft-light);
+    background: var(--color-bg);
+}
+
+.tape-2 {
+    background-image: url('./../img/texture/aluminium-s.webp');
+}
+
+.tape-l {
+    padding: 15px 10px;
 }
 
 .down-leave-active,

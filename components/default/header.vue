@@ -4,7 +4,7 @@
             <nuxt-link :to="localePath({ name: '' })" class="ft-title-m">gatherings</nuxt-link>
 
             <div class="DefaultHeader_nav">
-                C'est quoi Gatherings ?
+                <a :href="$config.baseUrl + '#about'">C'est quoi Gatherings ?</a>
             </div>
         </div>
     </div>

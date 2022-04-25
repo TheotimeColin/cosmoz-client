@@ -32,3 +32,11 @@
         background-color: var(--color-bg-light);
     }
 }
+
+form.strong {
+
+    .InputBase_label,
+    .SelectBase_label {
+        background-color: var(--color-bg-strong) !important;
+    }
+}
