@@ -53,6 +53,12 @@
         padding-left: 30px;
         padding-right: 30px;
     }
+
+    .Wrapper {
+        margin: 0;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 }
 
 @include breakpoint-xs {

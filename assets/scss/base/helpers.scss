@@ -511,3 +511,10 @@
         transform: translate3d(0, 0, 0) rotate(0deg);
     }
 }
+
+@include breakpoint-xs {
+
+    .d-none\@xs {
+        display: none !important;
+    }
+}

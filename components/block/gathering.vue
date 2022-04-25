@@ -15,7 +15,7 @@
             <div class="BlockGathering_location fx-center">
                 <p class="">{{ isPast ? 'De retour bientôt' : location }}</p>
                 
-                <div class="d-flex fill-ft-light color-ft-light">{{ favoritesNumber }} <icon-base class="ml-5" name="icon/heart-solid" :width="10" /></div>
+                <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
             </div>
 
             <h3 class="BlockGathering_title">
@@ -137,6 +137,10 @@ export default {
     transition: all 150ms ease;
 }
 
+.BlockGathering_favs {
+    cursor: pointer;
+}
+
 .BlockGathering_cover {
     display: flex;
     align-items: center;
@@ -242,4 +246,28 @@ export default {
         }
     }
 }
+
+@include breakpoint-s {
+    .BlockGathering {
+        
+        &:hover {
+
+            .BlockGathering_coverImage {
+                opacity: 0.5;
+            }
+
+            .BlockGathering_cover span {
+                transform: none;
+                opacity: 1;
+                filter: none;
+                color: var(--color-ft-light);
+            }
+
+            .BlockGathering_heart {
+                display: none;
+            }
+        }
+    }
+}
+
 </style>

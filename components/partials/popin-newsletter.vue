@@ -10,17 +10,17 @@
 
                 <form class="strong mt-20" @submit.prevent="onSubmit">
                     <div class="row-xs">
-                        <div class="col-6">
+                        <div class="col-6 col-12@s">
                             <input-base label="Ton prénom" v-model="formData.name" />
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 col-12@s mt-10@s">
                             <input-base label="Ton adresse e-mail" v-model="formData.email" />
                         </div>
                     </div>
 
                     <p class="ft-s-medium mt-20">Les Gatherings qui t'intéressent :</p>
                     <div class="row-2xs mt-5">
-                        <div class="col-4 mt-5" v-for="category in CATEGORIES" :key="category.value">
+                        <div class="col-4 col-6@s col-12@xs mt-5" v-for="category in CATEGORIES" :key="category.value">
                             <input-image-check v-bind="category" :value="formData.categories.includes(category.id)" @input="(v) => toggleCategory(category.id, v)" />
                         </div>
                     </div>

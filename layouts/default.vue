@@ -64,4 +64,11 @@ export default {
 .timer {
     width: 180px;
 }
+
+@include breakpoint-s {
+
+    .LayoutDefault_content {
+        margin-top: 65px;
+    }
+}
 </style>

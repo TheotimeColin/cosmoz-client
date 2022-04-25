@@ -3,16 +3,16 @@
         <div class="Homepage_slider bg-ice-cream">
             <div class="Wrapper">
                 <div class="fx-grow">
-                    <h1 class="ft-title-xl">1 lieu sélectionné,<br>1 expérience à partager,<br>4 inconnus.</h1>
+                    <h1 class="ft-title-xl ft-title-l@s">1 lieu sélectionné,<br>1 expérience à partager,<br>4 inconnus.</h1>
                     
                     <h2 class="ft-l-medium mt-20">La nouvelle manière de se rencontrer :<br>sans applis, sans profils, sans messages.</h2>
                 </div>
-                <div class="width-s text-center pv-40 ph-20 bg-bg-strong br-s ml-20">
+                <div class="width-s text-center pv-40 ph-20 bg-bg-strong br-s ml-20 ml-0@s width-auto@s mt-30@s">
                     <p class="ft-title-s">
                         On se lance bientôt.
                     </p>
 
-                    <p class="mt-10">Soyez dans les premiers à réserver votre expérience et obtenez de supers réductions</p>
+                    <p class="mt-10">Sois dans les premiers à réserver ton expérience et obtiens de <i>supers réductions</i>.</p>
 
                     <div class="ft-title-m fx-no-shrink mt-20 tape">
                         {{ countdown }}
@@ -31,7 +31,7 @@
             </div>
 
             <div class="row-s ">
-                <div class="col-4 col-6@s mb-40" v-for="gathering in gatherings.slice(0, limit)" :key="gathering._id">
+                <div class="col-4 col-6@s col-12@xs mb-40" v-for="gathering in gatherings.slice(0, limit)" :key="gathering._id">
                     <block-gathering
                         v-bind="gathering"
                     />
@@ -62,14 +62,14 @@
 
         <article id="about" class="Homepage_presentation bg-bg-strong mt-40">
             <div class="Wrapper Wrapper--s pv-40">
-                <h1 class="ft-title-l max-width-l mb-20">Se rencontrer <span class="tape" style="transform: rotate(-2deg)">hors-ligne</span> dans une atmosphère conviviale et bienveillante.</h1>
+                <h1 class="ft-title-l max-width-l mb-20 ft-title-m@s">Se rencontrer <span class="tape" style="transform: rotate(-2deg)">hors-ligne</span> dans une atmosphère conviviale et bienveillante.</h1>
                 <p class="ft-l max-width-l">Si tu en as marre des profils égocentriques, marre qu'on te demande ce que tu recherches, marre des conversations qui ne mènent à rien : tu es au bon endroit.</p>
             </div>
 
             <div class="bg-cover bg-plastic-black pv-40">
                 <div class="Wrapper Wrapper--s ft-title-xs line-2 text-center">
                     <div class="row-xs">
-                        <div class="col-6">
+                        <div class="col-6 col-12@xs">
                             <div class="tape tape-l tape-2">
                                 "Je préfère apprendre à connaître dans le présent plutôt que de l'ajouter à une wishlist pour plus tard."
                             </div>
@@ -77,8 +77,8 @@
                                 "Attention à l'imagination qui se débride derrière un écran, on idéalise vite une image, une phrase, un profil"
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="tape tape-strong tape-l">
+                        <div class="col-6 col-12@xs">
+                            <div class="tape tape-strong tape-l d-none@xs">
                                 "Avec la masse de gens sur le "marché", on devient super exigeantes et ça mène qu'à de la déception pour tous."
                             </div>
                             <div class="tape tape-l tape-2">
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="text-center">
-                        <div class="ft-title-s line-1 tape width-m tape-l">
+                        <div class="ft-title-s line-1 tape max-width-m tape-l ft-title-xs@xs">
                             "au final, on tombe souvent amoureux de personnes qui ressemblent peu à nos choix théoriques."
                         </div>
                     </div>
@@ -97,7 +97,7 @@
 
             <div class="Wrapper Wrapper--s pv-60">
                 <div class="row-no-gutters">
-                    <div class="col-5">
+                    <div class="col-5 d-none@s">
                         <div class="Homepage_image fx-justify-end mr-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1569937756023-a079ccbe730e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjk2fHxncm91cCUyMGZyaWVuZHN8ZW58MHwxfDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60)` }">
 
                             <div class="ft-title-m tape tape-strong mb-5">
@@ -114,7 +114,7 @@
                         </div>
                     </div>
 
-                    <div class="col-7">
+                    <div class="col-7 col-12@s">
                         <div class="TextBody">
                             <h2>Faire des rencontres sans applications, c'est possible.</h2>
 
@@ -131,7 +131,7 @@
             <div class="bg-cover bg-bubble-gum pv-60">
                 <div class="Wrapper Wrapper--s">
                     <div class="TextBody text-left">
-                        <h2 style="font-size: 30px;">Ceci <span class="text-underline">n'est pas</span> une application de rencontre amoureuse.</h2>
+                        <h2 style="font-size: 30px;">Ceci <span class="text-underline ">n'est pas</span> une application de rencontre amoureuse.</h2>
 
                         <p>As-tu déjà rêvé de tomber amoureux au coin de la rue ? Encore faut-il regarder autour de soi. Parfois nous sommes tellement concentrés sur nos recherches (trouver l'amour, trouver des amis...), que nous oublions de lever la tête.</p>
 
@@ -142,7 +142,7 @@
 
             <div class="Wrapper Wrapper--s pv-60">
                 <div class="row-no-gutters">
-                    <div class="col-7">
+                    <div class="col-7 col-12@s">
                         <div class="TextBody">
                             <h2>Notre objectif : que tu passes une bonne soirée.</h2>
 
@@ -151,8 +151,8 @@
                             <p>À chaque Gathering t'attend notre Kit Icebreaker. Il contient tout ce qu'il faut pour détendre l'atmosphère, donner la parole à chacun et créer une vraie dynamique dans le groupe.</p>
                         </div>
                     </div>
-                    <div class="col-5">
-                        <div class="Homepage_image ml-40 =" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
+                    <div class="col-5 d-none@s">
+                        <div class="Homepage_image ml-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
                         
                             <div class="ft-title-m tape tape-strong mb-5">
                                 pour les timides
@@ -240,7 +240,7 @@ export default {
 
 .Homepage_slider {
     background-color: var(--color-bg-strong);
-        position: relative;
+    position: relative;
 
     .Wrapper {
         padding: 40px 0;
@@ -270,6 +270,16 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 30px 10px;
+}
+
+@include breakpoint-s {
+    .Homepage_slider {
+
+        .Wrapper {
+            display: block;
+            padding: 30px;
+        }
+    }
 }
 
 </style>
