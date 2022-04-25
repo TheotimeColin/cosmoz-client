@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-bg-light o-hidden">
+    <div class="o-hidden">
         <div class="Wrapper Wrapper--m">
             <div class="pv-30 br-m width-m m-auto">
                 <p class="ft-2xl-bold"><i class="fal fa-sparkles mr-5"></i> Se connecter</p>
