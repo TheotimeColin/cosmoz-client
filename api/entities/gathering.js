@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 
 let Gathering = {
-    write: 'editor',
+    write: 'public',
     read: 'public',
     fields: new mongoose.Schema({
-        title: { type: String },
-        subtitle: { type: String },
-        meetup: { type: String },
-        dates: { type: Array, default: [] },
-        location: { type: String },
+        title: { type: String, write: 'editor' },
+        subtitle: { type: String, write: 'editor' },
+        meetup: { type: String, write: 'editor' },
+        dates: { type: Array, default: [], write: 'editor' },
+        location: { type: String, write: 'editor' },
         favorites: { type: Number, default: 0, write: 'public' },
-        cover: { type: mongoose.Schema.Types.ObjectId, ref: 'mediaCollection' },
-        experience: { type: mongoose.Schema.Types.ObjectId, ref: 'experience' }
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
+        experience: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'experience' }
     }, { timestamps: true })
 }
 

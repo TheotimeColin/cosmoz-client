@@ -1,3 +1,5 @@
+import storeUtils from '@/utils/store'
+
 export default {
     namespaced: true,
     state: () => ({
@@ -12,7 +14,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`, this)
             }
         },
     }

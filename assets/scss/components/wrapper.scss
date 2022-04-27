@@ -49,13 +49,15 @@
     .Wrapper--left,
     .Wrapper--left.Wrapper--s,
     .Wrapper--left.Wrapper--m {
-        margin: 0;
+        margin-left: auto;
+        margin-right: auto;
         padding-left: 30px;
         padding-right: 30px;
     }
 
     .Wrapper {
-        margin: 0;
+        margin-left: auto;
+        margin-right: auto;
         padding-left: 30px;
         padding-right: 30px;
     }

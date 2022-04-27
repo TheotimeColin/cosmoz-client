@@ -14,9 +14,11 @@
 
                     <p class="mt-10">Sois dans les premiers à réserver ton expérience et obtiens de <i>supers réductions</i>.</p>
 
-                    <div class="ft-title-m fx-no-shrink mt-20 tape">
-                        {{ countdown }}
+                    <div class="ft-title-m fx-no-shrink mt-20 tape d-block@s">
+                        <span :style="{ opacity: countdown == '0j 00h 00m 00s' ? 0 : 1 }">{{ countdown }}</span>
                     </div>
+
+                    <br>
 
                     <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
                         Me prévenir
@@ -27,7 +29,7 @@
 
         <div class="Wrapper mt-60">
             <div class="Homepage_weekTitle bg-denim-s">
-                <span>expériences à venir <b>votez pour vos préférées</b></span>
+                <span>expériences à venir <b>Paris intra-muros</b></span>
             </div>
 
             <div class="row-s ">
@@ -67,10 +69,10 @@
             </div>
 
             <div class="bg-cover bg-plastic-black pv-40">
-                <div class="Wrapper Wrapper--s ft-title-xs line-2 text-center">
+                <div class="Wrapper Wrapper--s ft-title-2xs line-2 text-center">
                     <div class="row-xs">
                         <div class="col-6 col-12@xs">
-                            <div class="tape tape-l tape-2">
+                            <div class="tape tape-l tape-1">
                                 "Je préfère apprendre à connaître dans le présent plutôt que de l'ajouter à une wishlist pour plus tard."
                             </div>
                             <div class="tape tape-strong tape-l">
@@ -81,15 +83,17 @@
                             <div class="tape tape-strong tape-l d-none@xs">
                                 "Avec la masse de gens sur le "marché", on devient super exigeantes et ça mène qu'à de la déception pour tous."
                             </div>
-                            <div class="tape tape-l tape-2">
+                            <div class="tape tape-l tape-1">
                                 "Sans parler des gars qui ressemblent pas du tout à ce qu'on voit en photos"
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <div class="ft-title-s line-1 tape max-width-m tape-l ft-title-xs@xs">
+                        <div class="ft-title-xs line-2 tape max-width-m tape-l">
                             "au final, on tombe souvent amoureux de personnes qui ressemblent peu à nos choix théoriques."
+                            
+                            <span class="ft-xs-bold d-block mt-5">Lubomir lamy - Docteur en psychologie</span>
                         </div>
                     </div>
                 </div>
@@ -100,15 +104,15 @@
                     <div class="col-5 d-none@s">
                         <div class="Homepage_image fx-justify-end mr-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1569937756023-a079ccbe730e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjk2fHxncm91cCUyMGZyaWVuZHN8ZW58MHwxfDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60)` }">
 
-                            <div class="ft-title-m tape tape-strong mb-5">
+                            <div class="ft-title-s tape tape-strong mb-5">
                                 authentiques
                             </div>
 
-                            <div class="ft-title-m tape tape-strong mb-5">
+                            <div class="ft-title-s tape tape-strong mb-5">
                                 spontanés
                             </div>
 
-                            <div class="ft-title-m tape">
+                            <div class="ft-title-s tape">
                                 humains
                             </div>
                         </div>
@@ -140,30 +144,32 @@
                 </div>
             </div> 
 
-            <div class="Wrapper Wrapper--s pv-60">
-                <div class="row-no-gutters">
-                    <div class="col-7 col-12@s">
-                        <div class="TextBody">
-                            <h2>Notre objectif : que tu passes une bonne soirée.</h2>
+            <div class="bg-bg">
+                <div class="Wrapper Wrapper--s pv-60">
+                    <div class="row-no-gutters">
+                        <div class="col-7 col-12@s">
+                            <div class="TextBody">
+                                <h2>Notre objectif : que tu passes une bonne soirée.</h2>
 
-                            <p>Nous voulons que nos Gatherings soient ouverts à tous, même aux plus timides et anxieux. On sait à quel point ça peut être difficile de se lancer.</p>
+                                <p>Nous voulons que nos Gatherings soient ouverts à tous, même aux plus timides et anxieux. On sait à quel point ça peut être difficile de se lancer.</p>
 
-                            <p>À chaque Gathering t'attend notre Kit Icebreaker. Il contient tout ce qu'il faut pour détendre l'atmosphère, donner la parole à chacun et créer une vraie dynamique dans le groupe.</p>
+                                <p>À chaque Gathering t'attend notre Kit Icebreaker. Il contient tout ce qu'il faut pour détendre l'atmosphère, donner la parole à chacun et créer une vraie dynamique dans le groupe.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-5 d-none@s">
-                        <div class="Homepage_image ml-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
-                        
-                            <div class="ft-title-m tape tape-strong mb-5">
-                                pour les timides
-                            </div>
+                        <div class="col-5 d-none@s">
+                            <div class="Homepage_image ml-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
+                            
+                                <div class="ft-title-s tape tape-strong mb-5">
+                                    pour les timides
+                                </div>
 
-                            <div class="ft-title-m tape tape-strong mb-5">
-                                pour les bavards
-                            </div>
+                                <div class="ft-title-s tape tape-strong mb-5">
+                                    pour les bavards
+                                </div>
 
-                            <div class="ft-title-m tape">
-                                pour tous
+                                <div class="ft-title-s tape">
+                                    pour tous
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +190,7 @@ export default {
     data: () => ({
         limit: 6,
         newsletterActive: false,
-        countdown: ''
+        countdown: '0j 00h 00m 00s'
     }),
     computed: {
         gatherings () { return this.$store.getters['gathering/find']() },
@@ -193,7 +199,7 @@ export default {
         setInterval(() => {
             let m = this.$moment.duration(this.$moment('18-05-2022 18:00', 'DD-MM-YYYY HH:mm').diff(this.$moment()))
             
-            this.countdown = `${this.$options.filters.fixed(m.days())}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
+            this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
         }, 500)
     }
 }
@@ -264,6 +270,7 @@ export default {
 
 .Homepage_image {
     height: 100%;
+    min-height: 360px;
     background-size: cover;
     background-position: center;
     display: flex;

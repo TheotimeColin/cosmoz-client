@@ -1,36 +1,57 @@
 <template>
     <popin-base :modifiers="['absolute-header', 'm']" :is-active="isActive" @close="$emit('close')">
         <template slot="content">
-            <div class="p-30">
-                <p class="ft-title-m">
-                    Nos expériences en avant-première
-                </p>
-
-                <p class="mt-10">Tous les mardis, reçois la liste des nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
-
-                <form class="strong mt-20" @submit.prevent="onSubmit">
-                    <div class="row-xs">
-                        <div class="col-6 col-12@s">
-                            <input-base label="Ton prénom" v-model="formData.name" />
+            <div :class="{ 'p-30': !isSuccess }">
+                <template v-if="isSuccess">
+                    <div class="p-30 text-center">
+                        <div class="ft-title-m">
+                            <span>On a hâte de te voir à ton premier Gathering.</span>
                         </div>
-                        <div class="col-6 col-12@s mt-10@s">
-                            <input-base label="Ton adresse e-mail" v-model="formData.email" />
-                        </div>
-                    </div>
+                    
+                        <p class="mt-20">Rendez-vous tous les mardis pour découvrir les nouvelles expériences.</p>
 
-                    <p class="ft-s-medium mt-20">Les Gatherings qui t'intéressent :</p>
-                    <div class="row-2xs mt-5">
-                        <div class="col-4 col-6@s col-12@xs mt-5" v-for="category in CATEGORIES" :key="category.value">
-                            <input-image-check v-bind="category" :value="formData.categories.includes(category.id)" @input="(v) => toggleCategory(category.id, v)" />
-                        </div>
-                    </div>
-
-                    <div class="text-right mt-20">
-                        <button-base :modifiers="['light']">
-                            Je m'inscris
+                        <button-base :modifiers="['light', 's']" class="mt-20" @click="$emit('close')">
+                            Fermer
                         </button-base>
                     </div>
-                </form>
+                        
+                    <a href="https://www.instagram.com/gatheringsfr/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
+                        <span class="ft-title-xs tape">Passe nous voir sur Insta #gatherings</span>
+                    </a>
+                </template>
+                <template v-else>
+                    <p class="ft-title-m">
+                        Nos expériences en avant-première
+                    </p>
+
+                    <p class="mt-10">Tous les mardis, reçois la liste des nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
+
+                    <form class="strong mt-20" @submit.prevent="onSubmit">
+                        <div class="row-xs">
+                            <div class="col-6 col-12@s">
+                                <input-base label="Ton prénom" v-model="formData.name" :attrs="{ required: true }" />
+                            </div>
+                            <div class="col-6 col-12@s mt-10@s">
+                                <input-base label="Ton adresse e-mail" type="email" v-model="formData.email" :attrs="{ required: true }" />
+                            </div>
+                        </div>
+
+                        <p class="ft-s-medium mt-20">Les Gatherings qui t'intéressent :</p>
+                        <div class="row-2xs mt-5">
+                            <div class="col-4 col-6@s col-12@xs mt-5" v-for="category in CATEGORIES" :key="category.value">
+                                <input-image-check v-bind="category" :value="formData.categories.includes(category.id)" @input="(v) => toggleCategory(category.id, v)" />
+                            </div>
+                        </div>
+
+                        <errors :items="errors" class="mt-20" v-if="errors.length > 0" />
+
+                        <div class="text-right mt-20">
+                            <button-base :modifiers="['light']">
+                                Je m'inscris
+                            </button-base>
+                        </div>
+                    </form>
+                </template>
             </div>
         </template>
     </popin-base>
@@ -39,7 +60,7 @@
 <script>
 const CATEGORIES = [
     { label: `chill`, id: 'chill', description: `Ambiances propices à la discussion`, background: 'https://images.unsplash.com/photo-1615705592748-029c989e6d5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80' },
-    { label: `festif`, id: 'fiesta', description: `Ambiances animées & musique`, background: 'https://images.unsplash.com/photo-1621295244949-580172382e4c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80' },
+    { label: `festif`, id: 'fiesta', description: `Ambiances animées & bonne musique`, background: 'https://images.unsplash.com/photo-1621295244949-580172382e4c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80' },
     { label: `impact`, id: 'impact', description: `S'amuser & étendre son réseau pro`, background: 'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80' },
     { label: `insolite`, id: 'unique', description: `Lieux & expériences uniques`, background: 'https://images.unsplash.com/photo-1541356665065-22676f35dd40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGFic3RyYWN0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60' },
     { label: `geek`, id: 'geek', description: `Jouer & partager ses passions`, background: 'https://images.unsplash.com/photo-1610337673044-720471f83677?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1672&q=80' },
@@ -50,6 +71,7 @@ const CATEGORIES = [
 ]
 
 import { InputBase, ToggleBase } from 'instant-coffee-core'
+import socials from '@/assets/img/social/banner_1.gif'
 
 export default {
     name: 'PopinNewsletter',
@@ -58,7 +80,10 @@ export default {
         isActive: { type: Boolean, default: false }
     },
     data: () => ({
+        assets: { socials },
         CATEGORIES,
+        errors: [],
+        isSuccess: false,
         formData: {
             name: '',
             email: '',
@@ -74,14 +99,35 @@ export default {
             }
         },
         async onSubmit () {
-            const response = await this.$store.dispatch('newsletter/subscribe', this.formData)
+            this.errors = []
 
-            console.log(response)
+            const token = await this.$recaptcha.execute('login')
+            const response = await this.$store.dispatch('newsletter/subscribe', {
+                ...this.formData, token
+            })
+
+            if (response.status == 0) {
+                this.errors = [ response.code ]
+            } else {
+                this.isSuccess = true
+            }
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+    .Insta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
 
+        &::before {
+            content: "";
+            display: block;
+            @include ratio(33.33);
+        }
+    }
 </style>

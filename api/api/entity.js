@@ -79,7 +79,6 @@ exports.createEntity = async function (req, res) {
 
         fields = parseQuery(fields, user)
 
-        
         if (Entity.unique && fields.query[Entity.unique]) {
             let params = [ Entity.unique, ...Entity.uniqueConditions].reduce((params, key) => {
                 if (!fields.query[key]) throw Error('missingDuplicateParameter')

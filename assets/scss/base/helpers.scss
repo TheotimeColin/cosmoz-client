@@ -50,6 +50,29 @@
     text-transform: uppercase;
 }
 
+.logo-sparkle,
+.logo-sparkle-a {
+    position: relative;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 20;
+        width: 30px;
+        height: 40px;
+        top: 10px;
+        left: -35px;
+        background-size: contain;
+        background-image: url('./../img/icon/sparkle.webp')
+    }
+}
+
+.logo-sparkle-a::before {
+    top: 10px;
+    left: -35px;
+}
+
 .bg-plastic-black { --background: url('./../img/texture/plastic-black.webp'); }
 .bg-bubble-gum { --background: url('./../img/texture/bubble-gum.webp'); }
 .bg-ice-cream { --background: url('./../img/texture/ice-cream.webp'); }

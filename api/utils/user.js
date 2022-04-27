@@ -82,7 +82,7 @@ exports.accessCheck = function (type = 'write', entity, requested = null, user =
         if (entity[type] == 'self') {
             console.log('requester : ' + requester + ' | owner : ' + owner)
         } else {
-            console.log('required : ' + entity[type] + ' | user : ' + user.role)
+            console.log('required : ' + entity[type] + ' | user : ' + (user ? user.role : 'none'))
         }
     }
 

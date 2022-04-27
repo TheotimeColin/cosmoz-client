@@ -1,6 +1,6 @@
 <template>
     <transition tag="div" name="fade">
-        <div class="Errors ft-s-medium bg-gum-xweak pv-5 ph-20 br-m" v-show="errors.length > 0">
+        <div class="Errors ft-s-medium bg-merlot-xstrong pv-5 ph-20" v-show="errors.length > 0">
             <div class="mv-10" v-for="(error, i) in errors" :key="i">
                 <i class="fal fa-times mr-5"></i> {{ error }}
             </div>

@@ -22,6 +22,8 @@
         <div class="LayoutDefault_content">
             <Nuxt />
         </div>
+
+        <default-footer />
     </div>
 </template>
 
@@ -65,10 +67,7 @@ export default {
     width: 180px;
 }
 
-@include breakpoint-s {
-
-    .LayoutDefault_content {
-        margin-top: 65px;
-    }
+.LayoutDefault_content {
+    margin-top: 65px;
 }
 </style>

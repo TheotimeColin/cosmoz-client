@@ -18,11 +18,8 @@ let UserEntity = {
         city: { type: String, write: 'self' },
         postalCode: { type: String, write: 'self' },
         country: { type: String, write: 'self' },
-        advices: { type: Array, write: 'self' },
         settings: { type: Object, write: 'self' },
-        shops: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'shop' }
-        ],
+        categories: { type: Array, default: [], write: 'self' },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })
 }

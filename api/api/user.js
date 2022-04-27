@@ -195,6 +195,25 @@ exports.subscribeNewsletter = async function (req, res) {
     let errors = []
 
     try {
+        if (process.env.RECAPTCHA_BYPASS != "true") {
+            const challenge = await $fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${req.body.token}`)
+
+            if (!challenge.success) throw Error('challenge-failed')
+        }
+
+        user = await Entities.user.model.findOne({ email: req.body.email })
+        if (!user) {
+            user = await Entities.user.model.create({
+                email: req.body.email,
+                name: req.body.name,
+                categories: req.body.categories,
+                role: 'user'
+            })
+
+            user.owner = user._id
+            user.save()
+        }
+
         let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
         let createContact = new req.app.locals.sendinBlue.CreateContact()
 
@@ -204,10 +223,10 @@ exports.subscribeNewsletter = async function (req, res) {
         createContact.attributes = {
             PRENOM: req.body.name
         }
-        // if (process.env.NODE_ENV == "PRODUCTION") 
-        await apiInstance.createContact(createContact)
+        if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
     } catch (e) {
         console.error(e)
+        errors.push(e.message)
     }
 
     res.send({ errors, status: errors.length > 0 ? 0 : 1 })

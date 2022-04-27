@@ -1,7 +1,9 @@
 <template>
     <div class="DefaultHeader" :class="{ 'is-open': isOpen }">
         <div class="DefaultHeader_wrapper Wrapper">
-            <nuxt-link :to="localePath({ name: '' })" class="ft-title-m">gatherings</nuxt-link>
+            <nuxt-link :to="localePath({ name: '' })" class="DefaultHeader_logo ft-title-m logo-sparkle">
+                gatherings
+            </nuxt-link>
 
             <div class="DefaultHeader_nav">
                 <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem" @click="isOpen = false">C'est quoi Gatherings ?</link-base>
@@ -28,7 +30,10 @@ export default {
 
 <style lang="scss" scoped>
     .DefaultHeader {
-        // border-bottom: 1px solid var(--color-border);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 90;
         background-color: var(--color-bg-strong);
     }
 
@@ -61,15 +66,15 @@ export default {
     }
 
     @include breakpoint-s {
-        .DefaultHeader {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 90;
-        }
-
         .DefaultHeader_burger {
             display: flex;
+        }
+
+        .DefaultHeader_logo {
+
+            &::before {
+                display: none;
+            }
         }
 
         .DefaultHeader_nav {
@@ -86,7 +91,7 @@ export default {
         }
 
         .DefaultHeader_wrapper {
-            padding-right: 10px;
+            padding: 0 10px 0 16px;
         }
             
         .DefaultHeader_navItem {
