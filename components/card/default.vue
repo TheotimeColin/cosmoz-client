@@ -77,7 +77,7 @@ export default {
 }
 
 .Card_subtitle {
-    font: var(--ft-m-medium);
+    font: var(--ft-l);
     margin-top: 10px;
 }
 

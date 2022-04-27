@@ -1,9 +1,9 @@
 <template>
     <div class="DefaultHeader" :class="{ 'is-open': isOpen }">
         <div class="DefaultHeader_wrapper Wrapper">
-            <nuxt-link :to="localePath({ name: '' })" class="DefaultHeader_logo ft-title-m logo-sparkle">
+            <a :href="$config.baseUrl" class="DefaultHeader_logo ft-title-m logo-sparkle">
                 gatherings
-            </nuxt-link>
+            </a>
 
             <div class="DefaultHeader_nav">
                 <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem" @click="isOpen = false">C'est quoi Gatherings ?</link-base>

@@ -54,10 +54,10 @@ export default {
     transition: all 250ms ease;
 
     &:active {
-        transform: perspective(50px) rotateY(-1deg);
+        transform: perspective(50px) rotateY(-0.25deg);
 
         &.is-left {
-            transform: perspective(50px) rotateY(1deg);
+            transform: perspective(50px) rotateY(0.25deg);
         }
     }
 

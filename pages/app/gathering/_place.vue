@@ -1,14 +1,15 @@
 <template>
-    <div class="Page bg-cream-xweak">
-        <p class="color-cream-xstrong ft-title-m mb-30">#01 : Introduction</p>
+    <div class="Page bg-bg">
+        <p class="ft-title-m mb-30">#01 : Introduction</p>
 
-        <card class="bg-cream-xweak" :items="items" />
+        <card class="bg-bg" :items="items" />
     </div>
 </template>
 
 <script>
 export default {
     name: 'GatheringPlace',
+    layout: 'app',
     data: () => ({
         placeId: '',
         items: []
