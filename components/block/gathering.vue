@@ -188,8 +188,8 @@ export default {
 }
 
 .BlockGathering_location {
-    margin-bottom: 10px;
-    font: var(--ft-s-medium);
+    margin-bottom: 5px;
+    font: var(--ft-xs);
     color: var(--color-ft-weak);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -200,7 +200,7 @@ export default {
 }
 
 .BlockGathering_date {
-    font: var(--ft-s-medium);
+    font: var(--ft-s);
     line-height: 1;
     min-height: 43px;
     text-transform: uppercase;

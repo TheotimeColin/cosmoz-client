@@ -8,7 +8,15 @@
             <div class="DefaultHeader_nav">
                 <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem" @click="isOpen = false">C'est quoi Gatherings ?</link-base>
 
-                <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem is-ocean" :modifiers="['current']" @click="isOpen = false">Devenir partenaire</link-base>
+                <link-base :href="$config.baseUrl + '/partenaires'" class="DefaultHeader_navItem is-ocean" :modifiers="['current']" @click="isOpen = false">Devenir partenaire</link-base>
+                
+                <a href="https://www.instagram.com/gatheringsfr" class="DefaultHeader_navItem" target="_blank">
+                    <icon-base name="icon/instagram" class="fill-ft-light" :width="20" /> <span class="d-none ml-10 d-block@s">Gatherings sur Instagram</span>
+                </a>
+
+                <a href="https://www.meetup.com/fr-FR/pro/gatherings" class="DefaultHeader_navItem" target="_blank">
+                    <icon-base name="icon/meetup" class="fill-ft-light" :width="25" /> <span class="d-none ml-10 d-block@s">Rejoindre notre Meetup</span>
+                </a>
             </div>
 
             <div class="DefaultHeader_burger" @click="isOpen = !isOpen">
@@ -46,7 +54,10 @@ export default {
     }
 
     .DefaultHeader_nav {
+        display: flex;
+        align-items: center;
         font: var(--ft-m-medium);
+        line-height: 1;
     }
 
     .DefaultHeader_burger {
@@ -59,9 +70,13 @@ export default {
     }
 
     .DefaultHeader_navItem {
-
+        font: var(--ft-s);
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        
         & + & {
-            margin-left: 15px;
+            margin-left: 20px;
         }
     }
 
@@ -95,7 +110,7 @@ export default {
         }
             
         .DefaultHeader_navItem {
-            display: block;
+            display: flex;
             padding: 20px 0;
             margin: 0 20px;
             border-bottom: 1px solid var(--color-border);

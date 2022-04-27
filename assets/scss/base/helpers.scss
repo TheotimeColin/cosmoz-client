@@ -18,6 +18,11 @@
     border-radius: 25px;
 }
 
+.anchor {
+    position: absolute;
+    top: -65px;
+}
+
 .bg-to-right {
     position: absolute;
     top: 0;
@@ -73,6 +78,7 @@
     left: -35px;
 }
 
+.bg-holo { --background: url('./../img/texture/holo.webp'); }
 .bg-plastic-black { --background: url('./../img/texture/plastic-black.webp'); }
 .bg-bubble-gum { --background: url('./../img/texture/bubble-gum.webp'); }
 .bg-ice-cream { --background: url('./../img/texture/ice-cream.webp'); }
@@ -81,7 +87,8 @@
 .bg-aluminium { --background: url('./../img/texture/aluminium.webp'); }
 .bg-aluminium-s { --background: url('./../img/texture/aluminium-s.webp'); }
 
-.bg-cover {
+.bg-cover,
+.bg-cover-100 {
     position: relative;
 
     &::before {
@@ -100,6 +107,13 @@
 
     & > * {
         position: relative;
+    }
+}
+
+.bg-cover-100 {
+
+    &::before {
+        opacity: 1;
     }
 }
 

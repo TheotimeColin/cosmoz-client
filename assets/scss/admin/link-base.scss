@@ -1,5 +1,5 @@
 .LinkBase {
-    font: var(--ft-s-medium);
+    font: var(--ft-s);
     line-height: 1;
     display: inline-block;
     cursor: pointer;
@@ -22,7 +22,7 @@
 }
 
 .LinkBase--s {
-    font: var(--ft-xs-medium);
+    font: var(--ft-xs);
     line-height: 1;
 
     &::before {

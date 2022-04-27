@@ -1,5 +1,5 @@
 @import "../../node_modules/@fortawesome/fontawesome-pro/css/all.css";
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,70&display=swap');
 
 @font-face {
     font-family: 'Ramillas';
@@ -50,11 +50,4 @@ body {
 
 b b {
     font-weight: 800;
-}
-
-.ft-hand-s,
-.ft-hand-m,
-.ft-hand-l,
-.ft-hand-xl {
-    letter-spacing: -0.05em;
 }

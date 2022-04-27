@@ -29,7 +29,7 @@
 
         <div class="Wrapper mt-60">
             <div class="Homepage_weekTitle bg-denim-s">
-                <span>expériences à venir <b>Paris intra-muros</b></span>
+                <span>expériences à venir</span>
             </div>
 
             <div class="row-s ">
@@ -62,7 +62,9 @@
 
         <popin-newsletter :is-active="newsletterActive" @close="newsletterActive = false" />
 
-        <article id="about" class="Homepage_presentation bg-bg-strong mt-40">
+        <article class="Homepage_presentation bg-bg-strong p-relative mt-40">
+            <div id="about" class="anchor"></div>
+
             <div class="Wrapper Wrapper--s pv-40">
                 <h1 class="ft-title-l max-width-l mb-20 ft-title-m@s">Se rencontrer <span class="tape" style="transform: rotate(-2deg)">hors-ligne</span> dans une atmosphère conviviale et bienveillante.</h1>
                 <p class="ft-l max-width-l">Si tu en as marre des profils égocentriques, marre qu'on te demande ce que tu recherches, marre des conversations qui ne mènent à rien : tu es au bon endroit.</p>
