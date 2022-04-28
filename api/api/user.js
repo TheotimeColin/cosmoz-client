@@ -223,6 +223,9 @@ exports.subscribeNewsletter = async function (req, res) {
         createContact.attributes = {
             PRENOM: req.body.name
         }
+
+        $fetch(encodeURI(`https://wirepusher.com/send?id=E2EkmpsZY&title=${req.body.name} s'est abonné(e)&message=${req.body.email}&type=subscriber`))
+
         if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
     } catch (e) {
         console.error(e)

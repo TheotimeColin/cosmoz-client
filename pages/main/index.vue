@@ -7,15 +7,15 @@
                     
                     <h2 class="ft-l-medium mt-20">La nouvelle manière de se rencontrer :<br>sans applis, sans profils, sans messages.</h2>
                 </div>
-                <div class="width-s text-center pv-40 ph-20 bg-bg-strong br-s ml-20 ml-0@s width-auto@s mt-30@s">
+                <div class="width-s text-center pv-40 ph-20 bg-bg-strong ml-20 ml-0@s width-auto@s mt-30@s">
                     <p class="ft-title-s">
                         On se lance bientôt.
                     </p>
 
                     <p class="mt-10">Sois dans les premiers à réserver ton expérience et obtiens de <i>supers réductions</i>.</p>
 
-                    <div class="ft-title-m fx-no-shrink mt-20 tape d-block@s">
-                        <span :style="{ opacity: countdown == '0j 00h 00m 00s' ? 0 : 1 }">{{ countdown }}</span>
+                    <div class="ft-title-m fx-no-shrink mt-20 tape d-block@s" :style="{ opacity: countdown == '0j 00h 00m 00s' ? 0 : 1 }">
+                        <span>{{ countdown }}</span>
                     </div>
 
                     <br>
@@ -36,6 +36,7 @@
                 <div class="col-4 col-6@s col-12@xs mb-40" v-for="gathering in gatherings.slice(0, limit)" :key="gathering._id">
                     <block-gathering
                         v-bind="gathering"
+                        @favorite="onFavorite"
                     />
                 </div>
 
@@ -129,6 +130,10 @@
                             <p><b>Pas de profils, pas de messages, pas de filtres. Tu découvres les autres participants le jour J.</b></p>
 
                             <p>Nos Gatherings sont faits pour les personnes ouvertes d'esprits, qui aiment rencontrer d'autres humains sans pression.</p>
+
+                            <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
+                                Je veux participer
+                            </button-base>
                         </div>
                     </div>
                 </div>
@@ -156,6 +161,10 @@
                                 <p>Nous voulons que nos Gatherings soient ouverts à tous, même aux plus timides et anxieux. On sait à quel point ça peut être difficile de se lancer.</p>
 
                                 <p>À chaque Gathering t'attend notre Kit Icebreaker. Il contient tout ce qu'il faut pour détendre l'atmosphère, donner la parole à chacun et créer une vraie dynamique dans le groupe.</p>
+
+                                <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
+                                    Je me lance
+                                </button-base>
                             </div>
                         </div>
                         <div class="col-5 d-none@s">
@@ -199,10 +208,21 @@ export default {
     },
     mounted () {
         setInterval(() => {
-            let m = this.$moment.duration(this.$moment('18-05-2022 18:00', 'DD-MM-YYYY HH:mm').diff(this.$moment()))
+            let m = this.$moment.duration(this.$moment('12-05-2022 18:00', 'DD-MM-YYYY HH:mm').diff(this.$moment()))
             
             this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
         }, 500)
+    },
+    methods: {
+        onFavorite () {
+            if (this.$cookies.get('is-newsletter')) return
+            
+            this.$cookies.set('is-newsletter', true)
+
+            setTimeout(() => {
+                this.newsletterActive = true
+            }, 500)
+        }
     }
 }
 </script>

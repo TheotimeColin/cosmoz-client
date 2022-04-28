@@ -13,7 +13,7 @@
         
         <div class="BlockGathering_content">
             <div class="BlockGathering_location fx-center">
-                <p class="">{{ isPast ? 'De retour bientôt' : location }}</p>
+                <p class="">{{ isPast ? 'Lieu secret' : location }}</p>
                 
                 <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
             </div>
@@ -95,6 +95,8 @@ export default {
             })
 
             this.hasPendingFavorite = false
+
+            this.$emit('favorite')
         }
     }
 }

@@ -8,7 +8,7 @@
                             <span>On a hâte de te voir à ton premier Gathering.</span>
                         </div>
                     
-                        <p class="mt-20">Rendez-vous tous les mardis pour découvrir les nouvelles expériences.</p>
+                        <p class="mt-20">Rendez-vous tous les jeudis pour découvrir les nouvelles expériences.</p>
 
                         <button-base :modifiers="['light', 's']" class="mt-20" @click="$emit('close')">
                             Fermer
@@ -21,10 +21,10 @@
                 </template>
                 <template v-else>
                     <p class="ft-title-m">
-                        Nos expériences en avant-première
+                        Participer à nos Gatherings
                     </p>
 
-                    <p class="mt-10">Tous les mardis, reçois la liste des nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
+                    <p class="mt-10">Tous les jeudis, reçois la liste des nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
 
                     <form class="strong mt-20" @submit.prevent="onSubmit">
                         <div class="row-xs">
