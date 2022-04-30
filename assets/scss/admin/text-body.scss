@@ -23,7 +23,7 @@
     }
 
     h2 {
-        font: var(--ft-title-m);
+        font: var(--ft-title-l);
         margin-top: 40px;
         margin-bottom: 20px;
 
@@ -33,11 +33,11 @@
     }
 
     h2 + h3 {
-        margin-top: 30px;
+        margin-top: 0px;
     }
 
     h3 {
-        font: var(--ft-title-xs);
+        font: var(--ft-xl-bold);
         margin-left: 0px;
         margin-top: 60px;
         margin-bottom: 20px;
@@ -128,6 +128,23 @@
     white-space: normal;
 }
 
+.TextBody--article {
+    font: var(--ft-xl);
+    line-height: 1.6;
+
+    h1, h2, h3, h4 {
+        color: var(--color-ft-strong);
+    }
+
+    b, strong {
+        font-weight: 400;
+        padding: 3px 8px 3px 5px;
+        color: var(--color-ft-light);
+        font-style: italic;
+        background-color: var(--color-bg-strong);
+    }
+}
+
 .TextBody--simple {
 
     .Block {
@@ -147,24 +164,6 @@
     
     .ProseMirror {
         padding: 40px;
-    }
-
-    h1 {
-        font: var(--ft-xl-bold);
-    }
-
-    h2 {
-        font: var(--ft-xl-bold);
-    }
-
-    h3 {
-        font: var(--ft-l-bold);
-    }
-
-    h1, h2, h3, h4 {
-        max-width: 100%;
-        margin-left: 0px;
-        color: var(--color-ft);
     }
 
     .VideoIframe {

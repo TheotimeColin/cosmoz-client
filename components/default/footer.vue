@@ -10,6 +10,8 @@
                             <link-base class="Footer_navItem" :href="$config.baseUrl">Page d'accueil</link-base>
 
                             <link-base class="Footer_navItem" :href="$config.baseUrl + '#about'">C'est quoi Gatherings ?</link-base>
+
+                            <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base>
                         </div>
                         <div class="col-6 col-12@xs mt-15@xs">
                             <link-base class="Footer_navItem" href="https://www.meetup.com/fr-FR/pro/gatherings">Groupes Meetup</link-base>
@@ -40,6 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .Footer {
+    color: var(--color-ft-light);
     background: var(--color-bg-strong);
 }
 

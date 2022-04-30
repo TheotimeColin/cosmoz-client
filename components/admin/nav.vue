@@ -32,6 +32,7 @@ export default {
 
             { label: 'Gatherings', icon: 'calendar-alt', link: 'gatherings' },
             { label: 'Expériences', icon: 'sparkles', link: 'experiences' },
+            { label: 'Blog', icon: 'pen-alt', link: 'articles' },
             { label: 'Lieux partenaires', icon: 'map-marker-alt', link: 'locations' },
             
             // { label: 'Blog', icon: 'newspaper', link: 'articles' },

@@ -142,7 +142,7 @@ Vue.mixin({
                 name: "Théotime Colin",
                 brand: {
                     "@type": "Organization",
-                    name: "L'Arrière Boutique",
+                    name: "Gatherings",
                     email: "bonjour@gatherings.fr",
                 }
             }

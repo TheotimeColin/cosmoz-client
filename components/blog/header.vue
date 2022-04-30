@@ -1,27 +1,25 @@
 <template>
-    <div class="DefaultHeader" :class="{ 'is-open': isOpen }">
-        <div class="DefaultHeader_wrapper Wrapper">
-            <a :href="$config.baseUrl" class="DefaultHeader_logo ft-title-m logo-sparkle">
+    <div class="BlogHeader" :class="{ 'is-open': isOpen }">
+        <div class="BlogHeader_wrapper Wrapper">
+            <a :href="$config.blogUrl" class="BlogHeader_logo ft-title-m logo-sparkle">
                 gatherings
+
+                <span class="tape">le blog</span>
             </a>
 
-            <div class="DefaultHeader_nav">
-                <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem" @click="isOpen = false">C'est quoi Gatherings ?</link-base>
+            <div class="BlogHeader_nav">
+                <link-base :href="$config.baseUrl" class="BlogHeader_navItem" @click="isOpen = false">Découvrir Gatherings</link-base>
 
-                <link-base :href="$config.baseUrl + '/partenaires'" class="DefaultHeader_navItem is-ocean" :modifiers="['current']" @click="isOpen = false">Devenir partenaire</link-base>
-
-                <link-base :href="$config.blogUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
-                
-                <a href="https://www.instagram.com/gatheringsfr" class="DefaultHeader_navItem" target="_blank">
+                <a href="https://www.instagram.com/gatheringsfr" class="BlogHeader_navItem" target="_blank">
                     <icon-base name="icon/instagram" class="fill-ft-light" :width="20" /> <span class="d-none ml-10 d-block@s">Gatherings sur Instagram</span>
                 </a>
 
-                <a href="https://www.meetup.com/fr-FR/pro/gatherings" class="DefaultHeader_navItem" target="_blank">
+                <a href="https://www.meetup.com/fr-FR/pro/gatherings" class="BlogHeader_navItem" target="_blank">
                     <icon-base name="icon/meetup" class="fill-ft-light" :width="25" /> <span class="d-none ml-10 d-block@s">Rejoindre notre Meetup</span>
                 </a>
             </div>
 
-            <div class="DefaultHeader_burger" @click="isOpen = !isOpen">
+            <div class="BlogHeader_burger" @click="isOpen = !isOpen">
                 <i class="fal fa-bars" v-if="!isOpen"></i>
                 <i class="fal fa-times" v-else></i>
             </div>
@@ -31,7 +29,9 @@
 
 <script>
 export default {
-    name: 'DefaultHeader',
+    name: 'BlogHeader',
+    props: {
+    },
     data: () => ({
         isOpen: false
     })
@@ -39,15 +39,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .DefaultHeader {
-        position: fixed;
+    .BlogHeader {
+        position: absolute;
         top: 0;
         width: 100%;
         z-index: 90;
-        background-color: var(--color-bg-strong);
+        color: var(--color-ft-light);
     }
 
-    .DefaultHeader_wrapper {
+    .BlogHeader_wrapper {
         height: 65px;
         display: flex;
         align-items: center;
@@ -55,14 +55,14 @@ export default {
         position: relative;
     }
 
-    .DefaultHeader_nav {
+    .BlogHeader_nav {
         display: flex;
         align-items: center;
         font: var(--ft-m-medium);
         line-height: 1;
     }
 
-    .DefaultHeader_burger {
+    .BlogHeader_burger {
         width: 45px;
         height: 45px;
         display: none;
@@ -71,8 +71,9 @@ export default {
         font-size: 22px;
     }
 
-    .DefaultHeader_navItem {
+    .BlogHeader_navItem {
         font: var(--ft-s);
+        color: var(--color-ft-light);
         line-height: 1;
         display: flex;
         align-items: center;
@@ -82,19 +83,27 @@ export default {
         }
     }
 
+    .BlogHeader_logo {
+
+        .tape {
+            font: var(--ft-title-2xs);
+            transform: rotate(-2deg);
+        }
+    }
+
     @include breakpoint-s {
-        .DefaultHeader_burger {
+        .BlogHeader_burger {
             display: flex;
         }
 
-        .DefaultHeader_logo {
+        .BlogHeader_logo {
 
             &::before {
                 display: none;
             }
         }
 
-        .DefaultHeader_nav {
+        .BlogHeader_nav {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -107,11 +116,11 @@ export default {
             transition: all 200ms ease;
         }
 
-        .DefaultHeader_wrapper {
+        .BlogHeader_wrapper {
             padding: 0 10px 0 16px;
         }
             
-        .DefaultHeader_navItem {
+        .BlogHeader_navItem {
             display: flex;
             padding: 20px 0;
             margin: 0 20px;
@@ -126,9 +135,9 @@ export default {
             }
         }
 
-        .DefaultHeader.is-open {
+        .BlogHeader.is-open {
 
-            .DefaultHeader_nav {
+            .BlogHeader_nav {
                 display: block;
             }
         }

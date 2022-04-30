@@ -2,13 +2,11 @@
     <div>
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
-                <div class="row-s" v-if="articles.length > 0">
-                    <div class="col-4 mb-40" v-for="article in articles" :key="article._id">
-                        <article-block
-                            :title="article.title"
-                            :category="article.category"
-                            :image="article.thumbnail"
-                            :path="localePath({ name: 'admin-articles-id', params: { id: article._id } })"
+                <div class="row-s">
+                    <div class="col-4 col-12@s mb-40" v-for="article in articles" :key="article._id">
+                        <block-article
+                            v-bind="article"
+                            :link="localePath({ name: 'articles-id', params: { id: article._id } })"
                         />
                     </div>
                 </div>
@@ -18,12 +16,12 @@
                 <button-base
                     tag="nuxt-link"
                     :modifiers="['light']"
-                    icon-before="plus"        
+                    icon-before="plus"
                     :attrs="{
-                        to: localePath({ name: 'admin-articles-id', params: { id: 'new' } })
+                        to: localePath({ name: 'articles-id', params: { id: 'new' } })
                     }"
                 >
-                    Créer un article
+                    Créer un nouvel article
                 </button-base>
             </div>
         </div>
@@ -31,28 +29,17 @@
 </template>
 
 <script>
-import { } from 'instant-coffee-core'
-import { sortDate } from '@/utils/base'
-
 export default {
     name: 'ArticlesPage',
     layout: 'admin',
+    middleware: 'admin',
     async fetch () {
-        await this.$store.dispatch('articles/fetch', {
+        await this.$store.dispatch('article/fetch', {
             query: {}
         })
     },
     computed: {
-        articles () { return this.$store.getters['articles/find']() },
-    },
-    head () {
-        let meta = {
-            title: 'Articles du blog'
-        }
-
-        this.$store.commit('page/setProperty', meta)
-
-        return meta
+        articles () { return this.$store.getters['article/find']() },
     }
 }
 </script>

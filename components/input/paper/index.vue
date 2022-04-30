@@ -45,6 +45,7 @@ import { Heading, Bold, Blockquote, Image, History, Italic, OrderedList, BulletL
 import Link from '@/plugins/tiptap/Link'
 import Iframe from '@/plugins/tiptap/Iframe'
 import Gallery from '@/plugins/tiptap/Gallery'
+import InsertBlock from '@/plugins/tiptap/InsertBlock'
 import StyledBlock from '@/plugins/tiptap/StyledBlock'
 import ButtonEditor from './components/button-editor'
 import ButtonHeadings from './components/button-headings'
@@ -83,6 +84,7 @@ export default {
                 new Image(),
                 new History(),
                 new Link(), new StyledBlock(), new Iframe, new Gallery(),
+                new InsertBlock()
             ],
             content: this.$props.value,
         })
@@ -100,16 +102,18 @@ export default {
                     props: { max: 1 }, onInput: (v) => this.insertImage(v)
                 }) },
                 { id: 'linkSelect', icon: 'link', setCurrent: true },
-                { id: 'iframe', icon: 'play', setCurrent: true },
+                // { id: 'iframe', icon: 'play', setCurrent: true },
                 { id: 'blockquote', label: 'Citation', icon: 'quote-right' },
                 { id: 'bullet_list', label: 'Liste', icon: 'list-ul' },
                 { id: 'ordered_list', label: 'Liste numérotée', icon: 'list-ol' },
-                { id: 'gallery', label: 'Galerie', icon: 'images', command: () => this.$emit('open-library', {
-                    props: { max: 3 }, onInput: (v) => this.insertGallery(v)
-                }) },
-            ], [
-                { id: 'styledBlock', component: 'button-blocks', value: 'styledBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.styledBlock(v) }
-            ]
+                // { id: 'gallery', label: 'Galerie', icon: 'images', command: () => this.$emit('open-library', {
+                //     props: { max: 3 }, onInput: (v) => this.insertGallery(v)
+                // }) },
+            ],
+            // [
+            //     { id: 'styledBlock', component: 'button-blocks', value: 'styledBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.styledBlock(v) },
+            //     { id: 'insertBlock', component: 'button-insert', value: 'insertBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.insertBlock(v) },
+            // ]
         ]
 
         this.$data.editor.on('update', () => this.onUpdate())
@@ -125,6 +129,9 @@ export default {
         },
         onInsertLink (command) {
             command(this.$data.link)
+        },
+        insertBlock () {
+            this.$data.editor.commands.styledBlock()
         },
         insertIframe (data) {
             this.$data.editor.commands.iframe(data)

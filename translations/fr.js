@@ -1,11 +1,16 @@
 export default {
     meta: {
-        append: ` | L'Arrière Boutique`
+        append: ` | Gatherings, rencontres hors-ligne`
     },
     base: {
         days: '{n} jour | {n} jours',
         articles: '{n} article | {n} articles',
         orders: '{n} commande | {n} commandes',
+    },
+    articles: {
+        categories: {
+            article: `Article`
+        }
     },
     errors: {
         default: {

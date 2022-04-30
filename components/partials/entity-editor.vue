@@ -4,7 +4,7 @@
             <div class="col-8">
                 <div>
                     <component
-                        v-for="input in form"
+                        v-for="input in form.filter(i => getInput(i))"
                         class="EntityEditor_input"
                         :is="getInput(input)"
                         v-model="formData[input.key]"
@@ -19,10 +19,21 @@
                         :is="blockType.type"
                         :class="blockType.classes"
                         v-bind="formData"
-                        v-if="blockType.type"
+                        v-if="blockType && blockType.type"
                     />
 
                     <hr class="Separator mv-20">
+
+                    <div class="d-flex fx-align-center mb-20" v-if="form.find(i => i.key == 'slug')">
+                        <input-base
+                            label="ID de la page"
+                            v-model="formData.slug"
+                        />
+
+                        <div @click="generateSlug" class="ml-10">
+                            <i class="fal fa-redo"></i>
+                        </div>
+                    </div>
 
                     <div class="text-right">
                         <button-base @click="update">
@@ -38,6 +49,7 @@
 <script>
 import { InputBase, SelectBase } from 'instant-coffee-core'
 import Decoders from '@/utils/decoders'
+import slugify from 'slugify'
 
 export default {
     name: 'EntityEditor',
@@ -92,11 +104,15 @@ export default {
         this.state.isLoading = false
     },
     methods: {
+        generateSlug () {
+            let slug = this.$data.formData.title
+            this.$data.formData.slug = slugify(slug, { lower: true, strict: true })
+        },
         defaultForm () {
             return this.form.reduce((form, input) => {
                 let result = null
 
-                if (input.type == 'string') result = ''
+                if (input.type == 'string' || input.type == 'paper') result = ''
                 if (input.type == 'medias' || input.type == 'gathering-date') result = []
 
                 return { ...form, [input.key]: result }
@@ -107,6 +123,9 @@ export default {
 
             if (input.type == 'media') type = 'input-media'
             if (input.type == 'gathering-date') type = 'input-gathering-date'
+            if (input.type == 'paper') type = 'input-paper'
+            if (input.type == 'select') type = 'select-base'
+            if (input.key == 'slug') type = null
 
             return type
         },

@@ -15,7 +15,11 @@ export default {
         breakpoint: "",
         body: {
             classes: [ 'is-fill' ],
-            color: ''
+            background : ''
+        },
+        banner: {
+            classes: [],
+            title: ''
         },
         meta: {
             title: ''
@@ -46,8 +50,8 @@ export default {
         toggleCart (state) {
             state.isCartActive = !state.isCartActive
         },
-        setColor (state, color) {
-            state.body = { ...state.body, color }
+        setBanner (state, banner ) {
+            state.banner = { ...state.banner, ...banner  }
         },
         setClasses (state, classes) {
             state.body = { ...state.body, classes }

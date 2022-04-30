@@ -12,6 +12,7 @@ const sequence = require('./sequence')
 const experience = require('./experience')
 const location = require('./location')
 const gathering = require('./gathering')
+const article = require('./article')
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -26,3 +27,4 @@ exports.sequence = sequence
 exports.experience = experience
 exports.location = location
 exports.gathering = gathering
+exports.article = article
