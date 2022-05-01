@@ -110,6 +110,9 @@ export default {
         boutiqueUrl: process.env.SHOP_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
         PEXELS: process.env.PEXELS,
+        gtm: {
+            id: process.env.GTM_ID
+        },
         recaptcha: {
             siteKey: process.env.RECAPTCHA
         },

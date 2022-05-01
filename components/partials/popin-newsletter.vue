@@ -91,6 +91,11 @@ export default {
             categories: []
         }
     }),
+    watch: {
+        isActive (v) {
+            if (v) this.$gtm.push({ 'popin-newsletter': 'open' })
+        }
+    },
     methods: {
         toggleCategory (id, value) {
             if (value) {
