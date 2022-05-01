@@ -53,19 +53,16 @@ export default {
             path: 'router',
             fileName: 'index.js',
             keepDefaultRouter: true,
-        } ],
-        ...(process.env.NODE_ENV == 'PRODUCTION' ? [
-            '@nuxtjs/google-analytics',
-        ] : [])
+        } ]
     ],
 
     modules: [
         '@nuxtjs/axios',
+        '@nuxtjs/gtm',
         'cookie-universal-nuxt',
         'nuxt-i18n',
         '@nuxtjs/auth',
         '@nuxtjs/moment',
-        '@nuxtjs/google-analytics',
         '@nuxtjs/style-resources',
         [ '@nuxtjs/recaptcha', {
             hideBadge: true,
@@ -123,6 +120,10 @@ export default {
 
     googleAnalytics: {
         id: process.env.GA_ID
+    },
+
+    gtm: {
+        id: process.env.GTM_ID
     },
 
     i18n: {
