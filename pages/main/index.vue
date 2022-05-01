@@ -7,12 +7,12 @@
                     
                     <h2 class="ft-l-medium mt-20">La nouvelle manière de se rencontrer :<br>sans applis, sans profils, sans messages.</h2>
                 </div>
-                <div class="width-s text-center pv-40 ph-20 bg-bg-strong ml-20 ml-0@s width-auto@s mt-30@s">
+                <div class="width-s text-center pv-40 ph-30 bg-bg-strong ml-20 ml-0@s width-auto@s mt-30@s">
                     <p class="ft-title-s">
-                        On se lance bientôt.
+                        Rejoins l'un de nos Gatherings.
                     </p>
 
-                    <p class="mt-10">Sois dans les premiers à réserver ton expérience et obtiens de <i>supers réductions</i>.</p>
+                    <p class="mt-10">Tous les jeudis, reçois les événements de la semaine prochaine dans ta boîte mail. <b>Places très limitées.</b></p>
 
                     <div class="ft-title-m fx-no-shrink mt-20 tape d-block@s" :style="{ opacity: countdown == '0j 00h 00m 00s' ? 0 : 1 }">
                         <span>{{ countdown }}</span>
@@ -21,7 +21,7 @@
                     <br>
 
                     <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
-                        Me prévenir
+                        Entrer dans la liste
                     </button-base>
                 </div>
             </div>
@@ -29,10 +29,12 @@
 
         <div class="Wrapper mt-60">
             <div class="Homepage_weekTitle bg-denim-s">
-                <span>expériences à venir</span>
+                <span>nos meilleures expériences</span>
             </div>
 
-            <div class="row-s ">
+            <p class="mt-20 mb-30 max-width-m">Selon tes critères, tu peux participer à des Gatherings par tranche d'âge, sexe ou centres d'intérêt. Ou alors laisser faire le hasard.</p>
+
+            <div class="row-s">
                 <div class="col-4 col-6@s col-12@xs mb-40" v-for="gathering in gatherings.slice(0, limit)" :key="gathering._id">
                     <block-gathering
                         v-bind="gathering"
@@ -61,7 +63,7 @@
             </div> -->
         </div>
 
-        <popin-newsletter :is-active="newsletterActive" ref="home" @close="newsletterActive = false" />
+        <popin-newsletter :is-active="newsletterActive" origin="home" @close="newsletterActive = false" />
 
         <article class="Homepage_presentation bg-bg-strong p-relative mt-40">
             <div id="about" class="anchor"></div>
@@ -75,20 +77,20 @@
                 <div class="Wrapper Wrapper--s ft-title-2xs line-2 text-center">
                     <div class="row-xs">
                         <div class="col-6 col-12@xs">
-                            <div class="tape tape-l tape-1">
+                            <!-- <div class="tape tape-l tape-1">
                                 "Je préfère apprendre à connaître dans le présent plutôt que de l'ajouter à une wishlist pour plus tard."
-                            </div>
+                            </div> -->
                             <div class="tape tape-strong tape-l">
                                 "Attention à l'imagination qui se débride derrière un écran, on idéalise vite une image, une phrase, un profil"
                             </div>
                         </div>
                         <div class="col-6 col-12@xs">
-                            <div class="tape tape-strong tape-l d-none@xs">
+                            <div class="tape tape-1 tape-l">
                                 "Avec la masse de gens sur le "marché", on devient super exigeantes et ça mène qu'à de la déception pour tous."
                             </div>
-                            <div class="tape tape-l tape-1">
+                            <!-- <div class="tape tape-l tape-1">
                                 "Sans parler des gars qui ressemblent pas du tout à ce qu'on voit en photos"
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -204,12 +206,18 @@ export default {
         countdown: '0j 00h 00m 00s'
     }),
     computed: {
-        gatherings () { return this.$store.getters['gathering/find']() },
+        gatherings () { return this.$store.getters['gathering/find']({ status: 'active' }) },
     },
     mounted () {
+        let nextThursday = this.$moment('28-04-2022 18:00', 'DD-MM-YYYY HH:mm')
+
+        while (nextThursday.isBefore(this.$moment())) {
+            nextThursday = nextThursday.add('7', 'days')
+        }
+
         setInterval(() => {
-            let m = this.$moment.duration(this.$moment('12-05-2022 18:00', 'DD-MM-YYYY HH:mm').diff(this.$moment()))
-            
+            let m = this.$moment.duration(nextThursday.diff(this.$moment()))
+
             this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
         }, 500)
     },
@@ -236,7 +244,6 @@ export default {
 .Homepage_weekTitle {
     font: var(--ft-title-l);
     line-height: 1;
-    margin-bottom: 40px;
     position: relative;
 
     span {
@@ -255,10 +262,10 @@ export default {
         content: "";
         display: block;
         position: absolute;
-        left: -35px;
-        top: -18px;
-        width: 70px;
-        height: 70px;
+        left: -25px;
+        top: -8px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background-image: var(--background);
         background-size: cover;

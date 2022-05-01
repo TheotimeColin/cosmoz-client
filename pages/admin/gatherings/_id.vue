@@ -11,6 +11,7 @@
 
 <script>
 import { InputBase, SelectBase } from 'instant-coffee-core'
+import CONSTANTS from '@/utils/constants'
 
 export default {
     name: 'GatheringEditPage',
@@ -39,6 +40,11 @@ export default {
             }, {
                 key: 'dates',
                 type: 'gathering-date'
+            }, {
+                key: 'status',
+                type: 'select',
+                label: 'Statut',
+                options: CONSTANTS.status
             }
         ]
     }),

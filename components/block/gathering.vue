@@ -18,9 +18,9 @@
                 <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
             </div>
 
-            <divh3 class="BlockGathering_title">
+            <h3 class="BlockGathering_title">
                 {{ subtitle }}
-            </divh3>
+            </h3>
         </div>
 
         <div class="BlockGathering_dates" v-if="!hideDates">
@@ -85,7 +85,7 @@ export default {
         async onFavorite () {
             if (this.hasFavorited) return
 
-            this.$cookies.set('fav-' + this._id, true)
+            this.$cookies.set('fav-' + this._id, true, { maxAge: 999999 })
             this.hasPendingFavorite = true
             this.hasFavorited = true
 

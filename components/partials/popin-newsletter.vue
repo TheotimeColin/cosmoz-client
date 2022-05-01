@@ -8,7 +8,7 @@
                             <span>On a hâte de te voir à ton premier Gathering.</span>
                         </div>
                     
-                        <p class="mt-20">Rendez-vous tous les jeudis pour découvrir les nouvelles expériences.</p>
+                        <p class="mt-20">Rendez-vous tous les jeudis pour découvrir nos nouvelles expériences.</p>
 
                         <button-base :modifiers="['light', 's']" class="mt-20" @click="$emit('close')">
                             Fermer
@@ -24,7 +24,7 @@
                         Participer à nos Gatherings
                     </p>
 
-                    <p class="mt-10">Tous les jeudis, reçois la liste des nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
+                    <p class="mt-10">Tous les jeudis, reçois nos nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
 
                     <form class="strong mt-20" @submit.prevent="onSubmit">
                         <div class="row-xs">
@@ -78,7 +78,7 @@ export default {
     components: { InputBase, ToggleBase },
     props: {
         isActive: { type: Boolean, default: false },
-        ref: { type: String, default: 'unknown' }
+        origin: { type: String, default: 'unknown' }
     },
     data: () => ({
         assets: { socials },
@@ -104,7 +104,7 @@ export default {
 
             const token = await this.$recaptcha.execute('login')
             const response = await this.$store.dispatch('newsletter/subscribe', {
-                ...this.formData, ref: this.ref, token
+                ...this.formData, ref: this.origin, token
             })
 
             if (response.status == 0) {

@@ -3,13 +3,19 @@ import CONSTANTS from '@/utils/constants'
 export default {
     gathering: {
         decode: function (form) {
-            return form
+            let status = form ? CONSTANTS.status.find(c => c.value == form.status) : null
+
+            return {
+                ...form,
+                status: status ? status.id : 0
+            }
         },
         parse: function (form) {
             
             return {
                 ...form,
-                cover: form.cover ? form.cover._id : ''
+                cover: form.cover ? form.cover._id : '',
+                status: CONSTANTS.status[form.status].value
             }
         }
     },

@@ -4,7 +4,9 @@
             1 lieu unique, 1 expérience à partager, 4 inconnus.
         </div>
 
-        <div class="mt-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam facilis ad optio assumenda unde ratione ducimus odit sint!</div>
+        <div class="mt-10">
+            Se rencontrer de manière plus authentique & spontanée. Une nouvelle manière de créer lien, de découvrir sa vill et découvrir l'autre. <b>Nos expériences changent chaque semaine.</b>
+        </div>
 
         <div class="row">
             <div class="mt-20 col-6 col-12@s" v-for="gathering in gatherings.slice(0, 2)" :key="gathering._id">
@@ -15,7 +17,7 @@
             </div>
         </div>
 
-        <popin-newsletter :is-active="isNewsletter" ref="article" @close="isNewsletter = false" />
+        <popin-newsletter :is-active="isNewsletter" origin="article" @close="isNewsletter = false" />
 
         <transition name="fade">
             <div class="d-flex br-s bg-cover o-hidden bg-holo p-30 mt-30 d-block@s" v-show="toUnlock == 0">
@@ -24,7 +26,7 @@
 
                     <div class="mt-10"></div>
 
-                    <p>On t'envoie les invitations exclusives tous les jeudis. Inscris-toi à notre newsletter pour ne pas les rater.</p>
+                    <p class="line-2">On t'envoie les invitations exclusives tous les jeudis. Inscris-toi sur notre liste pour ne pas les rater.</p>
                 </div>
 
                 <div class="mh-30">
@@ -53,7 +55,7 @@ export default {
         isNewsletter: false,
     }),
     computed: {
-        gatherings () { return this.$shuffle(this.$store.getters['gathering/find']()) },
+        gatherings () { return this.$shuffle(this.$store.getters['gathering/find']({ status: 'active' })) },
     },
 }
 </script>

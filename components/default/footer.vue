@@ -1,13 +1,17 @@
 <template>
     <footer class="Footer">
-        <popin-newsletter :is-active="isNewsletter" ref="footer" @close="isNewsletter = false" />
+        <popin-newsletter :is-active="isNewsletter" origin="footer" @close="isNewsletter = false" />
 
         <div class="bg-cover bg-plastic-black">
             <div class="Wrapper pv-30 fx-center d-block@xs">
                 <p class="ft-title-s max-width-m">Tous les jeudis, de nouvelles expériences pour se rencontrer</p>
 
                 <div class="fx-grow text-center ml-20 ml-0@xs text-left@xs mt-20@xs">
-                    <button-base :modifiers="['light']" @click="isNewsletter = true">Tenez-moi au courant</button-base>
+                    <div>
+                        <button-base :modifiers="['light']" @click="isNewsletter = true">Tenez-moi au courant</button-base><br>
+
+                        <span class="ft-xs-bold tape tape-2 mt-10 text-upper"><i>Places très limitées</i></span>
+                    </div>
                 </div>
             </div>
         </div>
