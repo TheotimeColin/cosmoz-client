@@ -77,7 +77,8 @@ export default {
     name: 'PopinNewsletter',
     components: { InputBase, ToggleBase },
     props: {
-        isActive: { type: Boolean, default: false }
+        isActive: { type: Boolean, default: false },
+        ref: { type: String, default: 'unknown' }
     },
     data: () => ({
         assets: { socials },
@@ -103,7 +104,7 @@ export default {
 
             const token = await this.$recaptcha.execute('login')
             const response = await this.$store.dispatch('newsletter/subscribe', {
-                ...this.formData, token
+                ...this.formData, ref: this.ref, token
             })
 
             if (response.status == 0) {

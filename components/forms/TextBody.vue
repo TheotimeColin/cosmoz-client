@@ -1,5 +1,5 @@
 <template>
-    <div class="TextBody color-ft" :class="[ ...$modifiers ]">
+    <div class="TextBody TextBody--no-edit color-ft" :class="[ ...$modifiers ]">
         <div class v-html="value" v-if="!editor"></div>
         <editor-content :editor="editor" ref="text" v-if="editor" />
     </div>
@@ -13,6 +13,7 @@ import Link from '@/plugins/tiptap/Link'
 import StyledBlock from '@/plugins/tiptap/StyledBlock'
 import Iframe from '@/plugins/tiptap/Iframe'
 import Gallery from '@/plugins/tiptap/Gallery'
+import InsertBlock from '@/plugins/tiptap/InsertBlock'
 
 export default {
     name: 'TextBody',
@@ -34,6 +35,7 @@ export default {
                 new Blockquote(),
                 new Image(),
                 new Link(), new Iframe(), new StyledBlock(), new Gallery(),
+                new InsertBlock()
             ],
             content: this.$props.value,
         })

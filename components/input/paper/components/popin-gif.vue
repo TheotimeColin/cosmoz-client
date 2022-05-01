@@ -6,17 +6,12 @@
     >
         <template slot="content">
             <form class="strong p-20" @submit.prevent>
-                <p class="ft-m-bold mb-20">Créer un lien</p>
+                <p class="ft-m-bold mb-20">Insérer un GIF</p>
 
                 <input-base
                     label="Lien"
                     v-model="formData.link"
-                    :attrs="{
-                        placeholder: 'https://antiswipe.lgbt'
-                    }"
                 />
-
-                <toggle-base class="mt-10" v-model="blank" label="Blank" />
             </form>
         </template>
 
@@ -27,37 +22,29 @@
                 :modifiers="['s']"
                 @click="onSubmit"
             >
-                Insérer le lien
+                Insérer GIF
             </button-base>
         </template>
     </popin-base>
 </template>
 
 <script>
-import { InputBase, ToggleBase } from 'instant-coffee-core'
+import { InputBase } from 'instant-coffee-core'
 
 export default {
-    name: 'PopinLink',
-    components: { InputBase, ToggleBase },
+    name: 'PopinGif',
+    components: { InputBase },
     props: {
         isActive: { type: Boolean, default: false }
     },
     data: () => ({
-        blank: true,
         formData: {
-            link: '',
-            target: '_blank',
+            link: ''
         }
     }),
     methods: {
-        getForm () {
-            return {
-                ...this.formData,
-                target: this.$data.blank ? '_blank' : '_self'
-            }
-        },
         onSubmit () {
-            this.$emit('input', this.getForm())
+            this.$emit('input', this.formData.link)
             this.$emit('close')
         }
     }

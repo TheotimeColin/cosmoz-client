@@ -206,6 +206,7 @@ exports.subscribeNewsletter = async function (req, res) {
             user = await Entities.user.model.create({
                 email: req.body.email,
                 name: req.body.name,
+                ref: req.body.ref,
                 categories: req.body.categories,
                 role: 'user'
             })

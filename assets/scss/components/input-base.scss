@@ -10,7 +10,7 @@
 
 .InputBase_element {
     
-    &::placeholder {
+    &:focus::placeholder {
         color: var(--color-ft-weak);
         opacity: 1;
     }
@@ -39,4 +39,16 @@ form.strong {
     .SelectBase_label {
         background-color: var(--color-bg-strong) !important;
     }
+}
+
+.ToggleBase {
+    
+}
+
+.Toggle_checkbox:checked + .Toggle_container {
+    background: var(--color-bg-light);
+}
+
+.Toggle_container::after{
+    background: var(--color-bg-strong);
 }

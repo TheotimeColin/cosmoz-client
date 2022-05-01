@@ -2,7 +2,7 @@
     <button-editor
         :sub-menu="true"
         :is-active="state.active || (currentNode && currentNode.level ? true : false)"
-        icon="plus-square"
+        icon="block"
         @click="state.active = !state.active"
     >
         <template slot="list">
@@ -20,12 +20,15 @@
 </template>
 
 <script>
+import ButtonEditor from './button-editor.vue'
+
 export default {
     name: 'ButtonInsert',
+    components: { ButtonEditor },
     props: {
         currentNode: { type: [Object, Boolean], default: false },
         options: { type: Array, default: () => ([
-            
+            { label: `Gatherings mystère`, value: 'insert-gatherings' },
         ]) }
     },
     data: () => ({

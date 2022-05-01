@@ -1,46 +1,26 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast, 'is-favorite': hasFavorited }">
+    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast, 'is-unlocked': isUnlocked }">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
+            <div class="BlockGatherings_hider"></div>
+
             <span v-html="$options.filters.verticalize(title)"></span>
 
-            <div class="BlockGathering_heart" @click="onFavorite">
-                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favoritesNumber">{{ favoritesNumber }}</b>
-            </div>
+            <button-base class="BlockGatherings_unlock" :modifiers="['light']" @click="() => { isUnlocked = true; $emit('unlock') }">
+                Dévoiler l'expérience
+            </button-base>
         </div>
         
         <div class="BlockGathering_content">
             <div class="BlockGathering_location fx-center">
-                <p class="">{{ isPast ? 'Lieu secret' : location }}</p>
-                
-                <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
+                <p>Lieu secret</p>
             </div>
 
-            <divh3 class="BlockGathering_title">
+            <div class="BlockGathering_title" @click="isUnlocked = false">
                 {{ subtitle }}
-            </divh3>
-        </div>
-
-        <div class="BlockGathering_dates" v-if="!hideDates">
-            <a
-                v-for="(date, i) in dates"
-                :href="date.link"
-                class="BlockGathering_date"
-                :class="{ 'is-past': $moment(date.date).isBefore($moment()) }"
-                :key="i"
-            >
-                <span>
-                    {{ $moment(date.date).format('dddd DD') }}
-
-                    <b> · {{ $moment(date.date).format('H:mm') }}</b>
-                </span>
-
-                <div class="ml-10">
-                    <tag-category class="BlockGathering_tag" :category="date.category" v-if="date.category != 0" />
-                </div>
-            </a>
+            </div>
         </div>
     </component>
 </template>
@@ -52,52 +32,23 @@ export default {
         _id: { type: String },
         title: { type: String },
         subtitle: { type: String },
-        place: { type: String },
-        location: { type: String },
-        favorites: { type: Number, default: 0 },
-        dates: { type: Array, default: () => [] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false },
-        hideDates: { type: Boolean, default: false }
     },
     data: () => ({
-        hasFavorited: false,
-        hasPendingFavorite: false
+        isUnlocked: false
     }),
     created () {
-        if (this.$cookies.get('fav-' + this._id)) this.hasFavorited = true
+
     },
     computed: {
-        isPast () {
-            return this.dates.length == 0 || !this.dates.reduce((hasDate, date) => {
-                return this.$moment(date.date).isAfter(this.$moment()) ? true : hasDate
-            }, false)
-        },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
-        },
-        favoritesNumber () {
-            return this.favorites + (this.hasPendingFavorite ? 1 : 0)
         }
     },
     methods: {
-        async onFavorite () {
-            if (this.hasFavorited) return
 
-            this.$cookies.set('fav-' + this._id, true)
-            this.hasPendingFavorite = true
-            this.hasFavorited = true
-
-            await this.$store.dispatch('gathering/create', {
-                _id: this._id,
-                params: { favorites: '$inc' }
-            })
-
-            this.hasPendingFavorite = false
-
-            this.$emit('favorite')
-        }
     }
 }
 </script>
@@ -107,15 +58,8 @@ export default {
     
     &:hover {
 
-        .BlockGathering_coverImage {
-            opacity: 0.25;
-        }
-
         .BlockGathering_cover span {
-            transform: scale(0.95);
-            opacity: 0.35;
-            color: var(--color-ft-light);
-            filter: blur(2px);
+            
         }
 
         .BlockGathering_heart {
@@ -124,23 +68,87 @@ export default {
             filter: none;
             transition-delay: 100ms;
         }
+
+        .BlockGatherings_hider {
+            transform: scale(1.1);
+        }
+
+        .BlockGathering_title {
+            filter: blur(2px);
+        }
+    }
+
+    &.is-unlocked {
+
+        .BlockGatherings_unlock {
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+        }
+
+        .BlockGatherings_hider {
+            opacity: 0;
+            transform: scaleX(10);
+            transition: all 200ms ease-in;
+        }
+
+        .BlockGathering_coverImage {
+            opacity: 0.75;
+            transform: scale(1.05);
+            transition: all 1400ms ease-in-out;
+        }
+
+        .BlockGathering_cover span {
+            position: relative;
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+            transition: all 800ms ease-out;
+            transition-delay: 100ms;
+        }
+
+        .BlockGathering_title {
+            opacity: 1;
+            filter: blur(0px);
+            transition: all 800ms ease-out;
+            transition-delay: 100ms;
+        }
     }
 }
 
-.BlockGathering_coverImage {
+.BlockGathering_coverImage,
+.BlockGatherings_hider {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.05;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
 }
 
+.BlockGathering_coverImage {
+    transform: scale(1);
+}
+
+.BlockGatherings_hider {
+    opacity: 0.9;
+    background-image: url('@/assets/img/texture/holo.webp');
+}
+
 .BlockGathering_favs {
     cursor: pointer;
+}
+
+.BlockGatherings_unlock {
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: auto;
+    margin: -20px auto 0;
 }
 
 .BlockGathering_cover {
@@ -148,16 +156,20 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-    overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
     background-color: var(--color-bg-strong);
     text-align: center;
     position: relative;
+    overflow: hidden;
 
     span {
-        padding: 0 15px;
-        position: relative;
+        position: absolute;
+        transform: scale(0.95);
+        padding: 0 20px;
+        opacity: 0;
+        color: var(--color-ft-light);
+        filter: blur(2px);
         transition: all 150ms ease;
     }
     
@@ -166,28 +178,15 @@ export default {
     }
 }
 
-.BlockGathering_heart {
-    position: absolute;
-    top: 50%;
-    left: auto;
-    right: auto;
-    font-size: 25px;
-    fill: var(--color-ft-light);
-    margin: -12px auto 0;
-    cursor: pointer;
-    display: inline-flex;
-    filter: blur(1px);
-    transform: scale(1.2);
-    opacity: 0;
-    transition: all 150ms ease;
-}
-
 .BlockGathering_content {
     margin-top: 10px;
 }
 
 .BlockGathering_title {
     font: var(--ft-title-xs);
+    filter: blur(3px);
+    opacity: 0.5;
+    line-height: 1.2;
     transition: all 150ms ease; 
 }
 

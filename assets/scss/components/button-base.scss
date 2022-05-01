@@ -25,6 +25,10 @@
     margin-right: 8px;
 }
 
+.ButtonBase--strong {
+    background-color: var(--color-bg-strong);
+}
+
 .ButtonBase--current {
     border-color: var(--color-current-strong);
     color: var(--color-current-strong);

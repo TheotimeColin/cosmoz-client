@@ -1,5 +1,5 @@
 import { Node } from 'tiptap'
-import Insert from '@/components/inserts' 
+import Insert from '@/components/insert' 
 
 export default class InsertBlock extends Node {
 

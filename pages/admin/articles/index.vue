@@ -6,6 +6,7 @@
                     <div class="col-4 col-12@s mb-40" v-for="article in articles" :key="article._id">
                         <block-article
                             v-bind="article"
+                            class="bg-bg-light"
                             :link="localePath({ name: 'articles-id', params: { id: article._id } })"
                         />
                     </div>

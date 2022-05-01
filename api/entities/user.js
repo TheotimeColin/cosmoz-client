@@ -15,6 +15,7 @@ let UserEntity = {
         surname: { type: String, write: 'self' },
         address: { type: String, write: 'self' },
         address2: { type: String, write: 'self' },
+        ref: { type: String, write: 'self' },
         city: { type: String, write: 'self' },
         postalCode: { type: String, write: 'self' },
         country: { type: String, write: 'self' },

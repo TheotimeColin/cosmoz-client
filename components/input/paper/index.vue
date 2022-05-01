@@ -34,6 +34,14 @@
             @close="state.current = ''"
         />
 
+        <popin-gif
+            :is-active="state.current == 'gifSelect'"
+            @input="(v) => insertImage(null, v)"
+            @close="state.current = ''"
+        />
+
+        <media-library v-bind="libraryProps" @input="libraryProps.onInput" v-if="libraryProps" @close="libraryProps = false" />
+
         <div class="TextBody" v-html="value" v-if="!editor"></div>
         <editor-content class="TextEditor_content TextBody" :editor="editor" ref="text" v-if="editor" />
     </div>
@@ -52,10 +60,13 @@ import ButtonHeadings from './components/button-headings'
 import ButtonInsert from './components/button-insert'
 import ButtonBlocks from './components/button-blocks'
 import MediaLibrary from '@/components/interactive/media-library.vue'
+import PopinLink from './components/popin-link.vue'
+import PopinYoutube from './components/popin-youtube.vue'
+import PopinGif from './components/popin-gif.vue'
 
 export default {
     name: 'TextEditor',
-    components: { EditorContent, EditorMenuBar, ButtonEditor, ButtonHeadings, ButtonInsert, ButtonBlocks, MediaLibrary },
+    components: { EditorContent, EditorMenuBar, ButtonEditor, ButtonHeadings, ButtonInsert, ButtonBlocks, MediaLibrary, PopinLink, PopinYoutube, PopinGif },
     props: {
         value: { type: String, default: '' },
         editable: { type: Boolean, default: true }
@@ -64,6 +75,7 @@ export default {
         state: {
             current: 'styleSelect'
         },
+        libraryProps: false,
         editor: null,
         link: {
             href: '',
@@ -98,10 +110,11 @@ export default {
                 { id: 'bold', label: 'Gras', icon: 'bold' },
                 { id: 'italic', label: 'Italique', icon: 'italic' },
             ], [
-                { id: 'fileSelect', label: 'Image', icon: 'image', command: () => this.$emit('open-library', {
-                    props: { max: 1 }, onInput: (v) => this.insertImage(v)
-                }) },
+                { id: 'fileSelect', label: 'Image', icon: 'image', command: () => this.libraryProps = {
+                    isActive: true, max: 1, onInput: (v) => this.insertImage(v)
+                } },
                 { id: 'linkSelect', icon: 'link', setCurrent: true },
+                { id: 'gifSelect', icon: 'gif', setCurrent: true },
                 // { id: 'iframe', icon: 'play', setCurrent: true },
                 { id: 'blockquote', label: 'Citation', icon: 'quote-right' },
                 { id: 'bullet_list', label: 'Liste', icon: 'list-ul' },
@@ -109,11 +122,10 @@ export default {
                 // { id: 'gallery', label: 'Galerie', icon: 'images', command: () => this.$emit('open-library', {
                 //     props: { max: 3 }, onInput: (v) => this.insertGallery(v)
                 // }) },
-            ],
-            // [
-            //     { id: 'styledBlock', component: 'button-blocks', value: 'styledBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.styledBlock(v) },
-            //     { id: 'insertBlock', component: 'button-insert', value: 'insertBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.insertBlock(v) },
-            // ]
+            ], [
+                // { id: 'styledBlock', component: 'button-blocks', value: 'styledBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.styledBlock(v) },
+                { id: 'insertBlock', component: 'button-insert', value: 'insertBlock', isNode: true, onUpdate: (v) => this.$data.editor.commands.insertBlock(v) },
+            ]
         ]
 
         this.$data.editor.on('update', () => this.onUpdate())
@@ -136,11 +148,11 @@ export default {
         insertIframe (data) {
             this.$data.editor.commands.iframe(data)
         },
-        insertImage (media) {
+        insertImage (media, absolute) {
             this.$data.editor.commands.image({
-                src: media.sizes.m.src,
-                alt: media.alt,
-                title: media.title
+                src: absolute ? absolute : media.sizes.m.src,
+                alt: media ? media.alt : '',
+                title: media ? media.title : ''
             })
         },
         insertGallery (medias) {

@@ -69,14 +69,13 @@
     color: var(--color-ft-weak);
     
     &.is-active {
-        background-color: var(--color-user-bg);
-        color: var(--color-user);
-        border-color: var(--color-user);
+        color: var(--color-ft);
+        border-color: var(--color-ft);
     }
 
     &:hover {
         background-color: var(--color-bg-light);
-        color: var(--color-ft);
+        color: var(--color-ft-strong);
     }
 }
 

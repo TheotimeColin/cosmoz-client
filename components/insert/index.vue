@@ -5,10 +5,11 @@
 </template>
 
 <script>
+import InsertGatherings from './gatherings.vue'
 
 export default {
     name: 'Insert',
-    components: {},
+    components: { InsertGatherings },
     props: {
         node: { type: Object, default: null },
     },

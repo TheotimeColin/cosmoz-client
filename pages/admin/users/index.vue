@@ -2,21 +2,23 @@
     <div>
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
-                
-                <div class="">
+                <div class="color-ft">
                     <div class="ft-m p-15 mv-10 bg-bg-light br-s" v-for="user in users" :key="user._id">
                         <div class="d-flex fx-justify-between">
-                            <p class="ft-medium">{{ user.email }}</p>
-                            <p>{{ user.name }} <span class="ml-20 color-ft-weak">{{ $moment(user.createdAt).format('DD MMM hh:mm') }}</span></p>
+                            <div>
+                                <b>{{ user.name }}</b> {{ user.email }}
+                            </div>
+                            <div class="ml-20">
+                                <span class="mr-10">
+                                    {{ user.ref ? user.ref : 'Unknown' }}
+                                </span>
+                                <span class="color-ft-weak">{{ $moment(user.createdAt).format('DD MMM hh:mm') }}</span></p>
+                            </div>
                         </div>
-
-                        <div class="d-flex fx-align-center mv-5" v-for="shop in user.shops" :key="shop._id">
-                            <i class="fal fa-arrow-turn-down-right mh-10"></i>
-
-                            <link-base :href="shop.link" target="_blank">{{ shop.name }}</link-base>
-
-                            <i class="fal fa-clipboard mr-5 ml-20"></i> {{ shop.listings.length }}
-                            <i class="fal fa-receipt mr-5 ml-20"></i> {{ shop.orders.length }}
+                        <div class="mt-5">
+                            <span class="tape tape-strong mr-5" v-for="cat in user.categories" :key="cat">
+                                {{ cat }}    
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -44,15 +46,6 @@ export default {
         users () {
             return this.data.filter(u => u.role !== 'guest').sort((a, b) => this.$moment(b.createdAt).format('YYYYMMDD') - this.$moment(a.createdAt).format('YYYYMMDD'))
         }
-    },
-    head () {
-        let meta = {
-            title: 'Utilisateurs'
-        }
-
-        this.$store.commit('page/setProperty', meta)
-
-        return meta
     }
 }
 </script>

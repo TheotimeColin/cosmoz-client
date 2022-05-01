@@ -24,7 +24,7 @@
 
     h2 {
         font: var(--ft-title-l);
-        margin-top: 40px;
+        margin-top: 60px;
         margin-bottom: 20px;
 
         &:first-child {
@@ -39,7 +39,7 @@
     h3 {
         font: var(--ft-xl-bold);
         margin-left: 0px;
-        margin-top: 60px;
+        margin-top: 40px;
         margin-bottom: 20px;
     }
 
@@ -71,8 +71,8 @@
 
     & > img,
     p > img {
-        max-width: calc(100% + 60px);
-        margin: 40px -30px;
+        width: 100%;
+        margin: 0;
         display: block;
     }
 
@@ -128,21 +128,28 @@
     white-space: normal;
 }
 
+.TextBody--no-edit {
+    
+    .ProseMirror-separator, .ProseMirror-trailingBreak {
+        display: none;
+    }
+}
+
 .TextBody--article {
-    font: var(--ft-xl);
+    font: var(--ft-l);
     line-height: 1.6;
 
     h1, h2, h3, h4 {
         color: var(--color-ft-strong);
     }
 
-    b, strong {
-        font-weight: 400;
-        padding: 3px 8px 3px 5px;
-        color: var(--color-ft-light);
-        font-style: italic;
-        background-color: var(--color-bg-strong);
-    }
+    // b, strong {
+    //     font-weight: 400;
+    //     padding: 3px 8px 3px 5px;
+    //     color: var(--color-ft-light);
+    //     font-style: italic;
+    //     background-color: var(--color-bg-strong);
+    // }
 }
 
 .TextBody--simple {

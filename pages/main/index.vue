@@ -61,7 +61,7 @@
             </div> -->
         </div>
 
-        <popin-newsletter :is-active="newsletterActive" @close="newsletterActive = false" />
+        <popin-newsletter :is-active="newsletterActive" ref="home" @close="newsletterActive = false" />
 
         <article class="Homepage_presentation bg-bg-strong p-relative mt-40">
             <div id="about" class="anchor"></div>
