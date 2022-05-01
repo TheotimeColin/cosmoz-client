@@ -93,7 +93,10 @@ export default {
     }),
     watch: {
         isActive (v) {
-            if (v) this.$gtm.push({ 'popin-newsletter': 'open' })
+            if (v) this.$gtm.push({
+                event: 'Newsletter',
+                action: 'open'
+            })
         }
     },
     methods: {

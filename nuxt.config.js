@@ -126,7 +126,11 @@ export default {
     },
 
     gtm: {
-        id: process.env.GTM_ID
+        id: process.env.GTM_ID,
+        enabled: true,
+        debug: process.env.NODE_ENV != 'PRODUCTION',
+        pageTracking: true,
+        respectDoNotTrack: false
     },
 
     i18n: {
