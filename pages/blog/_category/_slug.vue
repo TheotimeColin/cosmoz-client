@@ -72,7 +72,16 @@ export default {
         let meta = {
             title: this.article.title + this.$t('meta.append'),
             meta: [
-                { hid: 'description', name: 'description', content: this.article.excerpt.replace(/(<([^>]+)>)/gi, "") }
+                { hid: 'description', name: 'description', content: this.article.excerpt.replace(/(<([^>]+)>)/gi, "") },
+
+                { property: 'og:title', content: `this.article.title ${this.$t('meta.append')}` },
+                { property: 'og:type', content: 'article' },
+                { property: 'og:url', content: this.$config.blogUrl + '/' + this.article.category + '/' + this.article.slug },
+                { property: 'og:image', content: this.article.hero },
+                { property: 'og:description', content: this.article.excerpt },
+                { property: 'og:site_name', content: 'Gatherings, rencontres hors-ligne.' },
+
+                { property: 'twitter:card', content: 'summary_large_image' },
             ],
             script: [
                 {

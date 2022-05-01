@@ -35,6 +35,17 @@ export default {
     },
     computed: {
         articles () { return this.$store.getters['article/find']() },
+    },
+    head () {
+        let meta = {
+            title: `Le blog en ligne de la rencontre hors-ligne ${this.$t('meta.append')}`,
+            meta: [
+                { hid: 'og:title', name: 'og:title', content: `Le blog en ligne de la rencontre hors-ligne ${this.$t('meta.append')}` },
+                { hid: 'description', name: 'description', content: 'Le passé, le présent et le futur de la rencontre.' }
+            ],
+        }
+
+        return meta
     }
 }
 </script>
