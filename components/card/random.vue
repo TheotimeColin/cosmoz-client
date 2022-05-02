@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 .CardRandom {
+    font: var(--ft-title-l);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

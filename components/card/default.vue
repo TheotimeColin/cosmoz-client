@@ -1,5 +1,5 @@
 <template>
-    <div class="CardDefault" :class="{ 'is-active': isActive, 'is-sections': sections.length > 0, 'is-steps': steps && steps.length > 1 }">
+    <div class="CardDefault" :class="{ 'is-active': isActive, 'is-sections': sections.length > 0, 'is-steps': steps && steps.length > 1, 'CardDefault--bg': background }" :style="{ backgroundImage: `url(${background})` }">
         <card-steps :steps="steps" :current-step="currentStep" />
 
         <div class="CardDefault_titleContainer" v-if="title || subtitle">
@@ -24,6 +24,10 @@
                 <p>{{ section.title|specials }} <span class="color-current-strong" v-if="section.subtitle">{{ section.subtitle|specials }}</span></p>
             </div>
         </div>
+
+        <button-base :modifiers="['current']" @click.stop="$emit('nextStep')" v-if="nextCta">
+            {{ nextCta }}
+        </button-base>
     </div>
 </template>
 
@@ -33,11 +37,14 @@ export default {
     props: {
         title: { type: String },
         subtitle: { type: String },
+        classes: { type: Array, default: () => [] },
+        background: { type: String, default: '' },
         currentStep: { type: Number, default: 0 },
         isActive: { type: Boolean, default: false },
         choices: { type: Array, default: () => [] },
         steps: { type: Array, default: () => [] },
-        sections: { type: Array, default: () => [] }
+        sections: { type: Array, default: () => [] },
+        nextCta: { type: String }
     }
 }
 </script>

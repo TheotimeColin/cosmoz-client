@@ -6,6 +6,7 @@
             :is-active="isActive"
             :current-step="currentStep"
             :steps="steps" 
+            @nextStep="nextStep"
         />
     </div>
 </template>
@@ -29,22 +30,29 @@ export default {
             let type = 'card-default'
 
             if (this.currentCard.type == 'random') type = 'card-random'
+            if (this.currentCard.type == 'titles') type = 'card-titles'
 
             return type
         }
     },
     methods: {
+        prevStep () {
+            this.currentStep = this.currentStep - 1 <= 0 ? 0 : this.currentStep - 1
+        },
+        nextStep () {
+            if (this.currentCard.choices && this.currentCard.choices.length > 0) return
+
+            if (this.currentStep == this.steps.length - 1) this.$emit('cardLast')
+
+            this.currentStep = this.currentStep >= this.steps.length - 1 ? this.steps.length - 1 : this.currentStep + 1
+        },
         onClick (e) {
             this.clickDirection = e.offsetX > this.$el.offsetWidth / 2
 
             if (this.clickDirection) {
-                if (this.currentCard.choices && this.currentCard.choices.length > 0) return
-
-                if (this.currentStep == this.steps.length - 1) this.$emit('cardLast')
-
-                this.currentStep = this.currentStep >= this.steps.length - 1 ? this.steps.length - 1 : this.currentStep + 1
+                this.nextStep() 
             } else {
-                this.currentStep = this.currentStep - 1 <= 0 ? 0 : this.currentStep - 1
+                this.prevStep()
             }
         }
     }
@@ -61,6 +69,7 @@ export default {
     max-height: 450px;
     user-select: none;
     transition: all 250ms ease;
+    overflow: hidden;
 
     &:active {
         transform: perspective(50px) rotateY(-0.25deg);
@@ -74,4 +83,18 @@ export default {
         color: var(--color-current-xstrong);
     }
 }
+
+.Card.is-strong {
+    color: var(--color-ft-light);
+    background-color: var(--color-bg-strong);
+
+    .CardDefault_step {
+        background-color: var(--color-bg-weak);
+    
+        &.is-active {
+            background-color: var(--color-bg-light);
+        }
+    }
+}
+
 </style>

@@ -3,6 +3,8 @@ import moment from 'moment'
 import { ButtonBase, PopinBase } from 'instant-coffee-core'
 import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
+import CONSTANTS from '@/utils/constants'
+
 moment.locale('fr')
 
 Vue.mixin({
@@ -84,7 +86,8 @@ Vue.mixin({
         $baseUrl () { return  this.$config.baseUrl },
         $dashboardUrl () { return this.$config.dashboardUrl },
         $blogUrl () { return this.$config.blogUrl },
-        $shopUrl () { return this.$config.shopUrl }
+        $shopUrl () { return this.$config.shopUrl },
+        $bg () { return CONSTANTS.bg }
     },
     methods: {
         $randomBetween: (min, max) => {

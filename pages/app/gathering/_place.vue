@@ -20,8 +20,8 @@ export default {
         this.placeId = this.$route.params.place
 
         this.items = [
-            { color: 'cream', steps: [
-                { title: "Bienvenue au Liquorium.", subtitle: "On espère que le lieu qu'on a sélectionné vous plaît." },
+            { color: 'strong', steps: [
+                { title: "Bienvenue au Liquorium.", subtitle: "On espère que le lieu qu'on a sélectionné vous plaît.", background: 'https://uniiti.com/images/shops/slides/80d02764a32ea8581c41c84c2060d3aec36de550.jpeg' },
                 { title: "Suis le guide !", subtitle: "On espère que le lieu qu'on a sélectionné vous plaît." }
                 // { title: "Sinon, tant pis.", choices: [
                 //     { title: "Table Améthyste" },
@@ -30,8 +30,9 @@ export default {
                 // ] }
             ] },
             { color: 'cream', steps: [
+                { type: 'titles', title: "L'interviewer\ninterviewé", classes: ['bgi-holo'] },
                 { title: "Pour ce tour, tu as le rôle l'interviewer.", subtitle: "Et c'est toi qui va pouvoir choisir les questions à poser à tes --victimes-- amis." },
-                { title: "Commence par la personne à ta gauche.", subtitle: "Demande-lui son prénom, puis choisis l'une des 3 questions que l'on te propose ci-dessous." }
+                { title: "Commence par la personne à ta gauche.", subtitle: "Demande-lui son prénom, puis choisis l'une des 3 questions que l'on te propose ci-dessous.", nextCta: 'Première personne' }
             ] },
             { color: 'memo', steps: [
                 { type: 'random', subtitle: "Première personne", choices: BaseQuestions }
