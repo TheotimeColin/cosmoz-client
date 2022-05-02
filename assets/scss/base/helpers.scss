@@ -296,8 +296,11 @@
     align-items: center;
     border-radius: 50%;
     justify-content: center;
+    vertical-align: middle;
     font: var(--ft-s-medium);
     line-height: 1;
+    color: var(--color-current-xstrong);
+    background-color: var(--color-current);
 }
 
 .line-2 {
@@ -313,7 +316,7 @@
 .round-xs {
     width: 20px;
     height: 20px;
-    font: var(--ft-xs-medium);
+    font: var(--ft-2xs-medium);
     line-height: 1;
 }
 

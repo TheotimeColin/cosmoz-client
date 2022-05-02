@@ -1,0 +1,64 @@
+.CardDefault {
+    display: flex;
+    flex-direction: column;
+    font: var(--ft-title-m);
+    padding: 25px;
+    height: 100%;
+    position: relative;
+
+    &.is-active {
+
+        .CardDefault_subtitle {
+            color: var(--color-current-strong);
+        }
+    }
+
+    &.is-steps {
+        
+        .CardDefault_titleContainer {
+            margin-top: 30px;
+        }
+    }
+}
+
+.CardDefault_titleContainer {
+    margin: 0 0 20px;
+}
+
+.CardDefault_title ::v-deep .secondary {
+    color: var(--color-current-strong);
+}
+
+.CardDefault_subtitle {
+    font: var(--ft-l);
+}
+
+.CardDefault_title + .CardDefault_subtitle {
+    margin-top: 10px;
+}
+
+.CardDefault_steps {
+    display: flex;
+    margin-bottom: 20px;
+    width: 60%;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.CardDefault_step {
+    flex-grow: 1;
+    height: 4px;
+    border-radius: 5px;
+    margin-left: 5px;
+    background-color: var(--color-current);
+    max-width: 33%;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &.is-active {
+        background-color: var(--color-current-strong);
+    }
+}

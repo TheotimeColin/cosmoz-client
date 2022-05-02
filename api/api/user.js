@@ -106,8 +106,6 @@ exports.getUser = async function (req, res) {
         user = await authenticate(req.headers)
 
         if (!user) throw Error('wrongCredentials')
-
-        user.shops = await Promise.all(user.shops.map(async shop => await Entities.shop.model.findById(shop)))
     } catch (e) {
         console.error(e)
 

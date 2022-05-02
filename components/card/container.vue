@@ -1,6 +1,7 @@
 <template>
     <div class="Card" :class="{ 'is-left': clickDirection, 'is-active': isActive }" v-if="currentCard" @click="onClick">
-        <card-default
+        <component
+            :is="cardType"
             v-bind="currentCard"
             :is-active="isActive"
             :current-step="currentStep"
@@ -23,6 +24,13 @@ export default {
     computed: {
         currentCard () {
             return this.steps[this.currentStep] ? this.steps[this.currentStep] : null
+        },
+        cardType () {
+            let type = 'card-default'
+
+            if (this.currentCard.type == 'random') type = 'card-random'
+
+            return type
         }
     },
     methods: {
@@ -46,10 +54,11 @@ export default {
 <style lang="scss" scoped>
 .Card {
     font: var(--ft-title-m);
-    border-radius: 15px;
+    border-radius: 5px;
     color: var(--color-current);
     background-color: var(--color-current-weak);
     height: 70vh;
+    max-height: 450px;
     user-select: none;
     transition: all 250ms ease;
 

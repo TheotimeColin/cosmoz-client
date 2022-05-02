@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import BaseQuestions from '@/utils/icebreakers/base-questions'
+
 export default {
     name: 'GatheringPlace',
     layout: 'app',
@@ -32,25 +34,13 @@ export default {
                 { title: "Commence par la personne à ta gauche.", subtitle: "Demande-lui son prénom, puis choisis l'une des 3 questions que l'on te propose ci-dessous." }
             ] },
             { color: 'memo', steps: [
-                { subtitle: "Première personne", sections: [
-                    { title: "Plutôt chiens ou chats ?", subtitle: "Ou autre ?" },
-                    { title: "Ton plus grand défaut ?" },
-                    { title: "Est-ce que t'as hésité à venir ce soir ?" },
-                ] }
+                { type: 'random', subtitle: "Première personne", choices: BaseQuestions }
             ] },
             { color: 'ocean', steps: [
-                { subtitle: "Deuxième personne", sections: [
-                    { title: "Ton parc d'attractions préféré ?" },
-                    { title: "C'est quoi ton deuxième prénom ?" },
-                    { title: "Comment t'as découvert Gatherings ?" },
-                ] }
+                { type: 'random', subtitle: "Deuxième personne", choices: BaseQuestions }
             ] },
             { color: 'alpine', steps: [
-                { subtitle: "Encore une dernière !", sections: [
-                    { title: "Ton parc d'attractions préféré ?" },
-                    { title: "C'est quoi ton deuxième prénom ?" },
-                    { title: "Comment t'as découvert Gatherings ?" },
-                ] }
+                { type: 'random', subtitle: "Encore une dernière !", choices: BaseQuestions }
             ] },
             { color: 'tulip', steps: [
                 { title: "On est bons !", subtitle: "Attends, je crois qu'on a oublié une personne..." },
