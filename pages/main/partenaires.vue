@@ -28,15 +28,15 @@
                 <div class="row">
                     <div class="col-4 col-6@s col-12@xs mb-30@xs">
                         <h2 class="ft-title-s tape tape-strong mb-10">réservations assurées</h2>
-                        <p><b>Nous réservons par tables de 4 personnes.</b> Elles découvrent ton lieu et en parlent autour d'elles.</p>
+                        <p><b>On remplit tes tables quand c'est calme pour toi</b> (début de semaine, dimanche...). On s'occupe de tout.</p>
                     </div>
                     <div class="col-4 col-6@s col-12@xs mb-30@xs">
-                        <h2 class="ft-title-s tape tape-strong mb-10">sans commission</h2>
-                        <p><b>Tu offres la première consommation</b>, mais chaque personne va probablement consommer plus sur place.</p>
+                        <h2 class="ft-title-s tape tape-strong mb-10">gagne en notoriété</h2>
+                        <p><b>4 inconnus = 4 cercles d'amis</b> qui vont entendre parler de toi et qui vont sûrement venir à leur tour.</p>
                     </div>
                     <div class="col-4 col-6@s col-12@xs">
-                        <h2 class="ft-title-s tape tape-strong mb-10">100% flexible</h2>
-                        <p><b>C'est toi qui choisis tes créneaux de réservation :</b> on remplit tes tables quand c'est calme pour toi.</p>
+                        <h2 class="ft-title-s tape tape-strong mb-10">aucun engagement</h2>
+                        <p><b>On t'appelle au moins 1 semaine à l'avance</b> pour réserver des créneaux mais tu as le dernier mot.</p>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        <div class="bg-bg-strong">
+        <!-- <div class="bg-bg-strong">
             <div class="Wrapper pv-40">
                 <h2 class="ft-title-l max-width-m mb-30">Concrètement,<br>comment ça marche ?</h2>
 
@@ -108,6 +108,31 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+        <div class="bg-bg-strong">
+            <div class="Wrapper Wrapper--s pv-40 text-center">
+                <h2 class="ft-title-l mb-10">Fais connaître ton établissement</h2>
+                <p class="max-width-m mb-30 m-auto">On sait qu'une personne qui a déjà visité un lieu sera plus susceptible d'y revenir <b>si elle a vécu une excellente expérience.</b></p>
+
+                <div class="row-s">
+                    <div class="col-4 d-none@xs">
+                        <block-pola :background="assets.social1" style="transform: rotate(-1.5deg)">
+                            Des ramen incroyables à <b>@sakuraramen</b> découverts grâce à @gatheringsfr
+                        </block-pola>
+                    </div>
+                    <div class="col-4 col-12@xs">
+                        <block-pola :background="assets.social2" style="transform: rotate(0.5deg)">
+                            life is better with (new) friends #gatherings #mocktails <b>@barbeuseBar</b>
+                        </block-pola>
+                    </div>
+                    <div class="col-4 col-12@xs">
+                        <block-pola :background="assets.social3" style="transform: rotate(-1deg)">
+                            On dirait pas mais on ne se connaissait pas il y a 2h <b>@lezinzinc</b>
+                        </block-pola>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="bg-cover bg-ice-cream text-center">
@@ -124,6 +149,10 @@
 </template>
 
 <script>
+import social1 from '@/assets/img/social/post_4.jpg'
+import social2 from '@/assets/img/social/post_2.jpg'
+import social3 from '@/assets/img/social/post_3.jpg'
+
 export default {
     name: 'PartnerPage',
     async fetch () {
@@ -132,7 +161,7 @@ export default {
         })
     },
     data: () => ({
-
+        assets: { social1, social2, social3 }
     }),
     computed: {
         gatherings () { return this.$store.getters['gathering/find']() },
