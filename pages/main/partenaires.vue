@@ -6,7 +6,9 @@
                     <div class="col-7 col-12@s">
                         <h1 class="ft-title-l mb-20 ft-title-l@s">Recherche lieux exceptionnels,<br>pour rencontres exceptionnelles.</h1>
 
-                        <p class="ft-l">Nous rassemblons les meilleurs bars, restaurants & activités pour y accueillir nos Gatherings.</p>
+                        <!-- <p class="ft-l">Nous rassemblons les meilleurs bars, restaurants & activités pour y accueillir nos Gatherings.</p> -->
+
+                        <p class="ft-l">Nous créons des groupes de 4 personnes qui ne se connaissent pas et nous leur faisons découvrir un nouveau lieu à Paris.</p>
                     </div>
                     <div class="col-5 col-12@s text-center text-left@xs">
                         <span class="ft-title-s tape tape-strong mv-3 d-none@xs mt-20@s">remplis tes tables</span><br>
