@@ -1,5 +1,5 @@
 <template>
-    <div class="CardDefault" :class="[{ 'is-active': isActive, 'is-sections': sections.length > 0, 'is-steps': steps && steps.length > 1, 'CardDefault--bg': background }, ...classes]" :style="background ? { backgroundImage: `url(${background})` } : {}">
+    <div class="CardDefault" :class="[{ 'is-active': isActive, 'is-sections': sections.length > 0, 'is-steps': steps && steps.length > 1, 'CardDefault--bg': background }, ...classes]" :style="background ? { backgroundImage: `url(${$bg[background] ? $bg[background] : background})` } : {}">
         <card-steps :steps="steps" :current-step="currentStep" />
 
         <div class="CardDefault_titleContainer" v-if="title || subtitle">
@@ -28,6 +28,9 @@
         <button-base :modifiers="['current']" @click.stop="$emit('nextStep')" v-if="nextCta">
             {{ nextCta }}
         </button-base>
+        <div class="text-right" v-else>
+            <button-base :modifiers="['round', 'current']" icon-before="long-arrow-right" @click.stop="$emit('nextStep')" />
+        </div>
     </div>
 </template>
 

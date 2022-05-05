@@ -39,10 +39,10 @@ export default {
         prevStep () {
             this.currentStep = this.currentStep - 1 <= 0 ? 0 : this.currentStep - 1
         },
-        nextStep () {
-            if (this.currentCard.choices && this.currentCard.choices.length > 0) return
+        nextStep (isClickDirection) {
+            // if (this.currentCard.choices && this.currentCard.choices.length > 0) return
 
-            if (this.currentStep == this.steps.length - 1) this.$emit('cardLast')
+            if (this.currentStep == this.steps.length - 1 && !isClickDirection) this.$emit('cardLast')
 
             this.currentStep = this.currentStep >= this.steps.length - 1 ? this.steps.length - 1 : this.currentStep + 1
         },
@@ -50,7 +50,7 @@ export default {
             this.clickDirection = e.offsetX > this.$el.offsetWidth / 2
 
             if (this.clickDirection) {
-                this.nextStep() 
+                this.nextStep(true) 
             } else {
                 this.prevStep()
             }

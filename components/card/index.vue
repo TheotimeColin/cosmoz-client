@@ -28,6 +28,7 @@ export default {
     },
     data: () => ({
         currentItem: 0,
+        maxCurrent: 0,
         position: 0,
         hammer: null,
         pan: 0,
@@ -72,16 +73,20 @@ export default {
             
             this.pan = 0
 
-            if (v.deltaY <= -100) {
+            if (v.deltaY <= -100 && this.currentItem + 1 <= this.maxCurrent) {
                 this.nextItem()
             } else if (v.deltaY >= 100) {
                 this.prevItem()
+            } else {
+                this.reset()
             }
         },
         nextItem () {
             this.reset()
             
             this.currentItem = this.currentItem + 1 >= this.items.length - 1 ? this.items.length - 1 : this.currentItem + 1
+
+            this.maxCurrent = this.currentItem > this.maxCurrent ? this.currentItem : this.maxCurrent
         },
         prevItem () {
             this.reset()
@@ -103,6 +108,12 @@ export default {
 }
 
 .Card {
+    opacity: 0.25;
+    transition: all 200ms ease-out;
+
+    &.is-active {
+        opacity: 1;
+    }
 
     & + & {
         margin-top: 20px;

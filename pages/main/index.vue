@@ -231,8 +231,14 @@ export default {
 
             this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
 
-            this.theme = this.$random(['#chill', '#fiesta', '#escapeGame', '#food', '#mocktails', '#karaoké', '#running', '#hackathon', '#networking', '#marioKart', '#uno', '#books', '#balade', '#beer', '#healthy', '#photographie', '#art', '#streetArt', '#vin', '#coffee', '#quizz', '#blindTest', '#bénévolat', '#goûter', '#queer', '#sushi', '#cuisine', '#atelier', '#pizza', '#gâteaux'])
-        }, 500)
+            let theme = this.theme
+
+            while (theme == this.theme) {
+                theme = this.$random(['#chill', '#fiesta', '#escapeGame', '#food', '#mocktails', '#karaoké', '#running', '#hackathon', '#networking', '#marioKart', '#uno', '#books', '#balade', '#beer', '#healthy', '#photographie', '#art', '#streetArt', '#vin', '#coffee', '#quizz', '#blindTest', '#bénévolat', '#goûter', '#queer', '#sushi', '#cuisine', '#atelier', '#pizza', '#gâteaux'])
+            }
+
+            this.theme = theme
+        }, 400)
     },
     methods: {
         onFavorite () {

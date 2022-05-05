@@ -50,7 +50,7 @@ Vue.mixin({
 
             let regexes = [
                 { regex: /\--(.*?)\--/g, wrap: '<span class="text-through">*</span>' },
-                { regex: /\*(.*?)\*/g, wrap: '<span class="secondary">*</span>' }
+                { regex: /\*(.*?)\*/g, wrap: '<b>*</b>' }
             ]
 
             regexes.forEach(regex => {
