@@ -5,7 +5,7 @@
         </div>
 
         <div class="mt-10">
-            Se rencontrer de manière plus authentique & spontanée. Une nouvelle manière de créer lien, de découvrir sa vill et découvrir l'autre. <b>Nos expériences changent chaque semaine.</b>
+            Se rencontrer de manière plus authentique & spontanée. Une nouvelle manière de créer lien, de découvrir sa ville et découvrir l'autre. <b>De nouvelles expériences chaque semaine.</b>
         </div>
 
         <div class="row">

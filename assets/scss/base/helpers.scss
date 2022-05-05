@@ -306,9 +306,15 @@
     vertical-align: middle;
     font: var(--ft-s-medium);
     line-height: 1;
+}
+
+.round-current,
+.round-s-current,
+.round-xs-current {
     color: var(--color-current-xstrong);
     background-color: var(--color-current);
 }
+
 
 .line-2 {
     line-height: 1.2;

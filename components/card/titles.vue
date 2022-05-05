@@ -1,10 +1,11 @@
 <template>
-    <div class="CardDefault CardTitles" :class="[ { 'is-active': isActive, 'is-steps': steps && steps.length > 1 }, ...classes ]">
-        <div></div>
+    <div class="CardDefault CardTitles" :class="[ { 'is-active': isActive }, ...classes ]">
+        <div>
+            <div class="CardDefault_subtitle" v-html="subtitle ? $options.filters.toHTML(subtitle) : `Sélectionné pour votre groupe`"></div>
+        </div>
 
         <div class="CardDefault_titleContainer" v-if="title || subtitle">
             <div class="CardDefault_title" v-html="$options.filters.toHTML(title)" v-if="title"></div>
-            <div class="CardDefault_subtitle" v-html="$options.filters.toHTML(subtitle)" v-if="subtitle"></div>
         </div>
 
         <button-base :modifiers="['light']" @click.stop="$emit('nextStep')">
@@ -28,10 +29,6 @@ export default {
 
 <style lang="scss" scoped>
 .CardTitles {
-    font: var(--ft-title-xl);
-    letter-spacing: 0.02em;
-    font-size: 38px;
-    line-height: 1;
     color: var(--color-ft-light);
     display: flex;
     flex-direction: column;
@@ -60,6 +57,19 @@ export default {
 
     .CardDefault_titleContainer {
         margin: 0;
+    }
+
+    .CardDefault_title {
+        font: var(--ft-title-xl);
+        letter-spacing: 0.02em;
+        font-size: 38px;
+        line-height: 1;
+    }
+
+    .CardDefault_subtitle {
+        font: var(--ft-s);
+        color: var(--color-ft-light);
+        opacity: 0.5;
     }
 }
 </style>

@@ -16,7 +16,7 @@
 
         <div class="ft-s" >
             <div @click="randomize" v-if="!maxResets && choicesLeft.length > 1 || maxResets && resets < maxResets && choicesLeft.length > 1">
-                <i class="fal fa-rotate-right mr-5"></i> La question ne te convient pas ?<span class="round-xs ml-5">{{ !maxResets ? choicesLeft.length - 1 : maxResets - resets }}</span>
+                <i class="fal fa-rotate-right mr-5"></i> La question ne te convient pas ?<span class="-current ml-5">{{ !maxResets ? choicesLeft.length - 1 : maxResets - resets }}</span>
             </div>
             <div v-else>
                 Cette fois, c'est la bonne !

@@ -62,7 +62,7 @@ export default {
 <style lang="scss" scoped>
 .Card {
     font: var(--ft-title-m);
-    border-radius: 5px;
+    border-radius: 10px;
     color: var(--color-current);
     background-color: var(--color-current-weak);
     height: 70vh;
