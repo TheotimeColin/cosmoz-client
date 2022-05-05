@@ -46,6 +46,16 @@
                     <button-base @click="limit += 6">Afficher la suite</button-base>
                 </div>
             </div>
+
+            <div class="text-center">
+                <p class="ft-title-m max-width-m m-auto">
+                    On imagine de nouvelles expériences toutes les semaines.
+                </p>
+
+                <div class="ft-title-l tape tape-2 mt-20">
+                    {{ theme }}
+                </div>
+            </div>
             
             <!-- <div class="Homepage_week mt-60">
                 <div class="Homepage_weekTitle" :style="{ '--background': `url(https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
@@ -203,6 +213,7 @@ export default {
     data: () => ({
         limit: 6,
         newsletterActive: false,
+        theme: '#chill',
         countdown: '0j 00h 00m 00s'
     }),
     computed: {
@@ -219,6 +230,8 @@ export default {
             let m = this.$moment.duration(nextThursday.diff(this.$moment()))
 
             this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
+
+            this.theme = this.$random(['#chill', '#fiesta', '#escapeGame', '#food', '#mocktails', '#karaoké', '#running', '#hackathon', '#networking', '#marioKart', '#uno', '#books', '#balade', '#beer', '#healthy', '#photographie', '#art', '#streetArt', '#vin', '#coffee', '#quizz', '#blindTest', '#bénévolat', '#goûter', '#queer', '#sushi', '#cuisine', '#atelier', '#pizza', '#gâteaux'])
         }, 500)
     },
     methods: {

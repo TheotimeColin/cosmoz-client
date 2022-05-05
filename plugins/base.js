@@ -93,6 +93,9 @@ Vue.mixin({
         $randomBetween: (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
         },
+        $random: (array) => {
+            return array[Math.floor(Math.random() * (array.length))]
+        },
         $copy (text) {
             if (!navigator.clipboard) {
                 this.$store.commit('flashes/add', {
