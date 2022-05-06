@@ -21,6 +21,7 @@
     &:active {
         transform: scale(0.96);
     }
+
 }
 
 .ButtonBase_iconBefore {
@@ -70,6 +71,13 @@
 .ButtonBase--s {
     padding: 8px 12px;
     font: var(--ft-xs-medium);
+}
+
+.ButtonBase:disabled,
+.ButtonBase--disabled,
+.ButtonBase.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .ButtonBase--round {

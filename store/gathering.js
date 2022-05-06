@@ -84,9 +84,17 @@ export default {
     getters: {
         items: (state) => {
             return Object.values(state.items).map(item => {
-                
+                let thumbnail = ''
+                let hero = ''
+
+                if (item.cover) {
+                    if (item.cover.medias.find(m => m.size == 's')) thumbnail = item.cover.medias.find(m => m.size == 's').src
+                    
+                    if (item.cover.medias.find(m => m.size == 'm')) hero = item.cover.medias.find(m => m.size == 'm').src
+                }
+
                 return {
-                    ...item
+                    ...item, thumbnail, hero,
                 }
             })
         },

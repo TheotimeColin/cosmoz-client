@@ -17,7 +17,7 @@
                         <span class="ft-title-s tape mv-3 d-none@xs">participe à une super expérience</span>
                         <br class="d-none@xs">
 
-                        <button-base tag="a" href="https://calendly.com/gatheringsfr/partenariats" target="_blank" :modifiers="['light']" class="mt-20 mt-0@xs">
+                        <button-base tag="a" href="https://calendly.com/gatheringsfr" target="_blank" :modifiers="['light']" class="mt-20 mt-0@xs">
                             On en discute ?
                         </button-base>
                     </div>

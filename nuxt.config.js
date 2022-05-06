@@ -5,11 +5,11 @@ import fs from 'fs'
 
 export default {
     head: {
-        title: `Gatherings, rencontres hors-ligne en groupes sur Paris.`,
+        title: `Gatherings, rencontres hors-ligne en groupe sur Paris.`,
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: 'Fais des rencontres amicales ou amoureuses sur Paris en participants à nos expériences insolites dans nos lieux partenaires. Groupes mixtes, seulement entre filles ou entre LGBTQ : découvre la rencontre sans applis.' }
+            { hid: 'description', name: 'description', content: 'Fais des rencontres amicales ou amoureuses sur Paris en participant à nos expériences insolites dans nos lieux partenaires. Groupes mixtes, seulement entre filles ou entre LGBTQ : découvre la rencontre sans applis.' }
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }

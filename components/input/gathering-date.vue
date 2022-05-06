@@ -2,8 +2,13 @@
     <div class="InputDate">
         <div class="fx-center mb-10" v-for="(row, i) in localValue" :key="i">
             <input-base type="datetime-local" class="mr-5" v-model="row.date" />
+
             <select-base class="mr-5" v-model="row.category" :options="CATEGORIES" />
+
             <input-base type="text" placeholder="Lien Meetup" class="mr-5" v-model="row.link" />
+
+            <input-base type="number" label="Restant" class="mr-5" v-model="row.left" />
+
             <button-base :modifiers="['round', 'xs']" icon-before="trash-alt" @click="onDelete(i)" />
         </div>
 
@@ -61,7 +66,7 @@ export default {
         onAdd () {
             this.localValue = [
                 ...this.localValue,
-                { date: new Date(), category: 1, link: '' }
+                { date: new Date(), category: 1, link: '', left: 0 }
             ]
         }
     }
