@@ -8,6 +8,7 @@ let Gathering = {
         subtitle: { type: String, write: 'editor' },
         included: { type: String, write: 'editor' },
         meetup: { type: String, write: 'editor' },
+        price: { type: Number, write: 'editor' },
         dates: { type: Array, default: [], write: 'editor' },
         location: { type: String, write: 'editor' },
         status: { type: String, write: 'editor' },

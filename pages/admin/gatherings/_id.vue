@@ -38,10 +38,14 @@ export default {
                 type: 'string',
                 label: `Lien Meetup`
             }, {
+                key: 'price',
+                type: 'number',
+                label: `Prix`
+            }, {
                 key: 'included',
                 type: 'string',
                 label: `Ce qui est inclus`
-            }, {
+            },  {
                 key: 'location',
                 type: 'string',
                 label: `Zone`

@@ -15,6 +15,7 @@ export default {
             return {
                 ...form,
                 cover: form.cover ? form.cover._id : '',
+                price: form.price ? parseInt(form.price) : 0,
                 status: CONSTANTS.status[form.status].value
             }
         }

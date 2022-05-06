@@ -56,21 +56,6 @@
                     {{ theme }}
                 </div>
             </div>
-            
-            <!-- <div class="Homepage_week mt-60">
-                <div class="Homepage_weekTitle" :style="{ '--background': `url(https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
-                    <span>cette semaine <b>02 - 09 avril</b></span>
-                </div>
-                <div class="Homepage_row">
-                    <div class="row-s">
-                        <div class="col-4 col-6@s mb-40" v-for="gathering in gatherings" :key="gathering._id">
-                            <block-gathering
-                                v-bind="gathering"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
 
         <popin-newsletter :is-active="newsletterActive" origin="home" @close="newsletterActive = false" />
@@ -217,7 +202,18 @@ export default {
         countdown: '0j 00h 00m 00s'
     }),
     computed: {
-        gatherings () { return this.$store.getters['gathering/find']({ status: 'active' }) },
+        gatherings () {
+            return this.$store.getters['gathering/find']({
+                status: 'active',
+                nextDate: null
+            })
+        },
+        upcomingGatherings () {
+            return this.$store.getters['gathering/find']({
+                status: 'active',
+                nextDate: true
+            })
+        }
     },
     mounted () {
         let nextThursday = this.$moment('28-04-2022 18:00', 'DD-MM-YYYY HH:mm')

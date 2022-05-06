@@ -112,6 +112,7 @@ export default {
             return this.form.reduce((form, input) => {
                 let result = null
 
+                if (input.type == 'number') result = 0
                 if (input.type == 'string' || input.type == 'paper') result = ''
                 if (input.type == 'medias' || input.type == 'gathering-date') result = []
 

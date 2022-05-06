@@ -16,7 +16,7 @@
                     <div class="d-flex mt-20">
                         <div class="fx-grow">
                             <p class="ft-l-bold" v-if="gathering.included">{{ gathering.included }}</p>
-                            <p class="ft-m tape tape-strong mt-5"><i>Tarif : 8€</i></p>
+                            <p class="ft-m tape tape-strong mt-5"><i>Tarif : {{ gathering.price }}€</i></p>
                         </div>
 
                         <div class="text-center ml-20">
