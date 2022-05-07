@@ -34,7 +34,7 @@
                 <span>
                     {{ $moment(date.date).format('dddd DD') }}
 
-                    <b> · {{ $moment(date.date).format('H:mm') }}</b>
+                    <b> à {{ $moment(date.date).format('H:mm') }}</b>
                 </span>
 
                 <div class="ml-10">
@@ -207,7 +207,7 @@ export default {
     font: var(--ft-s);
     line-height: 1;
     min-height: 43px;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     padding: 3px 3px 3px 12px;

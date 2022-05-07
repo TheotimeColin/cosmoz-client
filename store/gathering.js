@@ -94,7 +94,10 @@ export default {
                 }
 
                 return {
-                    ...item, thumbnail, hero,
+                    ...item,
+                    thumbnail,
+                    nextDate: item.dates.length > 0,
+                    hero,
                 }
             })
         },
@@ -103,7 +106,11 @@ export default {
             
             if (search) {
                 Object.keys(search).forEach(key => {
-                    items = items.filter(item => item[key] == search[key])
+                    if (search[key] == '$notNull') {
+                        items = items.filter(item => item[key])
+                    } else {
+                        items = items.filter(item => item[key] == search[key])
+                    }
                 })
             }
 
