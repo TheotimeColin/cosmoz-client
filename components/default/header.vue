@@ -8,16 +8,12 @@
             <div class="DefaultHeader_nav">
                 <link-base :href="$config.blogUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
                 
-                <a href="https://www.instagram.com/gatheringsfr" class="DefaultHeader_navItem" target="_blank">
-                    <icon-base name="icon/instagram" class="fill-ft-light" :width="20" /> <span class="d-none ml-10 d-block@s">Gatherings sur Instagram</span>
-                </a>
-
-                <button-base :modifiers="['light', 's']" class="ml-20 d-none@s" @click="isNewsletter = true">
+                <link-base :href="$config.appUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false" v-if="user">
+                    {{ user.name ? user.name : user.email }}
+                </link-base>
+                <button-base :modifiers="['light', 's']" class="ml-20 d-none@s" @click="isNewsletter = true" v-else>
                     Trouver ma constellation
                 </button-base>
-
-                
-                <link-base class="DefaultHeader_navItem d-none d-block@s" @click="isNewsletter = true">Trouver ma constellation</link-base>
             </div>
 
             <div class="DefaultHeader_burger" @click="isOpen = !isOpen">
@@ -34,9 +30,11 @@
 export default {
     name: 'DefaultHeader',
     data: () => ({
-        isOpen: false,
-        isNewsletter: false
-    })
+        isOpen: false
+    }),
+    computed: {
+        user () { return this.$store.state.auth.user },
+    }
 }
 </script>
 

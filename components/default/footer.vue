@@ -1,6 +1,6 @@
 <template>
     <footer class="Footer">
-        <popin-newsletter :is-active="isNewsletter" origin="footer" @close="isNewsletter = false" />
+        <!-- <popin-newsletter :is-active="isNewsletter" origin="footer" @close="isNewsletter = false" />
 
         <div class="bg-cover bg-plastic-black">
             <div class="Wrapper pv-30 fx-center d-block@xs">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="Wrapper">
             <div class="Footer_container d-flex d-block@s">
                 <div class="fx-grow">

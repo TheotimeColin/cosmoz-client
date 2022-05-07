@@ -68,6 +68,7 @@ export default {
 }
 
 .LayoutDefault_content {
+    min-height: calc(100vh - 65px);
     margin-top: 65px;
 }
 </style>

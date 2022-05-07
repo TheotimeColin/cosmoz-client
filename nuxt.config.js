@@ -106,6 +106,7 @@ export default {
         baseDomain: process.env.BASE_DOMAIN,
         domains: process.env.DOMAINS.split(','),
         baseUrl: process.env.BASE_URL,
+        appUrl: process.env.APP_URL,
         blogUrl: process.env.BLOG_URL,
         boutiqueUrl: process.env.SHOP_URL,
         dashboardUrl: process.env.DASHBOARD_URL,

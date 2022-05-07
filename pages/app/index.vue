@@ -6,7 +6,8 @@
 
 <script>
 export default {
-    name: 'DashboardIndex'
+    name: 'DashboardIndex',
+    middleware: 'confirmed'
 }
 </script>
 
