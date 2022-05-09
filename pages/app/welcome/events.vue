@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="p-relative bg-bg-strong">
+        <div class="p-relative bg-bg-xstrong">
             <div id="faq" class="anchor"></div>
 
             <div class="Wrapper Wrapper--s pv-40 ft-l">

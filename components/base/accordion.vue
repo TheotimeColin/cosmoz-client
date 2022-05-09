@@ -31,6 +31,11 @@ export default {
     border-radius: 3px;
 
     &.is-active {
+
+        .Accordion_title,
+        .Accordion_icon {
+            color: var(--color-ft-weak);
+        }
         
         .Accordion_content {
             position: relative;
@@ -39,6 +44,13 @@ export default {
             pointer-events: all;
             transition: all 150ms ease;
         }
+
+        .Accordion_icon {
+            transform: rotate(90deg);
+        }
+    }
+
+    &:hover {
 
         .Accordion_icon {
             transform: rotate(90deg);

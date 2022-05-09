@@ -1,6 +1,6 @@
 <template>
     <div>
-        <transition v-for="item in items" name="fade" :key="item.content">
+        <transition v-for="item in choices" name="fade" :key="item.content">
             <div class="Conversation_step" :class="{ 'is-past': item.step < step }" v-show="step >= item.step">
                 <div class="Conversation_content mr-40" v-html="item.content"></div>
                 <div class="mt-20 text-right">
@@ -40,17 +40,21 @@ export default {
         onAction (current, choice) {
             this.$emit('action', choice.value ? choice.value : null)
 
-            if (current.step < this.step) {
-                this.step = current.step
+            if (choice.action) {
+                choice.action()
+            } else {
+                if (current.step < this.step) {
+                    this.step = current.step
+                }
+
+                this.choices = this.items.map(item => ({
+                    ...item,
+                    choice: item.id == current.id ? choice.id : (item.step > this.step ? null : item.choice)
+                }))
+
+
+                if (choice.value == null) this.step++
             }
-
-            this.items = this.items.map(item => ({
-                ...item,
-                choice: item.id == current.id ? choice.id : (item.step > this.step ? null : item.choice)
-            }))
-
-
-            if (choice.value == null) this.step++
         }
     }
 }
@@ -76,6 +80,9 @@ export default {
 
 .Conversation_content {
     max-width: 75%;
+    padding: 20px;
+    background: var(--color-bg-xstrong);
+    border-radius: 4px;
 }
 
 .Conversation_choice {

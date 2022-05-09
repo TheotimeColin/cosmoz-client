@@ -6,9 +6,10 @@
     padding: 0;
     color: var(--color-ft-light);
     text-underline-offset: 0.085rem;
+    text-decoration: underline;
 
     &:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
     &:active {

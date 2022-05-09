@@ -44,7 +44,7 @@ export default {
         top: 0;
         width: 100%;
         z-index: 90;
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg-xstrong);
     }
 
     .DefaultHeader_wrapper {
@@ -104,7 +104,7 @@ export default {
             transform: translateY(100%);
             z-index: 100;
             display: none;
-            background-color: var(--color-bg-strong);
+            background-color: var(--color-bg-xstrong);
             border-top: 1px solid var(--color-border);
             transition: all 200ms ease;
         }

@@ -56,7 +56,8 @@
 }
 
 .logo-sparkle,
-.logo-sparkle-a {
+.logo-sparkle-a,
+.logo-sparkle-p {
     position: relative;
 
     &::before {
@@ -76,6 +77,16 @@
 .logo-sparkle-a::before {
     top: 10px;
     left: -35px;
+}
+
+.logo-sparkle-p::before {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 26px;
+    vertical-align: bottom;
+    top: auto;
+    left: auto;
 }
 
 .bg-holo { --background: url('./../img/texture/holo.webp'); }
@@ -151,7 +162,13 @@
 
 .tape-strong  {
     color: var(--color-ft-light);
-    background: var(--color-bg-strong);
+    background: var(--color-bg-xstrong);
+}
+
+.subtitle {
+    color: var(--color-ft-weak);
+    text-transform: uppercase;
+    font-style: italic;
 }
 
 .tape-1 {

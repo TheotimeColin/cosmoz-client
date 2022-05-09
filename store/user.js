@@ -77,11 +77,41 @@ export default {
 
                 settings = { ...settings, ...params }
 
-                console.log(settings)
-
                 const response = await this.$axios.$post('/entities', {
                     _id: rootState.auth.user._id, params: {
                         settings
+                    }, type: 'user'
+                })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                this.$auth.fetchUser()
+    
+                return response
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
+        async updateNotification ({ rootState }, notification) {
+            try {
+                let notifications = rootState.auth.user.notifications.slice()
+
+                if (!notification.status) notification.status == 'read'
+
+                let found = false
+                notifications.map(n => {
+                    let existing = n.id == notification.id && n.type == notification.type
+                    if (existing) found = true
+
+                    return { ...n, ...(existing ? notification : {}) }
+                })
+
+                if (!found) notifications = [ ...notifications, notification ]
+
+                const response = await this.$axios.$post('/entities', {
+                    _id: rootState.auth.user._id, params: {
+                        notifications
                     }, type: 'user'
                 })
                 

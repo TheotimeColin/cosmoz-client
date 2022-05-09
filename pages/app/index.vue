@@ -1,13 +1,19 @@
 <template>
-    <div class="bg-cream-xweak">
-        <p class="color-cream-xstrong ft-title-m">What the dog doing</p>
+    <div class="">
+        <app-banner :background="$bg.iceCream">
+            Envie de sortir ?
+        </app-banner>
+        <div class="Wrapper">
+            <p class="ft-title-l mt-30">Commencent bientôt</p>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     name: 'DashboardIndex',
-    middleware: 'confirmed'
+    middleware: 'onboarded',
+    layout: 'app'
 }
 </script>
 

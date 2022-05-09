@@ -86,7 +86,7 @@ export default {
 
 .Card.is-strong {
     color: var(--color-ft-light);
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
 
     .CardDefault_step {
         background-color: var(--color-bg-weak);

@@ -151,7 +151,7 @@ export default {
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     text-align: center;
     position: relative;
 

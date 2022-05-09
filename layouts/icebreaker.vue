@@ -1,9 +1,6 @@
 <template>
-    <div class="Layout LayoutDefault LayoutApp" :class="[ classes ]">
-        <app-nav />
-
-        <div class="LayoutApp_content">
-            <!-- <app-header /> -->
+    <div class="Layout LayoutDefault" :class="[ classes ]">
+        <div class="LayoutDefault_content">
             <Nuxt />
         </div>
     </div>
@@ -13,7 +10,7 @@
 import { TooltipManager } from 'instant-coffee-core'
 
 export default {
-    name: 'LayoutApp',
+    name: 'LayoutDefault',
     components: { TooltipManager },
     computed: {
         classes () { return this.$store.state.page.body.classes }
@@ -39,12 +36,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.LayoutApp {
-    display: flex;
-    background-color: var(--color-bg);
-}
-
-.LayoutApp_content {
-    flex-grow: 1;
-}
 </style>

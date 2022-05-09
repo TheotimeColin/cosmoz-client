@@ -12,15 +12,13 @@ let UserEntity = {
         password: { type: String, write: 'self', read: 'private' },
         role: { type: String, write: 'admin', default: 'guest' },
         name: { type: String, write: 'self' },
-        surname: { type: String, write: 'self' },
-        address: { type: String, write: 'self' },
-        address2: { type: String, write: 'self' },
-        ref: { type: String, write: 'self' },
-        city: { type: String, write: 'self' },
-        postalCode: { type: String, write: 'self' },
-        country: { type: String, write: 'self' },
-        settings: { type: Object, write: 'self' },
+
         categories: { type: Array, default: [], write: 'self' },
+        ref: { type: String, write: 'self' },
+
+        settings: { type: Object, write: 'self' },
+        notifications: { type: Array, default: [], write: 'self' },
+
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })
 }
