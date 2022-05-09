@@ -3,6 +3,10 @@
     --banner-base: 150px;
 }
 
+.LayoutApp {
+    --header-base: 0px;
+}
+
 .LayoutAdmin {
     display: flex;
     min-height: 100vh;

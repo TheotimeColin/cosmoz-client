@@ -46,5 +46,6 @@ export default {
 
 .LayoutApp_content {
     flex-grow: 1;
+    margin-left: 300px;
 }
 </style>

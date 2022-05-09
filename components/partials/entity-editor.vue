@@ -113,6 +113,7 @@ export default {
                 let result = null
 
                 if (input.type == 'number') result = 0
+                if (input.type == 'date' || input.type == 'datetime-local') result = new Date()
                 if (input.type == 'string' || input.type == 'paper') result = ''
                 if (input.type == 'medias' || input.type == 'gathering-date') result = []
 
@@ -126,6 +127,7 @@ export default {
             if (input.type == 'gathering-date') type = 'input-gathering-date'
             if (input.type == 'paper') type = 'input-paper'
             if (input.type == 'select') type = 'select-base'
+            if (input.type == 'date' || input.type == 'datetime-local') type = 'input-date'
             if (input.key == 'slug') type = null
 
             return type

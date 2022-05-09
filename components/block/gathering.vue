@@ -4,43 +4,23 @@
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
-            <span v-html="$options.filters.verticalize(title)"></span>
-
-            <div class="BlockGathering_heart" @click="onFavorite">
-                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favoritesNumber">{{ favoritesNumber }}</b>
-            </div>
-        </div>
-        
-        <div class="BlockGathering_content">
-            <div class="BlockGathering_location fx-center">
-                <p class="">{{ isPast ? 'Lieu secret' : location }}</p>
-                
-                <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
-            </div>
-
-            <h3 class="BlockGathering_title">
-                {{ subtitle }}
-            </h3>
-        </div>
-
-        <div class="BlockGathering_dates" v-if="!hideDates">
-            <a
-                v-for="(date, i) in dates"
-                :href="date.link"
-                class="BlockGathering_date"
-                :class="{ 'is-past': $moment(date.date).isBefore($moment()) }"
-                :key="i"
-            >
-                <span>
-                    {{ $moment(date.date).format('dddd DD') }}
-
-                    <b> à {{ $moment(date.date).format('H:mm') }}</b>
-                </span>
-
-                <div class="ml-10">
-                    <tag-category class="BlockGathering_tag" :category="date.category" v-if="date.category != 0" />
+            <div class="BlockGathering_content">
+                <div class="ft-s-bold">
+                    {{ tagline }}
                 </div>
-            </a>
+
+                <div>
+                    <div class="BlockGathering_location fx-center">
+                        <p class="">
+                            {{ $moment(date).fromNow() }} · {{ location }}
+                        </p>
+                    </div>
+
+                    <h3 class="BlockGathering_title">
+                        {{ title }}
+                    </h3>
+                </div>
+            </div>
         </div>
     </component>
 </template>
@@ -51,14 +31,14 @@ export default {
     props: {
         _id: { type: String },
         title: { type: String },
-        subtitle: { type: String },
+        max: { type: Number, default: 0 },
+        attending: { type: Array, default: () => [] },
+        waiting: { type: Array, default: () => [] },
         place: { type: String },
         location: { type: String },
-        favorites: { type: Number, default: 0 },
-        dates: { type: Array, default: () => [] },
+        date: { type: Date },
         cover: { type: Object, default: () => ({}) },
-        link: { type: [Object, Boolean], default: false },
-        hideDates: { type: Boolean, default: false }
+        link: { type: [Object, Boolean], default: false }
     },
     data: () => ({
         hasFavorited: false,
@@ -69,9 +49,7 @@ export default {
     },
     computed: {
         isPast () {
-            return this.dates.length == 0 || !this.dates.reduce((hasDate, date) => {
-                return this.$moment(date.date).isAfter(this.$moment()) ? true : hasDate
-            }, false)
+            return false
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
@@ -79,6 +57,21 @@ export default {
         },
         favoritesNumber () {
             return this.favorites + (this.hasPendingFavorite ? 1 : 0)
+        },
+        tagline () {
+            let tagline = this.attending.length + ' inscrits'
+
+            if (this.attending.length == 0 && this.max > 0) {
+                tagline = `${this.max} places restantes`
+            } else if (this.max == this.attending.length && this.waiting.length > 0) {
+                tagline = `${this.waiting.length} en liste d'attente`
+            } else if (this.max == this.attending.length) {
+                tagline = `Sur liste d'attente`
+            } else if (this.max - this.attending.length <= 5) {
+                tagline = `Plus que ${this.max - this.attending.length} places !`
+            }
+
+            return tagline
         }
     },
     methods: {
@@ -104,26 +97,10 @@ export default {
 
 <style lang="scss" scoped>
 .BlockGathering {
-    
+    display: block;
+
     &:hover {
-
-        .BlockGathering_coverImage {
-            opacity: 0.25;
-        }
-
-        .BlockGathering_cover span {
-            transform: scale(0.95);
-            opacity: 0.35;
-            color: var(--color-ft-light);
-            filter: blur(2px);
-        }
-
-        .BlockGathering_heart {
-            transform: scale(1);
-            opacity: 1;
-            filter: none;
-            transition-delay: 100ms;
-        }
+    
     }
 }
 
@@ -133,7 +110,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.3;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
@@ -145,133 +122,43 @@ export default {
 
 .BlockGathering_cover {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+    border-radius: 8px;
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
     background-color: var(--color-bg-xstrong);
-    text-align: center;
+    text-align: left;
     position: relative;
-
-    span {
-        padding: 0 15px;
-        position: relative;
-        transition: all 150ms ease;
-    }
     
     &::before {
-        @include ratio(60);
+        @include ratio(50);
     }
-}
-
-.BlockGathering_heart {
-    position: absolute;
-    top: 50%;
-    left: auto;
-    right: auto;
-    font-size: 25px;
-    fill: var(--color-ft-light);
-    margin: -12px auto 0;
-    cursor: pointer;
-    display: inline-flex;
-    filter: blur(1px);
-    transform: scale(1.2);
-    opacity: 0;
-    transition: all 150ms ease;
 }
 
 .BlockGathering_content {
-    margin-top: 10px;
+    position: relative;
+    padding: 20px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
 .BlockGathering_title {
-    font: var(--ft-title-xs);
+    font: var(--ft-title-s);
     transition: all 150ms ease; 
 }
 
 .BlockGathering_location {
     margin-bottom: 5px;
     font: var(--ft-xs);
-    color: var(--color-ft-weak);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
-.BlockGathering_dates {
-    margin-top: 10px;
-}
-
-.BlockGathering_date {
-    font: var(--ft-s);
-    line-height: 1;
-    min-height: 43px;
-    // text-transform: uppercase;
-    display: inline-flex;
-    align-items: center;
-    padding: 3px 3px 3px 12px;
-    border: 1px solid var(--color-border);
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    margin: 5px 10px 0 0;
-
-    b {
-        font: var(--ft-s);
-        line-height: 1;
-    }
-
-    &.is-past {
-        
-        b {
-            font: var(--ft-s);
-        }
-        
-        span {
-            color: var(--color-ft-weak);
-            text-decoration: line-through;
-        }
-
-        .BlockGathering_tag {
-            opacity: 0.5;
-        }
-    }
-
-    &:hover {
-        color: var(--color-ft);
-        background-color: var(--color-bg-light);
-
-        span {
-            text-decoration: none;
-        }
-
-        .BlockGathering_tag {
-            opacity: 1;
-        }
-    }
-}
-
 @include breakpoint-s {
-    .BlockGathering {
-        
-        &:hover {
 
-            .BlockGathering_coverImage {
-                opacity: 0.5;
-            }
-
-            .BlockGathering_cover span {
-                transform: none;
-                opacity: 1;
-                filter: none;
-                color: var(--color-ft-light);
-            }
-
-            .BlockGathering_heart {
-                display: none;
-            }
-        }
-    }
 }
 
 </style>

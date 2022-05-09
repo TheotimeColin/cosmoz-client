@@ -5,16 +5,35 @@ let Gathering = {
     read: 'public',
     fields: new mongoose.Schema({
         title: { type: String, write: 'editor' },
-        subtitle: { type: String, write: 'editor' },
-        included: { type: String, write: 'editor' },
-        meetup: { type: String, write: 'editor' },
-        price: { type: Number, write: 'editor' },
-        dates: { type: Array, default: [], write: 'editor' },
+
+        intro: { type: String, write: 'editor' },
         location: { type: String, write: 'editor' },
+        date: { type: Date, write: 'editor' },
+
+        description: { type: String, write: 'editor' },
+        venue: { type: String, write: 'editor' },
+        important: { type: String, write: 'editor' },
+
+        
+        price: { type: Number, write: 'editor' },
+        max: { type: Number, write: 'editor' },
+
+        targets: { type: Array, default: [], write: 'editor' },
+        tags: { type: Array, default: [], write: 'editor' },
+
+        meetup: { type: String, write: 'editor' },
+
         status: { type: String, write: 'editor' },
         favorites: { type: Number, default: 0, write: 'public' },
-        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
-        experience: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'experience' }
+
+        waiting: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
+        ],
+        attending: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
+        ],
+
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' }
     }, { timestamps: true })
 }
 

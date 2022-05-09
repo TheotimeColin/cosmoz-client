@@ -128,7 +128,7 @@ export default {
 
     gtm: {
         id: process.env.GTM_ID,
-        enabled: true,
+        enabled: process.env.NODE_ENV == 'PRODUCTION',
         debug: process.env.NODE_ENV != 'PRODUCTION',
         pageTracking: true,
         respectDoNotTrack: false

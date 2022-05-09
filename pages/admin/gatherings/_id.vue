@@ -30,28 +30,28 @@ export default {
                 type: 'string',
                 label: `Titre principal`
             }, {
-                key: 'subtitle',
-                type: 'string',
-                label: `Sous-titre`
+                key: 'intro',
+                type: 'textarea',
+                label: `Introduction`
             }, {
-                key: 'meetup',
-                type: 'string',
-                label: `Lien Meetup`
+                key: 'description',
+                type: 'paper',
+                label: `Description`
             }, {
-                key: 'price',
-                type: 'number',
-                label: `Prix`
+                key: 'venue',
+                type: 'paper',
+                label: `Le lieu`
             }, {
-                key: 'included',
-                type: 'string',
-                label: `Ce qui est inclus`
-            },  {
                 key: 'location',
                 type: 'string',
                 label: `Zone`
             }, {
-                key: 'dates',
-                type: 'gathering-date'
+                key: 'max',
+                type: 'number',
+                label: `Nombre de participants`
+            }, {
+                key: 'date',
+                type: 'datetime-local'
             }, {
                 key: 'status',
                 type: 'select',

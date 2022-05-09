@@ -1,4 +1,5 @@
 .p-sticky {
+    position: sticky !important;
     top: calc(var(--header-base) + var(--offset, 0px));
 }
 
