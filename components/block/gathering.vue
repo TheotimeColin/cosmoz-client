@@ -1,12 +1,17 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast, 'is-favorite': hasFavorited }">
+    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="{ 'is-past': isPast }">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
             <div class="BlockGathering_content">
-                <div class="ft-s-bold">
-                    {{ tagline }}
+                <div class="ft-s-bold fx-center width-100">
+                    <div>
+                        {{ tagline }}
+                    </div>
+                    <div v-if="hasBooked">
+                        Je suis inscrit <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                    </div>
                 </div>
 
                 <div>
@@ -22,14 +27,14 @@
                 </div>
             </div>
         </div>
-    </component>
+    </nuxt-link>
 </template>
 
 <script>
 export default {
     name: 'BlockGathering',
     props: {
-        _id: { type: String },
+        id: { type: String },
         title: { type: String },
         max: { type: Number, default: 0 },
         attending: { type: Array, default: () => [] },
@@ -41,22 +46,20 @@ export default {
         link: { type: [Object, Boolean], default: false }
     },
     data: () => ({
-        hasFavorited: false,
-        hasPendingFavorite: false
+
     }),
-    created () {
-        if (this.$cookies.get('fav-' + this._id)) this.hasFavorited = true
-    },
     computed: {
+        user () { return this.$store.state.auth.user },
+        hasBooked () { return this.attending.includes(this.user._id) },
         isPast () {
             return false
+        },
+        defaultLink () {
+            return this.localePath({ name: 'g-id', params: { id: this.id } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
-        },
-        favoritesNumber () {
-            return this.favorites + (this.hasPendingFavorite ? 1 : 0)
         },
         tagline () {
             let tagline = this.attending.length + ' inscrits'
@@ -72,24 +75,6 @@ export default {
             }
 
             return tagline
-        }
-    },
-    methods: {
-        async onFavorite () {
-            if (this.hasFavorited) return
-
-            this.$cookies.set('fav-' + this._id, true, { maxAge: 999999 })
-            this.hasPendingFavorite = true
-            this.hasFavorited = true
-
-            await this.$store.dispatch('gathering/create', {
-                _id: this._id,
-                params: { favorites: '$inc' }
-            })
-
-            this.hasPendingFavorite = false
-
-            this.$emit('favorite')
         }
     }
 }
@@ -121,7 +106,7 @@ export default {
 }
 
 .BlockGathering_cover {
-    display: flex;
+    display: block;
     border-radius: 8px;
     overflow: hidden;
     font: var(--ft-title-l);
@@ -131,12 +116,16 @@ export default {
     position: relative;
     
     &::before {
-        @include ratio(50);
+        @include ratio(40);
     }
 }
 
 .BlockGathering_content {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     padding: 20px;
     z-index: 5;
     display: flex;

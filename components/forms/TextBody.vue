@@ -1,5 +1,5 @@
 <template>
-    <div class="TextBody TextBody--no-edit color-ft" :class="[ ...$modifiers ]">
+    <div class="TextBody TextBody--no-edit" :class="[ ...$modifiers ]">
         <div class v-html="value" v-if="!editor"></div>
         <editor-content :editor="editor" ref="text" v-if="editor" />
     </div>

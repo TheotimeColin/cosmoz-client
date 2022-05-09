@@ -4,6 +4,7 @@ let Gathering = {
     write: 'public',
     read: 'public',
     fields: new mongoose.Schema({
+        id: { type: String, write: 'editor' },
         title: { type: String, write: 'editor' },
 
         intro: { type: String, write: 'editor' },
@@ -13,8 +14,8 @@ let Gathering = {
         description: { type: String, write: 'editor' },
         venue: { type: String, write: 'editor' },
         important: { type: String, write: 'editor' },
-
-        
+        information: { type: String, write: 'editor' },
+       
         price: { type: Number, write: 'editor' },
         max: { type: Number, write: 'editor' },
 
@@ -26,6 +27,9 @@ let Gathering = {
         status: { type: String, write: 'editor' },
         favorites: { type: Number, default: 0, write: 'public' },
 
+        interested: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
+        ],
         waiting: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
         ],

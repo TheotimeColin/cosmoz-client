@@ -20,8 +20,9 @@ export default {
     components: { InputBase, SelectBase },
     data: () => ({
         _id: '',
-        form: [
-            {
+        form: [ {
+                key: 'id'
+            }, {
                 key: 'cover',
                 type: 'media',
                 label: `Couverture`
@@ -41,6 +42,14 @@ export default {
                 key: 'venue',
                 type: 'paper',
                 label: `Le lieu`
+            }, {
+                key: 'important',
+                type: 'paper',
+                label: `Important`
+            }, {
+                key: 'information',
+                type: 'paper',
+                label: `Informations pratiques`
             }, {
                 key: 'location',
                 type: 'string',
