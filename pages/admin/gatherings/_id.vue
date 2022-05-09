@@ -5,7 +5,8 @@
             entity-type="gathering"
             :block-type="{ type: 'block-gathering', classes: 'max-width-s m-auto' }"
             :form="form"
-        />
+        >
+        </entity-editor>
     </div>
 </template>
 
@@ -69,8 +70,18 @@ export default {
             }
         ]
     }),
+    computed: {
+        gathering () {
+            return this.$store.getters[`gathering/findOne`]({ _id: this._id }, true)
+        },
+    },
     created () {
         this._id = this.$route.params.id
+    },
+    methods: {
+        onUserAttendance () {
+
+        }
     }
 }
 </script>

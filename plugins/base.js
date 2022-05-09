@@ -183,9 +183,10 @@ Vue.mixin({
             return this.$store.getters['page/smallerThan'](v)
         },
         $biggerThan (v) {
-            console.log('bigger')
-            console.log(this.$store.getters['page/biggerThan'](v))
             return this.$store.getters['page/biggerThan'](v)
+        },
+        $randomColor () {
+            return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
         }
     }
 })

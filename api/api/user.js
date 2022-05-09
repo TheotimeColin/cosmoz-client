@@ -16,16 +16,16 @@ exports.logUser = async function (req, res) {
     let user = null
 
     try {
-        if (req.body.type == 'guest') {
-            if (req.body._id) user = await Entities.user.model.findById(req.body._id)
-            if (!user) user = await Entities.user.model.create({ role: 'guest' })
+        // if (req.body.type == 'guest') {
+        //     if (req.body._id) user = await Entities.user.model.findById(req.body._id)
+        //     if (!user) user = await Entities.user.model.create({ role: 'guest' })
 
-            token = jwt.sign({ id: user._id }, process.env.SECRET, {
-                expiresIn: 864000
-            })
+        //     token = jwt.sign({ id: user._id }, process.env.SECRET, {
+        //         expiresIn: 864000
+        //     })
 
-            data = user
-        } else {
+        //     data = user
+        // } else {
             if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
             
             if (process.env.RECAPTCHA_BYPASS != "true") {
@@ -86,7 +86,7 @@ exports.logUser = async function (req, res) {
             } else {
                 throw Error('wrongCredentials')
             }
-        }
+        // }
     } catch (e) {
         console.error(e)
         errors.push(e.message)

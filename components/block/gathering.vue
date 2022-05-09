@@ -37,8 +37,7 @@ export default {
         id: { type: String },
         title: { type: String },
         max: { type: Number, default: 0 },
-        attending: { type: Array, default: () => [] },
-        waiting: { type: Array, default: () => [] },
+        users: { type: Array, default: () => [] },
         place: { type: String },
         location: { type: String },
         date: { type: Date },
@@ -50,7 +49,7 @@ export default {
     }),
     computed: {
         user () { return this.$store.state.auth.user },
-        hasBooked () { return this.attending.includes(this.user._id) },
+        hasBooked () { return this.users.find(u => u._id == this.user._id && u.status == 'attending') },
         isPast () {
             return false
         },
@@ -61,15 +60,19 @@ export default {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
         },
+        attending () {
+            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed')
+        },
+        waiting () {
+            return this.users.filter(u => u.status == 'waiting')
+        },
         tagline () {
             let tagline = this.attending.length + ' inscrits'
 
             if (this.attending.length == 0 && this.max > 0) {
                 tagline = `${this.max} places restantes`
-            } else if (this.max == this.attending.length && this.waiting.length > 0) {
-                tagline = `${this.waiting.length} en liste d'attente`
-            } else if (this.max == this.attending.length) {
-                tagline = `Sur liste d'attente`
+            } else if (this.max <= this.attending.length) {
+                tagline = `Événement complet`
             } else if (this.max - this.attending.length <= 5) {
                 tagline = `Plus que ${this.max - this.attending.length} places !`
             }

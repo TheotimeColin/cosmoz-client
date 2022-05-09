@@ -27,15 +27,7 @@ let Gathering = {
         status: { type: String, write: 'editor' },
         favorites: { type: Number, default: 0, write: 'public' },
 
-        interested: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
-        ],
-        waiting: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
-        ],
-        attending: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'user' }
-        ],
+        users: { type: Array, default: [], write: 'editor' },
 
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' }
     }, { timestamps: true })
@@ -44,6 +36,7 @@ let Gathering = {
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
+    
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

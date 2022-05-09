@@ -10,9 +10,11 @@
         @click="$emit('click')"
     >
         <div class="LinkBase_content">
+            <i class="fal mr-5" :class="[`fa-${iconBefore}`]" v-if="iconBefore"></i>
+
             <slot></slot>
 
-            <i class="fal" :class="[`fa-${fa}`]" v-if="fa"></i>
+            <i class="fal ml-5" :class="[`fa-${iconAfter}`]" v-if="iconAfter"></i>
         </div>
     </component>
 </template>
@@ -24,7 +26,8 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         tag: { type: [String, Boolean], default: false },
-        fa: { type: [ String, Boolean ], default: false },
+        iconAfter: { type: [ String, Boolean ], default: false },
+        iconBefore: { type: [ String, Boolean ], default: false },
         target: { type: String, defaut: '_self' },
         node: { type: Object, default: () => {} },
         to: { type: Object, default: () => {} },

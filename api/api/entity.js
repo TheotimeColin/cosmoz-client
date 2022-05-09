@@ -13,9 +13,10 @@ exports.getEntities = async function (req, res) {
     let data = []
     let cancel = false
     let idQuery = req.query._id && !req.query._id.includes('$in')
+    let queryType = req.query.type
 
     try {
-        let Entity = req.query.type ? Entities[req.query.type] : null
+        let Entity = queryType ? Entities[queryType] : null
         let result = null
 
         if (!Entity) throw Error('entity-not-found')
@@ -42,7 +43,8 @@ exports.getEntities = async function (req, res) {
 
         result = result.map(v => fieldsCheck('read', v._doc, Entity, v, user))
 
-        data = idQuery ? result[0] : (typeGetters[req.query.type] ? typeGetters[req.query.type](result) : result)
+        if (typeGetters[queryType]) data = await typeGetters[queryType](result, user)
+        if (idQuery) data = data[0]
     } catch (e) {
         console.error(e)
 
@@ -140,7 +142,31 @@ exports.deleteEntity = async function (req, res) {
 }
 
 const typeGetters = {
+    gathering: async (data, user) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                data = await Promise.all(data.map(async g => {
+                    let users = await Entities.user.model.find({ _id: g.users.map(u => u._id) })
 
+                    return {
+                        ...g,
+                        users: g.users.map(dUser => {
+                            let found = users.find(u => u._id.equals(dUser._id))
+                
+                            return {
+                                ...fieldsCheck('read', found._doc, Entities.user, null, user),
+                                status: dUser.status
+                            }
+                        })
+                    }
+                }))
+
+                resolve(data)
+            } catch (e) {
+                reject (e)
+            }
+        })
+    }
 }
 
 const typeSetters = {

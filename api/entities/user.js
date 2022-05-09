@@ -8,16 +8,20 @@ let UserEntity = {
     read: 'admin',
     write: 'self',
     fields: new mongoose.Schema({
-        email: { type: String, write: 'self' },
+        email: { type: String, write: 'self', read: 'admin' },
         password: { type: String, write: 'self', read: 'private' },
-        role: { type: String, write: 'admin', default: 'guest' },
+        role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
 
-        categories: { type: Array, default: [], write: 'self' },
+        categories: { type: Array, default: [], write: 'self', read: 'self' },
         ref: { type: String, write: 'self' },
 
-        settings: { type: Object, write: 'self' },
-        notifications: { type: Array, default: [], write: 'self' },
+        settings: { type: Object, write: 'self', read: 'self' },
+        notifications: { type: Array, default: [], write: 'self', read: 'self' },
+
+        attended: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
+        ],
 
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })
@@ -34,7 +38,7 @@ UserEntity.fields.pre('save', async function(next) {
 })
 
 UserEntity.fields.pre('find', function () {
-    this.populate('shops')
+    this.populate('attended')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {

@@ -4,6 +4,10 @@
             <a :href="$config.appUrl" class="ft-title-s logo-sparkle-p">
                 gatherings
             </a>
+
+            <div class="mt-20" v-if="user">
+                <div><i class="fal fa-calendar mr-5"></i> A participé à {{ user.attended.length }} événements</div>
+            </div>
         </div>
         <div class="AppNav_sub">
             <div class="AppNav_menu">
@@ -35,20 +39,23 @@ export default {
     data: () => ({
         nav: []
     }),
+    computed: {
+        user () { return this.$store.state.auth.user }
+    },
     created () {
         this.nav = [
             {
                 label: `Les événements`,
                 to: this.localePath({ name: 'index' }),
-                items: [
-                    {
-                        label: `Suggestions`,
-                        to: this.localePath({ name: 'gatherings' })
-                    }, {
-                        label: `Événements passés`,
-                        to: this.localePath({ name: 'gatherings-past' })
-                    }
-                ]
+                // items: [
+                //     {
+                //         label: `Suggestions`,
+                //         to: this.localePath({ name: 'gatherings' })
+                //     }, {
+                //         label: `Événements passés`,
+                //         to: this.localePath({ name: 'gatherings-past' })
+                //     }
+                // ]
             }, {
                 label: `Mes affinités`,
                 to: this.localePath({ name: 'affinites' })
@@ -102,15 +109,26 @@ export default {
     display: block;
     margin-right: 30px;
 
-    &.is-active {
+    &.is-active-exact {
 
         .AppNav_menuLabel {
             color: var(--color-ft-strong);
             background-color: var(--color-bg-light);
+
+            &::after {
+                transform: rotate(90deg);
+            }
+        }
+
+        .AppNav_menuChildren {
+            opacity: 1;
+            transform: translateX(0px);
+            pointer-events: all;
+            position: relative;
         }
     }
 
-    &:hover:not(.is-active) {
+    &:hover:not(.is-active-exact) {
 
         .AppNav_menuLabel {
             background-color: var(--color-bg);
@@ -139,6 +157,11 @@ export default {
 .AppNav_menuChildren {
     padding: 0 30px 0 40px;
     margin-bottom: 20px;
+    opacity: 0;
+    transform: translateX(-5px);
+    pointer-events: none;
+    position: absolute;
+    transition: all 100ms ease;
 }
 
 .AppNav_menuSubitem {

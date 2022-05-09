@@ -13,7 +13,7 @@
                             <tile-date class="p-sticky" style="--offset: 20px" :date="date.date" />
                         </div>
 
-                        <div class="ml-20 fx-grow">
+                        <div class="ml-10 fx-grow">
                             <div v-for="gathering in date.gatherings" class="mb-10" :key="gathering._id">
                                 <block-gathering
                                     v-bind="gathering"
@@ -46,7 +46,8 @@ export default {
     computed: {
         gatherings () {
             return this.$store.getters['gathering/find']({
-                date: '$notNull'
+                date: '$notNull',
+                display: false
             })
         },
         gatheringsByDate () {

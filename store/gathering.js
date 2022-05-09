@@ -80,26 +80,9 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
-        async book ({ commit }, _id) {
+        async updateBookStatus ({ commit }, params) {
             try {
-                const response = await this.$axios.$post('/gathering/book', {
-                    _id
-                })
-                
-                if (response.status == 0) throw Error(response.errors[0])
-
-                commit('updateOne', response.data)
-                
-                return response
-            } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
-            }
-        },
-        async cancelBook ({ commit }, _id) {
-            try {
-                const response = await this.$axios.$post('/gathering/book-cancel', {
-                    _id
-                })
+                const response = await this.$axios.$post('/gathering/book', params)
                 
                 if (response.status == 0) throw Error(response.errors[0])
 
@@ -126,7 +109,8 @@ export default {
                 return {
                     ...item,
                     thumbnail,
-                    nextDate: item.dates.length > 0,
+                    isPast: moment(item.date).isBefore(moment()),
+                    display: moment(item.date).isBefore(moment()),
                     hero,
                 }
             })

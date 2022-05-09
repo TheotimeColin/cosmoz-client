@@ -94,7 +94,6 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
     let fields = entity.fields.obj
 
     Object.keys(fields).forEach(key => {
-
         if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
             let granted = false
             let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'

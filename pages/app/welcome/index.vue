@@ -81,7 +81,7 @@ export default {
                 type: 'onboarding'
             })
 
-            this.$router.push(this.localePath({ name: 'index' }))
+            window.location = this.$config.appUrl
         }
     }
 }

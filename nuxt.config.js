@@ -157,7 +157,7 @@ export default {
           }
         },
         redirect: {
-            logout: false,
+            logout: process.env.baseUrl,
             login: '/compte/login',
             home: false,
             callback: false

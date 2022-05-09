@@ -2,6 +2,8 @@
     <div class="EntityEditor">
         <div class="row">
             <div class="col-8">
+                <slot name="left-before"></slot>
+
                 <div>
                     <component
                         v-for="input in form.filter(i => getInput(i))"
@@ -176,6 +178,8 @@ export default {
             this.$store.commit('utils/addFlash', {
                 type: response.status == 1 ? 'success' : 'error'
             })
+
+            this.$emit('update', this.formData)
         }
     }
 }
