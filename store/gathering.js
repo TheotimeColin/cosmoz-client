@@ -112,6 +112,15 @@ export default {
                     isPast: moment(item.date).isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
                     hero,
+                    users: item.users.map(user => {
+                        if (user.picture) {
+                            if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
+                            
+                            if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
+                        }
+
+                        return user
+                    })
                 }
             })
         },
@@ -122,6 +131,8 @@ export default {
                 Object.keys(search).forEach(key => {
                     if (search[key] == '$notNull') {
                         items = items.filter(item => item[key])
+                    } else if (key == '$in') {
+                        items = items.filter(item => search[key].includes(item._id))
                     } else {
                         items = items.filter(item => item[key] == search[key])
                     }

@@ -33,7 +33,6 @@ export default {
         localValue: {
             deep: true,
             handler (v) {
-                // console.log(v)
                 if (this.changesMade) this.$emit('input', v)
             }
         }

@@ -44,9 +44,7 @@ exports.updateBookingStatus = async function (req, res) {
         if (!user) throw Error('no-user')
         if (!gathering) throw Error('g-not-found')
 
-        req.body.users.forEach(userUpdate => {
-            let authorized = true
-
+        await Promise.all(req.body.users.map(async userUpdate => {
             if (user.role !== 'admin' && user.role != 'editor') {
                 if (!user._id.equals(userUpdate._id)) {
                     throw Error('not-authorized-self')
@@ -61,7 +59,11 @@ exports.updateBookingStatus = async function (req, res) {
                 ...gathering.users.filter(u => u._id != userUpdate._id),
                 { _id: userUpdate._id, status: userUpdate.status }
             ]
-        })
+            
+            return await Entities.user.model.findByIdAndUpdate(userUpdate._id, {
+                [userUpdate.status == 'confirmed' ? '$addToSet' : '$pull']: { attended: gathering._id }
+            })
+        }))
         
         await gathering.save()
 
@@ -70,14 +72,15 @@ exports.updateBookingStatus = async function (req, res) {
 
         let users = await Entities.user.model.find({ _id: data.users.map(u => u._id) })
         
-        data.users = data.users.map(dUser => {
+        data.users = await Promise.all(data.users.map(async dUser => {
             let found = users.find(u => u._id.equals(dUser._id))
+            let data = await fieldsCheck('read', found._doc, Entities.user, found, user)
 
             return {
-                ...fieldsCheck('read', found._doc, Entities.user, null, user),
+                ...data,
                 status: dUser.status
             }
-        })
+        }))
     } catch (e) {
         console.error(e)
         errors.push(e.message)

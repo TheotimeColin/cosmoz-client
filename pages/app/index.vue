@@ -56,8 +56,6 @@ export default {
             this.gatherings.forEach(g => {
                 let id = this.$moment(g.date).format(this.format)
 
-                console.log(g.date)
-
                 weeks[id] = weeks[id] ? { ...weeks[id], gatherings: [ ...weeks[id].gatherings, g ] } : { date: g.date, gatherings: [ g ] } 
             })
 

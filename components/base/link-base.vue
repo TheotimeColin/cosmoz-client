@@ -30,7 +30,7 @@ export default {
         iconBefore: { type: [ String, Boolean ], default: false },
         target: { type: String, defaut: '_self' },
         node: { type: Object, default: () => {} },
-        to: { type: Object, default: () => {} },
+        to: { type: [Object, String] },
         link: { type: [ String ], default: '' },
         href: { type: [ String ], default: '' },
         attrs: { type: Object, default: () => {} },

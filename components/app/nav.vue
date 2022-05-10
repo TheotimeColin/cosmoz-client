@@ -6,20 +6,22 @@
             </a>
 
             <div class="mt-20" v-if="user">
+                <link-base :to="localePath({ name: 'p-id', params: { id: user._id }})">{{ user.name }}</link-base>
+
                 <div><i class="fal fa-calendar mr-5"></i> A participé à {{ user.attended.length }} événements</div>
             </div>
         </div>
         <div class="AppNav_sub">
             <div class="AppNav_menu">
-                <nuxt-link class="AppNav_menuItem" :to="item.to" v-for="(item, i) in nav" :key="i">
-                    <div class="AppNav_menuLabel">{{ item.label }}</div>
+                <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path }" v-for="(item, i) in nav" :key="i">
+                    <nuxt-link class="AppNav_menuLabel" :to="item.to">{{ item.label }}</nuxt-link>
 
                     <div class="AppNav_menuChildren" v-if="item.items">
                         <nuxt-link class="AppNav_menuSubitem" :to="child.to" v-for="(child, j) in item.items" :key="j">
                             {{ child.label }}
                         </nuxt-link>
                     </div>
-                </nuxt-link>
+                </div>
             </div>
             <div class="AppNav_footer">
                 <p class="subtitle ft-s">Mes tribus</p>
@@ -47,15 +49,12 @@ export default {
             {
                 label: `Les événements`,
                 to: this.localePath({ name: 'index' }),
-                // items: [
-                //     {
-                //         label: `Suggestions`,
-                //         to: this.localePath({ name: 'gatherings' })
-                //     }, {
-                //         label: `Événements passés`,
-                //         to: this.localePath({ name: 'gatherings-past' })
-                //     }
-                // ]
+                items: [
+                    {
+                        label: `Événements passés`,
+                        to: this.localePath({ name: 'gatherings-past' })
+                    }
+                ]
             }, {
                 label: `Mes affinités`,
                 to: this.localePath({ name: 'affinites' })
@@ -109,7 +108,7 @@ export default {
     display: block;
     margin-right: 30px;
 
-    &.is-active-exact {
+    &.is-active {
 
         .AppNav_menuLabel {
             color: var(--color-ft-strong);
@@ -128,7 +127,7 @@ export default {
         }
     }
 
-    &:hover:not(.is-active-exact) {
+    &:hover:not(.is-active) {
 
         .AppNav_menuLabel {
             background-color: var(--color-bg);

@@ -66,14 +66,12 @@
                             <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="gathering.isPast">
                                 Evénement terminé
                             </button-base>
-                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
+                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-else-if="hasWaitingList">
                                 Evénement complet
                             </button-base>
-
                             <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
                                 {{ hasBooked ? `Inscription confirmée` : `En liste d'attente` }}
                             </button-base>
-
                             <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="isManage = true" v-else>
                                 {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je m'inscris !`) }}
                             </button-base>

@@ -2,15 +2,18 @@ const mongoose = require('mongoose')
 const AWS = require('aws-sdk')
 const Media = require('./media')
 
+Media.model = mongoose.model('media', Media.fields)
+global.Media = Media
+
 let MediaCollection = {
-    write: 'editor',
+    write: 'user',
     read: 'public',
     fields: new mongoose.Schema({
         title: { type: String, write: 'editor' },
         createdDate: { type: Date, default: Date.now },
         medias: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'media' }
-        ]
+        ],
     }, { timestamps: true })
 }
 
@@ -42,6 +45,8 @@ MediaCollection.fields.pre('find', function () {
 })
 
 MediaCollection.model = global.MediaCollection ? global.MediaCollection.fields : mongoose.model('mediaCollection', MediaCollection.fields)
+
+MediaCollection.model = mongoose.model('mediaCollection', MediaCollection.fields)
 global.MediaCollection = MediaCollection
 
 module.exports = MediaCollection

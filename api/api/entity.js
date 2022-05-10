@@ -41,9 +41,10 @@ exports.getEntities = async function (req, res) {
             throw Error('unauthorized')
         }
 
-        result = result.map(v => fieldsCheck('read', v._doc, Entity, v, user))
+        result = await Promise.all(result.map(async v => fieldsCheck('read', v._doc, Entity, v, user)))
 
-        if (typeGetters[queryType]) data = await typeGetters[queryType](result, user)
+        data = typeGetters[queryType] ? await typeGetters[queryType](result, user) : result
+
         if (idQuery) data = data[0]
     } catch (e) {
         console.error(e)
@@ -62,7 +63,7 @@ exports.createEntity = async function (req, res) {
 
     let errors = []
     let data = {}
-    
+
     try {
         let params = req.body.params ? req.body.params : {}
         let fields = params
@@ -70,14 +71,15 @@ exports.createEntity = async function (req, res) {
         let Entity = req.body.type ? Entities[req.body.type] : null
         if (!Entity) throw Error('no-entity-type')
 
+
         let result = req.body._id ? await Entity.model.findById(req.body._id) : null
 
         if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
 
-        fields = result ? fieldsCheck('write', fields, Entity, result, user) : fields
+        fields = result ? await fieldsCheck('write', fields, Entity, result, user) : fields
         delete fields._id
 
-        if (typeSetters[req.body.type]) fields = await typeSetters[req.body.type](fields, req)
+        if (typeSetters[req.body.type]) fields = await typeSetters[req.body.type](fields, req, user)
 
         fields = parseQuery(fields, user)
 
@@ -101,7 +103,7 @@ exports.createEntity = async function (req, res) {
         if (!data) throw Error('error')
 
         data = await Entity.model.find({ _id: data._id })
-        data = fieldsCheck('read', data[0]._doc, Entity, data[0], user)
+        data = await fieldsCheck('read', data[0]._doc, Entity, data[0], user)
     } catch (e) {
         console.warn(e)
         console.warn(e)
@@ -150,14 +152,14 @@ const typeGetters = {
 
                     return {
                         ...g,
-                        users: g.users.map(dUser => {
+                        users: await Promise.all(g.users.map(async dUser => {
                             let found = users.find(u => u._id.equals(dUser._id))
-                
+                            let data = await fieldsCheck('read', found._doc, Entities.user, found, user)
+
                             return {
-                                ...fieldsCheck('read', found._doc, Entities.user, null, user),
-                                status: dUser.status
+                                ...data, status: dUser.status
                             }
-                        })
+                        }))
                     }
                 }))
 
@@ -170,22 +172,35 @@ const typeGetters = {
 }
 
 const typeSetters = {
-    mediaCollection: async (params, req) => {
+    mediaCollection: async (params, req, user) => {
         return new Promise(async (resolve, reject) => {
             let file = req.file
 
-            try {    
-                const SIZES = [
-                    { id: 's', width: 400 },
-                    { id: 'm', width: 1000 },
-                ]
+            params = JSON.parse(params)
 
-                let medias = await Promise.all(SIZES.map(async size => {
+            try {    
+                const SIZES = {
+                    profile: [
+                        { id: 's', width: 50 },
+                        { id: 'm', width: 125 }
+
+                    ],
+                    default: [
+                        { id: 's', width: 400 },
+                        { id: 'm', width: 1000 }
+                    ]
+                }
+
+                let medias = await Promise.all(SIZES[params.size ? params.size : 'default'].map(async size => {
                     let original = await sharp(file.path).metadata()
                     let buffer = await sharp(file.path).resize(Math.min(original.width, size.width)).toBuffer()
                     let metadata = await sharp(buffer).metadata()
-        
-                    const fileDirectory = `library/${shortid.generate()}-${size.id}.${mime.getExtension(file.mimetype)}`
+                    
+                    let prepend = 'library'
+                    if (params.path == '$user') prepend = `users/${user._id}`
+
+                    let fileDirectory = `${prepend}/${shortid.generate()}-${size.id}.${mime.getExtension(file.mimetype)}`
+                    
                     const src = await new Promise(resolve => {
                         req.app.locals.s3.putObject({
                             Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
@@ -193,8 +208,8 @@ const typeSetters = {
                             resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
                         })
                     })
-        
-                    let media = await mongoose.model('media').create({
+
+                    let media = await Entities.media.model.create({
                         id: fileDirectory,
                         width: metadata.width,
                         height: metadata.height,

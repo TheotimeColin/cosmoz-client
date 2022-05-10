@@ -13,7 +13,7 @@
 export default {
     name: 'TileDate',
     props: {
-        date: { type: Date }
+        date: { type: [Date, String] }
     },
     computed: {
         day () {

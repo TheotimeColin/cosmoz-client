@@ -42,6 +42,26 @@ export default {
             //     return null
             // }
         },
+        async fetchOne ({ commit }, _id) {
+            try {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                    _id, type: 'user'
+                }))
+                
+                let user = response.data
+
+                if (user.picture) {
+                    if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
+                    
+                    if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
+                }
+                
+                return user
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
         async fetch ({ commit }) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
@@ -58,7 +78,7 @@ export default {
             try {
                 const response = await this.$axios.$post('/entities', {
                     _id: rootState.auth.user._id,
-                    ...params,
+                    params,
                     type: 'user'
                 })
                 
@@ -150,17 +170,6 @@ export default {
                 return response
             } catch (e) {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
-            }
-        },
-        async getSubscription ({ commit }) {
-            try {
-                const response = await this.$axios.$post('/user/subscriptions/active')
-
-                commit('setSubscription', response.data)
-
-                return response.data
-            } catch (e) {
-                console.error(e)
             }
         }
     }

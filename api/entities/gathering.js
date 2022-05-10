@@ -36,7 +36,6 @@ let Gathering = {
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
-    
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

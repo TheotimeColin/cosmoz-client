@@ -5,13 +5,14 @@ const Entities = require('../index.js')
 const { generatePassword } = require('../utils/user')
 
 let UserEntity = {
-    read: 'admin',
+    read: 'user',
     write: 'self',
     fields: new mongoose.Schema({
-        email: { type: String, write: 'self', read: 'admin' },
-        password: { type: String, write: 'self', read: 'private' },
+        email: { type: String, write: 'admin', read: 'admin' },
+        password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
+        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'affinity', ref: 'mediaCollection' },
 
         categories: { type: Array, default: [], write: 'self', read: 'self' },
         ref: { type: String, write: 'self' },
@@ -19,8 +20,16 @@ let UserEntity = {
         settings: { type: Object, write: 'self', read: 'self' },
         notifications: { type: Array, default: [], write: 'self', read: 'self' },
 
+        booked: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
+        ],
+
         attended: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
+        ],
+
+        affinities: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'self', ref: 'user' }
         ],
 
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
@@ -38,7 +47,7 @@ UserEntity.fields.pre('save', async function(next) {
 })
 
 UserEntity.fields.pre('find', function () {
-    this.populate('attended')
+    this.populate('picture')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {

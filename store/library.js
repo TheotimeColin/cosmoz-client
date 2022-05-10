@@ -53,12 +53,16 @@ export default {
                     let formData = new FormData()
                     formData.append('type', 'mediaCollection')
                     formData.append('params', JSON.stringify({
-                        title: params.file.name
+                        title: params.file.name,
+                        path: params.path ? params.path : null,
+                        size: params.size ? params.size : null
                     }))
 
                     formData.append('file', params.file)
                     
-                    const response = await this.$axios.$post('/entities', formData)
+                    const response = await this.$axios.$post('/entities', formData, { headers: {
+                        'Content-Type': 'application/json'
+                    } })
                     if (response.status == 0) throw Error(response.errors[0])
                     
                     resolve(response.data)

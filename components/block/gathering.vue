@@ -9,8 +9,16 @@
                     <div>
                         {{ tagline }}
                     </div>
-                    <div v-if="hasBooked">
-                        Je suis inscrit <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                    <div>
+                        <template v-if="hasBooked">
+                            Je suis inscrit <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                        </template>
+                        <template v-else-if="hasConfirmed">
+                            Présence confirmée <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                        </template>
+                        <template v-else-if="hasGhosted">
+                            Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><i class="fal fa-warning"></i></span>
+                        </template>
                     </div>
                 </div>
 
@@ -40,7 +48,7 @@ export default {
         users: { type: Array, default: () => [] },
         place: { type: String },
         location: { type: String },
-        date: { type: Date },
+        date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false }
     },
@@ -50,6 +58,8 @@ export default {
     computed: {
         user () { return this.$store.state.auth.user },
         hasBooked () { return this.users.find(u => u._id == this.user._id && u.status == 'attending') },
+        hasConfirmed () { return this.users.find(u => u._id == this.user._id && u.status == 'confirmed') },
+        hasGhosted () { return this.users.find(u => u._id == this.user._id && u.status == 'ghosted') },
         isPast () {
             return false
         },

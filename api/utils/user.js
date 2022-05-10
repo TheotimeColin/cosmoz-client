@@ -90,29 +90,59 @@ exports.accessCheck = function (type = 'write', entity, requested = null, user =
 }
 
 exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = null, user = null) {
-    let result = { ...data }
-    let fields = entity.fields.obj
+    return new Promise(async (resolve, reject) => {
+        let result = { ...data }
+        let fields = entity.fields.obj
+        let users = []
 
-    Object.keys(fields).forEach(key => {
-        if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
-            let granted = false
-            let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
-
-            if (requiredRole == 'self') {
-                let owner = requested ? requested.owner : null
-                let requester = user ? user._id : null
-
-                granted = requester && owner && owner.equals(requester)
-            } else {
-                granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
-            }
-
-            if (!granted) {
-                console.warn(key + ' not granted')
-                delete result[key]
-            }
+        if (requested && requested.owner && user) {
+            users = await Entities.user.model.find({ _id: {
+                $in: [requested.owner, user._id]
+            }})
         }
-    })
 
-    return result
+        let promise = await Promise.all(Object.keys(fields).map(async key => {
+            if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
+                let granted = false
+                let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
+
+                if (requiredRole == 'self') {
+                    let owner = requested ? requested.owner : null
+                    let requester = user ? user._id : null
+
+                    granted = requester && owner && owner.equals(requester)
+                } else if (requiredRole == 'affinity') {
+                    console.log('=================')
+                    console.log('* AFFINITY *')
+
+                    let owner = requested ? requested.owner : null
+                    let requester = user ? user._id : null
+
+                    if (requester && owner && owner.equals(requester)) {
+                        granted = true
+                    } else {
+                        owner = users.find(u => u._id.equals(owner))
+                        requester = users.find(u => u._id.equals(requester))
+
+                        if (owner && requester && owner.affinities.find(u => u._id.equals(requester._id)) && requester.affinities.find(u => u._id.equals(owner._id))) {
+                            granted = true
+                        } else {
+                            granted = false
+                        }
+                    }
+                } else {
+                    granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
+                }
+
+                if (!granted) {
+                    console.warn(key + ' not granted')
+                    delete result[key]
+                }
+            }
+
+            return true
+        }))
+
+        resolve(result)
+    })
 }

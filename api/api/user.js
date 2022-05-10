@@ -104,11 +104,9 @@ exports.getUser = async function (req, res) {
 
     try {
         user = await authenticate(req.headers)
-
         if (!user) throw Error('wrongCredentials')
     } catch (e) {
         console.error(e)
-
         errors.push(e.message)
     }
 
