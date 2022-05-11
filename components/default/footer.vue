@@ -4,13 +4,11 @@
 
         <div class="bg-cover bg-plastic-black">
             <div class="Wrapper pv-30 fx-center d-block@xs">
-                <p class="ft-title-s max-width-m">Tous les jeudis, de nouvelles expériences pour se rencontrer</p>
+                <p class="ft-title-s max-width-m">Reçois ton invitation pour rejoindre ta future constellation</p>
 
                 <div class="fx-grow text-center ml-20 ml-0@xs text-left@xs mt-20@xs">
                     <div>
-                        <button-base :modifiers="['light']" @click="isNewsletter = true">Tenez-moi au courant</button-base><br>
-
-                        <span class="ft-xs-bold tape tape-2 mt-10 text-upper"><i>Places très limitées</i></span>
+                        <button-base :modifiers="['light']" @click="isNewsletter = true">Entrer sur la liste</button-base>
                     </div>
                 </div>
             </div>
@@ -24,20 +22,18 @@
                         <div class="col-6 col-12@xs">
                             <link-base class="Footer_navItem" :href="$config.baseUrl">Page d'accueil</link-base>
 
-                            <link-base class="Footer_navItem" :href="$config.baseUrl + '#about'">C'est quoi Gatherings ?</link-base>
-
                             <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base>
                         </div>
                         <div class="col-6 col-12@xs mt-15@xs">
-                            <link-base class="Footer_navItem" href="https://www.meetup.com/fr-FR/pro/gatherings">Groupes Meetup</link-base>
+                            <!-- <link-base class="Footer_navItem" href="https://www.meetup.com/fr-FR/pro/gatherings">Groupes Meetup</link-base>
 
-                            <link-base :href="$config.baseUrl + '#about'" class="Footer_navItem is-ocean" :modifiers="['current']">Devenir partenaire</link-base>
+                            <link-base :href="$config.baseUrl + '#about'" class="Footer_navItem is-ocean" :modifiers="['current']">Devenir partenaire</link-base> -->
                         </div>
                     </div>
                 </div>
 
                 <a href="https://www.instagram.com/gatheringsfr/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
-                    <span class="ft-title-xs tape ft-title-2xs@xs">Passe nous voir sur Insta #gatherings</span>
+                    <span class="ft-title-xs tape ft-title-2xs@xs">Passe nous voir sur Insta @gatheringsfr</span>
                 </a>
             </div>
         </div>

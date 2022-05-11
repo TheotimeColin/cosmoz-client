@@ -5,10 +5,10 @@
                 <template v-if="isSuccess">
                     <div class="p-30 text-center">
                         <div class="ft-title-m">
-                            <span>On a hâte de te voir à ton premier Gathering.</span>
+                            <span>C'est bien noté !</span>
                         </div>
                     
-                        <p class="mt-20">Rendez-vous tous les jeudis pour découvrir nos nouvelles expériences.</p>
+                        <p class="mt-20">Merci pour ton intérêt, on a hâte que tu puisses trouver les constellations qui te correspondent.</p>
 
                         <button-base :modifiers="['light', 's']" class="mt-20" @click="$emit('close')">
                             Fermer
@@ -16,15 +16,15 @@
                     </div>
                         
                     <a href="https://www.instagram.com/gatheringsfr/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
-                        <span class="ft-title-xs tape">Passe nous voir sur Insta #gatherings</span>
+                        <span class="ft-title-xs tape">Passe nous voir sur Insta @gatheringsfr</span>
                     </a>
                 </template>
                 <template v-else>
                     <p class="ft-title-m">
-                        Participer à nos Gatherings
+                        Entrer sur la liste d'attente
                     </p>
 
-                    <p class="mt-10">Tous les jeudis, reçois nos nouvelles expériences directement dans ta boîte mail. Pas de spam.</p>
+                    <p class="mt-10">On ouvre progressivement nos constellations. Un peu de patience, on te recontactera vite !</p>
 
                     <form class="strong mt-20" @submit.prevent="onSubmit">
                         <div class="row-xs">
@@ -33,13 +33,6 @@
                             </div>
                             <div class="col-6 col-12@s mt-10@s">
                                 <input-base label="Ton adresse e-mail" type="email" v-model="formData.email" :attrs="{ required: true }" />
-                            </div>
-                        </div>
-
-                        <p class="ft-s-medium mt-20">Les Gatherings qui t'intéressent :</p>
-                        <div class="row-2xs mt-5">
-                            <div class="col-4 col-6@s col-12@xs mt-5" v-for="category in CATEGORIES" :key="category.value">
-                                <input-image-check v-bind="category" :value="formData.categories.includes(category.id)" @input="(v) => toggleCategory(category.id, v)" />
                             </div>
                         </div>
 

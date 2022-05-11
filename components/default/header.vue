@@ -6,19 +6,18 @@
             </a>
 
             <div class="DefaultHeader_nav">
-                <link-base :href="$config.baseUrl + '#about'" class="DefaultHeader_navItem" @click="isOpen = false">C'est quoi Gatherings ?</link-base>
-
-                <link-base :href="$config.baseUrl + '/partenaires'" class="DefaultHeader_navItem is-ocean" :modifiers="['current']" @click="isOpen = false">Devenir partenaire</link-base>
-
                 <link-base :href="$config.blogUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
                 
                 <a href="https://www.instagram.com/gatheringsfr" class="DefaultHeader_navItem" target="_blank">
                     <icon-base name="icon/instagram" class="fill-ft-light" :width="20" /> <span class="d-none ml-10 d-block@s">Gatherings sur Instagram</span>
                 </a>
 
-                <a href="https://www.meetup.com/fr-FR/pro/gatherings" class="DefaultHeader_navItem" target="_blank">
-                    <icon-base name="icon/meetup" class="fill-ft-light" :width="25" /> <span class="d-none ml-10 d-block@s">Rejoindre notre Meetup</span>
-                </a>
+                <button-base :modifiers="['light', 's']" class="ml-20 d-none@s" @click="isNewsletter = true">
+                    Trouver ma constellation
+                </button-base>
+
+                
+                <link-base class="DefaultHeader_navItem d-none d-block@s" @click="isNewsletter = true">Trouver ma constellation</link-base>
             </div>
 
             <div class="DefaultHeader_burger" @click="isOpen = !isOpen">
@@ -26,6 +25,8 @@
                 <i class="fal fa-times" v-else></i>
             </div>
         </div>
+
+        <popin-newsletter :is-active="isNewsletter" origin="header" @close="isNewsletter = false" />
     </div>
 </template>
 
@@ -33,7 +34,8 @@
 export default {
     name: 'DefaultHeader',
     data: () => ({
-        isOpen: false
+        isOpen: false,
+        isNewsletter: false
     })
 }
 </script>
@@ -76,6 +78,8 @@ export default {
         line-height: 1;
         display: flex;
         align-items: center;
+
+        &.d-none { display: none; }
         
         & + & {
             margin-left: 20px;
@@ -116,6 +120,8 @@ export default {
             padding: 20px 0;
             margin: 0 20px;
             border-bottom: 1px solid var(--color-border);
+
+            &.d-block\@s { display: flex; }
 
             &:last-child {
                 border: none;

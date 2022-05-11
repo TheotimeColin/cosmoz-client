@@ -1,251 +1,207 @@
 <template>
-    <div class="Homepage">
-        <div class="Homepage_slider bg-ice-cream">
+    <div class="Homepage bg-bg-strong">
+        <div class="Homepage_heading bg-night">
             <div class="Wrapper">
                 <div class="fx-grow">
-                    <h1 class="ft-title-xl ft-title-l@s">1 lieu sélectionné,<br>1 expérience à partager,<br>4 inconnus.</h1>
+                    <h1 class="ft-title-xl ft-title-m@s ft-title-s@xs">
+                        <span class="d-block@xs">Participe à nos événements.</span><br>
+                        <span class="d-block@xs">Crée de nouvelles affinités.</span><br>
+                        <span class="d-block@xs">Trouve <span class="text-underline">ta constellation.</span></span>
+                    </h1>
                     
-                    <h2 class="ft-l-medium mt-20">La nouvelle manière de se rencontrer :<br>sans applis, sans profils, sans messages.</h2>
+                    <h2 class="ft-l max-width-m mt-20 ft-m@xs">
+                        Rejoins un groupe de personnes avec qui tu te sens bien, partagez vos meilleurs moments et sortez conquérir le monde.
+                    </h2>
                 </div>
-                <div class="width-s text-center pv-40 ph-30 bg-bg-strong ml-20 ml-0@s width-auto@s mt-30@s">
-                    <p class="ft-title-s">
-                        Rejoins l'un de nos Gatherings.
-                    </p>
-
-                    <p class="mt-10">Tous les jeudis, reçois les événements de la semaine prochaine dans ta boîte mail. <b>Places très limitées.</b></p>
-
-                    <div class="ft-title-m fx-no-shrink mt-20 tape d-block@s" :style="{ opacity: countdown == '0j 00h 00m 00s' ? 0 : 1 }">
-                        <span>{{ countdown }}</span>
-                    </div>
-
-                    <br>
-
-                    <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
-                        Entrer dans la liste
-                    </button-base>
+                <div class="width-s ml-20 ml-0@s width-auto@s mt-30@s d-none@xs">
+                    <img :src="assets.landing0" width="100%">
                 </div>
             </div>
         </div>
 
-        <div class="Wrapper mt-60">
-            <div class="Homepage_weekTitle bg-denim-s">
-                <span>nos meilleures expériences</span>
-            </div>
-
-            <p class="mt-20 mb-30 max-width-m">Selon tes critères, tu peux participer à des Gatherings par tranche d'âge, sexe ou centres d'intérêt. Ou alors laisser faire le hasard.</p>
-
-            <div class="row-s">
-                <div class="col-4 col-6@s col-12@xs mb-40" v-for="gathering in gatherings.slice(0, limit)" :key="gathering._id">
-                    <block-gathering
-                        v-bind="gathering"
-                        @favorite="onFavorite"
-                    />
+        <div class="Wrapper pv-40">
+            <div class="row fx-align-center pv-20 fx-dir-column-reverse@s">
+                <div class="col-6 col-12@s mt-30@s">
+                    <img :src="assets.landing1" width="100%">
                 </div>
+                <div class="col-6 col-12@s">
+                    <h2 class="ft-title-l mb-20 ft-title-m@xs">
+                        1. Participe à nos événements super conviviaux
+                    </h2>
 
-                <div class="col-12 text-center" v-if="limit < gatherings.length">
-                    <button-base @click="limit += 6">Afficher la suite</button-base>
+                    <p>
+                        On organise de nombreux événements près de chez toi, où tu peux profiter du soleil ou siroter un cocktail avec des personnes ouvertes et bienveillantes.
+                    </p>
                 </div>
             </div>
+            <div class="row fx-align-center pv-20">
+                <div class="col-6 col-12@s">
+                    <h2 class="ft-title-l mb-20 ft-title-m@xs">
+                        2. Connecte-toi avec les personnes que tu apprécies
+                    </h2>
 
-            <div class="text-center">
-                <p class="ft-title-m max-width-m m-auto">
-                    On imagine de nouvelles expériences toutes les semaines.
+                    <p>
+                        T'as adoré discuter avec Jenny et Marc toute la soirée ? Si c'est réciproque, des Affinités se créent entre vous. On vous proposera de nouvelles sorties selon vos centres d'intérêt.
+                    </p>
+                </div>
+                <div class="col-6 col-12@s mt-30@s">
+                    <img :src="assets.landing2" width="100%">
+                </div>
+            </div>
+            <div class="row fx-align-center pv-20 fx-dir-column-reverse@s">
+                <div class="col-6 col-12@s mt-30@s">
+                    <img :src="assets.landing3" width="100%">
+                </div>
+                <div class="col-6 col-12@s">
+                    <h2 class="ft-title-l mb-20 ft-title-m@xs">
+                        3. Rejoins une nouvelle Constellation
+                    </h2>
+
+                    <p>
+                        C'est votre groupe social privé et à taille humaine. Ensemble, organisez vos sorties, vivez des moments uniques et créez une communauté qui vous ressemble.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-cover bg-ice-cream pv-60">
+            <div class="Wrapper Wrapper--xs text-center">
+                <p class="ft-title-l mb-20">
+                    Gatherings est en bêta fermée pour le moment.
                 </p>
 
-                <div class="ft-title-l tape tape-2 mt-20">
-                    {{ theme }}
+                <p>
+                    Mais on invite régulièrement de nouvelles personnes à rejoindre le réseau. Entre dans notre liste d'attente et reçois ton invitation gratuitement.
+                </p>
+
+                <div>
+                    <button-base :modifiers="['light', 's']" class="mt-20" @click="newsletterActive = true">
+                        Entrer dans la liste
+                    </button-base>
+                </div>
+
+                <p class="ft-title-xs tape mt-20">Prochaine invitation : {{ countdown }}</p>
+            </div>
+        </div>
+
+        <div>
+            <div class="Wrapper pt-40 pb-20 p-relative">
+                <div class="row-s">
+                    <div class="col-6 col-12@s">
+                        <h3 class="ft-title-m mb-20">
+                            Des constellations qui te ressemblent<br>et qui rassemblent
+                        </h3>
+
+                        <p>
+                            Nos constellations se créent autour d'un centre d'intérêt, d'une appartenance ou simplement de personnes qui aiment être ensemble. Chacune est limitée en membres pour conserver des communautés à taille humaine.
+                            <br><br>
+                            Tu peux quitter ou rejoindre d'autres constellations à tout moment, jusqu'à ce que tu trouves les groupes où tu te sens bien.
+                        </p>
+
+                        <button-base :modifiers="['light', 's']" class="mt-30" @click="newsletterActive = true">
+                            Trouver ma constellation
+                        </button-base>
+                    </div>
+                    <div class="col-6 col-12@s">
+                        <transition-group name="fade" component="div" class="row-s n-mt-60 n-mt-0@s mt-30@s">
+                            <div class="col-6 col-12@xs mb-20" v-for="constellation in activeConstellations" :key="constellation.title">
+                                <block-constellation v-bind="constellation" />
+                            </div>
+                        </transition-group>
+                    </div>
                 </div>
             </div>
         </div>
 
         <popin-newsletter :is-active="newsletterActive" origin="home" @close="newsletterActive = false" />
-
-        <article class="Homepage_presentation bg-bg-strong p-relative mt-40">
-            <div id="about" class="anchor"></div>
-
-            <div class="Wrapper Wrapper--s pv-40">
-                <h1 class="ft-title-l max-width-l mb-20 ft-title-m@s">Se rencontrer <span class="tape" style="transform: rotate(-2deg)">hors-ligne</span> dans une atmosphère conviviale et bienveillante.</h1>
-                <p class="ft-l max-width-l">Si tu en as marre des profils égocentriques, marre qu'on te demande ce que tu recherches, marre des conversations qui ne mènent à rien : tu es au bon endroit.</p>
-            </div>
-
-            <div class="bg-cover bg-plastic-black pv-40">
-                <div class="Wrapper Wrapper--s ft-title-2xs line-2 text-center">
-                    <div class="row-xs">
-                        <div class="col-6 col-12@xs">
-                            <!-- <div class="tape tape-l tape-1">
-                                "Je préfère apprendre à connaître dans le présent plutôt que de l'ajouter à une wishlist pour plus tard."
-                            </div> -->
-                            <div class="tape tape-strong tape-l">
-                                "Attention à l'imagination qui se débride derrière un écran, on idéalise vite une image, une phrase, un profil"
-                            </div>
-                        </div>
-                        <div class="col-6 col-12@xs">
-                            <div class="tape tape-1 tape-l">
-                                "Avec la masse de gens sur le "marché", on devient super exigeantes et ça mène qu'à de la déception pour tous."
-                            </div>
-                            <!-- <div class="tape tape-l tape-1">
-                                "Sans parler des gars qui ressemblent pas du tout à ce qu'on voit en photos"
-                            </div> -->
-                        </div>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="ft-title-xs line-2 tape max-width-m tape-l">
-                            "au final, on tombe souvent amoureux de personnes qui ressemblent peu à nos choix théoriques."
-                            
-                            <span class="ft-xs-bold d-block mt-5">Lubomir lamy - Docteur en psychologie</span>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-
-            <div class="Wrapper Wrapper--s pv-60">
-                <div class="row-no-gutters">
-                    <div class="col-5 d-none@s">
-                        <div class="Homepage_image fx-justify-end mr-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1569937756023-a079ccbe730e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjk2fHxncm91cCUyMGZyaWVuZHN8ZW58MHwxfDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60)` }">
-
-                            <div class="ft-title-s tape tape-strong mb-5">
-                                authentiques
-                            </div>
-
-                            <div class="ft-title-s tape tape-strong mb-5">
-                                spontanés
-                            </div>
-
-                            <div class="ft-title-s tape">
-                                humains
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-7 col-12@s">
-                        <div class="TextBody">
-                            <h2>Faire des rencontres sans applications, c'est possible.</h2>
-
-                            <p>Nous organisons des rencontres en groupes de 4 à 6 personnes dans des lieux atypiques que nous sélectionnons.</p>
-
-                            <p><b>Pas de profils, pas de messages, pas de filtres. Tu découvres les autres participants le jour J.</b></p>
-
-                            <p>Nos Gatherings sont faits pour les personnes ouvertes d'esprits, qui aiment rencontrer d'autres humains sans pression.</p>
-
-                            <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
-                                Je veux participer
-                            </button-base>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-cover bg-bubble-gum pv-60">
-                <div class="Wrapper Wrapper--s">
-                    <div class="TextBody text-left">
-                        <h2 style="font-size: 30px;">Ceci <span class="text-underline ">n'est pas</span> une application de rencontre amoureuse.</h2>
-
-                        <p>As-tu déjà rêvé de tomber amoureux au coin de la rue ? Encore faut-il regarder autour de soi. Parfois nous sommes tellement concentrés sur nos recherches (trouver l'amour, trouver des amis...), que nous oublions de lever la tête.</p>
-
-                        <p><b>Dans un Gathering, tu rencontres simplement d'autres personnes qui ont envie de partager un bon moment. Viens sans attentes et laisse le hasard faire le reste.</b></p>
-                    </div>
-                </div>
-            </div> 
-
-            <div class="bg-bg">
-                <div class="Wrapper Wrapper--s pv-60">
-                    <div class="row-no-gutters">
-                        <div class="col-7 col-12@s">
-                            <div class="TextBody">
-                                <h2>Notre objectif : que tu passes une bonne soirée.</h2>
-
-                                <p>Nous voulons que nos Gatherings soient ouverts à tous, même aux plus timides et anxieux. On sait à quel point ça peut être difficile de se lancer.</p>
-
-                                <p>À chaque Gathering t'attend notre Kit Icebreaker. Il contient tout ce qu'il faut pour détendre l'atmosphère, donner la parole à chacun et créer une vraie dynamique dans le groupe.</p>
-
-                                <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
-                                    Je me lance
-                                </button-base>
-                            </div>
-                        </div>
-                        <div class="col-5 d-none@s">
-                            <div class="Homepage_image ml-40" :style="{ backgroundImage: `url(https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80)` }">
-                            
-                                <div class="ft-title-s tape tape-strong mb-5">
-                                    pour les timides
-                                </div>
-
-                                <div class="ft-title-s tape tape-strong mb-5">
-                                    pour les bavards
-                                </div>
-
-                                <div class="ft-title-s tape">
-                                    pour tous
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </article>
     </div>
 </template>
 
 <script>
+import landing0 from '@/assets/img/landing/landing_0.webp'
+import landing1 from '@/assets/img/landing/landing_1.webp'
+import landing2 from '@/assets/img/landing/landing_2.webp'
+import landing3 from '@/assets/img/landing/landing_3.webp'
+
 export default {
     name: 'Homepage',
-    async fetch () {
-        await this.$store.dispatch('gathering/fetch', {
-            query: {}
-        })
-    },
     data: () => ({
-        limit: 6,
         newsletterActive: false,
-        theme: '#chill',
-        countdown: '0j 00h 00m 00s'
+        countdown: '0j 00h 00m 00s',
+        assets: { landing0, landing1, landing2, landing3 },
+        constellations: [],
+        activeConstellations: []
     }),
-    computed: {
-        gatherings () {
-            return this.$store.getters['gathering/find']({
-                status: 'active',
-                nextDate: null
-            })
-        },
-        upcomingGatherings () {
-            return this.$store.getters['gathering/find']({
-                status: 'active',
-                nextDate: true
-            })
-        }
-    },
     mounted () {
+        this.activeConstellations = [
+            {
+                title: 'Planche & wine lovers', members: 12, events: 14,
+                cover: 'https://images.unsplash.com/photo-1491924778227-f225b115dd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbmV8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
+                logo: 'https://images.unsplash.com/photo-1616631124348-c63521eb484c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Y2hhcmN1dGVyaWV8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'Team scorpio', members: 16, events: 21,
+                cover: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y29uc3RlbGxhdGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1601523266240-897ed285851d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjJ8fHNjb3JwaW9ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: `La taverne (JDR)`, members: 11, events: 6,
+                cover: 'https://images.unsplash.com/photo-1600081523138-0bae23488dea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fG1lZGlldmFsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1614767629805-3bbcf6e26c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZGljZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'Adventure club paris', members: 35, events: 8,
+                cover: 'https://images.unsplash.com/photo-1598959853379-cf6efb7959df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzF8fGZvcmVzdCUyMHdhbGt8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
+                logo: 'https://images.unsplash.com/photo-1542666365-eb335dc966ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTF8fGZvcmVzdCUyMHdhbGt8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+            }
+        ]
+
+        this.constellations = [
+            {
+                title: 'sorties 35 ans et plus', members: 44, events: 23,
+                cover: 'https://images.unsplash.com/photo-1558346489-19413928158b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d2luZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Y29mZmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'cocktails & more', members: 29, events: 18,
+                cover: 'https://images.unsplash.com/photo-1591243315780-978fd00ff9db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29ja3RhaWxzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1560433956-b2847671bb86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGNvY2t0YWlsc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'kév et les autres', members: 11, events: 5,
+                cover: 'https://images.unsplash.com/photo-1596649299486-4cdea56fd59d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJ1cmdlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1550259114-ad7188f0a967?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGZyaWVzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'loud & queer', members: 41, events: 22,
+                cover: 'https://images.unsplash.com/photo-1542358935821-e4e9f3f3c15d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGxnYnR8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
+                logo: 'https://images.unsplash.com/photo-1545231097-c046d9dcc2f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTh8fGxnYnR8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: '8-bit club', members: 56, events: 13,
+                cover: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmV0cm98ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGdhbWluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+            }, {
+                title: 'brunch ?! brunch.', members: 26, events: 8,
+                cover: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YnJ1bmNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
+                logo: 'https://images.unsplash.com/photo-1552334900-c49c6e315adb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c21pbGUlMjBmcmllbmRzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
+            }
+        ]
+
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+                setInterval(() => {
+                    this.constellations.push(this.activeConstellations[i])
+                    this.activeConstellations.splice(i, 1, this.constellations[0])
+                    this.constellations.shift()
+                }, 2000 * 4)
+            }, 2000 * i)
+        }
+
         let nextThursday = this.$moment('28-04-2022 18:00', 'DD-MM-YYYY HH:mm')
 
         while (nextThursday.isBefore(this.$moment())) {
-            nextThursday = nextThursday.add('7', 'days')
+            nextThursday = nextThursday.add('4', 'days')
         }
 
         setInterval(() => {
             let m = this.$moment.duration(nextThursday.diff(this.$moment()))
 
             this.countdown = `${m.days()}j ${this.$options.filters.fixed(m.hours())}h ${this.$options.filters.fixed(m.minutes())}m ${this.$options.filters.fixed(m.seconds())}s`
-
-            let theme = this.theme
-
-            while (theme == this.theme) {
-                theme = this.$random(['#chill', '#fiesta', '#escapeGame', '#food', '#mocktails', '#karaoké', '#running', '#hackathon', '#networking', '#marioKart', '#uno', '#books', '#balade', '#beer', '#healthy', '#photographie', '#art', '#streetArt', '#vin', '#coffee', '#quizz', '#blindTest', '#bénévolat', '#goûter', '#queer', '#sushi', '#cuisine', '#atelier', '#pizza', '#gâteaux'])
-            }
-
-            this.theme = theme
         }, 400)
-    },
-    methods: {
-        onFavorite () {
-            if (this.$cookies.get('is-newsletter')) return
-            
-            this.$cookies.set('is-newsletter', true)
-
-            setTimeout(() => {
-                this.newsletterActive = true
-            }, 500)
-        }
     }
 }
 </script>
@@ -256,44 +212,12 @@ export default {
     padding: 0 0 0 40px;
 }
 
-.Homepage_weekTitle {
-    font: var(--ft-title-l);
-    line-height: 1;
-    position: relative;
-
-    span {
-        position: relative;
-        z-index: 2;
-    }
-
-    b {
-        font: var(--ft-s-medium);
-        text-transform: uppercase;
-        margin-left: 3px;
-        color: var(--color-ft-weak);
-    }
-
-    &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        left: -25px;
-        top: -8px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-image: var(--background);
-        background-size: cover;
-        background-position: center;
-    }
-}
-
-.Homepage_slider {
+.Homepage_heading {
     background-color: var(--color-bg-strong);
     position: relative;
 
     .Wrapper {
-        padding: 40px 0;
+        padding: 60px 0;
         display: flex;
         position: relative;
         align-items: center;
@@ -305,31 +229,24 @@ export default {
         position: absolute;
         width: 100%;
         height: 100%;
-        opacity: 0.5;
+        opacity: 0.25;
         background-image: var(--background);
         background-size: cover;
         background-position: center;
     }
 }
 
-.Homepage_image {
-    height: 100%;
-    min-height: 360px;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 10px;
-}
-
 @include breakpoint-s {
-    .Homepage_slider {
+    .Homepage_heading {
 
         .Wrapper {
             display: block;
             padding: 30px;
         }
+    }
+
+    .fx-dir-column-reverse\@s {
+        flex-direction: column-reverse;
     }
 }
 
