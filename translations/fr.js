@@ -12,6 +12,12 @@ export default {
             article: `Article`
         }
     },
+    mentions: {
+        welcome: `Merci pour l'accueil`,
+        nice: `Super sympa !`,
+        passionate: `Discussion passionnante`,
+        energy: `J'adore ton énergie`
+    },
     errors: {
         default: {
             generic: `Une erreur est survenue, peux-tu réessayer ?`,

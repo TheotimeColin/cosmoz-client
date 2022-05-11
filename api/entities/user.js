@@ -19,6 +19,7 @@ let UserEntity = {
 
         settings: { type: Object, write: 'self', read: 'self' },
         notifications: { type: Array, default: [], write: 'self', read: 'self' },
+        mentions: { type: Array, default: [], write: 'private', read: 'user' },
 
         booked: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
@@ -29,13 +30,13 @@ let UserEntity = {
         ],
 
         encounters: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'self', ref: 'user' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
         isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { affinities: '$requester' } },
 
         affinities: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'self', ref: 'user' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }

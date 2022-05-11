@@ -14,6 +14,7 @@
 import { ModifiersMixin } from 'instant-coffee-core'
 
 export default {
+    name: 'UserIcon',
     mixins: [ ModifiersMixin ],
     props: {
         _id: { type: String },
@@ -69,6 +70,18 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: blue;
+}
+
+.UserIcon--l {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+
+    .UserIcon_badge {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
 }
 
 .UserIcon--xl {

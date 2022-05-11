@@ -164,9 +164,15 @@ export default {
             // }
         },
         async update () {
+            let data = this.parseForm(this.formData)
+
+            Object.keys(data).forEach(key => {
+                if (!this.form.find(f => f.key == key)) delete data[key]
+            })
+
             let response = await this.$store.dispatch(`${this.entityType}/create`, {
                 _id: this._id && this._id != 'new' ? this._id : undefined,
-                params: this.parseForm(this.formData),
+                params: data,
             })
 
             if (response.status == 1) {

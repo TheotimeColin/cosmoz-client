@@ -87,7 +87,8 @@ Vue.mixin({
         $dashboardUrl () { return this.$config.dashboardUrl },
         $blogUrl () { return this.$config.blogUrl },
         $shopUrl () { return this.$config.shopUrl },
-        $bg () { return CONSTANTS.bg }
+        $bg () { return CONSTANTS.bg },
+        $const () { return CONSTANTS }
     },
     methods: {
         $randomBetween: (min, max) => {

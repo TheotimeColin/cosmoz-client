@@ -181,8 +181,8 @@ const typeSetters = {
             try {    
                 const SIZES = {
                     profile: [
-                        { id: 's', width: 50 },
-                        { id: 'm', width: 125 }
+                        { id: 's', width: 100 },
+                        { id: 'm', width: 300 }
 
                     ],
                     default: [

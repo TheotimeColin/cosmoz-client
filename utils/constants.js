@@ -13,5 +13,11 @@ export default {
         { id: 0, label: `Actif`, value: 'active' },
         { id: 1, label: `Désactivé`, value: 'disabled' },
     ],
-    bg: { holo, aluminium, bubbleGum, denim, iceCream, plasticBlack }
+    bg: { holo, aluminium, bubbleGum, denim, iceCream, plasticBlack },
+    mentions: [
+        { id: 0, icon: 'hand-wave', label: `Merci pour l'accueil`, value: 'welcome' },
+        { id: 1, icon: 'face-laugh-beam', label: `Super sympa !`, value: 'nice' },
+        { id: 2, icon: 'message-smile', label: `Discussion passionnante`, value: 'passionate' },
+        { id: 3, icon: 'bolt', label: `J'adore ton énergie`, value: 'energy' }
+    ]
 }

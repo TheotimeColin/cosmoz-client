@@ -1,6 +1,6 @@
 <template>
     <div class="Banner" :style="background ? { '--background': `url(${background})` } : undefined">
-        <div>
+        <div class="fx-grow">
             <slot></slot>
         </div>
     </div>

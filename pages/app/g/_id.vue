@@ -15,6 +15,26 @@
         <div class="Wrapper">
             <div class="d-flex">
                 <div class="fx-grow pt-30 pv-60">
+                    <template v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
+                        <div class="p-20 b mb-60">
+                            <div class="row-xs">
+                                <div class="col-3 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
+                                    <user-profile v-bind="user" @click.native="selectedUser = user" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
+                    </template>
+                    <template v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
+                        <div class="p-20">
+                            Présence non-confirmée
+                        </div>
+                    </template>
+
+                    {{ gathering.users.map(u => `${u.name} ${u.status}`) }}
+
+                    
                     <div class="Gathering_section" v-if="gathering.description && gathering.description != '<p></p>'">
                         <h2 class="ft-title-s mb-15">Détails</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.description" />
@@ -162,6 +182,7 @@ export default {
     data: () => ({
         isManage: false,
         isAdminManage: false,
+        selectedUser: null,
         userChanges: []
     }),
     computed: {
@@ -196,7 +217,6 @@ export default {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
         },
         userStatuses () {
-  
             return [
                 { label: 'En attente', users: this.usersByStatus(['attending']) },
                 { label: 'Confirmé', users: this.usersByStatus(['confirmed']) },

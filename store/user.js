@@ -55,6 +55,14 @@ export default {
                     
                     if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
                 }
+
+                user.mentionsCategories = user.mentions.reduce((all, current) => {
+                    current.mentions.forEach(mention => {
+                        all[mention] = all[mention] ? all[mention] + 1 : 1
+                    })
+
+                    return all
+                }, {})
                 
                 return user
             } catch (e) {
