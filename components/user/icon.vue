@@ -1,8 +1,12 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id: _id }})" class="UserIcon" :class="[ theme, ...$modifiers ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id: _id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <template v-if="!src">
             {{ name.slice(0, 1) }}
         </template>
+
+        <div class="UserIcon_badge" v-if="isAffinity">
+            <i class="fal fa-sparkles"></i>
+        </div>
     </component>
 </template>
 
@@ -16,6 +20,7 @@ export default {
         name: { type: String },
         profileLarge: { type: String },
         pictureSrc: { type: String },
+        isAffinity: { type: Boolean, default: false },
         noLink: { type: Boolean, default: false }
     },
     data: () => ({
@@ -48,12 +53,34 @@ export default {
     color: var(--color-current-strong);
     background-size: cover;
     background-position: center;
+    position: relative;
+}
+
+.UserIcon_badge {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: var(--color-ft-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: blue;
 }
 
 .UserIcon--xl {
     width: 75px;
     height: 75px;
     font-size: 40px;
+
+    .UserIcon_badge {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
 }
 
 .UserIcon--2xl {

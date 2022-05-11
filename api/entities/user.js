@@ -12,7 +12,7 @@ let UserEntity = {
         password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
-        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'affinity', ref: 'mediaCollection' },
+        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
         categories: { type: Array, default: [], write: 'self', read: 'self' },
         ref: { type: String, write: 'self' },
@@ -27,6 +27,12 @@ let UserEntity = {
         attended: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
         ],
+
+        encounters: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'self', ref: 'user' }
+        ],
+
+        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { affinities: '$requester' } },
 
         affinities: [
             { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'self', ref: 'user' }

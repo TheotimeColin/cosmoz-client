@@ -45,8 +45,8 @@
                         </p>
                     </div>
                     <div class="p-20 bg-bg-strong mt-10 p-sticky" style="--offset: 40px">
-                        <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
-                            <user-icon class="mr-5 mb-5" v-for="user in usersByStatus(['attending', 'confirmed'])" :key="user._id" v-bind="user" />
+                        <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).filter(u => u._id != user._id).length > 0">
+                            <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).filter(u => u._id != user._id)" :key="participant._id" v-bind="participant" />
                         </div>
                     
                         <template v-if="usersByStatus(['attending']).length > 3 && !hasBooked">
@@ -64,10 +64,10 @@
                             </button-base> -->
 
                             <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="gathering.isPast">
-                                Evénement terminé
+                                événement terminé
                             </button-base>
                             <button-base class="fx-grow is-disabled" :modifiers="['light']" v-else-if="hasWaitingList">
-                                Evénement complet
+                                événement complet
                             </button-base>
                             <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
                                 {{ hasBooked ? `Inscription confirmée` : `En liste d'attente` }}

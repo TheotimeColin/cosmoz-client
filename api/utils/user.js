@@ -111,10 +111,7 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                     let requester = user ? user._id : null
 
                     granted = requester && owner && owner.equals(requester)
-                } else if (requiredRole == 'affinity') {
-                    console.log('=================')
-                    console.log('* AFFINITY *')
-
+                } else if (requiredRole == 'affinity' || requiredRole == 'encountered') {
                     let owner = requested ? requested.owner : null
                     let requester = user ? user._id : null
 
@@ -124,7 +121,7 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                         owner = users.find(u => u._id.equals(owner))
                         requester = users.find(u => u._id.equals(requester))
 
-                        if (owner && requester && owner.affinities.find(u => u._id.equals(requester._id)) && requester.affinities.find(u => u._id.equals(owner._id))) {
+                        if (owner && requester && owner[requiredRole == 'affinity' ? 'affinities' : 'encounters'].find(u => u._id.equals(requester._id)) && requester[requiredRole == 'affinity' ? 'affinities' : 'encounters'].find(u => u._id.equals(owner._id))) {
                             granted = true
                         } else {
                             granted = false
@@ -134,8 +131,15 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                     granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
                 }
 
+                if (fields[key]['replace']) {
+                    let replace = fields[key]['replace']
+                    let targetField = Object.keys(replace)[0]
+
+                    result[key] = user && data[targetField] && data[targetField].includes(user._id)
+                }
+                
                 if (!granted) {
-                    console.warn(key + ' not granted')
+                    // console.warn(key + ' not granted')
                     delete result[key]
                 }
             }

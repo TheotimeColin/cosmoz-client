@@ -16,8 +16,9 @@
         </app-banner>
 
         <div class="Wrapper mv-60">
-            {{ user.affinities }}
+            {{ profile.isAffinity ? 'A une affinité' : '' }}
 
+            {{ user.encounters.includes(profile._id) ? 'A rencontré' : '' }}
             <button-base @click="createAffinity">Créer affinité</button-base>
         </div>
 

@@ -64,6 +64,20 @@ exports.updateBookingStatus = async function (req, res) {
                 [userUpdate.status == 'confirmed' ? '$addToSet' : '$pull']: { attended: gathering._id }
             })
         }))
+
+        if (user.role == 'admin' || user.role == 'editor') {
+            await Promise.all(gathering.users.map(async userUpdate => {
+                if (userUpdate.status == 'confirmed') {
+                    let users = gathering.users.filter(u => u.status == 'confirmed' && u._id != userUpdate._id).map(u => u._id)
+
+                    console.log(users)
+
+                    return await Entities.user.model.findByIdAndUpdate(userUpdate._id, {
+                        ['$addToSet']: { encounters: users }
+                    })
+                }
+            }))
+        }
         
         await gathering.save()
 
