@@ -41,7 +41,7 @@
                     </h2>
 
                     <p>
-                        T'as adoré discuter avec Jenny et Marc toute la soirée ? Si c'est réciproque, des Affinités se créent entre vous. On vous proposera de nouvelles sorties selon vos centres d'intérêt.
+                        T'as adoré discuter avec Jenny et Marc toute la soirée ? Si c'est réciproque, des <span class="text-underline">affinités</span> se créent entre vous. On vous proposera de nouvelles sorties selon vos centres d'intérêt.
                     </p>
                 </div>
                 <div class="col-6 col-12@s mt-30@s">
@@ -54,11 +54,11 @@
                 </div>
                 <div class="col-6 col-12@s">
                     <h2 class="ft-title-l mb-20 ft-title-m@xs">
-                        3. Rejoins une nouvelle Constellation
+                        3. Rejoins une nouvelle constellation
                     </h2>
 
                     <p>
-                        C'est votre groupe social privé et à taille humaine. Ensemble, organisez vos sorties, vivez des moments uniques et créez une communauté qui vous ressemble.
+                        Lorsque tu as assez d'affintés, on propose à ton réseau de créer une <span class="text-underline">constellation</span>. C'est votre groupe social privé et à taille humaine. Organisez vos sorties, vivez des moments uniques et créez une communauté qui vous ressemble.
                     </p>
                 </div>
             </div>
