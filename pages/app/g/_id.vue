@@ -19,7 +19,7 @@
                         <div class="p-20 b mb-60">
                             <div class="row-xs">
                                 <div class="col-3 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
-                                    <user-profile v-bind="user" @click.native="selectedUser = user" />
+                                    <user-profile v-bind="user" :gathering="gathering._id" @click.native="selectedUser = user" />
                                 </div>
                             </div>
                         </div>

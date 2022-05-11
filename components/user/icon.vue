@@ -69,7 +69,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: blue;
+    background-color: var(--color-sticky);
 }
 
 .UserIcon--l {

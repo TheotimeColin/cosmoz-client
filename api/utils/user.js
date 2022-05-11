@@ -135,7 +135,7 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                     let replace = fields[key]['replace']
                     let targetField = Object.keys(replace)[0]
 
-                    result[key] = user && data[targetField] && data[targetField].includes(user._id)
+                    result[key] = user && requested && data[targetField] && data[targetField].includes(user._id) && user[targetField].includes(requested.owner)
                 }
                 
                 if (!granted) {

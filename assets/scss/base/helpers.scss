@@ -161,6 +161,14 @@
     }
 }
 
+.tag {
+    display: inline-block;
+    font: var(--ft-s);
+    color: var(--color-ft);
+    background: var(--color-bg-light);
+    padding: 5px 10px;
+}
+
 .tape-strong  {
     color: var(--color-ft-light);
     background: var(--color-bg-xstrong);

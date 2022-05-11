@@ -1,7 +1,14 @@
 <template>
     <div class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <div class="UserProfile_content">
-            <div></div>
+            <div>
+                <div class="round bg-sticky color-ft" v-if="isAffinity">
+                    <i class="fal fa-sparkles"></i>
+                </div>
+                <div class="round bg-bg-light color-ft" v-else-if="gathering && sent">
+                    <i class="fal fa-check"></i>
+                </div>
+            </div>
             <div>
                 {{ name }}
             </div>
@@ -17,7 +24,9 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         _id: { type: String },
+        gathering: { type: String },
         name: { type: String },
+        mentions: { type: Array, default: () => [] },
         profileLarge: { type: String },
         isAffinity: { type: Boolean, default: false },
     },
@@ -25,9 +34,9 @@ export default {
         theme: 'is-cream'
     }),
     computed: {
-        src ()  {
-            return this.profileLarge
-        }
+        user () { return this.$store.state.auth.user },
+        src ()  { return this.profileLarge },
+        sent () { return this.mentions.find(m => m.user == this.user._id && m.gathering == this.gathering) ? true : false }
     },
     created () {
         this.theme = 'is-' + this.$randomColor()
