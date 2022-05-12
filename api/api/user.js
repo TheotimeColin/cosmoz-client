@@ -2,10 +2,7 @@ const jwt = require('jsonwebtoken')
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const shortid = require('shortid')
-const sharp = require('sharp')
 const moment = require('moment')
-const QRCode = require('qrcode')
-const fs = require('fs')
 
 const { authenticate } = require('../utils/user')
 const { ErrorModel } = require('sib-api-v3-sdk')
@@ -99,36 +96,6 @@ exports.getUser = async function (req, res) {
 
     try {
         user = await authenticate(req.headers)
-
-        if (!user.qr) {
-            let fileDirectory = `user/${user._id}/qr-${shortid.generate()}.png`
-            let path = `uploads/${user._id}.png`
-            
-            await QRCode.toFile(path, user._id.toString(), {
-                scale: 5,
-                width: 1000
-            })
-            
-            let buffer = await sharp(path).toBuffer()
-
-            const src = await new Promise(resolve => {
-                req.app.locals.s3.putObject({
-                    Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
-                }, (err, data) => {
-                    resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
-                    fs.unlink(path, () => {})
-                })
-            })
-
-            user.qr = src
-            await user.save()
-        }
-
-        if (!user.id) {
-            user.id = shortid.generate()
-            await user.save()
-        }
-
         if (!user) throw Error('wrongCredentials')
     } catch (e) {
         console.error(e)

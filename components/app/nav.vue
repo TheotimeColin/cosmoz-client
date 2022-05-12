@@ -9,7 +9,7 @@
                 <div class="d-flex fxa-center">
                     <user-icon class="mr-10" v-bind="user" />
                     
-                    <link-base :to="localePath({ name: 'p-id', params: { id: user._id }})">{{ user.name }}</link-base>
+                    <link-base :to="localePath({ name: 'p-id', params: { id: user.id }})">{{ user.name }}</link-base>
                 </div>
                 <div class="mt-10">
                     <i class="fal fa-calendar mr-5"></i> {{ user.attended.length }} participations

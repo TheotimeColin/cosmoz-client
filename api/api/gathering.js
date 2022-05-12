@@ -32,7 +32,7 @@ exports.updateBookingStatus = async function (req, res) {
 
             if (userUpdate.status == 'attending') {
                 let sent = await sendConfirmationMail(gathering, user)
-                console.log(sent)
+                if (!sent) console.error('failed-mail')
             }
 
             gathering.users = [

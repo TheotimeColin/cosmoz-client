@@ -76,13 +76,13 @@ export default {
             //     return null
             // }
         },
-        async fetchOne ({ commit }, _id) {
+        async fetchOne ({ commit }, id) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
-                    _id, type: 'user'
+                    id, type: 'user'
                 }))
                 
-                let user = parseUser(response.data)
+                let user = response.data ? parseUser(response.data) : null
 
                 return user
             } catch (e) {

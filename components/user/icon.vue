@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id: _id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <template v-if="hidePicture || !src">
             {{ name.slice(0, 1) }}
         </template>
@@ -18,6 +18,7 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         _id: { type: String },
+        id: { type: String },
         name: { type: String },
         hidePicture: { type: Boolean, default: false },
         profileLarge: { type: String },

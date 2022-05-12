@@ -23,7 +23,7 @@
                             
                             <div class="row-xs" v-if="!displayAll">
                                 <div class="col-3 mt-10" v-for="(user, i) in usersByStatus(['confirmed']).filter(u => u._id != user._id).slice(0, 4)" :key="user._id">
-                                    <user-profile v-bind="user" :gathering="gathering._id" :overlay=" i == 3 ? 'Afficher tout le monde' : ''" @click.native="() => i == 3 ? displayAll = true : selectedUser = user" />
+                                    <user-profile v-bind="user" :no-link="true"  :gathering="gathering._id" :overlay=" i == 3 ? 'Afficher tout le monde' : ''" @click.native="() => i == 3 ? displayAll = true : selectedUser = user" />
                                 </div>
                             </div>
                             <div class="row-xs" v-else>

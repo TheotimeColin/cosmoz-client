@@ -11,7 +11,6 @@
                             v-bind="profile"
                         />
                     </div>
-
                     <div>
                         <p>{{ profile.name }}</p>
                         <div class="ft-s" v-if="profile.isAffinity">
@@ -58,11 +57,11 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        profile () { return this.$route.params.id == this.user._id ? this.user : this.target },
-        isSelf () { return this.user._id == this.profile._id }
+        profile () { return this.$route.params.id == this.user.id ? this.user : this.target },
+        isSelf () { return this.user.id == this.profile.id }
     },
-    methods: {
-        
+    mounted () {
+        console.log(this.profile)
     }
 }
 </script>

@@ -5,7 +5,6 @@
         </app-banner>
 
         <div class="Wrapper">
-            <canvas ref="canvas"></canvas>
             <div class="d-flex mt-30">
                 <div class="fx-grow">
                     <div class="row-xs">

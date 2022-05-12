@@ -1,5 +1,5 @@
 <template>
-    <div class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <div class="UserProfile_overlay" v-if="overlay">
             {{ overlay }}
         </div>
@@ -16,7 +16,7 @@
                 <div class="UserProfile_title">{{ name }}</div>
             </div>
         </div>
-    </div>
+    </component>
 </template>
 
 <script>
@@ -27,12 +27,14 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         _id: { type: String },
+        id: { type: String },
         gathering: { type: String },
         name: { type: String },
         overlay: { type: String },
         mentions: { type: Array, default: () => [] },
         profileLarge: { type: String },
         isAffinity: { type: Boolean, default: false },
+        noLink: { type: Boolean, default: false }
     },
     data: () => ({
         theme: 'is-cream'
@@ -50,6 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 .UserProfile {
+    display: block;
     background-size: cover;
     background-position: center;
     position: relative;

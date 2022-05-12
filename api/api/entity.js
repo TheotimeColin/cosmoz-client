@@ -12,7 +12,7 @@ exports.getEntities = async function (req, res) {
     let errors = []
     let data = []
     let cancel = false
-    let idQuery = req.query._id && !req.query._id.includes('$in')
+    let idQuery = req.query._id && !req.query._id.includes('$in') || req.query.id
     let queryType = req.query.type
 
     try {
@@ -22,7 +22,7 @@ exports.getEntities = async function (req, res) {
         if (!Entity) throw Error('entity-not-found')
 
         if (idQuery) {
-            result = await Entity.model.find({ _id: req.query._id })
+            result = await Entity.model.find(req.query._id ? { _id: req.query._id } : { id: req.query.id })
 
             if (!result[0]) throw Error('id-not-found')
         } else {
