@@ -4,6 +4,7 @@ import bubbleGum from '@/assets/img/texture/bubble-gum.webp'
 import denim from '@/assets/img/texture/denim.webp'
 import iceCream from '@/assets/img/texture/ice-cream.webp'
 import plasticBlack from '@/assets/img/texture/plastic-black.webp'
+import night from '@/assets/img/texture/night.webp'
 
 export default {
     articleCategories: [
@@ -13,7 +14,7 @@ export default {
         { id: 0, label: `Actif`, value: 'active' },
         { id: 1, label: `Désactivé`, value: 'disabled' },
     ],
-    bg: { holo, aluminium, bubbleGum, denim, iceCream, plasticBlack },
+    bg: { holo, aluminium, bubbleGum, denim, iceCream, plasticBlack, night },
     mentions: [
         { id: 0, icon: 'hand-wave', label: `Merci pour l'accueil`, value: 'welcome' },
         { id: 1, icon: 'face-laugh-beam', label: `Super sympa !`, value: 'nice' },

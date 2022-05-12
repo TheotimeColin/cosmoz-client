@@ -77,7 +77,19 @@
                             <i class="fal fa-map-marker-alt mr-5"></i> {{ gathering.location }}
                         </p>
                     </div>
-                    <div class="p-20 bg-bg-strong mt-10 p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
+
+                    <div class="p-20 bg-bg-strong mt-10 br-s" v-if="hasBooked">
+                        <div class="d-flex fx-align-center">
+                            <div class="width-3xs fx-no-shrink">
+                                <qr-code :data="qr" />
+                            </div>
+                            <div class="ft-s ml-20">
+                                Présente ce QR code à l'organisateur sur place.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-20 bg-bg-strong mt-10 br-s p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
                         <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
                             <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
                         </div>
@@ -120,12 +132,14 @@
 
                     <div class="p-30">
                         <template v-if="hasBooked">
-                            <p>Ton inscription est confirmée !</p>
+                            <p>Ton inscription est confirmée. Rendez-vous {{ $moment(gathering.date).format('dddd DD MMMM YYYY à HH:mm') }} !</p>
 
-                            <link-base :href="googleCal" target="_blank">Ajouter à Google Calendar</link-base>
+                            <link-base class="mv-20" :href="googleCal" target="_blank">Ajouter à Google Calendar</link-base>
+                            
+                            <p class="p-10 bg-bg-weak br-s">Tu as dû recevoir un email avec le QR code à faire scanner sur place le jour J. Vérifie tes spam !</p>
                         </template>
                         <template v-else>
-                            Attention
+                            Attention, pour conserver ton futur accès aux événements <span class="text-underline">n'oublie pas de te désincrire</span> si tu as un empêchement !
                         </template>
                         
                         <div>
@@ -231,6 +245,9 @@ export default {
                 { label: 'Pas prévenu', users: this.usersByStatus(['ghosted']) },
                 { label: `Liste d'attente`, users: this.usersByStatus(['waiting']) },
             ]
+        },
+        qr () {
+            return this.$config.appUrl + '/v/' + this.gathering.id + '?user=' + this.user.id
         }
     },
     methods: {

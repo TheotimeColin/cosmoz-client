@@ -1,36 +1,11 @@
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
+const { sendMail } = require('../utils/mailing')
+const moment = require('moment')
+const { uploadQR } = require('../utils/files')
 
 exports.bookGathering = async function (req, res) {
-    let data = null
-    let errors = []
-
-    try {
-        let user = await authenticate(req.headers)
-        let gathering = await Entities.gathering.model.findById(req.body._id)
-
-        if (!user) throw Error('no-user')
-        if (!gathering) throw Error('g-not-found')
-
-        if (gathering.users.filter(u => u.status == 'attending').length >= gathering.max) throw Error('g-full')
-        if (gathering.users.find(u => u._id.equals(user._id))) throw Error('g-already-booked')
-
-        gathering.users = [
-            ...gathering.users,
-            { _id: user._id, status: 'attending' }
-        ]
-
-        await gathering.save()
-
-        data = await Entities.gathering.model.find({ _id: gathering._id })
-        data = data[0]
-    } catch (e) {
-        console.error(e)
-        errors.push(e.message)
-    }
-
-    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
 }
 
 exports.updateBookingStatus = async function (req, res) {
@@ -39,7 +14,7 @@ exports.updateBookingStatus = async function (req, res) {
 
     try {
         let user = await authenticate(req.headers)
-        let gathering = await Entities.gathering.model.findById(req.body._id)
+        let gathering = await Entities.gathering.model.findOne({ _id: req.body._id })
                 
         if (!user) throw Error('no-user')
         if (!gathering) throw Error('g-not-found')
@@ -53,6 +28,11 @@ exports.updateBookingStatus = async function (req, res) {
                 } else if (userUpdate.status == 'attending' && gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= gathering.max) {
                     throw Error('g-full')
                 }
+            }
+
+            if (userUpdate.status == 'attending') {
+                let sent = await sendConfirmationMail(gathering, user)
+                console.log(sent)
             }
 
             gathering.users = [
@@ -70,8 +50,6 @@ exports.updateBookingStatus = async function (req, res) {
                 if (userUpdate.status == 'confirmed') {
                     let users = gathering.users.filter(u => u.status == 'confirmed' && u._id != userUpdate._id).map(u => u._id)
 
-                    console.log(users)
-
                     return await Entities.user.model.findByIdAndUpdate(userUpdate._id, {
                         ['$addToSet']: { encounters: users }
                     })
@@ -81,8 +59,7 @@ exports.updateBookingStatus = async function (req, res) {
         
         await gathering.save()
 
-        data = await Entities.gathering.model.find({ _id: gathering._id })
-        data = data[0]
+        data = await Entities.gathering.model.findOne({ _id: gathering._id })
 
         let users = await Entities.user.model.find({ _id: data.users.map(u => u._id) })
         
@@ -101,4 +78,44 @@ exports.updateBookingStatus = async function (req, res) {
     }
 
     res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
+}
+
+const sendConfirmationMail = async function (gathering, user) {
+    return new Promise(async (resolve, reject) => {
+        let cover = gathering.cover.medias.find(m => m.size == 'm')
+        let qr = `gatherings/${gathering.id}/${user.id}.png`
+
+        try {
+            await req.app.locals.s3.headObject({
+                Bucket: process.env.S3_BUCKET, Key: qr
+            }).promise()
+
+            qr = `https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${qr}`
+        } catch (e) {
+            qr = await uploadQR(process.env.APP_URL + '/v/' + gathering.id + '?user=' + user.id, qr)
+        }
+
+        try {
+            await sendMail(user, {
+                template: 1,
+                attachment: [
+                    { name: `qr_code.png`, url: qr }
+                ],
+                params: {
+                    date: moment(gathering.date).format('D MMMM YYYY à hh:mm'),
+                    location: gathering.location,
+                    name: gathering.title,
+                    qr: qr,
+                    image: cover ? cover.src : '',
+                    link: process.env.APP_URL + '/g/' + gathering.id,
+                    cancel: process.env.APP_URL + '/g/' + gathering.id + '?manage'
+                }
+            })
+
+            resolve(true)
+        } catch (e) {
+            console.error(e)
+            reject(false)
+        }
+    })
 }

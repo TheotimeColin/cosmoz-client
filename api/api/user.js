@@ -2,7 +2,10 @@ const jwt = require('jsonwebtoken')
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const shortid = require('shortid')
+const sharp = require('sharp')
 const moment = require('moment')
+const QRCode = require('qrcode')
+const fs = require('fs')
 
 const { authenticate } = require('../utils/user')
 const { ErrorModel } = require('sib-api-v3-sdk')
@@ -14,6 +17,7 @@ exports.logUser = async function (req, res) {
     let token = null
     let authenticated = false
     let user = null
+
 
     try {
         if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
@@ -33,6 +37,7 @@ exports.logUser = async function (req, res) {
             authenticated = await user.comparePassword(req.body.password)
         } else if (register) {
             user = await Entities.user.model.create({
+                id: shortid.generate(),
                 email: req.body.email,
                 password: req.body.password,
                 name: req.body.name,
@@ -87,12 +92,43 @@ exports.logUser = async function (req, res) {
     })
 }
 
+
 exports.getUser = async function (req, res) {
     let errors = []
     let user = null
 
     try {
         user = await authenticate(req.headers)
+
+        if (!user.qr) {
+            let fileDirectory = `user/${user._id}/qr-${shortid.generate()}.png`
+            let path = `uploads/${user._id}.png`
+            
+            await QRCode.toFile(path, user._id.toString(), {
+                scale: 5,
+                width: 1000
+            })
+            
+            let buffer = await sharp(path).toBuffer()
+
+            const src = await new Promise(resolve => {
+                req.app.locals.s3.putObject({
+                    Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
+                }, (err, data) => {
+                    resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
+                    fs.unlink(path, () => {})
+                })
+            })
+
+            user.qr = src
+            await user.save()
+        }
+
+        if (!user.id) {
+            user.id = shortid.generate()
+            await user.save()
+        }
+
         if (!user) throw Error('wrongCredentials')
     } catch (e) {
         console.error(e)

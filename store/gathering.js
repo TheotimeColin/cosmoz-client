@@ -132,7 +132,7 @@ export default {
                     if (search[key] == '$notNull') {
                         items = items.filter(item => item[key])
                     } else if (key == '$in') {
-                        items = items.filter(item => search[key].includes(item._id))
+                        items = items.filter(item => search[key].find(i => i._id == item._id))
                     } else {
                         items = items.filter(item => item[key] == search[key])
                     }

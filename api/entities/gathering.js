@@ -28,11 +28,14 @@ let Gathering = {
         favorites: { type: Number, default: 0, write: 'public' },
 
         users: { type: Array, default: [], write: 'editor' },
-
+        
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' }
     }, { timestamps: true })
 }
 
+Gathering.fields.pre('findOne', function () {
+    this.populate('cover')
+})
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')

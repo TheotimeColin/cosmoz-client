@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div>
-                {{ name }}
+                <div class="UserProfile_title">{{ name }}</div>
             </div>
         </div>
     </div>
@@ -77,7 +77,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
 
+.UserProfile_title {
     font: var(--ft-m-bold);
     text-transform: uppercase;
     font-style: italic;

@@ -8,10 +8,12 @@ let UserEntity = {
     read: 'user',
     write: 'self',
     fields: new mongoose.Schema({
+        id: { type: String, write: 'private' },
         email: { type: String, write: 'admin', read: 'admin' },
         password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
+        qr: { type: String, write: 'private', read: 'self' },
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
         categories: { type: Array, default: [], write: 'self', read: 'self' },
@@ -55,6 +57,7 @@ UserEntity.fields.pre('save', async function(next) {
 
 UserEntity.fields.pre('find', function () {
     this.populate('picture')
+    this.populate('attended')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {

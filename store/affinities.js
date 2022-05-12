@@ -9,7 +9,7 @@ export default {
 
     },
     actions: {
-        async sendMentions ({ rootState }, params) {
+        async sendMentions ({ rootState, commit }, params) {
             try {
                 const response = await this.$axios.$post('/affinities/send-mentions', {
                     ...params

@@ -19,6 +19,7 @@ exports.sendMentions = async function (req, res) {
         if (!gathering.users.find(u => target._id.equals(u._id) && u.status == 'confirmed') || !gathering.users.find(u => user._id.equals(u._id) && u.status == 'confirmed')) throw Error('users-not-connected')
         if (target.mentions.find(m => user._id.equals(m.user) && gathering._id.equals(m.gathering))) throw Error('already-sent')
 
+
         target.mentions = [
             ...target.mentions,
             { mentions: req.body.mentions.slice(0, 2), user: user._id, gathering: gathering._id }

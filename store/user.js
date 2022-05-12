@@ -1,6 +1,8 @@
 import storeUtils from '@/utils/store'
 
 const parseUser = (user) => {
+    if (!user) return user
+    
     user = JSON.parse(JSON.stringify(user))
 
     if (user.picture && user.picture.medias) {
@@ -27,9 +29,19 @@ export default {
     state: () => ({
         guestId: null,
         hasSubscription: false,
-        subscription: null
+        subscription: null,
+        items: {}
     }),
     mutations: {
+        updateOne (state, value) {
+            state.items = storeUtils.updateOne(state, value)
+        },
+        deleteOne (state, id) {
+            state.items = storeUtils.deleteOne(state, id)
+        },
+        refresh (state, values) {
+            state.items = storeUtils.refresh(values)
+        },
         update (state, user) {
             if (user && user.role == 'guest') state.guestId = user._id
         },
@@ -78,13 +90,15 @@ export default {
                 return null
             }
         },
-        async fetch ({ commit }) {
+        async fetch ({ state, commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
-                    type: 'user'
-                }))
-                
-                return response
+                    ...params.query, type: 'user',
+                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+
+                if (params.refresh !== false) commit('refresh', response.data)
+
+                return response.data
             } catch (e) {
                 console.error(e)
                 return null
@@ -192,6 +206,49 @@ export default {
     getters: {
         self: (state, getters, root) => {
             return parseUser(root.auth.user)
+        },
+        items: (state) => {
+            return Object.values(state.items).map(item => parseUser(item))
+        },
+        find: (state, getters) => (search, raw = false) => {
+            let items = raw ? Object.values(state.items) : getters.items
+
+            if (search) {
+                Object.keys(search).forEach(key => {
+                    if (search[key] == '$notNull') {
+                        items = items.filter(item => item[key])
+                    } else if (search[key] == '$notSelf') {
+                        items = items.filter(item => getters.self && item[key] != getters.self._id)
+                    } else if (key == '$in') {
+                        items = items.filter(item => search[key].includes(item._id))
+                    } else {
+                        items = items.filter(item => item[key] == search[key])
+                    }
+                })
+            }
+
+            return items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+        },
+        groupBy: (state, getters) => (property) => {
+            let items = getters.items
+
+            items = items.reduce((obj, item) => {
+                let newObj = { ...obj }
+
+                if (!newObj[item[property]]) {
+                    newObj[item[property]] = [ item ]
+                } else {
+                    newObj[item[property]].push(item)
+                }
+
+                return newObj
+            }, {})
+
+            return items
+        },
+        findOne: (state, getters) => (search, raw = false) => {
+            let items = raw ? Object.values(state.items) : getters.items
+            return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
         }
     }
 }
