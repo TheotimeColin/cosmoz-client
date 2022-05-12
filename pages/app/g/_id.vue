@@ -265,8 +265,6 @@ export default {
                     { _id: this.user._id, status: status }
                 ]
             })
-
-            this.isManage = false
         },
         onUserAttendance (user, status) {
             this.userChanges = this.userChanges.filter(u => u._id != user._id)

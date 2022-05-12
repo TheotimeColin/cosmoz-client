@@ -82,23 +82,27 @@ export default {
     },
     methods: {
         async onSubmit () {
-            this.errors = []
-            this.state.loading = true
+            try {
 
-            const token = await this.$recaptcha.execute('login')
+                this.errors = []
+                this.state.loading = true
 
-            const response = await this.$auth.loginWith('local', { 
-                data: {
-                    ...this.formData,
-                    token,
-                    type: 'register'
+                const token = await this.$recaptcha.execute('login')
+                const response = await this.$auth.loginWith('local', { 
+                    data: {
+                        ...this.formData,
+                        token,
+                        type: 'register'
+                    }
+                })
+
+                if (response.data.status != 1) {
+                    this.errors = response.data.errors
+                } else {
+                    window.location = this.$config.appUrl
                 }
-            })
-
-            if (response.data.status != 1) {
-                this.errors = response.data.errors
-            } else {
-                window.location = this.$config.appUrl
+            } catch (e) {
+                console.log(e)
             }
 
             this.state.loading = false

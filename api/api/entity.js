@@ -8,14 +8,15 @@ const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const Entities = require('../entities')
 
 exports.getEntities = async function (req, res) {
-    let user = await authenticate(req.headers)
     let errors = []
     let data = []
-    let cancel = false
-    let idQuery = req.query._id && !req.query._id.includes('$in') || req.query.id
-    let queryType = req.query.type
 
     try {
+        let user = await authenticate(req.headers)
+        let cancel = false
+        let idQuery = req.query._id && !req.query._id.includes('$in') || req.query.id
+        let queryType = req.query.type
+        
         let Entity = queryType ? Entities[queryType] : null
         let result = null
 
@@ -59,12 +60,11 @@ exports.getEntities = async function (req, res) {
 }
 
 exports.createEntity = async function (req, res) {
-    let user = await authenticate(req.headers)
-
     let errors = []
     let data = {}
 
-    try {
+    try { 
+        let user = await authenticate(req.headers)
         let params = req.body.params ? req.body.params : {}
         let fields = params
 
@@ -117,11 +117,11 @@ exports.createEntity = async function (req, res) {
 }
 
 exports.deleteEntity = async function (req, res) {
-    let user = await authenticate(req.headers)
-
     let errors = []
-    
+
     try {
+        let user = await authenticate(req.headers)
+
         if (!req.query._id) throw Error('no-id-supplied')
     
         let Entity = req.query.type ? Entities[req.query.type] : null
@@ -138,8 +138,7 @@ exports.deleteEntity = async function (req, res) {
     }
 
     res.send({
-        errors,
-        status: errors.length > 0 ? 0 : 1
+        errors, status: errors.length > 0 ? 0 : 1
     })
 }
 

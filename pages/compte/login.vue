@@ -9,7 +9,7 @@
 
                     <input-base label="Mot de passe" class="mb-10" type="password" :helpers="['reveal']" v-model="loginForm.password" />
 
-                    <errors :items="loginErrors" />
+                    <form-errors :items="loginErrors" />
 
                     <div class="text-right mt-10">
                         <link-base class="mr-5" @click="isReset = true" type="button">Mot de passe oublié ?</link-base>
@@ -85,20 +85,23 @@ export default {
             this.registerErrors = []
             this.state.loading = true
 
-            const token = await this.$recaptcha.execute('login')
+            try {
+                const token = await this.$recaptcha.execute('login')
+                const response = await this.$auth.loginWith('local', { 
+                    data: { ...(type == 'register' ? this.registerForm : this.loginForm), token, type }
+                })
 
-            const response = await this.$auth.loginWith('local', { 
-                data: { ...(type == 'register' ? this.registerForm : this.loginForm), token, type }
-            })
-
-            if (response.data.status != 1) {
-                if (type == 'login') {
-                    this.loginErrors = response.data.errors
+                if (response.data.status != 1) {
+                    if (type == 'login') {
+                        this.loginErrors = response.data.errors
+                    } else {
+                        this.registerErrors = response.data.errors
+                    }
                 } else {
-                    this.registerErrors = response.data.errors
+                    window.location = this.$config.dashboardUrl
                 }
-            } else {
-                window.location = this.$config.dashboardUrl
+            } catch (e) {
+                console.log(e)
             }
 
             this.state.loading = false

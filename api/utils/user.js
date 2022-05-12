@@ -28,33 +28,40 @@ exports.generatePassword = function (password) {
 }
 
 exports.authenticate = async function (headers) {
-    try {
-        let user = null
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = null
 
-        if (!headers['authorization']) throw Error('no-headers')
+            if (!headers['authorization']) throw Error('no-headers')
 
-        let token = headers['authorization'].split(' ')[1]
-        if (!token) throw Error('no-token')
+            let token = headers['authorization'].split(' ')[1]
+            if (!token) throw Error('no-token')
 
-        user = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
-            return new Promise (async resolve => {
-                let fetched = false
+            user = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
+                return new Promise (async (resolve, reject) => {
+                    try {
+                        let fetched = false
 
-                if (err) throw Error('fail-token')
-                
-                fetched = await Entities.user.model.find({ _id: decoded.id }, '-password')
+                        if (err) throw Error('fail-token')
+                        
+                        fetched = await Entities.user.model.find({ _id: decoded.id }, '-password')
 
-                resolve(!err && fetched[0] ? fetched[0] : false)
+                        resolve(!err && fetched[0] ? fetched[0] : false)
+                    } catch (e) {
+                        console.error(e)
+                        reject(e)
+                    }
+                })
             })
-        })
 
-        if (!user) throw Error('user-not-found')
+            if (!user) throw Error('user-not-found')
 
-        return user
-    } catch (e) {
-        console.warn(e)
-        return null
-    }
+            resolve(user)
+        } catch (e) {
+            console.warn(e)
+            reject(e)
+        }
+    })
 }
 
 exports.accessCheck = function (type = 'write', entity, requested = null, user = null) {

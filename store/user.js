@@ -53,9 +53,6 @@ export default {
     actions: {
         async logOut ({ state }) {
             try {
-                // const response = await this.$auth.loginWith('local', { 
-                //     data: { _id: state.guestId ? state.guestId : undefined, type: 'guest' }
-                // })
                 await this.$auth.logout()
 
                 if (response.data.status != 1) throw Error('error')
@@ -63,18 +60,6 @@ export default {
                 console.error(e)
                 return null
             }
-        },
-        async createGuest ({ state }) {
-            // try {
-            //     const response = await this.$auth.loginWith('local', { 
-            //         data: { _id: state.guestId ? state.guestId : undefined, type: 'guest' }
-            //     })
-    
-            //     if (response.data.status != 1) throw Error('error')
-            // } catch (e) {
-            //     console.error(e)
-            //     return null
-            // }
         },
         async fetchOne ({ commit }, id) {
             try {

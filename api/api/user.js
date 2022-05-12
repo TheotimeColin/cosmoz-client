@@ -9,14 +9,14 @@ const { ErrorModel } = require('sib-api-v3-sdk')
 
 exports.logUser = async function (req, res) {
     let errors = []
-    let data = []
-    let register = req.body.type == 'register'
+    let data = null
     let token = null
-    let authenticated = false
-    let user = null
-
 
     try {
+        let register = req.body.type == 'register'
+        let authenticated = false
+        let user = null
+
         if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
         
         if (process.env.RECAPTCHA_BYPASS != "true") {
