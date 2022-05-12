@@ -23,6 +23,7 @@ const { createEntity, getEntities, deleteEntity } = require('./api/entity');
 const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribeNewsletter } = require('./api/user');
 const { updateBookingStatus } = require('./api/gathering');
 const { sendMentions } = require('./api/affinities');
+const { postStatus } = require('./api/status');
 
 app.use(morgan('combined'))
 app.use('/webhooks', express.raw({ type: "*/*" }))
@@ -65,6 +66,8 @@ mongoose.connection.once('open', async () => {
     app.post('/user/subscribe', subscribeNewsletter)
 
     app.post('/gathering/book', updateBookingStatus)
+
+    app.post('/status/post', postStatus)
 
     app.post('/affinities/send-mentions', sendMentions)
 })

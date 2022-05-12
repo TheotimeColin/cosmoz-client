@@ -97,7 +97,7 @@ exports.accessCheck = function (type = 'write', entity, requested = null, user =
     return granted
 }
 
-exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = null, user = null) {
+const fieldsCheck = function (type = 'write', data = {}, entity, requested = null, user = null) {
     return new Promise(async (resolve, reject) => {
         let result = { ...data }
         let fields = entity.fields.obj
@@ -108,17 +108,22 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                 $in: [requested.owner, user._id]
             }})
         }
-
+        
         let promise = await Promise.all(Object.keys(fields).map(async key => {
             if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
                 let granted = false
                 let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
+
 
                 if (requiredRole == 'self') {
                     let owner = requested ? requested.owner : null
                     let requester = user ? user._id : null
 
                     granted = requester && owner && owner.equals(requester)
+                } else if (requiredRole == '$user') {
+                    result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
+
+                    granted = true
                 } else if (requiredRole == 'affinity' || requiredRole == 'encountered') {
                     let owner = requested ? requested.owner : null
                     let requester = user ? user._id : null
@@ -139,6 +144,7 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
                     granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
                 }
 
+
                 if (fields[key]['replace']) {
                     let replace = fields[key]['replace']
                     let targetField = Object.keys(replace)[0]
@@ -158,3 +164,5 @@ exports.fieldsCheck = function (type = 'write', data = {}, entity, requested = n
         resolve(result)
     })
 }
+
+exports.fieldsCheck = fieldsCheck

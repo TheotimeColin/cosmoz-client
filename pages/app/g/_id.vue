@@ -67,6 +67,12 @@
                         <h2 class="ft-title-s mb-15">Informations pratiques</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.information" />
                     </div>
+
+                    <div class="Gathering_section">
+                        <content-feed
+                            placeholder="Écrire quelque chose..."  
+                        />
+                    </div>
                 </div>
                 <div class="width-s fx-no-shrink mt-30 ml-40">
                     <div class="p-20 bg-bg-strong br-s">
