@@ -14,12 +14,28 @@
 
         <div class="Wrapper">
             <div class="d-flex">
-                <div class="fx-grow pt-30 pv-60">
+                <div class="fx-grow pt-30 pb-60">
                     <template v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
-                        <div class="p-20 b mb-60">
-                            <div class="row-xs">
-                                <div class="col-3 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
-                                    <user-profile v-bind="user" :gathering="gathering._id" @click.native="selectedUser = user" />
+                        <div class="p-20 b mb-30">
+                            <p class="ft-title-xs mb-10">
+                                Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
+                            </p>
+                            
+                            <div class="row-xs" v-if="!displayAll">
+                                <div class="col-3 mt-10" v-for="(user, i) in usersByStatus(['confirmed']).filter(u => u._id != user._id).slice(0, 4)" :key="user._id">
+                                    <user-profile v-bind="user" :gathering="gathering._id" :overlay=" i == 3 ? 'Afficher tout le monde' : ''" @click.native="() => i == 3 ? displayAll = true : selectedUser = user" />
+                                </div>
+                            </div>
+                            <div class="row-xs" v-else>
+                                <div class="col-4 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
+                                    <div class="d-flex fxa-center c-pointer" @click.prevent="selectedUser = user">
+                                        <user-icon v-bind="user" 
+                                        :modifiers="['m']" :no-link="true" :gathering="gathering._id" />
+
+                                        <p class="ft-s subtitle ml-10">
+                                            {{ user.name }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -27,15 +43,12 @@
                         <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
                     </template>
                     <template v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
-                        <div class="p-20">
+                        <div class="p-20 mb-30">
                             Présence non-confirmée
                         </div>
                     </template>
-
-                    {{ gathering.users.map(u => `${u.name} ${u.status}`) }}
-
                     
-                    <div class="Gathering_section" v-if="gathering.description && gathering.description != '<p></p>'">
+                    <div class="Gathering_section mt-30" v-if="gathering.description && gathering.description != '<p></p>'">
                         <h2 class="ft-title-s mb-15">Détails</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.description" />
                     </div>
@@ -64,9 +77,9 @@
                             <i class="fal fa-map-marker-alt mr-5"></i> {{ gathering.location }}
                         </p>
                     </div>
-                    <div class="p-20 bg-bg-strong mt-10 p-sticky" style="--offset: 40px">
-                        <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).filter(u => u._id != user._id).length > 0">
-                            <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).filter(u => u._id != user._id)" :key="participant._id" v-bind="participant" />
+                    <div class="p-20 bg-bg-strong mt-10 p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
+                        <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
+                            <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
                         </div>
                     
                         <template v-if="usersByStatus(['attending']).length > 3 && !hasBooked">
@@ -79,14 +92,7 @@
                         <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
                         <div class="d-flex fx-align-center mt-20">
-                            <!-- <button-base :modifiers="['s']" class="mr-5" v-if="!hasBooked">
-                                Peut-être
-                            </button-base> -->
-
-                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="gathering.isPast">
-                                événement terminé
-                            </button-base>
-                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-else-if="hasWaitingList">
+                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
                                 événement complet
                             </button-base>
                             <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
@@ -96,10 +102,10 @@
                                 {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je m'inscris !`) }}
                             </button-base>
                         </div>
-
-                        <div class="text-center mt-5">
-                            <link-base @click="isAdminManage = true" v-if="user.role == 'admin'">Gestion des inscriptions</link-base>
-                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <link-base @click="isAdminManage = true" v-if="user.role == 'admin'">Gestion des inscriptions</link-base>
                     </div>
                 </div>
             </div>
@@ -183,10 +189,11 @@ export default {
         isManage: false,
         isAdminManage: false,
         selectedUser: null,
+        displayAll: false,
         userChanges: []
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
         gathering () {
             return this.$store.getters['gathering/findOne']({
                 id: this.$route.params.id

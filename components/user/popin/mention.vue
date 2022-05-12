@@ -1,8 +1,17 @@
 <template>
-    <popin-base :is-active="selectedUser" :modifiers="['s']" @close="onClose" v-if="selectedUser">
-        <template slot="content">
-            <div class="bg-cover bg-holo" v-if="affinity">
-                <div>It's a match !!</div>
+    <popin-base :is-active="selectedUser" :modifiers="['s']" @close="onClose" >
+        <template slot="content" v-if="selectedUser">
+            <div class="bg-cover bg-night text-center p-40" v-if="affinity">
+                <div>
+                    <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
+                    <user-icon :modifiers="['xl']" v-bind="user" :no-link="true" />
+                </div>
+                <div class="ft-title-m mt-30 mb-10">Nouvelle affinité</div>
+                <p class="mb-15">{{ selectedUser.name }} t'as envoyé les mentions suivantes :</p>
+
+                <div class="ft-m subtitle tape" v-for="mention in received[0].mentions" :key="mention">
+                    {{ $t('mentions.' + mention) }}
+                </div>
             </div>
             <div class="p-30" v-else>
                 <div class="fx-center">
@@ -15,7 +24,7 @@
                 <div v-if="sent.length > 0">
                     <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
-                    <div class="tape tape-1" v-for="mention in sent[0].mentions" :key="mention">
+                    <div class="ft-m subtitle tape tape-1 mr-5" v-for="mention in sent[0].mentions" :key="mention">
                         {{ $t('mentions.' + mention) }}
                     </div>
                 </div>
@@ -31,7 +40,7 @@
                 </div>
             </div>
         </template>
-        <template slot="footer">
+        <template slot="footer" v-if="selectedUser">
             <div></div>
             
             <div class="p-15 text-right" v-if="!affinity">
@@ -63,9 +72,12 @@ export default {
         isMatch: false
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
         sent () {
             return this.selectedUser.mentions.filter(m => m.user == this.user._id && m.gathering == this.gathering)
+        },
+        received () {
+            return this.user.mentions.filter(m => m.user == this.selectedUser._id && m.gathering == this.gathering)
         },
         affinity () { return this.isMatch || this.selectedUser.isAffinity }
     },

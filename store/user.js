@@ -1,5 +1,27 @@
 import storeUtils from '@/utils/store'
 
+const parseUser = (user) => {
+    user = JSON.parse(JSON.stringify(user))
+
+    if (user.picture && user.picture.medias) {
+        if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
+        
+        if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
+    }
+
+    if (user.mentions) {
+        user.mentionsCategories = user.mentions.reduce((all, current) => {
+            current.mentions.forEach(mention => {
+                all[mention] = all[mention] ? all[mention] + 1 : 1
+            })
+
+            return all
+        }, {})
+    }
+
+    return user
+}
+
 export default {
     namespaced: true,
     state: () => ({
@@ -48,22 +70,8 @@ export default {
                     _id, type: 'user'
                 }))
                 
-                let user = response.data
+                let user = parseUser(response.data)
 
-                if (user.picture) {
-                    if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
-                    
-                    if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
-                }
-
-                user.mentionsCategories = user.mentions.reduce((all, current) => {
-                    current.mentions.forEach(mention => {
-                        all[mention] = all[mention] ? all[mention] + 1 : 1
-                    })
-
-                    return all
-                }, {})
-                
                 return user
             } catch (e) {
                 console.error(e)
@@ -179,6 +187,11 @@ export default {
             } catch (e) {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
+        }
+    },
+    getters: {
+        self: (state, getters, root) => {
+            return parseUser(root.auth.user)
         }
     }
 }

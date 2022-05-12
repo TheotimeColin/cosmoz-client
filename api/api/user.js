@@ -16,77 +16,66 @@ exports.logUser = async function (req, res) {
     let user = null
 
     try {
-        // if (req.body.type == 'guest') {
-        //     if (req.body._id) user = await Entities.user.model.findById(req.body._id)
-        //     if (!user) user = await Entities.user.model.create({ role: 'guest' })
+        if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
+        
+        if (process.env.RECAPTCHA_BYPASS != "true") {
+            const challenge = await $fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${req.body.token}`)
 
-        //     token = jwt.sign({ id: user._id }, process.env.SECRET, {
-        //         expiresIn: 864000
-        //     })
+            if (!challenge.success) throw Error('challenge-failed')
+        }
 
-        //     data = user
-        // } else {
-            if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
+        user = await Entities.user.model.findOne({ email: req.body.email })
+        
+        if (register && user) throw Error('alreadyRegistered')
+        if (!register && !user) throw Error('emailNotFound')
+        
+        if (user) {
+            authenticated = await user.comparePassword(req.body.password)
+        } else if (register) {
+            user = await Entities.user.model.create({
+                email: req.body.email,
+                password: req.body.password,
+                name: req.body.name,
+                surname: req.body.surname,
+                address: req.body.address,
+                address2: req.body.address2,
+                postalCode: req.body.postalCode,
+                city: req.body.city,
+                country: req.body.country,
+                role: 'user'
+            })
+
+            user.owner = user._id
+            user.save()
             
-            if (process.env.RECAPTCHA_BYPASS != "true") {
-                const challenge = await $fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${req.body.token}`)
+            if (!user) throw Error('error')
 
-                if (!challenge.success) throw Error('challenge-failed')
-            }
+            authenticated = true
 
-            user = await Entities.user.model.findOne({ email: req.body.email })
-            
-            if (register && user) throw Error('alreadyRegistered')
-            if (!register && !user) throw Error('emailNotFound')
-            
-            if (user) {
-                authenticated = await user.comparePassword(req.body.password)
-            } else if (register) {
-                user = await Entities.user.model.create({
-                    email: req.body.email,
-                    password: req.body.password,
-                    name: req.body.name,
-                    surname: req.body.surname,
-                    address: req.body.address,
-                    address2: req.body.address2,
-                    postalCode: req.body.postalCode,
-                    city: req.body.city,
-                    country: req.body.country,
-                    role: 'user'
-                })
+            try {
+                let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
+                let createContact = new req.app.locals.sendinBlue.CreateContact()
 
-                user.owner = user._id
-                user.save()
-                
-                if (!user) throw Error('error')
+                createContact.email = req.body.email
+                createContact.listIds = req.body.newsletter ? [9, 6] : [9]
 
-                authenticated = true
-
-                try {
-                    let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
-                    let createContact = new req.app.locals.sendinBlue.CreateContact()
-
-                    createContact.email = req.body.email
-                    createContact.listIds = req.body.newsletter ? [9, 6] : [9]
-
-                    createContact.attributes = {
-                        PRENOM: req.body.name
-                    }
-                    
-                    if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
-                } catch (e) {
-                    console.error(e)
+                createContact.attributes = {
+                    PRENOM: req.body.name
                 }
+                
+                if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
+            } catch (e) {
+                console.error(e)
             }
+        }
 
-            if (authenticated) {
-                token = jwt.sign({ id: user._id }, process.env.SECRET, {
-                    expiresIn: 864000
-                })
-            } else {
-                throw Error('wrongCredentials')
-            }
-        // }
+        if (authenticated) {
+            token = jwt.sign({ id: user._id }, process.env.SECRET, {
+                expiresIn: 864000
+            })
+        } else {
+            throw Error('wrongCredentials')
+        }
     } catch (e) {
         console.error(e)
         errors.push(e.message)

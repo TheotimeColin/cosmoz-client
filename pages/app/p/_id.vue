@@ -50,14 +50,15 @@ export default {
     name: 'ProfilePage',
     layout: 'app',
     async fetch () {
-        this.profile = await this.$store.dispatch('user/fetchOne', this.$route.params.id)
+        this.target = await this.$store.dispatch('user/fetchOne', this.$route.params.id)
     },
     data: () => ({
-        profile: null,
+        target: null,
         editSection: null
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
+        profile () { return this.$route.params.id == this.user._id ? this.user : this.target },
         isSelf () { return this.user._id == this.profile._id }
     },
     methods: {

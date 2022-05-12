@@ -30,10 +30,11 @@
 export default {
     name: 'DefaultHeader',
     data: () => ({
-        isOpen: false
+        isOpen: false,
+        isNewsletter: false
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
     }
 }
 </script>

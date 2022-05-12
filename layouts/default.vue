@@ -1,22 +1,5 @@
 <template>
     <div class="Layout LayoutDefault" :class="[ classes ]">
-        <!-- <div class="bg-ocean-xstrong pv-15">
-            <div class="Wrapper fx-center">
-                <div class="d-flex fx-align-center">
-                    <div class="ft-title-s fx-no-shrink timer">{{ countdown }}</div>
-                    <div class="fx-grow ml-10">
-                        <p class="ft-title-xs">
-                            On se lance bientôt.
-                        </p>
-                        <p>Soyez dans les premiers à réserver votre expérience (surprises à prévoir)</p>
-                    </div>
-                </div>
-                <button-base class="ml-20">
-                    Me prévenir
-                </button-base>
-            </div>
-        </div> -->
-
         <default-header />
         
         <div class="LayoutDefault_content">

@@ -6,9 +6,17 @@
             </a>
 
             <div class="mt-20" v-if="user">
-                <link-base :to="localePath({ name: 'p-id', params: { id: user._id }})">{{ user.name }}</link-base>
-
-                <div><i class="fal fa-calendar mr-5"></i> A participé à {{ user.attended.length }} événements</div>
+                <div class="d-flex fxa-center">
+                    <user-icon class="mr-10" v-bind="user" />
+                    
+                    <link-base :to="localePath({ name: 'p-id', params: { id: user._id }})">{{ user.name }}</link-base>
+                </div>
+                <div class="mt-10">
+                    <i class="fal fa-calendar mr-5"></i> {{ user.attended.length }} participations
+                </div>
+                <div class="mt-3">
+                    <i class="fal fa-hand-wave mr-5"></i> {{ user.encounters.length }} rencontres
+                </div>
             </div>
         </div>
         <div class="AppNav_sub">
@@ -42,7 +50,7 @@ export default {
         nav: []
     }),
     computed: {
-        user () { return this.$store.state.auth.user }
+        user () { return this.$store.getters['user/self'] },
     },
     created () {
         this.nav = [

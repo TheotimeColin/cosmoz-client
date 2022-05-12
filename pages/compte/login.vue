@@ -20,21 +20,11 @@
                     </div>
                 </form>
             </div>
-            <!-- <div class="pv-30 br-m max-width-m m-auto">
-                <p class="ft-2xl-bold"><i class="fal fa-hand-wave mr-5"></i> Crée ton Arrière Boutique</p>
+            <div class="pv-30 br-m max-width-m m-auto">
+                <p class="ft-2xl-bold"><i class="fal fa-hand-wave mr-5"></i> Créer mon profil</p>
 
-                <form autocomplete="off" @submit.prevent="submitForm('register')">
-                    <register-form :no-submit="true" class="mt-30" @formChange="updateForm" />
-
-                    <errors :items="registerErrors" class="mt-10"/>
-
-                    <div class="text-right mt-10">
-                        <button-base type="submit" :modifiers="['gum']" :class="{ 'is-disabled': state.isSuccess || state.loading }">
-                            Je m'inscris
-                        </button-base>
-                    </div>
-                </form>
-            </div> -->
+                <register-form />
+            </div>
         </div>
 
         <popin-base :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false">

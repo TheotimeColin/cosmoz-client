@@ -43,7 +43,7 @@ export default {
     }),
     computed: {
         user () { return this.$store.state.user.info },
-        savedUser () { return this.$store.state.auth.user }
+        savedUser () { return this.$store.getters['user/self'] }
     },
     watch: {
         savedUser: {

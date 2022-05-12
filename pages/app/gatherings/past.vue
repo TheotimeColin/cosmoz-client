@@ -42,7 +42,7 @@ export default {
 
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
                 '$in': this.user.attended

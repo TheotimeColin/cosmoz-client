@@ -37,13 +37,14 @@ exports.authenticate = async function (headers) {
         if (!token) throw Error('no-token')
 
         user = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
-            return new Promise (resolve => {
+            return new Promise (async resolve => {
                 let fetched = false
 
                 if (err) throw Error('fail-token')
-                fetched = Entities.user.model.findOne({ _id: decoded.id }, '-password')
+                
+                fetched = await Entities.user.model.find({ _id: decoded.id }, '-password')
 
-                resolve(!err && fetched ? fetched : false)
+                resolve(!err && fetched[0] ? fetched[0] : false)
             })
         })
 

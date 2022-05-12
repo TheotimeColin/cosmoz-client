@@ -8,14 +8,16 @@
                 <div class="col-6">
                     <p class="ft-l-bold text-upper ft-italic mb-20">Avant de t'avoir rencontré</p>
                     
-                    <user-icon class="" :no-link="true" :modifiers="['2xl']" v-bind="user" />
+                    <user-icon :hide-picture="true" :no-link="true" :modifiers="['2xl']" v-bind="user" />
+
+                    <p class="mt-20 p-20 b">Ta photo de profil est uniquement visible par les personnes que tu as déjà croisées lors d'un événement.</p>
                 </div>
                 <div class="col-6">
                     <p class="ft-l-bold text-upper ft-italic mb-20">Après t'avoir rencontré</p>
 
                     <user-icon class="" :no-link="true" :modifiers="['2xl']" v-bind="user" :picture-src="picture" />
 
-                    <input-file class="mt-20" v-model="formData.picture" />
+                    <input-file class="mt-20" v-model="newPicture" />
                 </div>
             </div>
         </div>
@@ -32,17 +34,13 @@
 export default {
     name: 'ProfileEdit',
     data: () => ({
-        formData: {}
+        formData: {},
+        newPicture: null
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
-        newPicture () {
-            return false
-            return this.formData.picture !== this.user.picture
-         },
+        user () { return this.$store.getters['user/self'] },
         picture () {
-            return this.user.profileLarge
-            return this.newPicture ? URL.createObjectURL(this.formData.picture) : this.user.profileLarge
+            return this.newPicture ? URL.createObjectURL(this.newPicture) : this.user.profileLarge
         }
     },
     watch: {
@@ -59,17 +57,19 @@ export default {
     },
     methods: {
         async onSubmit () {
-            if (this.formData.picture) {
+            let data = this.formData
+
+            if (this.newPicture) {
                 let result = await this.$store.dispatch('library/create', {
-                    file: this.formData.picture,
+                    file: this.newPicture,
                     size: 'profile',
                     path: '$user'
                 })
 
-                this.formData.picture = result._id
+                data.picture = result._id
             }
             
-            await this.$store.dispatch('user/update', this.formData)
+            await this.$store.dispatch('user/update', data)
         }
     }
 }

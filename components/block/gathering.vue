@@ -56,7 +56,7 @@ export default {
 
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
         hasBooked () { return this.users.find(u => u._id == this.user._id && u.status == 'attending') },
         hasConfirmed () { return this.users.find(u => u._id == this.user._id && u.status == 'confirmed') },
         hasGhosted () { return this.users.find(u => u._id == this.user._id && u.status == 'ghosted') },

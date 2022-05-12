@@ -1,6 +1,9 @@
 <template>
     <div class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
-        <div class="UserProfile_content">
+        <div class="UserProfile_overlay" v-if="overlay">
+            {{ overlay }}
+        </div>
+        <div class="UserProfile_content" v-else>
             <div>
                 <div class="round bg-sticky color-ft" v-if="isAffinity">
                     <i class="fal fa-sparkles"></i>
@@ -26,6 +29,7 @@ export default {
         _id: { type: String },
         gathering: { type: String },
         name: { type: String },
+        overlay: { type: String },
         mentions: { type: Array, default: () => [] },
         profileLarge: { type: String },
         isAffinity: { type: Boolean, default: false },
@@ -34,7 +38,7 @@ export default {
         theme: 'is-cream'
     }),
     computed: {
-        user () { return this.$store.state.auth.user },
+        user () { return this.$store.getters['user/self'] },
         src ()  { return this.profileLarge },
         sent () { return this.mentions.find(m => m.user == this.user._id && m.gathering == this.gathering) ? true : false }
     },
@@ -75,6 +79,24 @@ export default {
     justify-content: space-between;
 
     font: var(--ft-m-bold);
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.UserProfile_overlay {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 20px;
+    font: var(--ft-s-bold);
     text-transform: uppercase;
     font-style: italic;
 }

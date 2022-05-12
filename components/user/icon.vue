@@ -1,6 +1,6 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id: _id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
-        <template v-if="!src">
+        <template v-if="hidePicture || !src">
             {{ name.slice(0, 1) }}
         </template>
 
@@ -19,6 +19,7 @@ export default {
     props: {
         _id: { type: String },
         name: { type: String },
+        hidePicture: { type: Boolean, default: false },
         profileLarge: { type: String },
         pictureSrc: { type: String },
         isAffinity: { type: Boolean, default: false },
@@ -29,7 +30,7 @@ export default {
     }),
     computed: {
         src ()  {
-            return this.pictureSrc ? this.pictureSrc : this.profileLarge
+            return this.hidePicture ? false : (this.pictureSrc ? this.pictureSrc : this.profileLarge)
         }
     },
     created () {
@@ -70,6 +71,18 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: var(--color-sticky);
+}
+
+.UserIcon--m {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+
+    .UserIcon_badge {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
 }
 
 .UserIcon--l {
