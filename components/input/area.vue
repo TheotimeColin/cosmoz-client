@@ -1,5 +1,5 @@
 <template>
-    <div class="Area" :class="[ `is-${size}` ]">
+    <div class="Area" :class="[ `is-${size}`, { 'is-tiny': !adaptableText } ]">
         <div class="Area_input" contenteditable="true" :placeholder="placeholder" @input="onInput" @paste="onPaste" @focus="$emit('focus')" @blur="$emit('blur')" ref="content"></div>
     </div>
 </template>
@@ -9,16 +9,17 @@ export default {
     name: 'InputArea',
     props: {
         placeholder: { type: String },
-        value: { type: String }
+        value: { type: String },
+        adaptableText: { type: Boolean, default: false }
     },
     data: () => ({
         localValue: ''
     }),
     computed: {
         size () {
-            if (this.localValue.length <= 100) {
+            if (this.localValue.length <= 100 && this.adaptableText) {
                 return 'l'
-            } else if (this.localValue.length <= 300) {
+            } else if (this.localValue.length <= 300 && this.adaptableText) {
                 return 'm'
             } else {
                 return 's'
@@ -36,6 +37,9 @@ export default {
         }
     },
     methods: {
+        focus () {
+            this.$refs.content.focus()
+        },
         onPaste (e) {
             e.preventDefault()
             
@@ -58,6 +62,13 @@ export default {
 
     &.is-s .Area_input {
         font: var(--ft-m);
+    }
+
+    &.is-tiny {
+
+        .Area_input {
+            padding: 8px 10px;
+        }
     }
 }
 

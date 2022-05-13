@@ -13,6 +13,7 @@
             v-bind="status"
             @submit="onSubmit"
             :key="status._id"
+            ref="posts"
         />
     </div>
 </template>
@@ -32,8 +33,11 @@ export default {
         await this.$store.dispatch('status/fetch', { query })
     },
     computed: {
+        user () { return this.$store.getters['user/self'] },
         statuses () {
-            return this.$store.getters['status/find']()
+            return this.$store.getters['status/find']({
+                parent: '$isNull'
+            })
         }
     },
     methods: {
@@ -45,6 +49,15 @@ export default {
                 })
 
                 if (response.status == 0) throw Error(response.errors[0])
+
+                if (formData.parent) {
+                    let parent = this.$refs.posts.find(p => p._id == formData.parent)
+
+                    if (parent) {
+                        parent.pushComment({ ...formData, owner: this.user })
+                        parent.reset()
+                    }
+                }
 
                 this.$refs.editor.reset()
             } catch (e) {

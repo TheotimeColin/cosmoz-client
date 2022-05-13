@@ -83,6 +83,8 @@ export default {
                 Object.keys(search).forEach(key => {
                     if (search[key] == '$notNull') {
                         items = items.filter(item => item[key])
+                    } else if (search[key] == '$isNull') {
+                        items = items.filter(item => !item[key])
                     } else if (key == '$in') {
                         items = items.filter(item => search[key].find(i => i == item._id))
                     } else {
@@ -91,7 +93,7 @@ export default {
                 })
             }
 
-            return items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+            return items.sort((a, b) => a.createdAt && b.createdAt ? moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf() : false)
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items

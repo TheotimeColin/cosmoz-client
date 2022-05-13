@@ -1,5 +1,6 @@
 const Entities = require('../entities')
 const moment = require('moment')
+const { stripHtml } = require('string-strip-html')
 
 const { authenticate } = require('../utils/user')
 
@@ -11,7 +12,7 @@ exports.postStatus = async function (req, res) {
         let fields = req.body
         let parent = null
 
-        if (!fields.content) throw Error('no-content')
+        if (!fields.content || !stripHtml(fields.content).result) throw Error('no-content')
 
         let user = await authenticate(req.headers)
         if (!user) throw Error('no-user')
@@ -29,9 +30,11 @@ exports.postStatus = async function (req, res) {
             if (!parent) throw Error('no-parent')
         }
 
+        fields.content = stripHtml(fields.content).result
+        fields.content = fields.content.replace(/\n/g, '<br>')
+
         data = await Entities.status.model.create({
             ...fields,
-            content: fields.content.replace(/[\\$'"]/g, "\\$&"),
             owner: user._id
         })
 

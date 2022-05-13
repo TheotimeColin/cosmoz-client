@@ -70,7 +70,8 @@
 
                     <div class="Gathering_section">
                         <content-feed
-                            placeholder="Écrire quelque chose..."  
+                            placeholder="Écrire quelque chose..."
+                            :gathering="gathering._id"
                         />
                     </div>
                 </div>

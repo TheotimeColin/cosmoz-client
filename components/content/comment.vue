@@ -7,7 +7,7 @@
             <div class="fx-grow">
                 <div class="ft-s line-1">
                     <span class="subtitle">{{ owner.name }}</span>
-                    <span class="ft-italic color-ft-weak ml-5">{{ $moment(createdDate).fromNow() }}</span>
+                    <span class="ft-xs line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
                 </div>
 
                 <div class="Comment_text" v-html="content"></div>
@@ -29,7 +29,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         owner: { type: Object },
-        createdDate: { type: [String, Date] }
+        createdAt: { type: [String, Date] }
     }
 }
 </script>
