@@ -47,6 +47,15 @@
                             Présence non-confirmée
                         </div>
                     </template>
+
+                    <div class="Gathering_section" v-if="gathering.isPast">
+                        <p class="p-20 br-s bg-bg-strong mb-10 ft-italic color-ft-weak" v-if="!hasConfirmed">Seules les personnes ayant participé peuvent ajouter des messages.</p>
+                        <content-feed
+                            placeholder="Écrire quelque chose..."
+                            :disable-create="!hasConfirmed"
+                            :gathering="gathering._id"
+                        />
+                    </div>
                     
                     <div class="Gathering_section mt-30" v-if="gathering.description && gathering.description != '<p></p>'">
                         <h2 class="ft-title-s mb-15">Détails</h2>
@@ -68,9 +77,9 @@
                         <text-body :modifiers="['gathering']" :value="gathering.information" />
                     </div>
 
-                    <div class="Gathering_section">
+                    <div class="Gathering_section" v-if="!gathering.isPast">
                         <content-feed
-                            placeholder="Écrire quelque chose..."
+                            placeholder="Une question ? Une information à donner ?"
                             :gathering="gathering._id"
                         />
                     </div>
@@ -150,10 +159,11 @@
                         </template>
                         
                         <div>
-                            <button-base class="mt-20" :modifiers="['light']" @click="onBookUpdate('attending')" v-if="!hasBooked && !hasWaitingList">
+                            <button-base class="mt-20" :class="{ 'is-loading': isLoading }" :modifiers="['light']" @click="onBookUpdate('attending')"
+                            v-if="!hasBooked && !hasWaitingList">
                                 Confirmer mon inscription
                             </button-base>
-                            <button-base class="mt-20" :modifiers="['s']" @click="onBookUpdate('cancelled')" v-else>
+                            <button-base class="mt-20" :class="{ 'is-loading': isLoading }" :modifiers="['s']" @click="onBookUpdate('cancelled')" v-else>
                                 Me désincrire
                             </button-base>
                         </div>
@@ -209,6 +219,7 @@ export default {
     data: () => ({
         isManage: false,
         isAdminManage: false,
+        isLoading: false,
         selectedUser: null,
         displayAll: false,
         userChanges: []
@@ -238,6 +249,9 @@ export default {
         hasWaitingList () {
             return this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
         },
+        hasConfirmed () {
+            return this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
+        },
         canonical () {
             return this.$config.appUrl + this.localePath({ name: 'g-id', params: { id: this.gathering.id }})
         },
@@ -266,12 +280,20 @@ export default {
             return users.filter(u => statuses.includes(u.status))
         },
         async onBookUpdate (status) {
-            await this.$store.dispatch('gathering/updateBookStatus', {
-                _id: this.gathering._id,
-                users: [
-                    { _id: this.user._id, status: status }
-                ]
-            })
+            this.isLoading = true
+
+            try {
+                await this.$store.dispatch('gathering/updateBookStatus', {
+                    _id: this.gathering._id,
+                    users: [
+                        { _id: this.user._id, status: status }
+                    ]
+                })
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
         },
         onUserAttendance (user, status) {
             this.userChanges = this.userChanges.filter(u => u._id != user._id)
@@ -282,11 +304,18 @@ export default {
             ]
         },
         async onManageSubmit () {
-            await this.$store.dispatch('gathering/updateBookStatus', {
-                _id: this.gathering._id,
-                users: this.userChanges.map(u => ({ _id: u._id, status: u.status }))
-            })
+            this.isLoading = true
 
+            try {
+                await this.$store.dispatch('gathering/updateBookStatus', {
+                    _id: this.gathering._id,
+                    users: this.userChanges.map(u => ({ _id: u._id, status: u.status }))
+                })
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
             this.userChanges = []
         }
     }

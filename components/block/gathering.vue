@@ -1,17 +1,17 @@
 <template>
-    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="{ 'is-past': isPast }">
+    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="[ { 'is-past': isPast }, ...$modifiers ]">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
             <div class="BlockGathering_content">
                 <div class="ft-s-bold fx-center width-100">
-                    <div>
+                    <div v-if="!statusOnly">
                         {{ tagline }}
                     </div>
-                    <div>
+                    <div class="BlockGathering_status">
                         <template v-if="hasBooked">
-                            Je suis inscrit <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                            <span class="round-s bg-success mr-5"><i class="fal fa-check"></i></span> Inscrit
                         </template>
                         <template v-else-if="hasConfirmed">
                             Présence confirmée <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
@@ -25,11 +25,11 @@
                 <div>
                     <div class="BlockGathering_location fx-center">
                         <p class="">
-                            {{ $moment(date).fromNow() }} · {{ location }}
+                            {{ $moment(date).fromNow() }} <span class="loc">· {{ location }}</span>
                         </p>
                     </div>
 
-                    <h3 class="BlockGathering_title">
+                    <h3 class="BlockGathering_title ellipsis-3">
                         {{ title }}
                     </h3>
                 </div>
@@ -39,8 +39,11 @@
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
     name: 'BlockGathering',
+    mixins: [ ModifiersMixin ],
     props: {
         id: { type: String },
         title: { type: String },
@@ -50,7 +53,8 @@ export default {
         location: { type: String },
         date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
-        link: { type: [Object, Boolean], default: false }
+        link: { type: [Object, Boolean], default: false },
+        statusOnly: { type: Boolean, default: false }
     },
     data: () => ({
 
@@ -157,6 +161,28 @@ export default {
     font: var(--ft-xs);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.BlockGathering--square {
+
+    .BlockGathering_cover {
+
+        &::before {
+            @include ratio(100);
+        }
+    }
+
+    .loc {
+        display: none;
+    }
+
+    .BlockGathering_location {
+        font: var(--ft-2xs);
+    }
+
+    .BlockGathering_title {
+        font: var(--ft-title-xs);
+    }
 }
 
 @include breakpoint-s {

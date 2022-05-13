@@ -55,8 +55,11 @@ export default {
     created () {
         this.nav = [
             {
-                label: `Les événements`,
+                label: `Le récap`,
                 to: this.localePath({ name: 'index' }),
+            }, {
+                label: `Les événements`,
+                to: this.localePath({ name: 'gatherings' }),
                 items: [
                     {
                         label: `Événements passés`,
@@ -121,6 +124,7 @@ export default {
         .AppNav_menuLabel {
             color: var(--color-ft-strong);
             background-color: var(--color-bg-light);
+            font: var(--ft-m-bold);
 
             &::after {
                 transform: rotate(90deg);
@@ -149,10 +153,10 @@ export default {
     align-items: center;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    font: var(--ft-l-bold);
-    text-transform: uppercase;
-    font-style: italic;
-    letter-spacing: 0.05em;
+    font: var(--ft-m);
+    // text-transform: uppercase;
+    // font-style: italic;
+    // letter-spacing: 0.05em;
     padding: 8px 20px 8px 30px;
 
     &::after {

@@ -5,9 +5,6 @@ const { sendMail } = require('../utils/mailing')
 const moment = require('moment')
 const { uploadQR } = require('../utils/files')
 
-exports.bookGathering = async function (req, res) {
-}
-
 exports.updateBookingStatus = async function (req, res) {
     let data = null
     let errors = []
@@ -20,34 +17,48 @@ exports.updateBookingStatus = async function (req, res) {
         if (!gathering) throw Error('g-not-found')
 
         await Promise.all(req.body.users.map(async userUpdate => {
-            if (user.role !== 'admin' && user.role != 'editor') {
-                if (!user._id.equals(userUpdate._id)) {
-                    throw Error('not-authorized-self')
-                } else if (userUpdate.status == 'ghosted' || userUpdate.status == 'confirmed') {
-                    throw Error('not-authorized')
-                } else if (userUpdate.status == 'attending' && gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= gathering.max) {
-                    throw Error('g-full')
+            try {
+                let status = userUpdate.status
+
+                if (user.role !== 'admin' && user.role != 'editor') {
+                    if (!user._id.equals(userUpdate._id)) {
+                        throw Error('not-authorized-self')
+                    } else if (status == 'ghosted' || status == 'confirmed') {
+                        throw Error('not-authorized')
+                    } else if (status == 'attending' && gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= gathering.max) {
+                        throw Error('g-full')
+                    }
                 }
+
+                if (status == 'attending') {
+                    let sent = await sendConfirmationMail(gathering, user)
+                    if (!sent) console.error('failed-mail')
+                }
+
+                gathering.users = [
+                    ...gathering.users.filter(u => u._id != userUpdate._id),
+                    { _id: userUpdate._id, status: status }
+                ]
+
+                userUpdate = await Entities.user.model.findById(userUpdate._id)
+                
+                userUpdate.gatherings = userUpdate.gatherings.filter(g => !gathering._id.equals(g._id))
+                userUpdate.gatherings = [
+                    ...userUpdate.gatherings,
+                    { _id: gathering._id, status }
+                ]
+
+                await userUpdate.save()
+            } catch (e) {
+                console.error(e)
             }
 
-            if (userUpdate.status == 'attending') {
-                let sent = await sendConfirmationMail(gathering, user)
-                if (!sent) console.error('failed-mail')
-            }
-
-            gathering.users = [
-                ...gathering.users.filter(u => u._id != userUpdate._id),
-                { _id: userUpdate._id, status: userUpdate.status }
-            ]
-            
-            return await Entities.user.model.findByIdAndUpdate(userUpdate._id, {
-                [userUpdate.status == 'confirmed' ? '$addToSet' : '$pull']: { attended: gathering._id }
-            })
+            return userUpdate
         }))
 
         if (user.role == 'admin' || user.role == 'editor') {
             await Promise.all(gathering.users.map(async userUpdate => {
-                if (userUpdate.status == 'confirmed') {
+                if (status == 'confirmed') {
                     let users = gathering.users.filter(u => u.status == 'confirmed' && u._id != userUpdate._id).map(u => u._id)
 
                     return await Entities.user.model.findByIdAndUpdate(userUpdate._id, {

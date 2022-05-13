@@ -22,14 +22,7 @@ let UserEntity = {
         settings: { type: Object, write: 'self', read: 'self' },
         notifications: { type: Array, default: [], write: 'self', read: 'self' },
         mentions: { type: Array, default: [], write: 'private', read: 'user' },
-
-        booked: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
-        ],
-
-        attended: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'gathering' }
-        ],
+        gatherings: { type: Array, default: [], write: 'self', read: 'self' },
 
         encounters: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
@@ -58,6 +51,7 @@ UserEntity.fields.pre('save', async function(next) {
 UserEntity.fields.pre('find', function () {
     this.populate('picture')
     this.populate('attended')
+    this.populate('booked')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {

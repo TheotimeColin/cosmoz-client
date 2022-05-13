@@ -1,28 +1,35 @@
 <template>
     <div class="">
         <app-banner :background="$bg.iceCream">
-            Envie de sortir ?
+            Salut {{ user.name }}
         </app-banner>
         <div class="Wrapper">
-            <p class="ft-title-l mt-30">Commencent bientôt</p>
-
             <div class="d-flex mt-30">
-                <div class="fx-grow">
-                    <div class="d-flex mb-60" v-for="(date, i) in gatheringsByDate" :key="i">
-                        <div class="width-3xs">
-                            <tile-date class="p-sticky" style="--offset: 20px" :date="date.date" />
-                        </div>
+                <div class="fx-grow o-hidden">
+                    <div class="p-20 br-s bg-bg-strong">
+                        <p class="ft-title-xs mb-20">Mes prochaines sorties</p>
 
-                        <div class="ml-10 fx-grow">
-                            <div v-for="gathering in date.gatherings" class="mb-10" :key="gathering._id">
+                        <slider-block
+                            item-class="width-2xs"
+                        >
+                            <template v-for="gathering in attending" :slot="gathering._id">
                                 <block-gathering
+                                    :modifiers="['square']"
+                                    :status-only="true"
                                     v-bind="gathering"
+                                    :key="gathering._id"
                                 />
-                            </div>
-                        </div>
+                            </template>
+                        </slider-block>
                     </div>
+
+                    <p class="ft-title-s mt-40 mb-20">Mes actualités</p>
+                    <content-feed
+                        class="mb-60"
+                        :disable-create="true"
+                    />
                 </div>
-                <div class="width-s fx-no-shrink ml-20">
+                <div class="width-xs fx-no-shrink ml-20">
                     <div class="p-20 bg-bg-strong"></div>
                 </div>
             </div>
@@ -44,23 +51,17 @@ export default {
         format: 'YYYYDDD'
     }),
     computed: {
+        user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                date: '$notNull',
-                display: false
+                '$in': user.booked
             })
         },
-        gatheringsByDate () {
-            let weeks = {}
-
-            this.gatherings.forEach(g => {
-                let id = this.$moment(g.date).format(this.format)
-
-                weeks[id] = weeks[id] ? { ...weeks[id], gatherings: [ ...weeks[id].gatherings, g ] } : { date: g.date, gatherings: [ g ] } 
+        attending () {
+            return this.$store.getters['gathering/find']({
+                '$in': this.user.gatherings.filter(g => g.status == 'attending')
             })
-
-            return weeks
-        },
+        }
     },
     methods: {
         

@@ -1,12 +1,14 @@
 <template>
-    <div class="Post">
+    <div class="Post" :class="{ 'is-current': isCurrent }">
         <div class="Post_head">
             <div class="d-flex fxa-center">
-                <user-icon class="fx-no-shrink" :modifiers="['s']" v-bind="owner" />
+                <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
+                    <user-icon class="Post_user" :modifiers="['s']" v-bind="owner" />
+                </nuxt-link>
 
                 <div class="ml-10 ft-s line-1">
-                    <p class="subtitle">{{ owner.name }}</p>
-                    <p class="ft-italic color-ft-weak mt-3">{{ $moment(createdAt).fromNow() }}</p>
+                    <nuxt-link :to="titleLink" class="subtitle">{{ title }}</nuxt-link>
+                    <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
                 </div>
             </div>
         </div>
@@ -55,7 +57,10 @@ export default {
         owner: { type: Object },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
-        createdAt: { type: [String, Date] }
+        disableCreate: { type: Boolean, default: false },
+        createdAt: { type: [String, Date] },
+        gathering: { type: String },
+        activeGathering: { type: String }
     },
     data: () => ({
         max: 2,
@@ -73,6 +78,34 @@ export default {
             })
 
             return [ ...comments, ...this.localComments ] 
+        },
+        isCurrent () {
+            return this.activeGathering == this.gathering
+        },
+        gatheringData () {
+            return this.$store.getters['gathering/findOne']({ _id: this.gathering })
+        },
+        title () {
+            if (this.isCurrent) {
+                return this.owner.name
+            } else {
+                return this.gatheringData.title
+            }
+        },
+        subtitle () {
+            let subtitle = this.$moment(this.createdAt).fromNow()
+
+            if (!this.isCurrent) subtitle = this.owner.name + ' · ' + subtitle
+
+            return subtitle
+        },
+        titleLink () {
+            if (this.isCurrent) {
+                return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
+            } else {
+                
+                return this.localePath({ name: 'g-id', params: { id: this.gatheringData.id } })
+            }
         }
     },
     methods: {
@@ -83,10 +116,14 @@ export default {
             this.localComments = [ ...this.localComments, v ]
         },
         onAddComment () {
+            if (this.disableCreate) return
+
             this.isAdd = true
             setTimeout(() => this.$refs.commentInput.focus(), 10)
         },
         onSubmit (data) {
+            if (this.disableCreate) return
+            
             this.$emit('submit', {
                 ...data,
                 parent: this._id
@@ -100,6 +137,41 @@ export default {
     .Post {
         border-radius: 5px;
         background-color: var(--color-bg-strong);
+
+        &.is-current {
+
+            .Post_icon {
+                background-color: transparent;
+            }
+
+            .Post_user {
+                position: relative !important;
+                bottom: auto;
+                right: auto;
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+    }
+
+    .Post_icon {
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 3px;
+        background-size: cover;
+        background-position: center;
+        background-color: var(--color-bg);
+        position: relative;
+    }
+
+    .Post_user {
+        position: absolute !important;
+        bottom: -3px;
+        right: -3px;
+        width: 20px !important;
+        height: 20px !important;
     }
 
     .Post_text {
@@ -138,4 +210,5 @@ export default {
             margin-top: 10px;
         }
     }
+
 </style>

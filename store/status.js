@@ -19,7 +19,19 @@ export default {
             state.items = storeUtils.refresh(values)
         }
     },
-    actions: { 
+    actions: {
+        async fetchFeed ({ state, commit }, params = {}) {
+        try {
+            const response = await this.$axios.$get('/status/feed', { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+
+            if (params.refresh !== false) commit('refresh', response.data)
+
+            return response.data
+        } catch (e) {
+            console.error(e)
+            return null
+        }
+    },
         async fetch ({ state, commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {

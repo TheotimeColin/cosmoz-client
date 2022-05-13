@@ -4,6 +4,7 @@
             class="Feed_item p-20"
             :placeholder="placeholder"
             @submit="onSubmit"
+            v-if="!disableCreate"
             ref="editor"
         />
 
@@ -12,6 +13,8 @@
             class="Feed_item"
             v-bind="status"
             @submit="onSubmit"
+            :active-gathering="gathering"
+            :disableCreate="disableCreate"
             :key="status._id"
             ref="posts"
         />
@@ -23,14 +26,22 @@ export default {
     name: 'Feed',
     props: {
         gathering: { type: String },
-        placeholder: { type: String }
+        placeholder: { type: String },
+        disableCreate: { type: Boolean, default: false }
     },
     async fetch () {
         let query = {}
 
-        if (this.gathering) query.gathering = this.gathering
-
-        await this.$store.dispatch('status/fetch', { query })
+        if (this.gathering) {
+            query.gathering = this.gathering
+            await this.$store.dispatch('status/fetch', { query })
+        } else {
+            await this.$store.dispatch('gathering/fetch', {
+                query: {}
+            })
+            
+            await this.$store.dispatch('status/fetchFeed')
+        }
     },
     computed: {
         user () { return this.$store.getters['user/self'] },

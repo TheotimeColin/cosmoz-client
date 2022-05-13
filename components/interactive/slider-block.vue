@@ -1,10 +1,10 @@
 <template>
-    <div class="SliderBlock" :style="{ '--step': step }">
-        <div class="SliderBlock_rail">
+    <div class="SliderBlock" :style="{ '--step': step }" ref="container">
+        <div class="SliderBlock_rail" ref="rail">
             <div
                 class="SliderBlock_item"
                 v-for="slot in dynSlots"
-                :class="[ itemClass, { 'is-active': slot == activeSlot } ]"
+                :class="[ itemClass ]"
                 :key="slot"
             >
                 <slot :name="slot">
@@ -12,14 +12,10 @@
                 </slot>
             </div>
         </div>
+        
+        <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0" />
 
-        <div class="SliderBlock_footer" v-if="!hideFooter">
-            <div class="SliderBlock_bullets">
-                <div class="SliderBlock_bullet" :class="{ 'is-active': slot == activeSlot }" v-for="slot in dynSlots" :key="slot"></div>
-            </div>
-
-            <slot name="submit"></slot>
-        </div>
+        <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps" />
     </div>
 </template>
 
@@ -27,21 +23,30 @@
 export default {
     name: 'SliderBlocks',
     props: {
-        step: { type: Number, default: 0 },
-        hideFooter: { type: Boolean, default: false },
-        itemClass: { type: String, default: '' },
-        isLoading: { type: Boolean, default: false }
+        itemClass: { type: String, default: '' }
     },
     computed: {
         dynSlots () {
             return Object.keys(this.$slots).filter(key => key != 'submit')
-        },
-        activeSlot () {
-            return this.dynSlots[this.step]
-        }  
+        }
     },
+    data: () => ({
+        step: 0,
+        maxSteps: 0
+    }),
     mounted () {
-
+        this.checkDimensions()
+    },
+    methods: {
+        checkDimensions () {
+            this.maxSteps = Math.ceil(this.$refs.rail.clientWidth / this.$refs.container.scrollWidth)
+        },
+        next () {
+            this.step += 1
+        },
+        prev () {
+            this.step -= 1
+        }
     }
 }
 </script>
@@ -49,52 +54,38 @@ export default {
 <style lang="scss" scoped>
     .SliderBlock {
         overflow: hidden;
+        position: relative;
     }
 
     .SliderBlock_rail {
         white-space: nowrap;
         transition: all 300ms ease;
-        transform: translateX(calc(-100% * var(--step)))
+        transform: translateX(calc(-50% * var(--step)));
     }
 
     .SliderBlock_item {
         white-space: normal;
-        width: 100%;
         display: inline-block;
         vertical-align: top;
-        opacity: 0;
-        pointer-events: none;
-        transition: all 300ms ease;
-        transform: scale(0.9);
 
-        &.is-active {
-            opacity: 1;
-            pointer-events: all;
-            transform: none;
+        & + & {
+            margin-left: 10px;
         }
     }
 
-    .SliderBlock_footer {
-        display: flex;
-        align-items: center;
-        margin: 0 40px 40px;
-        justify-content: space-between;
+    .SliderBlock_left,
+    .SliderBlock_right {
+        position: absolute;
+        z-index: 5;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
-    .SliderBlock_bullets {
-        display: flex;
-        align-items: center;
+    .SliderBlock_left {
+        left: 10px;
     }
 
-    .SliderBlock_bullet {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background-color: var(--color-bg-weak);
-        margin-right: 5px;
-
-        &.is-active {
-            background-color: var(--color-onyx);
-        }
+    .SliderBlock_right {
+        right: 10px;
     }
 </style>

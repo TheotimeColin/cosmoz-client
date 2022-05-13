@@ -51,3 +51,25 @@ exports.postStatus = async function (req, res) {
 
     res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
 }
+
+exports.getFeed = async function (req, res) {
+    let data = []
+    let errors = []
+
+    try {
+        let user = await authenticate(req.headers)
+        if (!user) throw Error('no-user')
+
+        data = await Entities.status.model.find({
+            $or: [
+                { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }}
+            ]
+        })
+
+    } catch (e) {
+        console.error(e)
+        errors.push(e.message)
+    }
+
+    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
+}

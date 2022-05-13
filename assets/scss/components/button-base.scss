@@ -11,6 +11,7 @@
     transition: all 150ms ease;
     text-align: center;
     justify-content: center;
+    position: relative;
     
     &:hover,
     &:active {
@@ -59,6 +60,10 @@
         color: var(--color-ft-light);
         background-color: transparent;
     }
+    
+    .ButtonBase_iconLoading {
+        color: var(--color-ft);
+    }
 }
 
 .ButtonBase--full {
@@ -71,6 +76,10 @@
 .ButtonBase--s {
     padding: 8px 12px;
     font: var(--ft-xs-medium);
+}
+
+.ButtonBase.is-loading {
+    pointer-events: none;
 }
 
 .ButtonBase:disabled,
