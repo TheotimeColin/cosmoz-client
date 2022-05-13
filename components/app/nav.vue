@@ -12,7 +12,7 @@
                     <link-base :to="localePath({ name: 'p-id', params: { id: user.id }})">{{ user.name }}</link-base>
                 </div>
                 <div class="mt-10">
-                    <i class="fal fa-calendar mr-5"></i> {{ user.attended.length }} participations
+                    <i class="fal fa-calendar mr-5"></i> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
                 </div>
                 <div class="mt-3">
                     <i class="fal fa-hand-wave mr-5"></i> {{ user.encounters.length }} rencontres

@@ -50,8 +50,6 @@ UserEntity.fields.pre('save', async function(next) {
 
 UserEntity.fields.pre('find', function () {
     this.populate('picture')
-    this.populate('attended')
-    this.populate('booked')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {
