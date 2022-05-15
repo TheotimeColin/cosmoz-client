@@ -1,8 +1,8 @@
 <template>
     <div class="DefaultHeader" :class="{ 'is-open': isOpen }">
         <div class="DefaultHeader_wrapper Wrapper">
-            <a :href="$config.baseUrl" class="DefaultHeader_logo ft-title-m logo-sparkle">
-                gatherings
+            <a :href="$config.baseUrl" class="DefaultHeader_logo ft-title-m logo-sparkle-p">
+                cosmoz
             </a>
 
             <div class="DefaultHeader_nav">
@@ -49,7 +49,7 @@ export default {
     }
 
     .DefaultHeader_wrapper {
-        height: 65px;
+        height: 60px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -73,7 +73,7 @@ export default {
     }
 
     .DefaultHeader_navItem {
-        font: var(--ft-s);
+        font: var(--ft-title-3xs);
         line-height: 1;
         display: flex;
         align-items: center;

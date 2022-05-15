@@ -15,7 +15,7 @@
             
             <div class="Comment_actions">
                 <div class="Comment_action">
-                    <i class="fal fa-heart mr-3"></i> 12
+                    <i class="fal fa-heart mr-3"></i> {{ reactions.length ? reactions.length : '' }}
                 </div>
             </div>
         </div>
@@ -29,6 +29,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         owner: { type: Object },
+        reactions: { type: Array, default: () => [] },
         createdAt: { type: [String, Date] }
     }
 }

@@ -7,7 +7,7 @@
                 </nuxt-link>
 
                 <div class="ml-10 ft-s line-1">
-                    <nuxt-link :to="titleLink" class="subtitle">{{ title }}</nuxt-link>
+                    <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
                     <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
                 </div>
             </div>

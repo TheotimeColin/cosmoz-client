@@ -174,12 +174,6 @@
     background: var(--color-bg-xstrong);
 }
 
-.subtitle {
-    text-transform: uppercase;
-    font-weight: bold;
-    font-style: italic;
-}
-
 .tape-1 {
     color: var(--color-ft-light);
     background: var(--color-bg);
@@ -332,7 +326,7 @@
     border-radius: 50%;
     justify-content: center;
     vertical-align: middle;
-    font: var(--ft-s-medium);
+    font: var(--ft-title-2xs);
     line-height: 1;
 }
 

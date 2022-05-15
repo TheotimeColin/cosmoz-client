@@ -83,9 +83,7 @@ export default {
 }
 
 .UserProfile_title {
-    font: var(--ft-m-bold);
-    text-transform: uppercase;
-    font-style: italic;
+    font: var(--ft-title-xs);
 }
 
 .UserProfile_overlay {

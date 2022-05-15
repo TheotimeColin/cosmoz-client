@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="ml-40 text-center fx-grow">
-                    <div class="ft-s subtitle tape tape-strong m-3" v-for="(count, key) in profile.mentionsCategories" :key="key">
+                    <div class="ft-title-3xs tape tape-strong m-3" v-for="(count, key) in profile.mentionsCategories" :key="key">
                         {{ $t('mentions.' + key) }} <span class="round round-s bg-bg ml-5">{{ count }}</span>
                     </div>
                 </div>

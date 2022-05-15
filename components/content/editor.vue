@@ -44,7 +44,7 @@ export default {
             setTimeout(() => {
                 this.$emit('blur')
                 this.isFocused = false
-            }, 100)
+            }, 150)
         },
         reset () {
             this.formData = {

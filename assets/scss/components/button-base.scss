@@ -1,8 +1,6 @@
 .ButtonBase {
     display: inline-flex;
-    font: var(--ft-s-bold);
-    font-style: italic;
-    text-transform: uppercase;
+    font: var(--ft-title-xs);
     color: var(--color-ft-light);
     border: 2px solid var(--color-ft);
     background-color: var(--color-ft);
@@ -74,8 +72,8 @@
 }
 
 .ButtonBase--s {
-    padding: 8px 12px;
-    font: var(--ft-xs-medium);
+    padding: 12px 15px;
+    font: var(--ft-title-2xs);
 }
 
 .ButtonBase.is-loading {

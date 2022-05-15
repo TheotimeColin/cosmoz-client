@@ -2,7 +2,7 @@
     <nav class="AppNav">
         <div class="AppNav_header">
             <a :href="$config.appUrl" class="ft-title-s logo-sparkle-p">
-                gatherings
+                cosmoz
             </a>
 
             <div class="mt-20" v-if="user">
@@ -32,10 +32,10 @@
                 </div>
             </div>
             <div class="AppNav_footer">
-                <p class="subtitle ft-s">Mes tribus</p>
+                <p class="subtitle ft-title-3xs">Mes constellations</p>
 
                 <div class="mt-10 p-20 b text-center br-xs">
-                    Tu n'appartiens à aucune tribu.
+                    Tu n'appartiens à aucune constellation.
                     <link-base >Comment en rejoindre une ?</link-base>
                 </div>
             </div>
@@ -124,7 +124,6 @@ export default {
         .AppNav_menuLabel {
             color: var(--color-ft-strong);
             background-color: var(--color-bg-light);
-            font: var(--ft-m-bold);
 
             &::after {
                 transform: rotate(90deg);
@@ -153,11 +152,8 @@ export default {
     align-items: center;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    font: var(--ft-m);
-    // text-transform: uppercase;
-    // font-style: italic;
-    // letter-spacing: 0.05em;
-    padding: 8px 20px 8px 30px;
+    font: var(--ft-title-2xs);
+    padding: 15px 20px 15px 30px;
 
     &::after {
         content: "\f105";

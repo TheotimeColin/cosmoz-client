@@ -37,3 +37,46 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.LinkBase {
+    font: var(--ft-title-3xs);
+    line-height: 1;
+    display: inline-block;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-ft-light);
+    text-underline-offset: 0.085rem;
+    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &:active {
+        opacity: 0.5;
+        text-decoration: none;
+    }
+}
+
+.LinkBase_content {
+    position: relative;
+}
+
+.LinkBase--s {
+    font: var(--ft-xs);
+    line-height: 1;
+
+    &::before {
+        bottom: -4px;
+    }
+}
+
+.LinkBase--current {
+    color: var(--color-current);
+
+    &::before {
+        background-color: var(--color-current);
+    }
+}
+</style>

@@ -46,9 +46,7 @@ export default {
 }
 
 .BlockConstellation_title {
-    font: var(--ft-m-bold);
-    font-style: italic;
-    text-transform: uppercase;
+    font: var(--ft-title-2xs);
 }
 
 .BlockConstellation_cover {

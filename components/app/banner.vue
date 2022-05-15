@@ -18,7 +18,7 @@ export default {
 <style lang="scss" scoped>
 .Banner {
     position: relative;
-    font: var(--ft-title-l);
+    font: var(--ft-title-xl);
     color: var(--color-ft-light);
     background-color: var(--color-bg-xstrong);
     display: flex;
