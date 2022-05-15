@@ -2,7 +2,7 @@
     <transition tag="div" name="fade">
         <div class="Errors ft-s-medium bg-merlot-xstrong pv-5 ph-20" v-show="errors.length > 0">
             <div class="mv-10" v-for="(error, i) in errors" :key="i">
-                <i class="fal fa-times mr-5"></i> {{ error }}
+                <fa class="mr-5" icon="far fa-times" /> {{ error }}
             </div>
         </div>
     </transition>

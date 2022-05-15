@@ -87,10 +87,10 @@
                 <div class="width-s fx-no-shrink mt-30 ml-40">
                     <div class="p-20 bg-bg-strong br-s">
                         <p>
-                            <i class="fal fa-calendar mr-5"></i> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
+                            <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
                         </p>
                         <p class="mt-5">
-                            <i class="fal fa-map-marker-alt mr-5"></i> {{ gathering.location }}
+                            <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ gathering.location }}
                         </p>
                     </div>
 

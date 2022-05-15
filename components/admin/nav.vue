@@ -13,7 +13,7 @@
                     :to="localePath({ name: item.link })"
                     :exact="item.exact"
                 >
-                    <i class="fal mr-3" :class="[ `fa-${item.icon}` ]"></i> {{ item.label }}
+                    <fa class="mr-3" :icon="`far fa-${item.icon}`" /> {{ item.label }}
                 </nuxt-link>
             </div>
         </div>

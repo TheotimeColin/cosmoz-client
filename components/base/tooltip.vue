@@ -1,6 +1,6 @@
 <template>
     <span class="TooltipIcon" @mouseenter="(e) => $tOpen(text, e)" @mouseleave="$tClose">
-        <i class="fal" :class="[ `fa-${icon}` ]"></i>
+        <fa :icon="`far fa-${icon}`" />
     </span>
 </template>
 

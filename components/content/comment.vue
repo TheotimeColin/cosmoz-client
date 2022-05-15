@@ -15,7 +15,7 @@
             
             <div class="Comment_actions">
                 <div class="Comment_action">
-                    <i class="fal fa-heart mr-3"></i> {{ reactions.length ? reactions.length : '' }}
+                    <fa class="mr-3" icon="far fa-heart" /> {{ reactions.length ? reactions.length : '' }}
                 </div>
             </div>
         </div>

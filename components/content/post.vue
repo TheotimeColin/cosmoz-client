@@ -17,10 +17,10 @@
         </div>
         <div class="Post_footer">
             <div class="Post_action">
-                <i class="fal fa-heart mr-3"></i> {{ reactions.length ? reactions.length : '' }}
+                <fa class="mr-3" icon="far fa-heart" /> {{ reactions.length ? reactions.length : '' }}
             </div>
             <div class="Post_action" @click="onAddComment">
-                <i class="fal fa-comment-lines mr-3"></i> {{ comments.length ? comments.length : '' }}
+                <fa class="mr-3" icon="far fa-comment-lines" /> {{ comments.length ? comments.length : '' }}
             </div>
         </div>
         <transition name="fade">

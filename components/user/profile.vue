@@ -6,10 +6,10 @@
         <div class="UserProfile_content" v-else>
             <div>
                 <div class="round bg-sticky color-ft" v-if="isAffinity">
-                    <i class="fal fa-sparkles"></i>
+                    <fa icon="far fa-sparkles" />
                 </div>
                 <div class="round bg-bg-light color-ft" v-else-if="gathering && sent">
-                    <i class="fal fa-check"></i>
+                    <fa icon="far fa-check" />
                 </div>
             </div>
             <div>

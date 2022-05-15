@@ -12,17 +12,19 @@
                     <link-base :to="localePath({ name: 'p-id', params: { id: user.id }})">{{ user.name }}</link-base>
                 </div>
                 <div class="mt-10">
-                    <i class="fal fa-calendar mr-5"></i> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
+                    <fa icon="far fa-calendar" class="mr-5" /> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
                 </div>
                 <div class="mt-3">
-                    <i class="fal fa-hand-wave mr-5"></i> {{ user.encounters.length }} rencontres
+                    <fa icon="far fa-hand-wave" class="mr-5" /> {{ user.encounters.length }} rencontres
                 </div>
             </div>
         </div>
         <div class="AppNav_sub">
             <div class="AppNav_menu">
                 <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path }" v-for="(item, i) in nav" :key="i">
-                    <nuxt-link class="AppNav_menuLabel" :to="item.to">{{ item.label }}</nuxt-link>
+                    <nuxt-link class="AppNav_menuLabel" :to="item.to">
+                        <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
+                    </nuxt-link>
 
                     <div class="AppNav_menuChildren" v-if="item.items">
                         <nuxt-link class="AppNav_menuSubitem" :to="child.to" v-for="(child, j) in item.items" :key="j">
@@ -56,9 +58,11 @@ export default {
         this.nav = [
             {
                 label: `Le récap`,
+                fa: 'home',
                 to: this.localePath({ name: 'index' }),
             }, {
                 label: `Les événements`,
+                fa: 'calendar',
                 to: this.localePath({ name: 'gatherings' }),
                 items: [
                     {
@@ -68,9 +72,11 @@ export default {
                 ]
             }, {
                 label: `Mes affinités`,
+                fa: 'sparkles',
                 to: this.localePath({ name: 'affinites' })
             }, {
                 label: `Mon compte`,
+                fa: 'user',
                 to: this.localePath({ name: 'compte' })
             }
         ]
@@ -154,6 +160,12 @@ export default {
     border-bottom-right-radius: 20px;
     font: var(--ft-title-2xs);
     padding: 15px 20px 15px 30px;
+
+    .icon {
+        width: 25px;
+        margin-right: 5px;
+        text-align: center;
+    }
 
     &::after {
         content: "\f105";

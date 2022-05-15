@@ -1,7 +1,7 @@
 <template>
     <div class="QuickMenu" :class="{ 'is-active': isActive }" ref="body">
         <div class="QuickMenu_button round-s" @click="isActive = !isActive">
-            <i class="fal fa-ellipsis-stroke-vertical"></i>
+            <fa icon="far fa-ellipsis-stroke-vertical"></fa>
         </div>
         
         <div class="QuickMenu_actions">

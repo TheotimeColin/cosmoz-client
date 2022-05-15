@@ -3,7 +3,7 @@
         <div class="Accordion_title" @click="isActive = !isActive">
             <span>{{ title }}</span>
 
-            <i class="Accordion_icon fal fa-angle-right"></i>
+            <fa class="Accordion_icon" icon="fal fa-angle-right" />
         </div>
 
         <div class="Accordion_content">

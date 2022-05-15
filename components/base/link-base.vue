@@ -10,11 +10,11 @@
         @click="$emit('click')"
     >
         <div class="LinkBase_content">
-            <i class="fal mr-5" :class="[`fa-${iconBefore}`]" v-if="iconBefore"></i>
+            <fa class="mr-5" :icon="`fa-${iconBefore}`" v-if="iconBefore" />
 
             <slot></slot>
 
-            <i class="fal ml-5" :class="[`fa-${iconAfter}`]" v-if="iconAfter"></i>
+            <fa class="ml-5" :icon="`fa-${iconAfter}`" v-if="iconAfter" />
         </div>
     </component>
 </template>

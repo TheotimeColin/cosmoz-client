@@ -20,8 +20,8 @@
             </div>
 
             <div class="BlogHeader_burger" @click="isOpen = !isOpen">
-                <i class="fal fa-bars" v-if="!isOpen"></i>
-                <i class="fal fa-times" v-else></i>
+                <fa icon="far fa-bars" v-if="!isOpen" />
+                <fa icon="far fa-times" v-else />
             </div>
         </div>
     </div>

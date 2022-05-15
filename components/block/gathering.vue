@@ -11,13 +11,13 @@
                     </div>
                     <div class="BlockGathering_status">
                         <template v-if="hasBooked">
-                            <span class="round-s bg-success mr-5"><i class="fal fa-check"></i></span> Inscrit
+                            <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit
                         </template>
                         <template v-else-if="hasConfirmed">
-                            Présence confirmée <span class="round-s bg-success ml-5"><i class="fal fa-check"></i></span>
+                            Présence confirmée <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span>
                         </template>
                         <template v-else-if="hasGhosted">
-                            Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><i class="fal fa-warning"></i></span>
+                            Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span>
                         </template>
                     </div>
                 </div>

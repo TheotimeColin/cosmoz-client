@@ -2,7 +2,7 @@
     <label :for="id" class="InputFile">
         <div class="InputFile_title">
             <p class="ft-3xl">
-                <i class="fal fa-cloud-upload color-ft-xweak mb-20"></i>
+                <fa class="color-ft-xweak mb-20" icon="far fa-cloud-upload" />
             </p>
 
             {{ label }}

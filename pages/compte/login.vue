@@ -2,7 +2,7 @@
     <div class="o-hidden">
         <div class="Wrapper Wrapper--m">
             <div class="pv-30 br-m max-width-m m-auto">
-                <p class="ft-2xl-bold"><i class="fal fa-sparkles mr-5"></i> Se connecter</p>
+                <p class="ft-2xl-bold">Se connecter</p>
 
                 <form @submit.prevent="submitForm('login')" class="mt-30">
                     <input-base label="Ton adresse e-mail" class="mb-10" :attrs="{ required: true }" v-model="loginForm.email" type="email" />
@@ -21,7 +21,7 @@
                 </form>
             </div>
             <div class="pv-30 br-m max-width-m m-auto">
-                <p class="ft-2xl-bold"><i class="fal fa-hand-wave mr-5"></i> Créer mon profil</p>
+                <p class="ft-2xl-bold">Créer mon profil</p>
 
                 <register-form />
             </div>

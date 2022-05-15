@@ -20,6 +20,7 @@ export default {
     },
     
     css: [
+        '@fortawesome/fontawesome-svg-core/styles.css',
         '@/assets/scss/global.scss'
     ],
 

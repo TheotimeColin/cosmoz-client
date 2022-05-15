@@ -33,7 +33,7 @@
                         />
 
                         <div @click="generateSlug" class="ml-10">
-                            <i class="fal fa-redo"></i>
+                            <fa icon="far fa-redo" />
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                         />
 
                         <div @click="generateId" class="ml-10">
-                            <i class="fal fa-redo"></i>
+                            <fa icon="far fa-redo" />
                         </div>
                     </div>
 

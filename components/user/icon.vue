@@ -5,7 +5,7 @@
         </template>
 
         <div class="UserIcon_badge" v-if="isAffinity">
-            <i class="fal fa-sparkles"></i>
+            <fa icon="far fa-sparkles" />
         </div>
     </component>
 </template>

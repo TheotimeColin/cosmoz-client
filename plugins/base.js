@@ -5,6 +5,16 @@ import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
 
+import { library, config } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { far } from '@fortawesome/pro-regular-svg-icons'
+import { fas } from '@fortawesome/pro-solid-svg-icons'
+
+config.autoAddCss = false
+library.add(far)
+
+Vue.component('fa', FontAwesomeIcon)
+
 moment.locale('fr')
 
 Vue.mixin({
