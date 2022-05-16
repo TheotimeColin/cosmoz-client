@@ -43,7 +43,7 @@ export default {
 
 .TagCategory_label {
     padding: 4px 8px;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
 
 }
 </style>

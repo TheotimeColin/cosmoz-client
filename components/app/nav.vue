@@ -101,7 +101,7 @@ export default {
     padding: 20px;
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
 }
 
 .AppNav_sub {
@@ -129,6 +129,10 @@ export default {
             color: var(--color-ft-strong);
             background-color: var(--color-bg-light);
 
+            .icon {
+                color: var(--color-ft-strong);
+            }
+
             &::after {
                 transform: rotate(90deg);
             }
@@ -146,6 +150,10 @@ export default {
 
         .AppNav_menuLabel {
             background-color: var(--color-bg);
+
+            .icon {
+                color: var(--color-ft-light);
+            }
         }
     }
 }
@@ -163,6 +171,7 @@ export default {
         width: 25px;
         margin-right: 5px;
         text-align: center;
+        color: var(--color-ft-weak);
     }
 
     &::after {

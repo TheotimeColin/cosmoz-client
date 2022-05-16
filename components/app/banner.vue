@@ -20,7 +20,7 @@ export default {
     position: relative;
     font: var(--ft-title-l);
     color: var(--color-ft-light);
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
     display: flex;
     align-items: flex-end;
     min-height: 180px;

@@ -1,7 +1,7 @@
 <template>
     <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-if="owner.name && gatheringData">
         <div class="Post_head">
-            <div class="d-flex fxa-center">
+            <div class="d-flex fxa-center fx-grow">
                 <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
                     <user-icon class="Post_user" :modifiers="isCurrent ? ['s'] : ['xs']" v-bind="owner" />
                 </nuxt-link>
@@ -11,6 +11,13 @@
                     <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
                 </div>
             </div>
+
+            <quick-menu
+                class="Post_menu"
+                :items="[
+                    { fa: 'trash', label: 'Supprimer', disabled: !isOwner, action: () => pendingDelete = true }
+                ]"
+            />
         </div>
         <div class="Post_main">
             <div class="Post_text" v-html="content"></div>
@@ -58,6 +65,22 @@
                 />
             </div>
         </transition>
+
+        <div class="Post_delete" v-show="pendingDelete">
+            <div class="max-width-s">
+                Veux-tu vraiment supprimer ce message et tout ses commentaires ?
+
+                <div class="mt-20">
+                    <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
+                        Annuler
+                    </button-base>
+
+                    <button-base icon-before="trash" :modifiers="['light']" :loading="isLoading" @click="deletePost">
+                        Oui, supprimer
+                    </button-base>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -79,12 +102,15 @@ export default {
         max: 2,
         isAdd: false,
         reacted: null,
+        isLoading: false,
         isSeeReactions: false,
         localComments: [],
-        reactionsOwners: null
+        reactionsOwners: null,
+        pendingDelete: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        isOwner () { return this.owner._id == this.user._id },
         displayedComments () {
             return this.comments.slice(Math.max(0, this.comments.length - this.max), this.comments.length)
         },
@@ -143,6 +169,17 @@ export default {
         pushComment (v) {
             this.localComments = [ ...this.localComments, v ]
         },
+        async deletePost () {
+            this.isLoading = true
+
+            try {
+                const response = await this.$store.dispatch('status/delete', this._id)
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
+        },
         onAddComment () {
             if (this.disableCreate) return
 
@@ -161,6 +198,8 @@ export default {
             this.reacted = null
         },
         async onReactionTooltip (e) {
+            if (this.reactionsOwners && this.reactionTooltip == '') return
+
             this.$tLoad(e, { id: this._id })
 
             this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
@@ -185,6 +224,7 @@ export default {
     .Post {
         border-radius: 5px;
         background-color: var(--color-bg-strong);
+        position: relative;
 
         &.is-current {
 
@@ -225,6 +265,17 @@ export default {
         position: relative;
     }
 
+    .Post_delete {
+        @include absolute-fill;
+        font: var(--ft-l);
+        text-align: center;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+
     .Post_user {
         position: absolute !important;
         bottom: -3px;
@@ -238,6 +289,13 @@ export default {
 
     .Post_head {
         padding: 20px;
+        position: relative;
+    }
+
+    .Post_menu {
+        position: absolute;
+        top: 5px;
+        right: 5px;
     }
 
     .Post_footer {

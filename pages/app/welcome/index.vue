@@ -6,7 +6,7 @@
             <conversation :items="conversation" @action="onAction" />
         </div>
 
-        <div class="p-relative bg-bg-xstrong" v-if="doubt">
+        <div class="p-relative bg-bg-2xstrong" v-if="doubt">
             <div id="faq" class="anchor"></div>
 
             <div class="Wrapper Wrapper--s pv-40 ft-l">

@@ -132,6 +132,10 @@ exports.deleteEntity = async function (req, res) {
         let result = await Entity.model.findById(req.query._id)
         if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
 
+        if (!result.owner.equals(user._id)) throw Error('not-owner')
+
+        if (typeDeleters[req.query.type]) await typeDeleters[req.query.type](result)
+
         await result.remove()
     } catch (e) {
         console.warn(e)
@@ -253,6 +257,22 @@ const typeSetters = {
             }
         })
     },
+}
+
+const typeDeleters = {
+    status: async (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (data.children && data.children.length > 0) {
+                    await Entities.status.model.deleteMany({ _id: { $in: data.children }})
+                }
+
+                resolve(data)
+            } catch (e) {
+                reject (e)
+            }
+        })
+    }
 }
 
 const parseQuery = function (query, user) {

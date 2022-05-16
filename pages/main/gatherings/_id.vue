@@ -65,7 +65,7 @@ export default {
     text-align: center;
     font: var(--ft-title-xl);
     line-height: 1;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
 
     &::before {
         content: "";

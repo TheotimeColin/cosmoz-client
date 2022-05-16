@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <!-- <div class="bg-bg-xstrong">
+        <!-- <div class="bg-bg-2xstrong">
             <div class="Wrapper pv-40">
                 <h2 class="ft-title-l max-width-m mb-30">Concrètement,<br>comment ça marche ?</h2>
 
@@ -112,7 +112,7 @@
             </div>
         </div> -->
 
-        <div class="bg-bg-xstrong">
+        <div class="bg-bg-2xstrong">
             <div class="Wrapper Wrapper--s pv-40 text-center">
                 <h2 class="ft-title-l mb-10">Fais connaître ton établissement</h2>
                 <p class="max-width-m mb-30 m-auto">On sait qu'une personne qui a déjà visité un lieu sera plus susceptible d'y revenir <b>si elle a vécu une excellente expérience.</b></p>

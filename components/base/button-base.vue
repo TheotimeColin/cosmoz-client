@@ -2,7 +2,7 @@
     <component
         :is="componentTag"
         class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []) ]"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading } ]"
         :to="localePath(to)"
         v-bind="computedAttrs"
         v-on="$listeners"
@@ -48,6 +48,7 @@ export default {
         node: { type: Object, default: () => {} },
         iconBefore: { type: String, default: '' },
         iconAfter: { type: String, default: '' },
+        loading: { type: Boolean, default: false },
         iconLoading: { type: String, default: 'spinner-third' },
         attrs: { type: Object, default: () => ({}) }
     },
@@ -161,6 +162,17 @@ export default {
     background-color: var(--color-bg-xstrong);
 }
 
+.ButtonBase--weak {
+    background: transparent;
+    color: var(--color-ft-weak);
+    border-color: transparent;
+
+    &.is-active,
+    &:hover {
+        background-color: var(--color-bg-xstrong);
+    }
+}
+
 .ButtonBase--current {
     border-color: var(--color-current-strong);
     color: var(--color-current-strong);
@@ -203,6 +215,13 @@ export default {
 
 .ButtonBase--s {
     padding: 10px 15px;
+    font: var(--ft-title-3xs);
+}
+
+.ButtonBase--xs {
+    padding: 10px;
+    min-width: 39px;
+    min-height: 39px;
     font: var(--ft-title-3xs);
 }
 

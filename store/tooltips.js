@@ -29,10 +29,7 @@ export default {
             })) : [ ...state.items, tooltip ]
         },
         close (state) {
-            state.items = state.items.map(item => ({
-                ...item,
-                active: false
-            }))
+            state.items = []
         }
     }
 }

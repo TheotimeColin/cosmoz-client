@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .Footer {
     color: var(--color-ft-light);
-    background: var(--color-bg-xstrong);
+    background: var(--color-bg-2xstrong);
 }
 
 .Footer_container {

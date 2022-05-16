@@ -1,5 +1,5 @@
 <template>
-    <div class="Comment" :class="{ 'is-reacted': isReacted }">
+    <div class="Comment" :class="{ 'is-reacted': isReacted }" v-if="!isDeleted">
         <div class="Comment_head">
             <user-icon class="fx-no-shrink" :modifiers="['s']" v-bind="owner" />
         </div>
@@ -14,12 +14,28 @@
             </div>
             
             <div class="Comment_actions">
-                <div class="Comment_action" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                    <link-base :invert="true" @click="isSeeReactions = true">{{ reactions.length ? reactions.length + ' réactions' : '' }}</link-base>
-                     
-                    <fa class="ml-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="onReact" />
-                </div>
+                <button-base :modifiers="['xs', 'weak']" @mouseenter.native="onReactionTooltip" @mouseleave.native="$tClose" @click="onReact">
+                    <fa :icon="`${isReacted ? 'fas' : 'far'} fa-heart`"  />
+
+                    <span class="ml-3" v-if="reactions.length > 0">{{ reactions.length }}</span>
+                </button-base>
+
+                <quick-menu
+                    :items="[
+                        { fa: 'heart', label: 'Voir les réactions', disabled: !reactions.length, action: () => isSeeReactions = true },
+                        { fa: 'trash', label: 'Supprimer', disabled: !isOwner, action: () => pendingDelete = true }
+                    ]"
+                />
             </div>
+        </div>
+        <div class="Comment_delete" v-show="pendingDelete">
+            <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
+                Annuler
+            </button-base>
+
+            <button-base icon-before="trash" :modifiers="['light', 's']" :loading="isLoading" @click="deleteComment">
+                Supprimer mon commentaire
+            </button-base>
         </div>
 
         <popin-base :is-active="isSeeReactions" :modifiers="['xs']" @close="isSeeReactions = false">
@@ -46,11 +62,15 @@ export default {
         createdAt: { type: [String, Date] }
     },
     data: () => ({
+        isLoading: false,
         isSeeReactions: false,
-        reactionsOwners: null
+        reactionsOwners: null,
+        pendingDelete: false,
+        isDeleted: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        isOwner () { return this.owner._id == this.user._id },
         isReacted () {
             return this.reactions.find(r => r.owner == this.user._id)
         },
@@ -69,7 +89,25 @@ export default {
             return reaction
         }
     },
+    watch: {
+        isSeeReactions (v) {
+            if (v) this.fetchOwners()
+        }  
+    },
     methods: {
+        async deleteComment () {
+            this.isLoading = true
+
+            try {
+                const response = await this.$store.dispatch('status/delete', this._id)
+
+                this.isDeleted = true
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
+        },
         async onReact () {
             this.$emit('react', {
                 id: this._id,
@@ -77,13 +115,22 @@ export default {
             })
         },
         async onReactionTooltip (e) {
+            if (this.reactionsOwners && this.reactionTooltip == '') return
+
             this.$tLoad(e, { id: this._id })
 
-            this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
-                items: this.reactions, property: 'owner'
-            })
+            await this.fetchOwners()
 
             this.$tOpen(this.reactionTooltip, e, { id: this._id, load: false })
+        },
+        async fetchOwners () {
+            return new Promise(async (resolve) => {
+                this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
+                    items: this.reactions, property: 'owner'
+                })
+                
+                resolve(this.reactionsOwners)
+            })
         }
     }
 }
@@ -92,11 +139,12 @@ export default {
 <style lang="scss" scoped>
     .Comment {
         display: flex;
+        position: relative;
 
         &.is-reacted {
 
-            .Comment_action svg {
-                color: var(--color-love);
+            .Comment_action {
+                color: var(--color-love) !important;
             }
         }
     }
@@ -107,6 +155,17 @@ export default {
         background: var(--color-bg);
         border-radius: 5px;
         flex-grow: 1;
+    }
+
+    .Comment_delete {
+        @include absolute-fill;
+        font: var(--ft-l);
+        text-align: center;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.75);
     }
 
     .Comment_text {
@@ -120,13 +179,13 @@ export default {
     }
 
     .Comment_actions {
+        display: flex;
+        align-items: flex-start;
         flex-shrink: 0;
+        margin: -5px -5px 0 0;
     }
 
     .Comment_action {
-        font: var(--ft-s);
-        font-weight: bold;
-        cursor: pointer;
         
         & + & {
             margin-left: 20px;
