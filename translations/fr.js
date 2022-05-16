@@ -1,6 +1,6 @@
 export default {
     meta: {
-        append: `| Gatherings, rencontres hors-ligne`
+        append: `| Cosmoz, rencontres hors-ligne`
     },
     base: {
         days: '{n} jour | {n} jours',

@@ -2,7 +2,7 @@
     <div>
         <div class="ft-s color-ft-weak text-upper ft-italic mt-20 mb-5">Le concept</div>
 
-        <accordion class="FAQ_question" title="C'est quoi l'objectif de Gatherings ?">
+        <accordion class="FAQ_question" title="C'est quoi l'objectif de Cosmoz ?">
             Te permettre de sortir et créer du lien social avec des personnes cools.<br><br>
             On a tous déjà ressenti ce besoin de voir de nouvelles têtes, qu'on ait déjà un groupe d'amis existant ou pas. Gathering te permet de découvrir de nouvelles activités et te créer de nouveaux amis.
         </accordion>
@@ -15,7 +15,7 @@
             Nous sommes persuadé que l'amour se trouve quand on le cherche le moins. Viens avant-tout pour rencontrer de nouvelles personnes, de nouvelles activités et garde l'esprit ouvert. L'amour viendra peut-être naturellement.<br><br>Et qui sait, c'est peut-être l'un de tes nouveaux amis qui te fera rencontrer l'âme soeur...
         </accordion>
         <accordion class="FAQ_question" title="Est-ce que c'est gratuit ?">
-            Gatherings est gratuit.<br><br>
+            Cosmoz est gratuit.<br><br>
             Pour nous soutenir, tu peux souscrire à un abonnement qui te donne l'accès à des extras super sympas.
         </accordion>
 

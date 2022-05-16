@@ -192,8 +192,8 @@ export default {
 }
 
 .ButtonBase--s {
-    padding: 12px 15px;
-    font: var(--ft-title-2xs);
+    padding: 10px 15px;
+    font: var(--ft-title-3xs);
 }
 
 .ButtonBase.is-loading {

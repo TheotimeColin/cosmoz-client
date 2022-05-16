@@ -164,7 +164,7 @@ Vue.mixin({
                 name: "Théotime Colin",
                 brand: {
                     "@type": "Organization",
-                    name: "Gatherings",
+                    name: "Cosmoz",
                     email: "bonjour@gatherings.fr",
                 }
             }

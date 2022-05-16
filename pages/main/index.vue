@@ -67,7 +67,7 @@
         <div class="bg-cover bg-ice-cream pv-60">
             <div class="Wrapper Wrapper--xs text-center">
                 <p class="ft-title-l mb-20">
-                    Gatherings est en bêta fermée pour le moment.
+                    Cosmoz est en bêta fermée pour le moment.
                 </p>
 
                 <p>
@@ -75,7 +75,7 @@
                 </p>
 
                 <div>
-                    <button-base :modifiers="['light', 's']" class="mt-20" @click="newsletterActive = true">
+                    <button-base :modifiers="['light']" class="mt-20" @click="newsletterActive = true">
                         Entrer dans la liste
                     </button-base>
                 </div>

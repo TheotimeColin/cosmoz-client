@@ -5,7 +5,7 @@ import fs from 'fs'
 
 export default {
     head: {
-        title: `Gatherings, rencontres hors-ligne en groupe sur Paris.`,
+        title: `Cosmoz, rencontres hors-ligne en groupe sur Paris.`,
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -77,12 +77,12 @@ export default {
     
     pwa: {
         meta: {
-            title: 'Gatherings',
+            title: 'Cosmoz',
             author: 'Théotime Colin',
         },
         manifest: {
-            name: 'Gatherings',
-            short_name: 'Gatherings',
+            name: 'Cosmoz',
+            short_name: 'Cosmoz',
             background_color: '#000000',
             theme_color: '#000000',
             lang: 'fr',

@@ -16,7 +16,7 @@
         <div class="Wrapper">
             <div class="Footer_container d-flex d-block@s">
                 <div class="fx-grow">
-                    <nuxt-link :to="localePath({ name: '' })" class="ft-title-m logo-sparkle-a">gatherings</nuxt-link>
+                    <nuxt-link :to="localePath({ name: '' })" class="ft-title-m logo-sparkle-a">cosmoz</nuxt-link>
 
                     <div class="mt-20 row-xs">
                         <div class="col-6 col-12@xs">

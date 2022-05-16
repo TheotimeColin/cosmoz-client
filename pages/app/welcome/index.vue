@@ -51,7 +51,7 @@ export default {
             }, {
                 id: '1',
                 step: 1,
-                content: `Gatherings est une plateforme qui met le réel au premier plan. Tu vas participer à des événements gratuits, locaux et surtout super conviviaux. <br><br>Sur place tu vas rencontrer de nouvelles têtes, créer des affinités et surtout  passer un bon moment (promis).`,
+                content: `Cosmoz est une plateforme qui met le réel au premier plan. Tu vas participer à des événements gratuits, locaux et surtout super conviviaux. <br><br>Sur place tu vas rencontrer de nouvelles têtes, créer des affinités et surtout  passer un bon moment (promis).`,
                 actions: [
                     { id: 'disagree', label: `Woah, doucement`, value: -1 },
                     { id: 'agree', label: `Trop cool ! Et ensuite ?` },

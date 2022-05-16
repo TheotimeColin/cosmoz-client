@@ -2,7 +2,7 @@
     <nav class="NavAdmin" :class="[]">
         <nuxt-link to="/" class="NavAdmin_logo">
             <!-- <icon-base name="logo/logo-main" :height="50" /> -->
-            gatherings
+            cosmoz
         </nuxt-link>
 
         <div class="NavAdmin_items">
