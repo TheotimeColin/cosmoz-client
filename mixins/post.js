@@ -1,6 +1,7 @@
 export default {
     data: () => ({
         isDeleted: false,
+        isLoading: false,
         isSeeReactions: false,
         reactionsOwners: null,
         pendingDelete: false

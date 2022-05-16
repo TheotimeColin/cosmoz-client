@@ -9,6 +9,13 @@
         />
 
         <transition-group name="fade">
+            <placeholder
+                class="Feed_item"
+                :ratio="33"
+                v-for="i in 5" :key="i"
+                v-show="isLoading"
+            />
+
             <content-post
                 v-for="status in displayedStatuses"
                 class="Feed_item"
@@ -42,9 +49,12 @@ export default {
     },
     data: () => ({
         statusesData: [],
+        isLoading: true,
         page: 0
     }),
     async fetch () {
+        console.log('GO FETCH')
+
         let query = {}
 
         if (this.gathering) {
@@ -54,6 +64,8 @@ export default {
         } else {
             await this.$store.dispatch('status/fetchFeed')
         }
+
+        console.log('FETCHED')
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -75,7 +87,9 @@ export default {
             immediate: true,
             deep: true,
             async handler (v) {
-                if (v) {
+                if (v && process.client) {
+                    this.isLoading = true
+
                     let statuses = await this.$store.dispatch('user/mapUsers', {
                         items: v, property: 'owner'
                     })
@@ -85,6 +99,8 @@ export default {
 
                         return { ...s, children }
                     }))
+
+                    this.isLoading = false
                 }
             }
         }
