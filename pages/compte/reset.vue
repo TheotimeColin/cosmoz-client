@@ -8,7 +8,7 @@
                 <div class="text-center" v-if="isSuccess">
                     <p class="mv-20">Mot de passe modifié avec succès. Tu peux maintenant retenter de te connecter :</p>
 
-                    <button-base tag="nuxt-link" :attrs="{ to: localePath({ name: 'compte-login' }) }">
+                    <button-base :to="{ name: 'compte-login' }">
                         Se connecter
                     </button-base>
                 </div>

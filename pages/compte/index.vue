@@ -4,7 +4,7 @@
             <p class="ft-2xl-bold">Hey {{ user.name }} !</p> {{ user.email }}
 
             <div class="mt-30">
-                <button-base tag="nuxt-link" :modifiers="['link']" :attrs="{ to: localePath({ name: 'compte-logout' }) }">
+                <button-base :to="{ name: 'compte-logout' }">
                     Se déconnecter
                 </button-base>
             </div>

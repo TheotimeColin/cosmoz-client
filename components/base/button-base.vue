@@ -1,8 +1,9 @@
 <template>
     <component
-        :is="tag"
+        :is="componentTag"
         class="ButtonBase"
         :class="[ $modifiers, (node ? node.attrs.class : []) ]"
+        :to="localePath(to)"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
@@ -40,9 +41,10 @@ export default {
     name: 'ButtonBase',
     mixins: [ ModifiersMixin ],
     props: {
-        tag: { type: String, default: 'button' },
+        tag: { type: String },
         link: { type: String },
         text: { type: String },
+        to: { type: Object, default: () => {} },
         node: { type: Object, default: () => {} },
         iconBefore: { type: String, default: '' },
         iconAfter: { type: String, default: '' },
@@ -50,6 +52,14 @@ export default {
         attrs: { type: Object, default: () => ({}) }
     },
     computed: {
+        componentTag () {
+            if (this.tag) return this.tag
+
+            if (this.link) return 'a'
+            if (this.to) return 'nuxt-link'
+
+            return 'button'
+        },
         computedAttrs () {
             return {
                 href: this.$props.link,

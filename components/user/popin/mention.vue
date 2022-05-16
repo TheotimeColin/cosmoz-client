@@ -9,22 +9,21 @@
                 <div class="ft-title-m mt-30 mb-10">Nouvelle affinité</div>
                 <p class="mb-15">{{ selectedUser.name }} t'as envoyé les mentions suivantes :</p>
 
-                <div class="ft-m subtitle tape" v-for="mention in received[0].mentions" :key="mention">
+                <div class="ft-title-xs subtitle tape" v-for="mention in received[0].mentions" :key="mention">
                     {{ $t('mentions.' + mention) }}
                 </div>
+
+                <button-base class="mt-20" :modifiers="['light']" :to="{ name: 'p-id', params: { id: selectedUser.id }}">Voir son profil</button-base>
             </div>
             <div class="p-30" v-else>
-                <div class="fx-center">
-                    <user-icon :modifiers="['l']" v-bind="selectedUser" />
+                <user-icon :modifiers="['l']" :display-name="true" v-bind="selectedUser" />
 
-                    <p class="ft-l fx-grow ml-15 subtitle">{{ selectedUser.name }}</p>
-                </div>
                 <hr class="Separator mv-20">
                 
                 <div v-if="sent.length > 0 || isSuccess">
                     <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
-                    <div class="ft-m subtitle tape tape-1 mr-5" v-for="mention in (isSuccess ? mentions : sent[0].mentions)" :key="mention">
+                    <div class="ft-title-xs subtitle tape tape-1 mr-5" v-for="mention in (isSuccess ? mentions : sent[0].mentions)" :key="mention">
                         {{ $t('mentions.' + mention) }}
                     </div>
                 </div>

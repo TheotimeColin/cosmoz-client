@@ -28,14 +28,15 @@
                             </div>
                             <div class="row-xs" v-else>
                                 <div class="col-4 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
-                                    <div class="d-flex fxa-center c-pointer" @click.prevent="selectedUser = user">
-                                        <user-icon v-bind="user" 
-                                        :modifiers="['m']" :no-link="true" :gathering="gathering._id" />
-
-                                        <p class="ft-s subtitle ml-10">
-                                            {{ user.name }}
-                                        </p>
-                                    </div>
+                                    <user-icon
+                                        v-bind="user"
+                                        :display-name="true"
+                                        :modifiers="['m']"
+                                        :no-link="true"
+                                        class="c-pointer"
+                                        @click.native.prevent="selectedUser = user"
+                                        :gathering="gathering._id"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -50,6 +51,7 @@
 
                     <div class="Gathering_section" v-if="gathering.isPast">
                         <p class="p-20 br-s bg-bg-strong mb-10 ft-italic color-ft-weak" v-if="!hasConfirmed">Seules les personnes ayant participé peuvent ajouter des messages.</p>
+
                         <content-feed
                             placeholder="Écrire quelque chose..."
                             :disable-create="!hasConfirmed"

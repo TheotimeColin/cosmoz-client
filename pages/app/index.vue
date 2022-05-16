@@ -4,7 +4,7 @@
             Salut {{ user.name }}
         </app-banner>
         <div class="Wrapper">
-            <div class="d-flex mt-30">
+            <div class="d-flex mt-40">
                 <div class="fx-grow o-hidden">
                     <div class="p-20 br-s bg-bg-strong" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20">Mes prochaines sorties</p>

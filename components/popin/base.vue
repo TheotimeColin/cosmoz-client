@@ -95,10 +95,10 @@ export default {
     justify-content: space-between;
     flex-shrink: 0;
     flex-grow: 0;
-    padding: 10px;
+    padding: 0px;
     min-height: 0;
     border-top: 1px solid var(--color-border);
-    background-color: var(--color-bg-xweak);
+    background-color: var(--color-bg-strong);
 }
 
 .PopinBase_content {

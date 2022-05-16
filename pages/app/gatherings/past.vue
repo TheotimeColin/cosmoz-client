@@ -4,7 +4,7 @@
             Inscriptions
         </app-banner>
         <div class="Wrapper">
-            <div class="d-flex mt-30">
+            <div class="d-flex mt-40">
                 <div class="fx-grow">
                     <div v-for="gathering in gatherings" class="mb-10" :key="gathering._id">
                         <block-gathering
