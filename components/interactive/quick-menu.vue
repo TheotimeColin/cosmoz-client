@@ -85,7 +85,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-xstrong);
+            background-color: var(--color-bg-strong);
 
             .QuickMenu_icon {
                 color: var(--color-ft-light);

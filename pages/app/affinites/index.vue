@@ -1,11 +1,7 @@
 <template>
-    <div class="">
-        <app-banner :background="$bg.night">
-            Mes affinités
-        </app-banner>
-
-        <div class="Wrapper pb-60 pt-40">
-            <p class="ft-title-s mb-30">Mes affinités</p>
+    <div class="pb-40">
+        <div class="Wrapper Wrapper--s pb-60 pt-40">
+            <p class="ft-title-m mb-30">Mes affinités</p>
 
             <div class="row-xs">
                 <div class="col-2 mb-10" v-for="user in affinities" :key="user._id">
@@ -13,10 +9,12 @@
                 </div>
             </div>
 
-            <p class="ft-title-s mt-40 mb-30">Rencontres</p>
-            <div class="row-xs">
-                <div class="col-2 mb-10" v-for="user in encounters" :key="user._id">
-                    <user-icon :display-name="true" v-bind="user" />
+            <div class="mt-40 p-20 bg-bg br-s">
+                <p class="ft-title-m mb-10">Rencontres</p>
+                <div class="row-xs">
+                    <div class="col-3 mt-10" v-for="user in encounters" :key="user._id">
+                        <user-icon :display-name="true" v-bind="user" />
+                    </div>
                 </div>
             </div>
         </div>

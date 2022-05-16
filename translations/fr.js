@@ -18,6 +18,28 @@ export default {
         passionate: `Discussion passionnante`,
         energy: `J'adore ton énergie`
     },
+    tidbits: {
+        anything: {
+            title: `Zone libre`
+        },
+        socials: {
+            title: `Mes réseaux sociaux`
+        },
+    },
+    permissions: {
+        user: {
+            subtitle: `Visible par tout le monde`,
+            error: `Uniquement visible par les membres.`
+        },
+        encountered: {
+            subtitle: `Visible par les personnes que j'ai rencontrées`,
+            error: `Uniquement visible après une rencontre.`
+        },
+        affinity: {
+            subtitle: `Visible par mes affinités uniquement`,
+            error: `Uniquement visible par ses affinités.`
+        }
+    },
     errors: {
         default: {
             generic: `Une erreur est survenue, peux-tu réessayer ?`,

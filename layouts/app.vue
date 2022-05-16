@@ -47,4 +47,29 @@ export default {
     flex-grow: 1;
     margin-left: 300px;
 }
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 100ms;
+  overflow: hidden;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
+.layout-enter-active, .layout-leave-active {
+  transition: all 100ms;
+}
+
+.layout-enter, .layout-leave-active {
+  opacity: 0;
+  transform: translateY(3px);
+}
 </style>

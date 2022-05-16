@@ -106,6 +106,35 @@ export default {
                 return null
             }
         },
+        async updateTidbit ({ rootState }, params) {
+            try {
+                let tidbits = rootState.auth.user.tidbits ? rootState.auth.user.tidbits : []
+
+                if (tidbits.find(t => t.type == params.type)) {
+                    tidbits = tidbits.map(tid => ({
+                        ...tid,
+                        ...(tid.type == params.type ? params : {})
+                    }))
+                } else {
+                    tidbits = [ ...tidbits, params ]
+                }
+
+                const response = await this.$axios.$post('/entities', {
+                    _id: rootState.auth.user._id, params: {
+                        tidbits
+                    }, type: 'user'
+                })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                this.$auth.fetchUser()
+    
+                return response
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
         async updateNotification ({ rootState }, notification) {
             try {
                 let notifications = rootState.auth.user.notifications.slice()

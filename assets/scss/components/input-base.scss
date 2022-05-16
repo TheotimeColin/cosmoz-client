@@ -10,8 +10,8 @@
 
 .InputBase_element {
     
-    &:focus::placeholder {
-        color: var(--color-ft-weak);
+    &::placeholder {
+        color: var(--color-ft-xweak);
         opacity: 1;
     }
 }

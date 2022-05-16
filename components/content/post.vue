@@ -25,7 +25,7 @@
                 <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
             </div>
             <div class="Post_action" @click="onAddComment">
-                <fa class="mr-3" icon="far fa-comment-lines" /> <link-base :invert="true">{{ children.length ? children.length + ' commentaires' : '' }}</link-base>
+                <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
             </div>
         </div>
 

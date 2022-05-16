@@ -66,9 +66,6 @@ export default {
                     {
                         label: `Événements passés`,
                         to: this.localePath({ name: 'gatherings-past' })
-                    }, {
-                        label: `Événements pas passés`,
-                        to: this.localePath({ name: 'p-id' })
                     }
                 ]
             }, {

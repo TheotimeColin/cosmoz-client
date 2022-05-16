@@ -35,7 +35,7 @@
         <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
             <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>
         </div>
-        <div class="text-center color-ft-weak mt-20" v-else-if="displayedStatuses.length > 0">
+        <div class="text-center color-ft-xweak mt-20" v-else-if="displayedStatuses.length > 0">
             <p>Fin du fil.</p>
         </div>
     </div>

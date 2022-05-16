@@ -17,14 +17,17 @@ export default {
     }),
     computed: {
         size () {
-            if (this.localValue.length <= 100 && this.adaptableText) {
+            if (this.localValue && this.localValue.length <= 100 && this.adaptableText) {
                 return 'l'
-            } else if (this.localValue.length <= 300 && this.adaptableText) {
+            } else if (this.localValue && this.localValue.length <= 300 && this.adaptableText) {
                 return 'm'
             } else {
                 return 's'
             }
         }
+    },
+    mounted () {
+        if (this.$refs.content) this.$refs.content.innerText = this.value
     },
     watch: {
         value: {

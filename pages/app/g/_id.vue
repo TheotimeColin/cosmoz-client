@@ -93,6 +93,7 @@
                         <content-feed
                             placeholder="Une question ? Une information à donner ?"
                             :disable-create="!isAddComment"
+                            :max="3"
                             :gathering="gathering._id"
                         />
                     </div>

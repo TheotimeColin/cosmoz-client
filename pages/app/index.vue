@@ -3,11 +3,12 @@
         <div class="Wrapper">
             <div class="d-flex mt-40">
                 <div class="fx-grow o-hidden">
-                    <div class="p-20 br-s bg-bg" v-if="attending.length > 0">
-                        <p class="ft-title-xs mb-20">Mes prochaines sorties</p>
+                    <div class="pv-20 br-s bg-bg" v-if="attending.length > 0">
+                        <p class="ft-title-xs mb-20 ph-20">Mes prochaines sorties</p>
 
                         <slider-block
                             item-class="width-2xs"
+                            :offset="20"
                         >
                             <div v-for="gathering in attending" :slot="gathering._id" :key="gathering._id">
                                 <block-gathering
@@ -18,11 +19,12 @@
                             </div>
                         </slider-block>
                     </div>
-                    <div class="p-20 br-s bg-bg" v-else-if="upcoming.length > 0">
-                        <p class="ft-title-xs mb-20">Envie de sortir ?</p>
+                    <div class="pv-20 br-s bg-bg" v-else-if="upcoming.length > 0">
+                        <p class="ft-title-xs mb-20 ph-20">Envie de sortir ?</p>
 
                         <slider-block
                             item-class="width-2xs"
+                            :offset="20"
                         >
                             <template v-for="gathering in upcoming" :slot="gathering._id">
                                 <block-gathering
@@ -72,7 +74,7 @@ export default {
             return this.$store.getters['gathering/find']({
                 date: { '$isAfter': this.$moment() },
                 isFull: false
-            })
+            }).slice(0, 6)
         },
         attending () {
             return this.$store.getters['gathering/find']({

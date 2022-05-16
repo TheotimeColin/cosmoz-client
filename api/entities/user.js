@@ -36,6 +36,8 @@ let UserEntity = {
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
+        tidbits: { type: Array, default: [], write: 'self', read: '$read' },
+
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })
 }

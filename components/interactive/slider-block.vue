@@ -1,6 +1,6 @@
 <template>
     <div class="SliderBlock" :style="{ '--step': step }" ref="container">
-        <div class="SliderBlock_rail" ref="rail">
+        <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px' }" ref="rail">
             <div
                 class="SliderBlock_item"
                 v-for="slot in dynSlots"
@@ -23,7 +23,8 @@
 export default {
     name: 'SliderBlocks',
     props: {
-        itemClass: { type: String, default: '' }
+        itemClass: { type: String, default: '' },
+        offset: { type: Number, default: 0 }
     },
     computed: {
         dynSlots () {
@@ -39,7 +40,11 @@ export default {
     },
     methods: {
         checkDimensions () {
-            this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
+            if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
+                this.maxSteps = 0
+            } else {
+                this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
+            }
         },
         next () {
             this.step += 1
@@ -82,10 +87,10 @@ export default {
     }
 
     .SliderBlock_left {
-        left: 10px;
+        left: 15px;
     }
 
     .SliderBlock_right {
-        right: 10px;
+        right: 15px;
     }
 </style>
