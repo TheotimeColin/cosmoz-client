@@ -4,17 +4,19 @@
             Mes affinités
         </app-banner>
 
-        <div class="Wrapper">
-            <div class="d-flex mt-30">
-                <div class="fx-grow">
-                    <div class="row-xs">
-                        <div class="col-3 mt-10" v-for="user in affinities" :key="user._id">
-                            <user-profile v-bind="user" />
-                        </div>
-                    </div>
+        <div class="Wrapper pb-60 pt-40">
+            <p class="ft-title-s mb-30">Mes affinités</p>
+
+            <div class="row-xs">
+                <div class="col-2 mb-10" v-for="user in affinities" :key="user._id">
+                    <user-profile v-bind="user" />
                 </div>
-                <div class="width-s fx-no-shrink ml-20">
-                    <div class="p-20 bg-bg-strong"></div>
+            </div>
+
+            <p class="ft-title-s mt-40 mb-30">Rencontres</p>
+            <div class="row-xs">
+                <div class="col-2 mb-10" v-for="user in encounters" :key="user._id">
+                    <user-icon :display-name="true" v-bind="user" />
                 </div>
             </div>
         </div>
@@ -36,10 +38,18 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        affinities () { return this.$store.getters['user/find']({
-            isAffinity: true,
-            _id: '$notSelf'
-        }) }
+        encounters () {
+            return this.$store.getters['user/find']({
+                isEncountered: true,
+                _id: '$notSelf'
+            }).filter(u => !this.affinities.find(b => b._id == u._id))
+        },
+        affinities () {
+            return this.$store.getters['user/find']({
+                isAffinity: true,
+                _id: '$notSelf'
+            })
+        }
     }
 }
 </script>

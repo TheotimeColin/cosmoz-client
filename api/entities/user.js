@@ -24,11 +24,13 @@ let UserEntity = {
         mentions: { type: Array, default: [], write: 'private', read: 'user' },
         gatherings: { type: Array, default: [], write: 'self', read: 'self' },
 
+        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { affinities: '$requester' } },
+
+        isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
+
         encounters: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
-
-        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { affinities: '$requester' } },
 
         affinities: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }

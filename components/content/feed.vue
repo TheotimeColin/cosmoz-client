@@ -9,7 +9,7 @@
         />
 
         <content-post
-            v-for="status in statusesData"
+            v-for="status in displayedStatuses"
             class="Feed_item"
             v-bind="status"
             @submit="onSubmit"
@@ -18,6 +18,13 @@
             :key="status._id"
             ref="posts"
         />
+
+        <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
+            <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>
+        </div>
+        <div class="text-center color-ft-weak mt-20" v-else-if="displayedStatuses/length > 0">
+            <p>Fin du fil.</p>
+        </div>
     </div>
 </template>
 
@@ -25,25 +32,24 @@
 export default {
     name: 'Feed',
     props: {
+        max: { type: Number, default: 5 },
         gathering: { type: String },
         placeholder: { type: String },
         disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false }
     },
     data: () => ({
-        statusesData: []
+        statusesData: [],
+        page: 0
     }),
     async fetch () {
         let query = {}
 
         if (this.gathering) {
             query.gathering = this.gathering
+            query.parent = '$null'
             await this.$store.dispatch('status/fetch', { query })
         } else {
-            await this.$store.dispatch('gathering/fetch', {
-                query: {}
-            })
-            
             await this.$store.dispatch('status/fetchFeed')
         }
     },
@@ -55,9 +61,11 @@ export default {
             if (this.gathering) query.gathering = this.gathering
 
             return this.$store.getters['status/find']({
-                parent: '$isNull',
                 ...query
             })
+        },
+        displayedStatuses () {
+            return this.statusesData.slice(0, this.max * (this.page + 1))
         }
     },
     watch: {

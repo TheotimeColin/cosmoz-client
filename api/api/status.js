@@ -106,9 +106,14 @@ exports.getFeed = async function (req, res) {
         if (!user) throw Error('no-user')
 
         data = await Entities.status.model.find({
-            $or: [
-                { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }},
-                { owner: user._id }
+            $and: [
+                {
+                    $or: [
+                        { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }},
+                        { owner: user._id }
+                    ],
+                },
+                { parent: null }
             ]
         })
 

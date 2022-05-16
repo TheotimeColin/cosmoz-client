@@ -15,7 +15,7 @@
         <div class="Wrapper">
             <div class="d-flex">
                 <div class="fx-grow pt-30 pb-60">
-                    <template v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
+                    <div class="Gathering_section" v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
                         <div class="p-20 b mb-30">
                             <p class="ft-title-s mb-10">
                                 Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
@@ -42,15 +42,18 @@
                         </div>
 
                         <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
-                    </template>
-                    <template v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
+                    </div>
+                    <div class="Gathering_section" v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
                         <div class="p-20 mb-30">
                             Présence non-confirmée
                         </div>
-                    </template>
+                    </div>
 
                     <div class="Gathering_section" v-if="gathering.isPast">
-                        <p class="p-20 br-s bg-bg-strong mb-10 ft-italic color-ft-weak" v-if="!hasConfirmed">Seules les personnes ayant participé peuvent ajouter des messages.</p>
+                        <div class="mb-20">
+                            <p class="ft-title-s">Fil de conversation</p>
+                            <p class="ft-italic color-ft-weak mt-5" v-if="!hasConfirmed">Seules les personnes ayant participé peuvent ajouter des messages. </p>
+                        </div>
 
                         <content-feed
                             placeholder="Écrire quelque chose..."
@@ -82,7 +85,7 @@
 
                     <div class="Gathering_section" v-if="!gathering.isPast">
                         <div class="fx-center mb-15">
-                            <p class="ft-title-s pv-10">Conversation</p>
+                            <p class="ft-title-s pv-10">Fil de conversation</p>
 
                             <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" v-if="!isAddComment">Ajouter un message</button-base>
                         </div>

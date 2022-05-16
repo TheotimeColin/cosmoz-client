@@ -1,3 +1,6 @@
+
+import moment from 'moment'
+
 export default {
     getCollection (items) {
         return Object.keys(items).map(key => items[key])
@@ -42,5 +45,26 @@ export default {
         })
 
         return { status: 0, code: message, error: errorText }
+    },
+    searchItems(items, search) {
+        items = [ ...items ]
+
+        Object.keys(search).forEach(key => {
+            if (search[key] == '$notNull') {
+                items = items.filter(item => item[key])
+            } else if (key == '$in') {
+                items = items.filter(item => search[key].find(i => i._id == item._id))
+            } else {
+                let keyValue = Object.keys(search[key])[0]
+
+                if (keyValue == '$isBefore' || keyValue == '$isAfter') {
+                    items = items.filter(item => moment(item[key])[keyValue == '$isBefore' ? 'isBefore' : 'isAfter'](Object.values(search[key])[0]))
+                } else {
+                    items = items.filter(item => item[key] == search[key])
+                }
+            }
+        })
+
+        return items
     }
 }

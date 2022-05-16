@@ -16,6 +16,8 @@ exports.getEntities = async function (req, res) {
         let cancel = false
         let idQuery = req.query._id && !req.query._id.includes('$in') || req.query.id
         let queryType = req.query.type
+
+        console.log(`\n -- ${queryType} --\n`)
         
         let Entity = queryType ? Entities[queryType] : null
         let result = null
@@ -282,7 +284,9 @@ const parseQuery = function (query, user) {
             }
         }
 
-        if (typeof value === 'string' && value == '$inc') {
+        if (typeof value === 'string' && value == '$null') {
+            parsedQuery[key] = null
+        } else if (typeof value === 'string' && value == '$inc') {
             parsedQuery['$inc'] = { [key]: 1 }
             delete parsedQuery[key]
         } else if (typeof value === 'string' && value.startsWith('$in')) {
