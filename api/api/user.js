@@ -211,6 +211,8 @@ exports.subscribeNewsletter = async function (req, res) {
 
             user.owner = user._id
             user.save()
+        } else {
+            throw Error('already-subscribed')
         }
 
         let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
@@ -223,7 +225,7 @@ exports.subscribeNewsletter = async function (req, res) {
             PRENOM: req.body.name
         }
 
-        $fetch(encodeURI(`https://wirepusher.com/send?id=${process.env.WIRE_PUSHER}&title=${req.body.name} s'est abonné(e)&message=Yesss&type=subscriber`))
+        $fetch(encodeURI(`https://wirepusher.com/send?id=${process.env.WIRE_PUSHER}&title=${req.body.name} s'est abonné(e)&message=${req.body.email}&type=subscriber`))
 
         if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
     } catch (e) {

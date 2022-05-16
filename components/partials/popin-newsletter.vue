@@ -39,7 +39,7 @@
                         <errors :items="errors" class="mt-20" v-if="errors.length > 0" />
 
                         <div class="text-right mt-20">
-                            <button-base :modifiers="['light']">
+                            <button-base :modifiers="['light']" :class="{ 'is-loading': isLoading }">
                                 Je m'inscris
                             </button-base>
                         </div>
@@ -78,6 +78,7 @@ export default {
         CATEGORIES,
         errors: [],
         isSuccess: false,
+        isLoading: false,
         formData: {
             name: '',
             email: '',
@@ -102,6 +103,7 @@ export default {
         },
         async onSubmit () {
             this.errors = []
+            this.isLoading = true
 
             const token = await this.$recaptcha.execute('login')
             const response = await this.$store.dispatch('newsletter/subscribe', {
@@ -113,6 +115,8 @@ export default {
             } else {
                 this.isSuccess = true
             }
+            
+            this.isLoading = false
         }
     }
 }
