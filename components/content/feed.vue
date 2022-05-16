@@ -1,23 +1,25 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_item p-20"
+            class="Feed_item p-20 mb-10"
             :placeholder="placeholder"
             @submit="onSubmit"
             v-if="!disableCreate"
             ref="editor"
         />
 
-        <content-post
-            v-for="status in displayedStatuses"
-            class="Feed_item"
-            v-bind="status"
-            @submit="onSubmit"
-            :active-gathering="gathering"
-            :disableCreate="disableInteract"
-            :key="status._id"
-            ref="posts"
-        />
+        <transition-group name="fade">
+            <content-post
+                v-for="status in displayedStatuses"
+                class="Feed_item"
+                v-bind="status"
+                @submit="onSubmit"
+                :active-gathering="gathering"
+                :disableCreate="disableInteract"
+                :key="status._id"
+                ref="posts"
+            />
+        </transition-group>
 
         <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
             <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>

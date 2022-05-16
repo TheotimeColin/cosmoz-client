@@ -12,14 +12,13 @@
                         <slider-block
                             item-class="width-2xs"
                         >
-                            <template v-for="gathering in attending" :slot="gathering._id">
+                            <div v-for="gathering in attending" :slot="gathering._id" :key="gathering._id">
                                 <block-gathering
                                     :modifiers="['square']"
                                     :status-only="true"
                                     v-bind="gathering"
-                                    :key="gathering._id"
                                 />
-                            </template>
+                            </div>
                         </slider-block>
                     </div>
                     <div class="p-20 br-s bg-bg-strong" v-else-if="upcoming.length > 0">
@@ -69,7 +68,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                '$in': user.booked
+                '$in': this.user.booked
             })
         },
         upcoming () {

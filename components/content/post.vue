@@ -14,9 +14,7 @@
 
             <quick-menu
                 class="Post_menu"
-                :items="[
-                    { fa: 'trash', label: 'Supprimer', disabled: !isOwner, action: () => pendingDelete = true }
-                ]"
+                :items="actions"
             />
         </div>
         <div class="Post_main">
@@ -24,32 +22,26 @@
         </div>
         <div class="Post_footer">
             <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="onReact" /> <link-base :invert="true" @click="isSeeReactions = true">{{ reactions.length ? reactions.length + ' réactions' : '' }}</link-base>
+                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
             </div>
             <div class="Post_action" @click="onAddComment">
-                <fa class="mr-3" icon="far fa-comment-lines" /> <link-base :invert="true">{{ comments.length ? comments.length + ' commentaires' : '' }}</link-base>
+                <fa class="mr-3" icon="far fa-comment-lines" /> <link-base :invert="true">{{ children.length ? children.length + ' commentaires' : '' }}</link-base>
             </div>
         </div>
 
-        <popin-base :is-active="isSeeReactions" :modifiers="['xs']" @close="isSeeReactions = false">
-            <template slot="content">
-                <div class="p-30">
-                    <p class="ft-title-xs mb-20">Réactions <span class="ml-5 round-s bg-bg">{{ reactions.length }}</span></p>
-                    <div class="mt-10" v-for="reaction in reactionsOwners" :key="reaction._id"> 
-                        <user-icon v-bind="reaction.owner" :display-name="true" />
-                    </div>
-                </div>
-            </template>
-        </popin-base>
-
+        <content-reaction-popin
+            :is-active="isSeeReactions"
+            :reactions="reactionsOwners"
+            @close="isSeeReactions = false"
+        />
+        
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < comments.length">Commentaires précédents</link-base>
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
                
                 <content-comment
                     v-for="post in displayedComments"
                     class="Post_comment"
-                    @react="onReact"
                     v-bind="post"
                     :key="post._id"
                 />
@@ -59,8 +51,8 @@
                     class="Post_comment"
                     :tiny="true"
                     placeholder="Ajouter un commentaire..."
-                    @blur="() => comments.length == 0 ? isAdd = false : ''"
-                    v-show="isAdd || comments.length > 0"
+                    @blur="() => children.length == 0 ? isAdd = false : ''"
+                    v-show="isAdd || children.length > 0"
                     ref="commentInput"
                 />
             </div>
@@ -85,8 +77,11 @@
 </template>
 
 <script>
+import PostMixin from '@/mixins/post'
+
 export default {
     name: 'Post',
+    mixins: [ PostMixin ],
     props: {
         _id: { type: String },
         content: { type: String },
@@ -103,22 +98,10 @@ export default {
         isAdd: false,
         reacted: null,
         isLoading: false,
-        isSeeReactions: false,
-        localComments: [],
-        reactionsOwners: null,
-        pendingDelete: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        isOwner () { return this.owner._id == this.user._id },
         displayedComments () {
-            return this.comments.slice(Math.max(0, this.comments.length - this.max), this.comments.length)
-        },
-        comments () {
-            return [ ...this.children , ...this.localComments ]
-        },
-        isCurrent () {
-            return this.activeGathering == this.gathering
+            return this.children.slice(Math.max(0, this.children.length - this.max), this.children.length)
         },
         gatheringData () {
             return this.$store.getters['gathering/findOne']({ _id: this.gathering })
@@ -143,70 +126,17 @@ export default {
             } else {
                 return this.localePath({ name: 'g-id', params: { id: this.gatheringData.id } })
             }
-        },
-        isReacted () {
-            return (this.reacted !== null && this.reacted == true) || this.reactions.find(r => r.owner == this.user._id)
-        },
-        reactionTooltip () {
-            let reaction = ''
-            let owners = this.reactionsOwners ? this.reactionsOwners.filter(m => m.owner.name).map(m => m.owner.name) : []
-
-            if (owners.length == 1) {
-                reaction = owners[0] + ' a réagi.'
-            } else if (owners.length > 1 && owners.length <= 3) {
-                reaction = owners.slice(0, 3).join(', ') + ' ont réagi.'
-            } else if (owners.length > 3) {
-                reaction = owners.slice(0, 3).join(', ') + ` et ${owners.length - 3} autres ont réagi.`
-            }
-
-            return reaction
         }
     },
     methods: {
         reset () {
             this.$refs.commentInput.reset()
         },
-        pushComment (v) {
-            this.localComments = [ ...this.localComments, v ]
-        },
-        async deletePost () {
-            this.isLoading = true
-
-            try {
-                const response = await this.$store.dispatch('status/delete', this._id)
-            } catch (e) {
-                console.error(e)
-            }
-
-            this.isLoading = false
-        },
         onAddComment () {
             if (this.disableCreate) return
 
             this.isAdd = true
             setTimeout(() => this.$refs.commentInput.focus(), 10)
-        },
-        async onReact (params) {
-            this.reacted = !this.isReacted
-
-            let response = await this.$store.dispatch('status/react', {
-                _id: params.id ? params.id : this._id,
-                type: '❤️',
-                action: params.action ? params.action : this.reacted
-            })
-
-            this.reacted = null
-        },
-        async onReactionTooltip (e) {
-            if (this.reactionsOwners && this.reactionTooltip == '') return
-
-            this.$tLoad(e, { id: this._id })
-
-            this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
-                items: this.reactions, property: 'owner'
-            })
-
-            this.$tOpen(this.reactionTooltip, e, { id: this._id, load: false })
         },
         onSubmit (data) {
             if (this.disableCreate) return
