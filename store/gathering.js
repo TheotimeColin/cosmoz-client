@@ -109,6 +109,7 @@ export default {
                 return {
                     ...item,
                     thumbnail,
+                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status.status == 'confirmed').length >= item.max,
                     isPast: moment(item.date).isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
                     hero,
@@ -126,7 +127,10 @@ export default {
         },
         find: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            
+            let sort = search.sort
+
+            delete search.sort
+
             if (search) {
                 Object.keys(search).forEach(key => {
                     if (search[key] == '$notNull') {
@@ -134,12 +138,31 @@ export default {
                     } else if (key == '$in') {
                         items = items.filter(item => search[key].find(i => i._id == item._id))
                     } else {
-                        items = items.filter(item => item[key] == search[key])
+                        let keyValue = Object.keys(search[key])[0]
+
+                        if (keyValue == '$isBefore' || keyValue == '$isAfter') {
+                            items = items.filter(item => moment(item[key])[keyValue == '$isBefore' ? 'isBefore' : 'isAfter'](Object.values(search[key])[0]))
+                        } else {
+                            items = items.filter(item => item[key] == search[key])
+                        }
                     }
                 })
             }
 
-            return items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+            if (sort) {
+                let key = Object.keys(sort)[0]
+                let value = Object.values(sort)[0]
+
+                items = items.sort((a, b) => {
+                    if (!a[key] || !b[key]) return false
+
+                    return value == 'desc' ? moment(a[key]).valueOf() - moment(b[key]).valueOf() : moment(b[key]).valueOf() - moment(a[key]).valueOf()
+                })
+            } else {
+                items = items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+            }
+
+            return items
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items

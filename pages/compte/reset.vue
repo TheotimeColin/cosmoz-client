@@ -2,8 +2,8 @@
     <div class="bg-gum-xweak o-hidden">
         <div class="Wrapper Wrapper--xs">
             
-            <div class="mv-150 bg-bg-light br-s p-30">
-                <p class="ft-xl-bold">Créer un nouveau mot de passe</p>
+            <div class="mv-150 bg-bg-strong br-s p-30">
+                <p class="ft-title-s">Créer un nouveau mot de passe</p>
 
                 <div class="text-center" v-if="isSuccess">
                     <p class="mv-20">Mot de passe modifié avec succès. Tu peux maintenant retenter de te connecter :</p>
@@ -12,8 +12,8 @@
                         Se connecter
                     </button-base>
                 </div>
-                <form @submit.prevent="submitForm()" v-else>
 
+                <form class="strong" @submit.prevent="submitForm()" v-else>
                     <input-base
                         label="Nouveau mot de passe" 
                         class="mv-20"
@@ -23,6 +23,8 @@
                         :attrs="{ autocomplete: 'new-password' }"
                         v-model="formData.password"
                     />
+
+                    <form-errors :items="errors" class="mb-20" />
 
                     <div class="text-right">
                         <button-base type="submit" :class="{ 'is-loading': isLoading, 'is-disabled': !formData.password }">
@@ -46,6 +48,7 @@ export default {
     data: () => ({
         isLoading: false,
         isSuccess: false,
+        errors: [],
         formData: {
             password: '',
             token: ''
@@ -63,7 +66,11 @@ export default {
             try {
                 const response = await this.$store.dispatch('user/resetPassword', this.formData)
 
-                if (response.status == 1) this.isSuccess = true
+                if (response.status == 0) {
+                    this.errors = [ response.error ]
+                } else {
+                    this.isSuccess = true
+                }
             } catch (e) {
                 console.error(e)
             }

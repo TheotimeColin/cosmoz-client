@@ -3,6 +3,7 @@ const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const shortid = require('shortid')
 const moment = require('moment')
+const { sendMail } = require('../utils/mailing')
 
 const { authenticate } = require('../utils/user')
 const { ErrorModel } = require('sib-api-v3-sdk')
@@ -89,7 +90,6 @@ exports.logUser = async function (req, res) {
     })
 }
 
-
 exports.getUser = async function (req, res) {
     let errors = []
     let user = null
@@ -131,14 +131,12 @@ exports.requestResetPassword = async function (req, res) {
             expiration: moment().add(2, 'days').toDate()
         })
 
-        let apiInstance = new req.app.locals.sendinBlue.TransactionalEmailsApi()
-        let sendSmtpEmail = new req.app.locals.sendinBlue.SendSmtpEmail()
-
-        sendSmtpEmail.templateId  = 19
-        sendSmtpEmail.to = [{ email: req.body.email }]
-        sendSmtpEmail.params = { LINK: `${process.env.BASE_URL}/compte/reset?token=${token.id}` }
-
-        await apiInstance.sendTransacEmail(sendSmtpEmail)
+        await sendMail(user, {
+            template: 2,
+            params: {
+                LINK: `${process.env.APP_URL}/compte/reset?token=${token.id}`
+            }
+        })
     } catch (e) {
         console.error(e)
         errors.push(e.message)

@@ -30,11 +30,13 @@
         <popin-base :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false">
             <template slot="content">
                 <form @submit.prevent="resetPassword" class="p-30">
-                    <p class="ft-l-bold">Réinitialiser ton mot de passe</p>
+                    <p class="ft-title-2xs">Réinitialiser ton mot de passe</p>
                     
                     <input-base label="Ton adresse e-mail" class="mv-20" type="email" v-model="loginForm.email" :attrs="{ required: true }" v-show="!resetSuccess" />
 
-                    <p class="ft-s-medium color-current bg-current-xweak p-20 br-s mv-20" v-show="resetSuccess">Je viens de t'envoyer un e-mail. N'oublie pas de vérifier dans tes spams !</p>
+                    <form-errors :items="resetErrors" class="mb-20" />
+
+                    <p class="ft-m mv-20" v-show="resetSuccess">Je viens de t'envoyer un e-mail. N'oublie pas de vérifier dans tes spams !</p>
 
                     <div class="text-right">
                         <button-base :class="{ 'is-disabled': resetSuccess }">Envoyer un email</button-base>
@@ -60,6 +62,7 @@ export default {
             isSuccess: false,
             loading: false
         },
+        resetErrors: [],
         loginErrors: [],
         loginForm: {
             email: '',
@@ -76,9 +79,15 @@ export default {
             }
         },
         async resetPassword () {
+            this.resetErrors = []
+
             const response = await this.$store.dispatch('user/requestPassword', this.loginForm.email)
-            
-            if (response.status == 1) this.resetSuccess = true
+
+            if (response.status == 0) {
+                this.resetErrors = [ response.error ]
+            } else {
+                this.resetSuccess = true
+            }
         },
         async submitForm (type) {
             this.loginErrors = []

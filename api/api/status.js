@@ -26,8 +26,8 @@ exports.postStatus = async function (req, res) {
         }
 
         if (fields.parent) {
-            parent = await Entities.status.model.findById(fields.parent)
-            if (!parent) throw Error('no-parent')
+            parent = await Entities.status.model.find({ _id: fields.parent })
+            if (!parent[0]) throw Error('no-parent')
         }
 
         fields.content = stripHtml(fields.content).result
@@ -38,12 +38,20 @@ exports.postStatus = async function (req, res) {
             owner: user._id
         })
 
-        if (parent) {
-            parent.children = [ ...parent.children, data._id ]
-            await parent.save()
-        }
+        if (parent && parent[0]) {
+            let result = [ ...parent[0].children, data ]
+            parent[0].children = result.map(c => c._id)
 
-        data.owner = user
+            await parent[0].save()
+
+            data = {
+                ...data._doc,
+                parent: {
+                    ...parent[0]._doc,
+                    children: result
+                }
+            }
+        }
     } catch (e) {
         console.error(e)
         errors.push(e.message)
@@ -99,7 +107,8 @@ exports.getFeed = async function (req, res) {
 
         data = await Entities.status.model.find({
             $or: [
-                { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }}
+                { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }},
+                { owner: user._id }
             ]
         })
 

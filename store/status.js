@@ -51,8 +51,8 @@ export default {
                 const response = await this.$axios.$post('/status/post', params)
                 
                 if (response.status == 0) throw Error(response.errors[0])
-
-                commit('updateOne', response.data)
+                
+                commit('updateOne', response.data.parent ? response.data.parent : response.data)
                 
                 return response
             } catch (e) {

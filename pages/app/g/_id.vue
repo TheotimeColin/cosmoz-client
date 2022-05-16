@@ -17,7 +17,7 @@
                 <div class="fx-grow pt-30 pb-60">
                     <template v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
                         <div class="p-20 b mb-30">
-                            <p class="ft-title-xs mb-10">
+                            <p class="ft-title-s mb-10">
                                 Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
                             </p>
                             
@@ -53,6 +53,7 @@
                         <content-feed
                             placeholder="Écrire quelque chose..."
                             :disable-create="!hasConfirmed"
+                            :disable-interact="!hasConfirmed"
                             :gathering="gathering._id"
                         />
                     </div>
@@ -68,7 +69,7 @@
                     </div>
 
                     <div class="Gathering_section p-20 bg-bg-strong" v-if="gathering.important && gathering.important != '<p></p>'">
-                        <h2 class="ft-title-xs mb-15 tape">Important</h2>
+                        <h2 class="ft-title-s mb-15 tape">Important</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.important" />
                     </div>
 
@@ -78,8 +79,15 @@
                     </div>
 
                     <div class="Gathering_section" v-if="!gathering.isPast">
+                        <div class="fx-center mb-15">
+                            <p class="ft-title-s pv-10">Conversation</p>
+
+                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" v-if="!isAddComment">Ajouter un message</button-base>
+                        </div>
+
                         <content-feed
                             placeholder="Une question ? Une information à donner ?"
+                            :disable-create="!isAddComment"
                             :gathering="gathering._id"
                         />
                     </div>
@@ -163,9 +171,15 @@
                             v-if="!hasBooked && !hasWaitingList">
                                 Confirmer mon inscription
                             </button-base>
-                            <button-base class="mt-20" :class="{ 'is-loading': isLoading }" :modifiers="['s']" @click="onBookUpdate('cancelled')" v-else>
-                                Me désincrire
-                            </button-base>
+                            <div class="fx-center mt-20" v-else>
+                                <button-base :class="{ 'is-loading': isLoading }" :modifiers="['s']" @click="() => { onBookUpdate('cancelled'); isManage = false }">
+                                    Me désincrire
+                                </button-base>
+
+                                <button-base :modifiers="['light']" @click="isManage = false">
+                                    Fermer
+                                </button-base>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,6 +236,7 @@ export default {
         isLoading: false,
         selectedUser: null,
         displayAll: false,
+        isAddComment: false,
         userChanges: []
     }),
     computed: {

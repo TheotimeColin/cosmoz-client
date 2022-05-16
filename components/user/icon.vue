@@ -86,6 +86,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 5px;
     background-color: var(--color-sticky);
 }
 

@@ -44,7 +44,9 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                '$in': this.user.gatherings
+                '$in': this.user.gatherings,
+                date: { '$isBefore': this.$moment() },
+                sort: { date: 'asc' }
             })
         }
     },

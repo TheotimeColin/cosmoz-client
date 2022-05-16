@@ -17,10 +17,13 @@ export default {
     },
     computed: {
         errors () {
+            return this.items
             return this.items.map(item => {
                 let errorText = this.$t(`errors.${this.domain}['${item.code ? item.code : item}']`)
 
                 if (errorText == `errors.${this.domain}['${item.code ? item.code : item}']`) errorText = this.$t('errors.default.generic')
+
+                console.log(item)
 
                 return errorText
             })

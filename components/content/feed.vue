@@ -14,7 +14,7 @@
             v-bind="status"
             @submit="onSubmit"
             :active-gathering="gathering"
-            :disableCreate="disableCreate"
+            :disableCreate="disableInteract"
             :key="status._id"
             ref="posts"
         />
@@ -27,6 +27,7 @@ export default {
     props: {
         gathering: { type: String },
         placeholder: { type: String },
+        disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false }
     },
     data: () => ({
@@ -49,7 +50,14 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         statuses () {
-            return this.$store.getters['status/find']({ parent: '$isNull' })
+            let query = {}
+        
+            if (this.gathering) query.gathering = this.gathering
+
+            return this.$store.getters['status/find']({
+                parent: '$isNull',
+                ...query
+            })
         }
     },
     watch: {
@@ -78,25 +86,19 @@ export default {
                     ...formData,
                     gathering: this.gathering
                 })
-
+                
                 if (response.status == 0) throw Error(response.errors[0])
 
-                if (formData.parent) {
-                    let parent = this.$refs.posts.find(p => p._id == formData.parent)
+                if (this.$refs.editor) this.$refs.editor.reset()
+                
+                if (response.data.parent) { // RESET COMMENT EDITOR
+                    let parent = this.$refs.posts.find(p => p._id == response.data.parent._id)
 
-                    if (parent) {
-                        parent.pushComment({ ...formData, owner: this.user })
-                        parent.reset()
-                    }
+                    if (parent) parent.reset()
                 }
-
-                this.$refs.editor.reset()
             } catch (e) {
                 console.log(e)
             }
-        },
-        pushStatus (v) {
-
         }
     }
 }

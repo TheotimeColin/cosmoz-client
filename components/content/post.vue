@@ -1,5 +1,5 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-if="owner.name">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-if="owner.name && gatheringData">
         <div class="Post_head">
             <div class="d-flex fxa-center">
                 <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
@@ -37,7 +37,7 @@
 
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < comments.length">Commentaires précédents</link-base>
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < comments.length">Commentaires précédents</link-base>
                
                 <content-comment
                     v-for="post in displayedComments"
@@ -206,13 +206,14 @@ export default {
             .Post_action--react {
                 
                 svg {
-                    color: red;
+                    color: var(--color-love);
                 }
             }
         }
     }
 
     .Post_icon {
+        display: block;
         flex-shrink: 0;
         flex-grow: 0;
         width: 35px;

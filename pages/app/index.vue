@@ -6,7 +6,7 @@
         <div class="Wrapper">
             <div class="d-flex mt-30">
                 <div class="fx-grow o-hidden">
-                    <div class="p-20 br-s bg-bg-strong">
+                    <div class="p-20 br-s bg-bg-strong" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20">Mes prochaines sorties</p>
 
                         <slider-block
@@ -16,6 +16,21 @@
                                 <block-gathering
                                     :modifiers="['square']"
                                     :status-only="true"
+                                    v-bind="gathering"
+                                    :key="gathering._id"
+                                />
+                            </template>
+                        </slider-block>
+                    </div>
+                    <div class="p-20 br-s bg-bg-strong" v-else-if="upcoming.length > 0">
+                        <p class="ft-title-xs mb-20">Envie de sortir ?</p>
+
+                        <slider-block
+                            item-class="width-2xs"
+                        >
+                            <template v-for="gathering in upcoming" :slot="gathering._id">
+                                <block-gathering
+                                    :modifiers="['square']"
                                     v-bind="gathering"
                                     :key="gathering._id"
                                 />
@@ -57,9 +72,16 @@ export default {
                 '$in': user.booked
             })
         },
+        upcoming () {
+            return this.$store.getters['gathering/find']({
+                date: { '$isAfter': this.$moment() },
+                isFull: false
+            })
+        },
         attending () {
             return this.$store.getters['gathering/find']({
-                '$in': this.user.gatherings.filter(g => g.status == 'attending')
+                date: { '$isAfter': this.$moment() },
+                '$in': this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed')
             })
         }
     },

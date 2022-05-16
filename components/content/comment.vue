@@ -15,7 +15,9 @@
             
             <div class="Comment_actions">
                 <div class="Comment_action" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                    <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="onReact" /> <link-base :invert="true" @click="isSeeReactions = true">{{ reactions.length ? reactions.length + ' réactions' : '' }}</link-base>
+                    <link-base :invert="true" @click="isSeeReactions = true">{{ reactions.length ? reactions.length + ' réactions' : '' }}</link-base>
+                     
+                    <fa class="ml-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="onReact" />
                 </div>
             </div>
         </div>
@@ -94,7 +96,7 @@ export default {
         &.is-reacted {
 
             .Comment_action svg {
-                color: red;
+                color: var(--color-love);
             }
         }
     }

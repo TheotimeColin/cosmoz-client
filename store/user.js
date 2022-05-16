@@ -177,10 +177,12 @@ export default {
                             let newUsers = await dispatch('fetch')
                             users = storeUtils.refresh(newUsers)
                         }
+
+                        let user = users[params.property ? item[params.property] : item]
                         
                         result = [
                             ...result,
-                            { ...item, owner: parseUser(users[params.property ? item[params.property] : item]) }
+                            { ...item, owner: user ? parseUser(user) : null }
                         ]
                     }
 
