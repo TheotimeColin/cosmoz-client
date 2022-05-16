@@ -127,11 +127,14 @@ export default {
         },
         find: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            let sort = search.sort
+            let sort = null
 
-            delete search.sort
-
-            if (search) items = storeUtils.searchItems(items, search)
+            if (search) {
+                sort = search.sort
+                delete search.sort
+                
+                items = storeUtils.searchItems(items, search)
+            }
 
             if (sort) {
                 let key = Object.keys(sort)[0]

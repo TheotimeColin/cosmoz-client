@@ -39,7 +39,7 @@ export default {
     },
     methods: {
         checkDimensions () {
-            this.maxSteps = Math.ceil(this.$refs.rail.clientWidth / this.$refs.container.scrollWidth)
+            this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
         },
         next () {
             this.step += 1

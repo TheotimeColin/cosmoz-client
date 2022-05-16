@@ -1,6 +1,6 @@
 <template>
     <nav class="AppNav">
-        <div class="AppNav_header">
+        <div class="AppNav_header bg-cover-25 bg-night">
             <a :href="$config.appUrl" class="ft-title-s logo-sparkle-p">
                 cosmoz
             </a>
@@ -19,13 +19,13 @@
         </div>
         <div class="AppNav_sub">
             <div class="AppNav_menu">
-                <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path }" v-for="(item, i) in nav" :key="i">
+                <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
                     <nuxt-link class="AppNav_menuLabel" :to="item.to">
                         <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
                     </nuxt-link>
 
                     <div class="AppNav_menuChildren" v-if="item.items">
-                        <nuxt-link class="AppNav_menuSubitem" :to="child.to" v-for="(child, j) in item.items" :key="j">
+                        <nuxt-link class="AppNav_menuSubitem" :class="{ 'is-active': child.to == $route.path }" :to="child.to" v-for="(child, j) in item.items" :key="j">
                             {{ child.label }}
                         </nuxt-link>
                     </div>
@@ -66,10 +66,13 @@ export default {
                     {
                         label: `Événements passés`,
                         to: this.localePath({ name: 'gatherings-past' })
+                    }, {
+                        label: `Événements pas passés`,
+                        to: this.localePath({ name: 'p-id' })
                     }
                 ]
             }, {
-                label: `Mes affinités`,
+                label: `Mes contacts`,
                 fa: 'sparkles',
                 to: this.localePath({ name: 'affinites' })
             }, {
@@ -85,7 +88,7 @@ export default {
 <style lang="scss" scoped>
 .AppNav {
     width: 300px;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     flex-shrink: 0;
     height: 100vh;
     display: flex;
@@ -97,7 +100,7 @@ export default {
 }
 
 .AppNav_header {
-    height: 180px;
+    min-height: 180px;
     padding: 20px;
     flex-grow: 0;
     flex-shrink: 0;
@@ -181,7 +184,7 @@ export default {
 }
 
 .AppNav_menuChildren {
-    padding: 0 30px 0 40px;
+    padding: 10px 0px 0 0;
     margin-bottom: 20px;
     opacity: 0;
     transform: translateX(-5px);
@@ -192,12 +195,15 @@ export default {
 
 .AppNav_menuSubitem {
     display: block;
-    margin-top: 5px;
+    padding: 6px 0px 6px 60px;
+    border-radius: 3px;
     color: var(--color-ft-weak);
+    transition: all 100ms ease;
 
-    &.is-active-exact,
+    &.is-active,
     &:hover {
         color: var(--color-ft-light);
+        background-color: var(--color-bg);
     }
 }
 </style>

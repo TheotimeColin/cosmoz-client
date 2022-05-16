@@ -165,6 +165,10 @@ export default {
 
 .BlockGathering--square {
 
+    .BlockGathering_content {
+        padding: 15px;
+    }
+
     .BlockGathering_cover {
 
         &::before {

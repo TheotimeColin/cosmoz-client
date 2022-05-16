@@ -152,8 +152,8 @@ export default {
 
 <style lang="scss" scoped>
     .Post {
-        border-radius: 5px;
-        background-color: var(--color-bg-strong);
+        border-radius: 10px;
+        background-color: var(--color-bg);
         position: relative;
 
         &.is-current {

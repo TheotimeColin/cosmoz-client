@@ -3,9 +3,10 @@
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
                 <div class="row-s">
-                    <div class="col-6 col-12@s mb-40" v-for="gathering in gatherings" :key="gathering._id">
+                    <div class="col-4 col-6@s col-12@xs mb-20" v-for="gathering in gatherings" :key="gathering._id">
                         <block-gathering
                             v-bind="gathering"
+                            :modifiers="['square']"
                             :hide-dates="true"
                             :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />

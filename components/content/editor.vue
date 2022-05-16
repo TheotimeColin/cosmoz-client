@@ -70,7 +70,7 @@ export default {
         }
 
         .Editor_input {
-            background-color: var(--color-bg);
+            background-color: var(--color-bg-strong);
         }
 
         .Editor_secondary {

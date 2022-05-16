@@ -16,7 +16,7 @@
             <div class="d-flex">
                 <div class="fx-grow pt-30 pb-60">
                     <div class="Gathering_section" v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
-                        <div class="p-20 b mb-30">
+                        <div class="p-20 mb-30 bg-bg br-s">
                             <p class="ft-title-s mb-10">
                                 Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
                             </p>
@@ -73,8 +73,8 @@
                         <text-body :modifiers="['gathering']" :value="gathering.venue" />
                     </div>
 
-                    <div class="Gathering_section p-20 bg-bg-strong" v-if="gathering.important && gathering.important != '<p></p>'">
-                        <h2 class="ft-title-s mb-15 tape">Important</h2>
+                    <div class="Gathering_section p-20 bg-bg-weak br-s" v-if="gathering.important && gathering.important != '<p></p>'">
+                        <h2 class="ft-title-2xs mb-15 tape">Important</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.important" />
                     </div>
 
@@ -97,8 +97,8 @@
                         />
                     </div>
                 </div>
-                <div class="width-s fx-no-shrink mt-30 ml-40">
-                    <div class="p-20 bg-bg-strong br-s">
+                <div class="width-s fx-no-shrink n-mt-30 ml-40 p-relative">
+                    <div class="p-20 bg-bg br-s">
                         <p>
                             <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
                         </p>
@@ -107,7 +107,7 @@
                         </p>
                     </div>
 
-                    <div class="p-20 bg-bg-strong mt-10 br-s" v-if="hasBooked">
+                    <div class="p-20 bg-bg mt-10 br-s" v-if="hasBooked">
                         <div class="d-flex fx-align-center">
                             <div class="width-3xs fx-no-shrink">
                                 <qr-code :data="qr" />
@@ -118,7 +118,7 @@
                         </div>
                     </div>
 
-                    <div class="p-20 bg-bg-strong mt-10 br-s p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
+                    <div class="p-20 bg-bg mt-10 br-s p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
                         <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
                             <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
                         </div>

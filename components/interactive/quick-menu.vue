@@ -71,7 +71,7 @@ export default {
         opacity: 0;
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
-        background-color: var(--color-bg-2xstrong);
+        background-color: var(--color-bg-xstrong);
         border-radius: 5px;
         transition: all 100ms ease;
     }

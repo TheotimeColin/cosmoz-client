@@ -31,12 +31,13 @@ export default {
 .Tooltip {
     font: var(--ft-m);
     color: var(--color-ft-weak);
-    background-color: rgb(22, 22, 22);
+    background-color: var(--color-bg-xstrong);
     pointer-events: none;
     transform-origin: center;
     transform: scale(0.98) translateY(3px);
     opacity: 0;
     padding: 12px 18px;
+    border-radius: 5px;
     transition: all 150ms ease;
     pointer-events: none;
     

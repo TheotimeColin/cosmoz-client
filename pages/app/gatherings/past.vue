@@ -1,26 +1,28 @@
 <template>
     <div class="">
-        <app-banner :background="$bg.iceCream">
-            Inscriptions
-        </app-banner>
-        <div class="Wrapper">
-            <div class="d-flex mt-40">
-                <div class="fx-grow">
-                    <div v-for="gathering in gatherings" class="mb-10" :key="gathering._id">
-                        <block-gathering
-                            v-bind="gathering"
-                        />
-                        <div class="p-20 b">
-                            <p class="mb-10">Rencontres</p>
+        <div class="Wrapper Wrapper--s">
+            <h1 class="ft-title-l mt-60">
+                Mes événements passés
+            </h1>
+
+            <div class="pt-40 pb-60">
+                <div v-for="gathering in gatherings" class="d-flex mb-60" :key="gathering._id">
+                    <block-gathering
+                        :modifiers="['square']"
+                        class="width-xs"
+                        :status-only="true"
+                        v-bind="gathering"
+                    />
+                    
+                    <div class="fx-grow ph-20">
+                        <div class="p-15 bg-bg br-s">
+                            <p class="ft-title-2xs mb-15">Rencontres :</p>
 
                             <div>
-                                <user-icon class="mr-5 mb-5" v-for="user in gathering.users.filter(u => u.status == 'confirmed' && u._id != user._id)" :key="user._id" v-bind="user" />
+                                <user-icon class="mr-5 mb-5" v-for="user in gathering.users.filter(u => u.status == 'confirmed' && u._id != user._id).slice(0, 5)" :key="user._id" v-bind="user" />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="width-s fx-no-shrink ml-20">
-                    <div class="p-20 bg-bg-strong"></div>
                 </div>
             </div>
         </div>

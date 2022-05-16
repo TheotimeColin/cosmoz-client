@@ -1,9 +1,13 @@
 <template>
     <div class="">
-        <app-banner :background="$bg.iceCream">
+        <!-- <app-banner :background="$bg.iceCream">
             Envie de sortir ?
-        </app-banner>
+        </app-banner> -->
         <div class="Wrapper">
+            <h1 class="ft-title-l mt-60">
+                Envie de sortir ?
+            </h1>
+
             <div class="d-flex mt-40">
                 <div class="fx-grow">
                     <div class="d-flex mb-60" v-for="(date, i) in gatheringsByDate" :key="i">
@@ -21,7 +25,7 @@
                     </div>
                 </div>
                 <div class="width-s fx-no-shrink ml-20">
-                    <div class="p-20 bg-bg-strong"></div>
+                    <div class="p-20 bg-bg"></div>
                 </div>
             </div>
         </div>

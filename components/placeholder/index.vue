@@ -16,7 +16,7 @@ export default {
 <style lang="scss" scoped>
 .Placeholder {
     border-radius: 5px;
-    background-color: var(--color-bg-xweak);
+    background-color: var(--color-bg);
     position: relative;
     overflow: hidden;
 

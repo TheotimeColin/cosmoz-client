@@ -1,12 +1,9 @@
 <template>
-    <div class="">
-        <app-banner :background="$bg.iceCream">
-            Salut {{ user.name }}
-        </app-banner>
+    <div>
         <div class="Wrapper">
             <div class="d-flex mt-40">
                 <div class="fx-grow o-hidden">
-                    <div class="p-20 br-s bg-bg-strong" v-if="attending.length > 0">
+                    <div class="p-20 br-s bg-bg" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20">Mes prochaines sorties</p>
 
                         <slider-block
@@ -21,7 +18,7 @@
                             </div>
                         </slider-block>
                     </div>
-                    <div class="p-20 br-s bg-bg-strong" v-else-if="upcoming.length > 0">
+                    <div class="p-20 br-s bg-bg" v-else-if="upcoming.length > 0">
                         <p class="ft-title-xs mb-20">Envie de sortir ?</p>
 
                         <slider-block
@@ -44,7 +41,7 @@
                     />
                 </div>
                 <div class="width-xs fx-no-shrink ml-20">
-                    <div class="p-20 bg-bg-strong"></div>
+                    <div class="p-20 bg-bg"></div>
                 </div>
             </div>
         </div>

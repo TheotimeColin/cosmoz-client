@@ -78,7 +78,7 @@ export default {
     .Comment_main {
         display: flex;
         padding: 10px;
-        background: var(--color-bg);
+        background: var(--color-bg-weak);
         border-radius: 5px;
         flex-grow: 1;
     }

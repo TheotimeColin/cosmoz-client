@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_item p-20 mb-10"
+            class="Feed_item p-20 mb-10 br-s bg-bg"
             :placeholder="placeholder"
             @submit="onSubmit"
             v-if="!disableCreate"
@@ -28,6 +28,10 @@
             />
         </transition-group>
 
+        <div class="Feed_item p-20 bg-bg br-s text-center color-ft-weak" v-if="statusesData.length <= 0 && !isLoading">
+            Aucun message sur ce fil.
+        </div>
+
         <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
             <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>
         </div>
@@ -53,8 +57,6 @@ export default {
         page: 0
     }),
     async fetch () {
-        console.log('GO FETCH')
-
         let query = {}
 
         if (this.gathering) {
@@ -64,8 +66,6 @@ export default {
         } else {
             await this.$store.dispatch('status/fetchFeed')
         }
-
-        console.log('FETCHED')
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -132,11 +132,9 @@ export default {
 
 <style lang="scss" scoped>
 .Feed_item {
-    border-radius: 5px;
-    background-color: var(--color-bg-strong);
 
     & + & {
-        margin-top: 10px;
+        margin-top: 20px;
     }
 }
 </style>
