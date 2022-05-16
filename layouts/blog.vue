@@ -12,11 +12,8 @@
 </template>
 
 <script>
-import { TooltipManager } from 'instant-coffee-core'
-
 export default {
     name: 'LayoutBlog',
-    components: { TooltipManager },
     computed: {
         banner () { return this.$store.state.page.banner },
         classes () { return this.$store.state.page.body.classes }

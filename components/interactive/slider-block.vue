@@ -78,7 +78,7 @@ export default {
         position: absolute;
         z-index: 5;
         top: 50%;
-        transform: translateY(-50%);
+        margin-top: -24px;
     }
 
     .SliderBlock_left {

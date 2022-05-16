@@ -1,9 +1,9 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent }">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-if="owner.name">
         <div class="Post_head">
             <div class="d-flex fxa-center">
                 <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
-                    <user-icon class="Post_user" :modifiers="['s']" v-bind="owner" />
+                    <user-icon class="Post_user" :modifiers="isCurrent ? ['s'] : ['xs']" v-bind="owner" />
                 </nuxt-link>
 
                 <div class="ml-10 ft-s line-1">
@@ -16,13 +16,25 @@
             <div class="Post_text" v-html="content"></div>
         </div>
         <div class="Post_footer">
-            <div class="Post_action">
-                <fa class="mr-3" icon="far fa-heart" /> {{ reactions.length ? reactions.length : '' }}
+            <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
+                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="onReact" /> <link-base :invert="true" @click="isSeeReactions = true">{{ reactions.length ? reactions.length + ' réactions' : '' }}</link-base>
             </div>
             <div class="Post_action" @click="onAddComment">
-                <fa class="mr-3" icon="far fa-comment-lines" /> {{ comments.length ? comments.length : '' }}
+                <fa class="mr-3" icon="far fa-comment-lines" /> <link-base :invert="true">{{ comments.length ? comments.length + ' commentaires' : '' }}</link-base>
             </div>
         </div>
+
+        <popin-base :is-active="isSeeReactions" :modifiers="['xs']" @close="isSeeReactions = false">
+            <template slot="content">
+                <div class="p-30">
+                    <p class="ft-title-xs mb-20">Réactions <span class="ml-5 round-s bg-bg">{{ reactions.length }}</span></p>
+                    <div class="mt-10" v-for="reaction in reactionsOwners" :key="reaction._id"> 
+                        <user-icon v-bind="reaction.owner" :display-name="true" />
+                    </div>
+                </div>
+            </template>
+        </popin-base>
+
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
                 <link-base class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < comments.length">Commentaires précédents</link-base>
@@ -30,6 +42,7 @@
                 <content-comment
                     v-for="post in displayedComments"
                     class="Post_comment"
+                    @react="onReact"
                     v-bind="post"
                     :key="post._id"
                 />
@@ -65,7 +78,10 @@ export default {
     data: () => ({
         max: 2,
         isAdd: false,
-        localComments: []
+        reacted: null,
+        isSeeReactions: false,
+        localComments: [],
+        reactionsOwners: null
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -73,11 +89,7 @@ export default {
             return this.comments.slice(Math.max(0, this.comments.length - this.max), this.comments.length)
         },
         comments () {
-            let comments = this.$store.getters['status/find']({
-                '$in': this.children
-            })
-
-            return [ ...comments, ...this.localComments ] 
+            return [ ...this.children , ...this.localComments ]
         },
         isCurrent () {
             return this.activeGathering == this.gathering
@@ -103,9 +115,25 @@ export default {
             if (this.isCurrent) {
                 return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
             } else {
-                
                 return this.localePath({ name: 'g-id', params: { id: this.gatheringData.id } })
             }
+        },
+        isReacted () {
+            return (this.reacted !== null && this.reacted == true) || this.reactions.find(r => r.owner == this.user._id)
+        },
+        reactionTooltip () {
+            let reaction = ''
+            let owners = this.reactionsOwners ? this.reactionsOwners.filter(m => m.owner.name).map(m => m.owner.name) : []
+
+            if (owners.length == 1) {
+                reaction = owners[0] + ' a réagi.'
+            } else if (owners.length > 1 && owners.length <= 3) {
+                reaction = owners.slice(0, 3).join(', ') + ' ont réagi.'
+            } else if (owners.length > 3) {
+                reaction = owners.slice(0, 3).join(', ') + ` et ${owners.length - 3} autres ont réagi.`
+            }
+
+            return reaction
         }
     },
     methods: {
@@ -120,6 +148,26 @@ export default {
 
             this.isAdd = true
             setTimeout(() => this.$refs.commentInput.focus(), 10)
+        },
+        async onReact (params) {
+            this.reacted = !this.isReacted
+
+            let response = await this.$store.dispatch('status/react', {
+                _id: params.id ? params.id : this._id,
+                type: '❤️',
+                action: params.action ? params.action : this.reacted
+            })
+
+            this.reacted = null
+        },
+        async onReactionTooltip (e) {
+            this.$tLoad(e, { id: this._id })
+
+            this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
+                items: this.reactions, property: 'owner'
+            })
+
+            this.$tOpen(this.reactionTooltip, e, { id: this._id, load: false })
         },
         onSubmit (data) {
             if (this.disableCreate) return
@@ -152,6 +200,16 @@ export default {
                 height: 100% !important;
             }
         }
+
+        &.is-reacted {
+
+            .Post_action--react {
+                
+                svg {
+                    color: red;
+                }
+            }
+        }
     }
 
     .Post_icon {
@@ -170,8 +228,6 @@ export default {
         position: absolute !important;
         bottom: -3px;
         right: -3px;
-        width: 20px !important;
-        height: 20px !important;
     }
 
     .Post_text {
@@ -189,9 +245,11 @@ export default {
     }
 
     .Post_action {
-        font: var(--ft-s);
-        font-weight: bold;
-        cursor: pointer;
+        font: var(--ft-title-3xs);
+        
+        svg {
+            cursor: pointer;
+        }
         
         & + & {
             margin-left: 20px;

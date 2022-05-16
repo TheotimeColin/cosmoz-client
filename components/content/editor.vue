@@ -61,6 +61,7 @@ export default {
 <style lang="scss" scoped>
 .Editor {
     display: flex;
+    align-items: flex-start;
 
     &.is-tiny {
         

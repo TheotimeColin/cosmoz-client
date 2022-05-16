@@ -7,9 +7,7 @@
 
             <div class="mt-20" v-if="user">
                 <div class="d-flex fxa-center">
-                    <user-icon class="mr-10" v-bind="user" />
-                    
-                    <link-base :to="localePath({ name: 'p-id', params: { id: user.id }})">{{ user.name }}</link-base>
+                    <user-icon class="mr-10" v-bind="user" :display-name="true" />
                 </div>
                 <div class="mt-10">
                     <fa icon="far fa-calendar" class="mr-5" /> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
@@ -156,8 +154,8 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
     font: var(--ft-title-2xs);
     padding: 15px 20px 15px 30px;
 

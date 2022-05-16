@@ -163,6 +163,33 @@ export default {
             } catch (e) {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
+        },
+        async mapUsers ({ state, dispatch }, params) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = []
+                    let users = state.items
+
+                    for (let item of params.items) {
+                        if (!users[params.property ? item[params.property] : item]) {
+                            console.log('====== FETCH USERS =======')
+
+                            let newUsers = await dispatch('fetch')
+                            users = storeUtils.refresh(newUsers)
+                        }
+                        
+                        result = [
+                            ...result,
+                            { ...item, owner: parseUser(users[params.property ? item[params.property] : item]) }
+                        ]
+                    }
+
+                    resolve(result)
+                } catch (e) {
+                    console.error(e)
+                    reject([])
+                }
+            })
         }
     },
     getters: {

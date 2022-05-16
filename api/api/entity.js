@@ -167,7 +167,7 @@ const typeGetters = {
                 reject (e)
             }
         })
-    },
+    }
 }
 
 const typeSetters = {

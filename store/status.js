@@ -21,17 +21,17 @@ export default {
     },
     actions: {
         async fetchFeed ({ state, commit }, params = {}) {
-        try {
-            const response = await this.$axios.$get('/status/feed', { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+            try {
+                const response = await this.$axios.$get('/status/feed', { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
-            if (params.refresh !== false) commit('refresh', response.data)
+                if (params.refresh !== false) commit('refresh', response.data)
 
-            return response.data
-        } catch (e) {
-            console.error(e)
-            return null
-        }
-    },
+                return response.data
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
         async fetch ({ state, commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
@@ -53,6 +53,19 @@ export default {
                 if (response.status == 0) throw Error(response.errors[0])
 
                 commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
+        async react ({ commit }, params = {}) {
+            try {
+                const response = await this.$axios.$post('/status/react', params)
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                commit('updateOne', response.data.parent ? response.data.parent : response.data)
                 
                 return response
             } catch (e) {
@@ -84,13 +97,13 @@ export default {
             return Object.values(state.items).map(item => {
                 return {
                     ...item,
-                    owner: parseUser(item.owner)
+                    owner: item.owner.name ? parseUser(item.owner) : item.owner
                 }
             })
         },
         find: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            
+
             if (search) {
                 Object.keys(search).forEach(key => {
                     if (search[key] == '$notNull') {

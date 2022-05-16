@@ -144,7 +144,6 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
                 }
 
-
                 if (fields[key]['replace']) {
                     let replace = fields[key]['replace']
                     let targetField = Object.keys(replace)[0]

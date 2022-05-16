@@ -11,11 +11,8 @@
 </template>
 
 <script>
-import { TooltipManager } from 'instant-coffee-core'
-
 export default {
     name: 'LayoutDefault',
-    components: { TooltipManager },
     computed: {
         classes () { return this.$store.state.page.body.classes }
     },

@@ -2,7 +2,7 @@
     <component
         :is="to ? 'nuxt-link' : (tag ? tag : (href || link || (node && node.attrs.link) ? 'a' : 'div'))"
         class="LinkBase"
-        :class="[ ...$modifiers ]"
+        :class="[ $modifiers, { 'is-invert': invert } ]"
         :target="target"
         :href="node && node.attrs.link ? node.attrs.link : (link ? link : href)"
         :to="to ? to : null"
@@ -10,11 +10,11 @@
         @click="$emit('click')"
     >
         <div class="LinkBase_content">
-            <fa class="mr-5" :icon="`fa-${iconBefore}`" v-if="iconBefore" />
+            <fa class="mr-5" :icon="`far fa-${iconBefore}`" v-if="iconBefore" />
 
             <slot></slot>
 
-            <fa class="ml-5" :icon="`fa-${iconAfter}`" v-if="iconAfter" />
+            <fa class="ml-5" :icon="`far fa-${iconAfter}`" v-if="iconAfter" />
         </div>
     </component>
 </template>
@@ -28,6 +28,7 @@ export default {
         tag: { type: [String, Boolean], default: false },
         iconAfter: { type: [ String, Boolean ], default: false },
         iconBefore: { type: [ String, Boolean ], default: false },
+        invert: { type: Boolean, default: false },
         target: { type: String, defaut: '_self' },
         node: { type: Object, default: () => {} },
         to: { type: [Object, String] },
@@ -56,6 +57,14 @@ export default {
     &:active {
         opacity: 0.5;
         text-decoration: none;
+    }
+
+    &.is-invert {
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 

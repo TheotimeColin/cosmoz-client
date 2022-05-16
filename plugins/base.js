@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import moment from 'moment'
-import { ButtonBase, PopinBase } from 'instant-coffee-core'
 import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
@@ -9,9 +8,10 @@ import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
 import { fas } from '@fortawesome/pro-solid-svg-icons'
+import { faHeart } from '@fortawesome/pro-solid-svg-icons'
 
 config.autoAddCss = false
-library.add(far)
+library.add(far, faHeart)
 
 Vue.component('fa', FontAwesomeIcon)
 
@@ -126,6 +126,11 @@ Vue.mixin({
                 })
             })
         },
+        $tLoad (e, params = {}) {
+            this.$store.commit('tooltips/open', {
+                element: e.target, params: { load: true }, ...params
+            })
+        },
         $tOpen (content, e, params = {}) {
             this.$store.commit('tooltips/open', {
                 content, element: e.target, ...params
@@ -202,6 +207,4 @@ Vue.mixin({
     }
 })
 
-Vue.component('ButtonBase', ButtonBase)
-Vue.component('PopinBase', PopinBase)
 Vue.use(NuxtHammer)

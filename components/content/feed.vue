@@ -9,7 +9,7 @@
         />
 
         <content-post
-            v-for="status in statuses"
+            v-for="status in statusesData"
             class="Feed_item"
             v-bind="status"
             @submit="onSubmit"
@@ -29,6 +29,9 @@ export default {
         placeholder: { type: String },
         disableCreate: { type: Boolean, default: false }
     },
+    data: () => ({
+        statusesData: []
+    }),
     async fetch () {
         let query = {}
 
@@ -46,9 +49,26 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         statuses () {
-            return this.$store.getters['status/find']({
-                parent: '$isNull'
-            })
+            return this.$store.getters['status/find']({ parent: '$isNull' })
+        }
+    },
+    watch: {
+        statuses: {
+            immediate: true,
+            deep: true,
+            async handler (v) {
+                if (v) {
+                    let statuses = await this.$store.dispatch('user/mapUsers', {
+                        items: v, property: 'owner'
+                    })
+
+                    this.statusesData = await Promise.all(statuses.map(async s => {
+                        let children = await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' })
+
+                        return { ...s, children }
+                    }))
+                }
+            }
         }
     },
     methods: {

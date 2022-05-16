@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Entities = require('../index.js')
 
 let Status = {
     write: 'user',
@@ -13,13 +14,13 @@ let Status = {
         ],
         gathering: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'gathering' },
         parent: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' },
-        owner: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$user', ref: 'user' }
+        owner: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'user', ref: 'user' }
     }, { timestamps: true })
 }
 
 
 Status.fields.pre('find', function () {
-    this.populate('owner')
+    this.populate('children')
 })
 
 Status.model = global.Status ? global.Status.model : mongoose.model('status', Status.fields)

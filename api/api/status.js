@@ -52,6 +52,43 @@ exports.postStatus = async function (req, res) {
     res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
 }
 
+exports.reactStatus = async function (req, res) {
+    let data = {}
+    let errors = []
+
+    try {
+        let fields = req.body
+
+        if (!fields.type || !fields._id) throw Error('missing-fields')
+
+        let user = await authenticate(req.headers)
+        if (!user) throw Error('no-user')
+
+        let reaction = {
+            type: req.body.type,
+            owner: user._id
+        }
+
+        let status = await Entities.status.model.findByIdAndUpdate(fields._id, {
+            [req.body.action ? '$addToSet' : '$pull']: { reactions: reaction }
+        })
+        if (!status) throw Error('status-not-found')
+
+        let updated = await Entities.status.model.find({ _id: { $in: [fields._id, status.parent] } })
+        
+        data = updated.find(d => d._id.equals(fields._id))
+
+        if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
+
+        console.log(data)
+    } catch (e) {
+        console.error(e)
+        errors.push(e.message)
+    }
+
+    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
+}
+
 exports.getFeed = async function (req, res) {
     let data = []
     let errors = []
