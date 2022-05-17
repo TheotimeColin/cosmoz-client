@@ -50,7 +50,7 @@ export default {
 
 .page-enter-active,
 .page-leave-active {
-  transition: all 100ms;
+  transition: all 101ms;
   overflow: hidden;
 }
 
