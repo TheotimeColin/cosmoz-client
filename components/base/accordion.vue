@@ -1,9 +1,9 @@
 <template>
     <div class="Accordion" :class="{ 'is-active': isActive }">
         <div class="Accordion_title" @click="isActive = !isActive">
-            <span>{{ title }}</span>
+            <span>{{ title|specials }}</span>
 
-            <fa class="Accordion_icon" icon="fal fa-angle-right" />
+            <fa class="Accordion_icon" icon="far fa-angle-right" />
         </div>
 
         <div class="Accordion_content">
@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .Accordion {
-    border: 1px solid var(--color-border);
+    background-color: var(--color-bg);
     overflow: hidden;
     border-radius: 3px;
 
@@ -59,11 +59,8 @@ export default {
 }
 
 .Accordion_title {
-    font: var(--ft-m-bold);
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    font-style: italic;
-    padding: 15px;
+    font: var(--ft-title-2xs);
+    padding: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -79,7 +76,7 @@ export default {
 }
 
 .Accordion_content {
-    padding: 0px 15px 15px 15px;
+    padding: 0px 20px 20px 20px;
     position: absolute;
     pointer-events: none;
     opacity: 0;

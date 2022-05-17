@@ -5,7 +5,7 @@
         :class="[ $modifiers, { 'is-invert': invert } ]"
         :target="target"
         :href="node && node.attrs.link ? node.attrs.link : (link ? link : href)"
-        :to="to ? to : null"
+        :to="to ? localePath(to) : null"
         v-bind="attrs"
         @click="$emit('click')"
     >

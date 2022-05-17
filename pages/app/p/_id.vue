@@ -33,17 +33,39 @@
             </div>
         </app-banner>
 
-        <div class="Wrapper Wrapper--xs mv-60 mv-40@xs">
-            <tidbit
-                :type="TYPE"
-                class="Profile_tidbit"
-                :editable="isSelf"
-                v-for="TYPE in TIDBITS"
-                v-bind="getTidbit(TYPE)"
-                :key="TYPE"
+        <div class="Wrapper mv-60 mv-40@xs">
+            <div class="row-s">
+                <div class="col-7">
+                    <div v-if="tidbits.length > 0">
+                        <tidbit
+                            :type="TYPE"
+                            class="Profile_tidbit"
+                            :editable="isSelf"
+                            v-for="TYPE in tidbits"
+                            v-bind="getTidbit(TYPE)"
+                            :key="TYPE"
+                        />
+                    </div>
+                    <div class="bg-bg-xstrong p-30 text-center br-s" v-else>
+                        <fa icon="far fa-face-sad-tear" class="ft-xl color-ft-xweak line-1"></fa>
 
-                v-show="getTidbit(TYPE).value || isSelf"
-            />
+                        <p class="mt-10 color-ft-weak line-1">{{ profile.name }} n'a pas encore rempli son profil.</p>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="bg-bg-xstrong p-20 br-s">
+                        <div class="" v-if="profile.createdAt">
+                            <fa icon="far fa-cake-candles" class="mr-5" /> Nous a rejoint {{ $moment(profile.createdAt).fromNow() }}
+                        </div>
+                        <div class="mt-10" v-if="profile.gatheringsCount">
+                            <fa icon="far fa-calendar" class="mr-5" /> {{ profile.gatheringsCount }} participations
+                        </div>
+                        <div class="mt-3" v-if="profile.encounterCount">
+                            <fa icon="far fa-hand-wave" class="mr-5" /> {{ profile.encounterCount }} rencontres
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <popin-base :is-active="editSection" @close="editSection = null" v-if="isSelf">
@@ -73,7 +95,10 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         profile () { return this.$route.params.id == this.user.id ? this.user : this.target },
-        isSelf () { return this.profile && this.user.id == this.profile.id }
+        isSelf () { return this.profile && this.user.id == this.profile.id },
+        tidbits () {
+            return this.isSelf ? TIDBITS : TIDBITS.filter(t => this.getTidbit(t).value)
+        }
     },
     mounted () {
         console.log(this.profile)

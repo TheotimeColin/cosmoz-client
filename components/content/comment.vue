@@ -120,7 +120,7 @@ export default {
     }
 
     .Comment_icon {
-        display: none;
+        display: none !important;
     }
 
     @include breakpoint-xs {
@@ -130,6 +130,7 @@ export default {
         }
 
         .Comment_icon {
+            display: inline-flex !important;
             margin-right: 3px;
             vertical-align: middle !important;
         }

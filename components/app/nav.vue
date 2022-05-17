@@ -22,13 +22,13 @@
             </div>
             <div class="AppNav_sub">
                 <div class="AppNav_menu">
-                    <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
+                    <div class="AppNav_menuItem" :class="{ 'is-active': (item.to == '/' && $route.path == item.to) || (item.to !== '/' && $route.path.includes(item.to)) || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
                         <nuxt-link class="AppNav_menuLabel" :to="item.to">
                             <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
                         </nuxt-link>
 
                         <div class="AppNav_menuChildren" v-if="item.items">
-                            <nuxt-link class="AppNav_menuSubitem" :class="{ 'is-active': child.to == $route.path }" :to="child.to" v-for="(child, j) in item.items" :key="j">
+                            <nuxt-link class="AppNav_menuSubitem" :to="child.to" v-for="(child, j) in item.items" :key="j">
                                 {{ child.label }}
                             </nuxt-link>
                         </div>
@@ -39,7 +39,7 @@
 
                     <div class="mt-10 p-20 b text-center br-xs">
                         Tu n'appartiens à aucune constellation.
-                        <link-base >Comment en rejoindre une ?</link-base>
+                        <link-base :to="{ name: 'faq' }">Comment en rejoindre une ?</link-base>
                     </div>
                 </div>
             </div>
@@ -68,23 +68,38 @@ export default {
     created () {
         this.nav = [
             {
-                label: `Le récap`,
+                label: `Mon actualité`,
                 fa: 'home',
                 to: this.localePath({ name: 'index' }),
             }, {
-                label: `Les événements`,
-                fa: 'calendar',
-                to: this.localePath({ name: 'gatherings' }),
+                label: `Constellations`,
+                fa: 'sparkles',
+                to: this.localePath({ name: 'constellations' }),
                 items: [
                     {
-                        label: `Événements passés`,
-                        to: this.localePath({ name: 'gatherings-past' })
+                        label: `Mes constellations`,
+                        to: this.localePath({ name: 'constellations' })
+                    }, {
+                        label: `Parcourir les constellations`,
+                        to: this.localePath({ name: 'constellations-discover' })
                     }
                 ]
             }, {
-                label: `Mes contacts`,
-                fa: 'sparkles',
-                to: this.localePath({ name: 'affinites' })
+                label: `Rencontres`,
+                fa: 'party-horn',
+                to: this.localePath({ name: 'g' }),
+                items: [
+                    {
+                        label: `Rejoindre un événement`,
+                        to: this.localePath({ name: 'g' })
+                    }, {
+                        label: `Événements passés`,
+                        to: this.localePath({ name: 'g-past' })
+                    }, {
+                        label: `Mes affinités`,
+                        to: this.localePath({ name: 'affinites' })
+                    }
+                ]
             }, {
                 label: `Mon compte`,
                 fa: 'user',
@@ -172,7 +187,7 @@ export default {
     &:hover:not(.is-active) {
 
         .AppNav_menuLabel {
-            background-color: var(--color-bg);
+            background-color: var(--color-bg-strong);
 
             .icon {
                 color: var(--color-ft-light);
@@ -220,10 +235,10 @@ export default {
     color: var(--color-ft-weak);
     transition: all 100ms ease;
 
-    &.is-active,
+    &.is-active-exact,
     &:hover {
         color: var(--color-ft-light);
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-strong);
     }
 }
 

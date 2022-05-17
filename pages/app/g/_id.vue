@@ -206,12 +206,12 @@
                                         {{ user.name }} 
                                     </div>
                                     <div class="fx-grow text-right">
-                                        <button-base class="is-merlot" :modifiers="['round', 'current', 's']" icon-before="do-not-enter" @click="onUserAttendance(user, 'ghosted')"/>
+                                        <button-base class="is-merlot" :modifiers="['round', 'current', 's']" icon-before="do-not-enter" @click.stop="onUserAttendance(user, 'ghosted')"/>
 
-                                        <button-base class="is-tulip" :modifiers="['round', 'current', 's']" icon-before="times" @click="onUserAttendance(user, 'cancelled')"/>
+                                        <button-base class="is-tulip" :modifiers="['round', 'current', 's']" icon-before="times" @click.stop="onUserAttendance(user, 'cancelled')"/>
 
 
-                                        <button-base class="is-alpine" :modifiers="['round', 'current', 's']" icon-before="check" @click="onUserAttendance(user, 'confirmed')"/>
+                                        <button-base class="is-alpine" :modifiers="['round', 'current', 's']" icon-before="check" @click.stop="onUserAttendance(user, 'confirmed')"/>
                                     </div>
                                 </div>
                             </div>

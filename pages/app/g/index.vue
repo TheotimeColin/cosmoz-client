@@ -13,7 +13,7 @@
                         </div>
 
                         <div class="ml-10 fx-grow ml-0@xs">
-                            <p class="ft-title-2xs mb-20">{{ $date(date.date) }}</p>
+                            <p class="ft-title-2xs mb-20 d-none d-block@xs">{{ $date(date.date) }}</p>
 
                             <div v-for="gathering in date.gatherings" class="mb-10" :key="gathering._id">
                                 <block-gathering
