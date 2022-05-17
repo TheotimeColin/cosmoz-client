@@ -45,12 +45,21 @@ export default {
     }
 }
 
+@include breakpoint-s {
+
+    .Banner {
+        margin-top: -70px;
+        min-height: 0vh;
+        padding: 140px 40px 30px;
+        text-align: left;
+    }
+}
+
 @include breakpoint-xs {
 
     .Banner {
-        min-height: 0vh;
-        padding: 100px 0 30px;
-        text-align: left;
+        padding-left: 30px;
+        padding-right: 30px;
     }
 }
 </style>

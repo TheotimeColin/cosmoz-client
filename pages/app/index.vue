@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="Wrapper">
-            <div class="d-flex mt-40">
+            <div class="d-flex mt-40 d-block@s mt-0@s">
                 <div class="fx-grow o-hidden">
                     <div class="pv-20 br-s bg-bg" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20 ph-20">Mes prochaines sorties</p>
@@ -42,7 +42,7 @@
                         :disable-create="true"
                     />
                 </div>
-                <div class="width-xs fx-no-shrink ml-20">
+                <div class="width-xs fx-no-shrink ml-20 d-none@s">
                     <div class="p-20 bg-bg"></div>
                 </div>
             </div>

@@ -6,6 +6,7 @@
         <div class="Comment_main">
             <div class="fx-grow">
                 <div class="ft-s line-1">
+                    <user-icon class="Comment_icon" :modifiers="['xs']" v-bind="owner" />
                     <span class="subtitle">{{ owner.name }}</span>
                     <span class="ft-xs line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
                 </div>
@@ -115,6 +116,22 @@ export default {
         
         & + & {
             margin-left: 20px;
+        }
+    }
+
+    .Comment_icon {
+        display: none;
+    }
+
+    @include breakpoint-xs {
+
+        .Comment_head {
+            display: none;
+        }
+
+        .Comment_icon {
+            margin-right: 3px;
+            vertical-align: middle !important;
         }
     }
 </style>

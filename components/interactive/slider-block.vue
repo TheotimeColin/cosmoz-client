@@ -93,4 +93,25 @@ export default {
     .SliderBlock_right {
         right: 15px;
     }
+
+    @include breakpoint-xs {
+        
+        .SliderBlock {
+            overflow: auto;
+        }
+
+        .SliderBlock_left,
+        .SliderBlock_right {
+            display: none;
+        }
+
+        .SliderBlock_rail {
+
+            &::after {
+                content: "";
+                display: inline-block;
+                width: 50%;
+            }
+        }
+    }
 </style>

@@ -4,7 +4,7 @@
             <p class="ft-title-m mb-30">Mes affinités</p>
 
             <div class="row-xs">
-                <div class="col-2 mb-10" v-for="user in affinities" :key="user._id">
+                <div class="col-2 col-3@s col-4@xs mb-10" v-for="user in affinities" :key="user._id">
                     <user-profile v-bind="user" />
                 </div>
             </div>
@@ -12,7 +12,7 @@
             <div class="mt-40 p-20 bg-bg br-s">
                 <p class="ft-title-m mb-10">Rencontres</p>
                 <div class="row-xs">
-                    <div class="col-3 mt-10" v-for="user in encounters" :key="user._id">
+                    <div class="col-3 col-4@s col-6@xs mt-10" v-for="user in encounters" :key="user._id">
                         <user-icon :display-name="true" v-bind="user" />
                     </div>
                 </div>

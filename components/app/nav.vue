@@ -1,43 +1,55 @@
 <template>
-    <nav class="AppNav">
-        <div class="AppNav_header bg-cover-25 bg-night">
-            <a :href="$config.appUrl" class="ft-title-s logo-sparkle-p">
-                cosmoz
-            </a>
+    <nav class="AppNav" :class="{ 'is-active': isActive }">
+        <div class="AppNav_head"></div>
 
-            <div class="mt-20" v-if="user">
-                <div class="d-flex fxa-center">
-                    <user-icon class="mr-10" v-bind="user" :display-name="true" />
-                </div>
-                <div class="mt-10">
-                    <fa icon="far fa-calendar" class="mr-5" /> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
-                </div>
-                <div class="mt-3">
-                    <fa icon="far fa-hand-wave" class="mr-5" /> {{ user.encounters.length }} rencontres
-                </div>
-            </div>
-        </div>
-        <div class="AppNav_sub">
-            <div class="AppNav_menu">
-                <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
-                    <nuxt-link class="AppNav_menuLabel" :to="item.to">
-                        <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
-                    </nuxt-link>
-
-                    <div class="AppNav_menuChildren" v-if="item.items">
-                        <nuxt-link class="AppNav_menuSubitem" :class="{ 'is-active': child.to == $route.path }" :to="child.to" v-for="(child, j) in item.items" :key="j">
-                            {{ child.label }}
-                        </nuxt-link>
+        <a :href="$config.appUrl" class="AppNav_logo ft-title-s logo-sparkle-p" @mouseenter="isActive = true" @mouseleave="isActive = false">
+            cosmoz
+        </a>
+        
+        <div class="AppNav_container">
+            <div class="AppNav_header bg-cover-25 bg-night">
+                <div class="mt-20" v-if="user">
+                    <div class="d-flex fxa-center">
+                        <user-icon class="mr-10" v-bind="user" :display-name="true" />
+                    </div>
+                    <div class="mt-10">
+                        <fa icon="far fa-calendar" class="mr-5" /> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
+                    </div>
+                    <div class="mt-3">
+                        <fa icon="far fa-hand-wave" class="mr-5" /> {{ user.encounters.length }} rencontres
                     </div>
                 </div>
             </div>
-            <div class="AppNav_footer">
-                <p class="subtitle ft-title-3xs">Mes constellations</p>
+            <div class="AppNav_sub">
+                <div class="AppNav_menu">
+                    <div class="AppNav_menuItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
+                        <nuxt-link class="AppNav_menuLabel" :to="item.to">
+                            <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
+                        </nuxt-link>
 
-                <div class="mt-10 p-20 b text-center br-xs">
-                    Tu n'appartiens à aucune constellation.
-                    <link-base >Comment en rejoindre une ?</link-base>
+                        <div class="AppNav_menuChildren" v-if="item.items">
+                            <nuxt-link class="AppNav_menuSubitem" :class="{ 'is-active': child.to == $route.path }" :to="child.to" v-for="(child, j) in item.items" :key="j">
+                                {{ child.label }}
+                            </nuxt-link>
+                        </div>
+                    </div>
                 </div>
+                <div class="AppNav_footer">
+                    <p class="subtitle ft-title-3xs">Mes constellations</p>
+
+                    <div class="mt-10 p-20 b text-center br-xs">
+                        Tu n'appartiens à aucune constellation.
+                        <link-base >Comment en rejoindre une ?</link-base>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="AppNav_navBar">
+            <div class="AppNav_barItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
+                <nuxt-link class="AppNav_barLabel" :to="item.to">
+                    <fa class="icon" :icon="`far fa-${item.fa}`" />
+                </nuxt-link>
             </div>
         </div>
     </nav>
@@ -47,7 +59,8 @@
 export default {
     name: 'AppNav',
     data: () => ({
-        nav: []
+        nav: [],
+        isActive: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -84,21 +97,31 @@ export default {
 
 <style lang="scss" scoped>
 .AppNav {
-    width: 300px;
-    background-color: var(--color-bg-xstrong);
-    flex-shrink: 0;
-    height: 100vh;
+    position: relative;
+}
+
+.AppNav_logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 30;
+}
+
+.AppNav_container {
+    position: fixed;
     display: flex;
     flex-direction: column;
-    position: fixed;
     top: 0;
     left: 0;
-    z-index: 50;
+    z-index: 10;
+    width: 300px;
+    height: 100vh;
+    background-color: var(--color-bg-xstrong);
 }
 
 .AppNav_header {
     min-height: 180px;
-    padding: 20px;
+    padding: 50px 20px 20px 20px;
     flex-grow: 0;
     flex-shrink: 0;
     background-color: var(--color-bg-2xstrong);
@@ -201,6 +224,73 @@ export default {
     &:hover {
         color: var(--color-ft-light);
         background-color: var(--color-bg);
+    }
+}
+
+.AppNav_navBar {
+    display: none;
+}
+
+@include breakpoint-s {
+
+    .AppNav {
+        z-index: 15;
+
+        &.is-active {
+
+            .AppNav_container {
+                transform: translateX(0%);
+            }
+        }
+    }
+
+    .AppNav_head {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        z-index: 20;
+        transform: translateY(-100%);
+        background-color: var(--color-bg-xstrong);
+    }
+    
+    .AppNav_container {
+        transform: translateX(-100%);
+        transition: all 150ms ease;
+        z-index: 25;
+
+        &:hover {
+            transform: translateX(0%);
+        }
+    }
+}
+
+@include breakpoint-xs {
+    
+    .AppNav_container {
+        display: none;
+    }
+
+    .AppNav_navBar {
+        background-color: var(--color-bg-strong);
+        border-top: 1px solid var(--color-bg);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 5px;
+    }
+
+    .AppNav_barLabel {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 </style>

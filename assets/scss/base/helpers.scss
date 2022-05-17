@@ -1,5 +1,5 @@
 .p-sticky {
-    position: sticky !important;
+    position: sticky;
     top: calc(var(--header-base) + var(--offset, 0px));
 }
 
@@ -596,9 +596,25 @@
     }
 }
 
+@include breakpoint-s {
+
+    .p-relative\@s {
+        top: auto;
+    }
+}
+
 @include breakpoint-xs {
 
     .d-none\@xs {
         display: none !important;
+    }
+
+    .fx-reverse\@xs {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .p-relative\@xs {
+        top: auto;
     }
 }

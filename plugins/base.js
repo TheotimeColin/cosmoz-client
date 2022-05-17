@@ -98,11 +98,23 @@ Vue.mixin({
         $blogUrl () { return this.$config.blogUrl },
         $shopUrl () { return this.$config.shopUrl },
         $bg () { return CONSTANTS.bg },
-        $const () { return CONSTANTS }
+        $const () { return CONSTANTS },
+        $windowSize () { return this.$store.state.page.breakpoint },
     },
     methods: {
         $randomBetween: (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
+        },
+        $date (date, short) {
+            let day = this.$moment(date)
+
+            if (this.$moment().format('YYYYMMD') == day.format('YYYYMMD')) {
+                return `Aujourd'hui`
+            } else if (this.$moment().add(1, 'day').format('YYYYMMD') == day.format('YYYYMMD')) {
+                return `Demain`
+            } else {
+                return day.format(short ? 'dddd' : 'dddd D MMMM')
+            }
         },
         $random: (array) => {
             return array[Math.floor(Math.random() * (array.length))]

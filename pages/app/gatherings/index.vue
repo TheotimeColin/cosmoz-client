@@ -1,8 +1,5 @@
 <template>
     <div class="">
-        <!-- <app-banner :background="$bg.iceCream">
-            Envie de sortir ?
-        </app-banner> -->
         <div class="Wrapper">
             <h1 class="ft-title-l mt-60">
                 Envie de sortir ?
@@ -10,12 +7,14 @@
 
             <div class="d-flex mt-40">
                 <div class="fx-grow">
-                    <div class="d-flex mb-60" v-for="(date, i) in gatheringsByDate" :key="i">
-                        <div class="width-3xs">
+                    <div class="d-flex mb-60 mb-30@xs" v-for="(date, i) in gatheringsByDate" :key="i">
+                        <div class="width-3xs d-none@xs">
                             <tile-date class="p-sticky" style="--offset: 20px" :date="date.date" />
                         </div>
 
-                        <div class="ml-10 fx-grow">
+                        <div class="ml-10 fx-grow ml-0@xs">
+                            <p class="ft-title-2xs mb-20">{{ $date(date.date) }}</p>
+
                             <div v-for="gathering in date.gatherings" class="mb-10" :key="gathering._id">
                                 <block-gathering
                                     v-bind="gathering"
@@ -24,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="width-s fx-no-shrink ml-20">
+                <div class="width-s fx-no-shrink ml-20 d-none@s">
                     <div class="p-20 bg-bg"></div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="Profile" v-if="profile">
         <app-banner :background="$bg.holo">
-            <div class="fx-center width-100">
+            <div class="fx-center width-100 d-block@xs">
                 <div class="fx-center fx-no-shrink">
                     <div class="p-relative mr-20" @click="() => isSelf ? editSection = 'picture' : ''">
                         <user-icon
@@ -14,7 +14,7 @@
                             <fa icon="far fa-camera" />
                         </div>
                     </div>
-                    <div>
+                    <div class="fx-grow">
                         <p>{{ profile.name }}</p>
                         <div class="ft-s" v-if="profile.isAffinity">
                             Vous avez une affinité
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="ml-40 text-center fx-grow">
+                <div class="ml-40 text-center fx-grow ml-0@xs mt-20@xs text-left@xs">
                     <div class="ft-title-3xs tape tape-strong m-3" v-for="(count, key) in profile.mentionsCategories" :key="key">
                         {{ $t('mentions.' + key) }} <span class="round round-s bg-bg ml-5">{{ count }}</span>
                     </div>
@@ -33,7 +33,7 @@
             </div>
         </app-banner>
 
-        <div class="Wrapper Wrapper--xs mv-60">
+        <div class="Wrapper Wrapper--xs mv-60 mv-40@xs">
             <tidbit
                 :type="TYPE"
                 class="Profile_tidbit"

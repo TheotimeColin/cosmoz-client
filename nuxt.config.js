@@ -28,7 +28,8 @@ export default {
         scss: [
             '@/assets/scss/base/config.scss',
             'instant-coffee-core/assets/scss/variables.scss',
-            'instant-coffee-core/assets/scss/mixins.scss'
+            'instant-coffee-core/assets/scss/mixins.scss',
+            'instant-coffee-core/assets/scss/atomic.scss'
         ]
     },
 

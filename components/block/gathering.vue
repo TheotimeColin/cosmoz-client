@@ -189,8 +189,14 @@ export default {
     }
 }
 
-@include breakpoint-s {
-
+@include breakpoint-xs {
+        
+    .BlockGathering_cover {
+        
+        &::before {
+            @include ratio(50);
+        }
+    }
 }
 
 </style>

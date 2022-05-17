@@ -1,7 +1,7 @@
 <template>
     <div v-if="gathering">
         <app-banner :background="gathering.hero">
-            <link-base class="mb-40" :to="{ path: localePath({ name: 'index' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
+            <link-base class="mb-40 d-none@s" :to="{ path: localePath({ name: 'index' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
 
             <div>
                 {{ gathering.title }}
@@ -13,7 +13,7 @@
         </app-banner>
 
         <div class="Wrapper">
-            <div class="d-flex">
+            <div class="d-flex fx-reverse@xs">
                 <div class="fx-grow pt-30 pb-60">
                     <div class="Gathering_section" v-if="gathering.isPast && usersByStatus(['confirmed']).find(u => u._id == user._id)">
                         <div class="p-20 mb-30 bg-bg br-s">
@@ -51,7 +51,7 @@
 
                     <div class="Gathering_section" v-if="gathering.isPast">
                         <div class="mb-20">
-                            <p class="ft-title-s">Fil de conversation</p>
+                            <p class="ft-title-s mr-10">Fil de conversation</p>
                             <p class="ft-italic color-ft-weak mt-5" v-if="!hasConfirmed">Seules les personnes ayant participé peuvent ajouter des messages. </p>
                         </div>
 
@@ -87,7 +87,7 @@
                         <div class="fx-center mb-15">
                             <p class="ft-title-s pv-10">Fil de conversation</p>
 
-                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" v-if="!isAddComment">Ajouter un message</button-base>
+                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" v-if="!isAddComment">Nouveau message</button-base>
                         </div>
 
                         <content-feed
@@ -98,7 +98,7 @@
                         />
                     </div>
                 </div>
-                <div class="width-s fx-no-shrink n-mt-30 ml-40 p-relative">
+                <div class="width-s fx-no-shrink n-mt-30 ml-40 p-relative width-xs@s width-100@xs ml-0@xs n-mt-10@xs">
                     <div class="p-20 bg-bg br-s">
                         <p>
                             <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
@@ -119,7 +119,7 @@
                         </div>
                     </div>
 
-                    <div class="p-20 bg-bg mt-10 br-s p-sticky" style="--offset: 40px" v-if="!gathering.isPast">
+                    <div class="p-20 bg-bg mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
                         <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
                             <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
                         </div>

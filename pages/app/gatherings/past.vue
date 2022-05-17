@@ -6,15 +6,15 @@
             </h1>
 
             <div class="pt-40 pb-60">
-                <div v-for="gathering in gatherings" class="d-flex mb-60" :key="gathering._id">
+                <div v-for="gathering in gatherings" class="d-flex mb-60 d-block@s" :key="gathering._id">
                     <block-gathering
-                        :modifiers="['square']"
-                        class="width-xs"
+                        :modifiers="$smallerThan('s') ? [] : ['square']"
+                        class="width-xs width-auto@s"
                         :status-only="true"
                         v-bind="gathering"
                     />
                     
-                    <div class="fx-grow ph-20">
+                    <div class="fx-grow ph-20 ph-0@s">
                         <div class="p-15 bg-bg br-s">
                             <p class="ft-title-2xs mb-15">Rencontres :</p>
 

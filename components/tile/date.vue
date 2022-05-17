@@ -17,15 +17,7 @@ export default {
     },
     computed: {
         day () {
-            let day = this.$moment(this.date)
-
-            if (this.$moment().format('YYYYMMD') == day.format('YYYYMMD')) {
-                return `Aujourd'hui`
-            } else if (this.$moment().add(1, 'day').format('YYYYMMD') == day.format('YYYYMMD')) {
-                return `Demain`
-            } else {
-                return day.format('dddd')
-            }
+            return this.$date(this.date, true)
         }
     }
 }
