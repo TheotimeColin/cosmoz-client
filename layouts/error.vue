@@ -1,15 +1,13 @@
 <template>
-    <div class="Error">
-        <div class="bg-cover bg-night pv-60">
-            <div class="Wrapper">
-                <p class="ft-title-xl ft-title-l@s">Oups, c'est une erreur {{ error ? error.statusCode : '' }}</p>
-                <p class="ft-italic">{{ error && error.message ? error.message : `Erreur non-spécifiée` }}</p>
+    <div class="Error bg-cover bg-night">
+        <div class="Wrapper">
+            <p class="ft-title-xl ft-title-l@s">Oups, c'est une erreur {{ error ? error.statusCode : '' }}</p>
+            <p class="ft-italic">{{ error && error.message ? error.message : `Erreur non-spécifiée` }}</p>
 
-                <div class="mt-20">
-                    <button-base :modifiers="['light']" tag="a" :href="user ? $config.baseUrl : $config.baseUrl">
-                        Revenir en lieu sûr
-                    </button-base>
-                </div>
+            <div class="mt-20">
+                <button-base :modifiers="['light']" tag="a" :href="user ? $config.baseUrl : $config.baseUrl">
+                    Revenir en lieu sûr
+                </button-base>
             </div>
         </div>
     </div>
@@ -27,3 +25,13 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.Error {
+    min-height: 100vh;
+    padding: 100px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+</style>

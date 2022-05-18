@@ -5,38 +5,52 @@
             </div>
 
             <div class="BlockGathering_content">
-                <div class="ft-s-bold fx-center width-100">
-                    <div class="d-flex fxa-center" v-if="!statusOnly">
+                <div class="BlockGathering_header">
+                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly">
                         <user-icon class="mr-10" /> Organisé par antiswipe LGBTQ
                     </div>
-                    <div class="BlockGathering_status" v-if="!orgaOnly">
-                        <div >
-                            {{ tagline }}
-                        </div>
-
+                    <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
                         <div>
                             <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
                             </template>
                             <template v-else-if="hasConfirmed">
-                                Présence confirmée <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span>
+                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée ·
                             </template>
                             <template v-else-if="hasGhosted">
-                                Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span>
+                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
                             </template>
+
+                            {{ tagline }}
                         </div>
                     </div>
                 </div>
 
                 <div>
+                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!orgaOnly">
+                        <div>
+                            <template v-if="hasBooked">
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
+                            </template>
+                            <template v-else-if="hasConfirmed">
+                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée · 
+                            </template>
+                            <template v-else-if="hasGhosted">
+                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                            </template>
+
+                            {{ tagline }}
+                        </div>
+                    </div>
+
                     <div class="BlockGathering_location fx-center">
                         <p class="">
                             {{ $moment(date).fromNow() }} <span class="loc">· {{ location }}</span>
                         </p>
                     </div>
 
-                    <h3 class="BlockGathering_title ellipsis-3">
-                        {{ title }}
+                    <h3 class="BlockGathering_title ellipsis-2">
+                        {{ title|specials }}
                     </h3>
                 </div>
             </div>
@@ -135,7 +149,7 @@ export default {
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-black);
     text-align: left;
     position: relative;
     
@@ -158,6 +172,11 @@ export default {
     justify-content: space-between;
 }
 
+.BlockGathering_status {
+    flex-shrink: 0;
+    font: var(--ft-s-bold);
+}
+
 .BlockGathering_title {
     font: var(--ft-title-s);
     transition: all 150ms ease; 
@@ -168,6 +187,14 @@ export default {
     font: var(--ft-xs);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.BlockGathering_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font: var(--ft-title-3xs);
+    width: 100%;
 }
 
 .BlockGathering--square {
@@ -201,8 +228,16 @@ export default {
     .BlockGathering_cover {
         
         &::before {
-            @include ratio(50);
+            @include ratio(100);
         }
+    }
+
+    .BlockGathering_header {
+        display: block;
+    }
+
+    .BlockGathering_status {
+        margin-top: 15px;
     }
 }
 

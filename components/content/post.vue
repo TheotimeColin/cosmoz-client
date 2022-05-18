@@ -18,7 +18,7 @@
             />
         </div>
         <div class="Post_main">
-            <div class="Post_text" v-html="content"></div>
+            <div class="Post_text" v-html="$options.filters.specials(content)"></div>
         </div>
         <div class="Post_footer">
             <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">

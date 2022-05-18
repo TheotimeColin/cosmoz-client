@@ -1,6 +1,6 @@
 <template>
     <div class="Editor" :class="{ 'is-tiny': tiny }">
-        <user-icon class="fx-no-shrink" :modifiers="tiny ? ['s'] : ['l']" v-bind="user" />
+        <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" v-bind="user" />
 
         <div class="Editor_main">
             <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
@@ -82,13 +82,37 @@ export default {
 
 .Editor_main {
     flex-grow: 1;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .Editor_secondary {
     display: flex;
     align-items: center;
-    padding: 20px 0 0 0;
-    border-top: 1px solid var(--color-border);
+    padding: 15px 0 0 0;
+}
+
+.Editor_input {
+    background-color: var(--color-bg-strong);
+}
+
+@include breakpoint-xs {
+
+    .Editor {
+        display: block;
+
+        &.is-tiny {
+            .Editor_icon {
+                display: none;
+            }
+            
+            .Editor_main {
+                margin: 0;
+            }
+        }
+    }
+
+    .Editor_main {
+        margin: 15px 0 0 0;
+    }
 }
 </style>

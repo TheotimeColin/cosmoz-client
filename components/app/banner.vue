@@ -16,7 +16,7 @@ export default {
     props: {
         background: { type: String }
     },
-    created () {
+    beforeCreate () {
         this.$store.commit('page/setHeader', { transparent: true })
     },
     beforeDestroy () {
@@ -30,8 +30,7 @@ export default {
     position: relative;
     font: var(--ft-title-l);
     color: var(--color-ft-light);
-    background-color: var(--color-bg-2xstrong);
-    margin-top: -65px;
+    background-color: var(--color-black);
 
     &::before {
         content: "";
@@ -41,7 +40,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.4;
+        opacity: 0.35;
         background-size: cover;
         background-position: center;
         background-image: var(--background);

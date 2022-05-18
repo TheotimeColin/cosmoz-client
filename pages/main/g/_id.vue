@@ -89,7 +89,11 @@
                         <div class="fx-center mb-15">
                             <p class="ft-title-s pv-10">Fil de conversation</p>
 
-                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" v-if="!isAddComment">Nouveau message</button-base>
+                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" class="d-none@xs" v-if="!isAddComment">Nouveau message</button-base>
+                        </div>
+
+                        <div class="pv-15 bg-bg-xstrong br-s mv-10 text-center d-none d-block@xs" v-if="!isAddComment">
+                            <button-base :modifiers="['light', 's']" icon-before="plus" @click="isAddComment = true" >Nouveau message</button-base>
                         </div>
 
                         <content-feed
@@ -211,7 +215,6 @@
                                         <button-base class="is-merlot" :modifiers="['round', 'current', 's']" icon-before="do-not-enter" @click.stop="onUserAttendance(user, 'ghosted')"/>
 
                                         <button-base class="is-tulip" :modifiers="['round', 'current', 's']" icon-before="times" @click.stop="onUserAttendance(user, 'cancelled')"/>
-
 
                                         <button-base class="is-alpine" :modifiers="['round', 'current', 's']" icon-before="check" @click.stop="onUserAttendance(user, 'confirmed')"/>
                                     </div>

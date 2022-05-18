@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="Wrapper pv-60">
-            <div class="d-flex d-block@s mt-0@s">
+            <div class="d-flex d-block@s mt-60">
                 <div class="fx-grow o-hidden">
                     <div class="pv-20 br-s bg-bg" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20 ph-20">Mes prochaines sorties</p>

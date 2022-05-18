@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="Wrapper Wrapper--s">
-            <h1 class="ft-title-l mt-60">
+            <h1 class="ft-title-l mt-100">
                 Mes événements passés
             </h1>
 

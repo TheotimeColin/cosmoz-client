@@ -187,7 +187,6 @@ export default {
 .Homepage_heading {
     background-color: var(--color-bg-strong);
     position: relative;
-    margin-top: -65px;
 
     .Wrapper {
         padding: 100px 0 60px;

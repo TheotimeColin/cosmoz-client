@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_item p-20 mb-10 br-s bg-bg"
+            class="Feed_item p-15 mb-10 br-s bg-bg-xstrong"
             :placeholder="placeholder"
             @submit="onSubmit"
             v-if="!disableCreate"

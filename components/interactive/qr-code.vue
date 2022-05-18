@@ -7,9 +7,11 @@
 
         <popin :is-active="zoom" :modifiers="['s']" @close="zoom = false">
             <template slot="content">
-                <div class="QR p-relative">
-                    <img :src="src" v-if="src">
-                    <canvas class="QR_canvas" ref="zoomed" v-else></canvas>
+                <div class="QR_container">
+                    <div class="QR QR--popin p-relative">
+                        <img :src="src" v-if="src">
+                        <canvas class="QR_canvas" ref="zoomed" v-else></canvas>
+                    </div>
                 </div>
             </template>
         </popin>
@@ -59,6 +61,21 @@ export default {
             left: 0;
             width: 100% !important;
             height: 100% !important;
+        }
+    }
+
+    @include breakpoint-s {
+        .QR--popin {
+            min-width: 50vw;
+        }
+
+        .QR_container {
+            width: 100vw;
+            height: 100vh;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;       
         }
     }
 </style>

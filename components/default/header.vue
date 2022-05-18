@@ -70,7 +70,7 @@ export default {
         top: 0;
         width: 100%;
         z-index: 90;
-        background-color: var(--color-bg-strong);
+        background-color: rgba(0, 0, 0, 0);
         border-bottom: 1px solid var(--color-border); 
         transition: all 250ms ease;
 

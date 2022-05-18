@@ -1,7 +1,7 @@
 <template>
     <div class="Gatherings">
         <div class="Wrapper">
-            <h1 class="ft-title-l pt-60">
+            <h1 class="ft-title-l mt-100">
                 Envie de sortir ?
             </h1>
 

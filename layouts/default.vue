@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Debounce from 'lodash.debounce'
+
 export default {
     name: 'LayoutDefault',
     computed: {
@@ -34,6 +36,11 @@ export default {
         
         if (process.server) return
 
+        this.windowResize()
+
+        this.onWindowResize = Debounce(this.windowResize, 500)
+        window.addEventListener('resize', this.onWindowResize)
+
         window.addEventListener('scroll', () => {
             let action = window.scrollY > 5
             
@@ -44,6 +51,12 @@ export default {
     },
     beforeDestroy() {
        this.$recaptcha.destroy()
+       window.removeEventListener('resize', this.onWindowResize)
+    },
+    methods: {
+        windowResize () {
+            this.$store.commit('page/setBreakpoint', window.innerWidth)
+        }
     }
 }
 </script>
@@ -51,7 +64,7 @@ export default {
 <style lang="scss" scoped>
 .LayoutDefault_content {
     min-height: calc(100vh - 65px);
-    padding-top: 65px;
+    // padding-top: 65px;
 }
 
 .page-enter-active,

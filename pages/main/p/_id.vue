@@ -33,7 +33,7 @@
             </div>
         </app-banner>
 
-        <div class="Wrapper mv-60 mv-40@xs">
+        <div class="Wrapper pv-60 mv-40@xs">
             <div class="row-s">
                 <div class="col-7">
                     <div v-if="tidbits.length > 0">

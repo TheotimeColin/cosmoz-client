@@ -1,6 +1,6 @@
 <template>
     <div class="Area" :class="[ `is-${size}`, { 'is-tiny': !adaptableText } ]">
-        <div class="Area_input" contenteditable="true" :placeholder="placeholder" @input="onInput" @paste="onPaste" @focus="$emit('focus')" @blur="$emit('blur')" ref="content"></div>
+        <div class="Area_input" contenteditable="true" :placeholder="$options.filters.specials(placeholder)" @input="onInput" @paste="onPaste" @focus="$emit('focus')" @blur="$emit('blur')" ref="content"></div>
     </div>
 </template>
 
@@ -77,8 +77,7 @@ export default {
 
 .Area_input {
     font: var(--ft-xl);
-    padding-top: 10px;
-    padding-bottom: 15px;
+    padding: 10px;
 
     &:focus {
         outline: none;
