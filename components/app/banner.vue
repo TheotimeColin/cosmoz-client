@@ -1,6 +1,10 @@
 <template>
     <div class="Banner" :style="background ? { '--background': `url(${background})` } : undefined">
-        <div class="Wrapper">
+        <div class="Banner_wrapper Wrapper">
+            <div class="mb-20">
+                <slot name="return"></slot>
+            </div>
+
             <slot></slot>
         </div>
     </div>
@@ -27,10 +31,6 @@ export default {
     font: var(--ft-title-l);
     color: var(--color-ft-light);
     background-color: var(--color-bg-2xstrong);
-    display: flex;
-    align-items: flex-end;
-    min-height: 180px;
-    padding: 100px 30px 30px 30px;
     margin-top: -65px;
 
     &::before {
@@ -52,10 +52,21 @@ export default {
     }
 }
 
+.Banner_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 33vh;
+    padding: 65px 0 30px 0;
+}
+
 @include breakpoint-s {
 
     .Banner {
         margin-top: -70px;
+    }
+
+    .Banner_wrapper {
         min-height: 0vh;
         padding: 140px 40px 30px;
         text-align: left;

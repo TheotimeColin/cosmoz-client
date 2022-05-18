@@ -75,8 +75,9 @@ export default {
         transition: all 250ms ease;
 
         &.is-transparent {
-            background-color: transparent;
-            border-color: transparent;
+            background-color: rgba(0, 0, 0, 0);
+            border-color: rgba(0, 0, 0, 0);
+            transition: none;
 
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
@@ -86,7 +87,7 @@ export default {
 
         &.is-scrolled {
             background-color: var(--color-bg-xstrong);
-            border-color: transparent;
+            border-color: rgba(0, 0, 0, 0);
             
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {

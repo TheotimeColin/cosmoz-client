@@ -49,12 +49,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.timer {
-    width: 180px;
-}
-
 .LayoutDefault_content {
     min-height: calc(100vh - 65px);
     padding-top: 65px;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 100ms;
+  overflow: hidden;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
+.layout-enter-active, .layout-leave-active {
+  transition: all 100ms;
+}
+
+.layout-enter, .layout-leave-active {
+  opacity: 0;
+  transform: translateY(3px);
 }
 </style>

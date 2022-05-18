@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="Gatherings">
         <div class="Wrapper">
             <h1 class="ft-title-l pt-60">
                 Envie de sortir ?
@@ -15,7 +15,7 @@
                         <div class="ml-10 fx-grow ml-0@xs">
                             <p class="ft-title-2xs mb-20 d-none d-block@xs">{{ $date(date.date) }}</p>
 
-                            <div v-for="gathering in date.gatherings" class="mb-10" :key="gathering._id">
+                            <div class="Gatherings_item" v-for="gathering in date.gatherings" :key="gathering._id">
                                 <block-gathering
                                     v-bind="gathering"
                                 />
@@ -68,4 +68,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.Gatherings_item {
+
+    & + & {
+        margin-top: 15px;
+    }
+}
 </style>

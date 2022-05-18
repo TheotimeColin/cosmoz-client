@@ -1,8 +1,10 @@
 <template>
     <div v-if="gathering">
         <app-banner :background="gathering.hero">
-            <link-base class="mb-40 d-none@s" :to="{ path: localePath({ name: 'g' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
-
+            <template slot="return">
+                <link-base class="d-none@s" :to="{ path: localePath({ name: 'g' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
+            </template>
+            
             <div>
                 {{ gathering.title }}
 
