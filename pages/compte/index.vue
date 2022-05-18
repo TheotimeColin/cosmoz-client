@@ -16,7 +16,7 @@
 export default {
     name: 'AccountPage',
     middleware: 'loggedUser',
-    layout: 'app',
+    
     data: () => ({
         
     }),

@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="Wrapper">
-            <h1 class="ft-title-l mt-60">
+            <h1 class="ft-title-l pt-60">
                 Envie de sortir ?
             </h1>
 
@@ -34,8 +34,6 @@
 <script>
 export default {
     name: 'DashboardIndex',
-    middleware: 'onboarded',
-    layout: 'app',
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
             query: {}

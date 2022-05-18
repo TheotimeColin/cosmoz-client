@@ -163,13 +163,27 @@ export default {
 }
 
 .ButtonBase--weak {
-    background: transparent;
+    background-color: var(--color-bg-strong);
     color: var(--color-ft-weak);
     border-color: transparent;
 
     &.is-active,
     &:hover {
         background-color: var(--color-bg-xstrong);
+    }
+}
+
+.ButtonBase--xweak {
+    background-color: transparent;
+    color: var(--color-ft-weak);
+    border-color: transparent;
+
+    &.is-active {
+        background-color: var(--color-bg-xstrong);
+    }
+
+    &:hover {
+        background-color: var(--color-bg-strong);
     }
 }
 
@@ -234,6 +248,14 @@ export default {
 .ButtonBase.is-disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.ButtonBase--user {
+    padding: 0 15px 0 5px;
+    flex-shrink: 0;
+    height: 49px;
+    display: flex;
+    align-items: center;
 }
 
 .ButtonBase--round {

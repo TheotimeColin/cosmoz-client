@@ -56,10 +56,10 @@ export default {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    font: var(--ft-title-s);
+    font: var(--ft-title-xs);
     text-transform: lowercase;
-    background-color: var(--color-current-weak);
-    color: var(--color-current-strong);
+    background-color: var(--color-bg-xweak);
+    color: var(--color-ft-light);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -71,6 +71,7 @@ export default {
 
 .UserIcon_name {
     font: var(--ft-title-2xs);
+    font-size: 15px;
     margin-left: 10px;
 }
 

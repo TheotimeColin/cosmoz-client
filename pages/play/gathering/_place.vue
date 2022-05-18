@@ -11,7 +11,7 @@ import Kawaa from '@/utils/gatherings/kawaa'
 
 export default {
     name: 'GatheringPlace',
-    layout: 'app',
+    
     data: () => ({
         placeId: '',
         items: []

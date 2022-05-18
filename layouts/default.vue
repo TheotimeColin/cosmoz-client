@@ -33,7 +33,13 @@ export default {
         // }, 500)
         
         if (process.server) return
-        
+
+        window.addEventListener('scroll', () => {
+            let action = window.scrollY > 5
+            
+            if (this.$store.state.page.isScrolled != action) this.$store.commit('page/setScrolled', action)
+        })
+
         window.addEventListener('beforeinstallprompt', e => e.preventDefault())
     },
     beforeDestroy() {
@@ -48,7 +54,7 @@ export default {
 }
 
 .LayoutDefault_content {
-    min-height: calc(100vh - 60px);
-    margin-top: 60px;
+    min-height: calc(100vh - 65px);
+    padding-top: 65px;
 }
 </style>

@@ -134,7 +134,7 @@ exports.requestResetPassword = async function (req, res) {
         await sendMail(user, {
             template: 2,
             params: {
-                LINK: `${process.env.APP_URL}/compte/reset?token=${token.id}`
+                LINK: `${process.env.BASE_URL}/compte/reset?token=${token.id}`
             }
         })
     } catch (e) {

@@ -1,42 +1,57 @@
 <template>
-    <div class="DefaultHeader" :class="{ 'is-open': isOpen }">
-        <div class="DefaultHeader_wrapper Wrapper">
-            <a :href="$config.baseUrl" class="DefaultHeader_logo ft-title-m logo-sparkle-p">
-                cosmoz
-            </a>
-
-            <div class="DefaultHeader_nav">
-                <link-base :href="$config.blogUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
+    <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
+        <div class="Header_wrapper">
+            <div class="Header_left" @mouseenter="isNavOpen = true" @mouseleave="isNavOpen = false">
+                <button-base :modifiers="['round', 'xweak']" class="Header_button" icon-before="bars" v-if="user" />
+                <div class="mr-10" v-else></div>
                 
-                <template v-if="user">
-                    <button-base :href="$config.appUrl" :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
-                        Mon espace
-                    </button-base>
-                </template>
-                <template v-else>
-                    <link-base :href="$config.appUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
-
-                    <button-base :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
-                        Pré-inscription
-                    </button-base>
-                </template> 
+                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-m logo-sparkle-p">
+                    cosmoz
+                </nuxt-link>
             </div>
 
-            <div class="DefaultHeader_burger" @click="isOpen = !isOpen">
-                <fa icon="far fa-bars" v-if="!isOpen"></fa>
-                <fa icon="far fa-times" v-else></fa>
+            <div class="Header_nav" v-if="user">
+                <button-base :modifiers="['weak', 'user']" :to="{ name: 'p-id', params: { id: user.id } }" class="Header_button">
+                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
+                </button-base>
+
+                <button-base :modifiers="['round', 'weak']" class="Header_button" icon-before="bell" />
+
+                <quick-menu
+                    :large="true"
+                    icon="caret-down"
+                    class="Header_button"
+                    :items="[
+                        { fa: 'gear', to: { name: 'compte' }, label: `Mes paramètres` },
+                        { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
+                    ]"
+                />
+            </div>
+            <div class="Header_nav" v-else>
+                <link-base :to="{ name: 'g' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Les événements</link-base>
+
+                <link-base :href="$config.blogUrl" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
+
+                <link-base :to="{ name: 'compte-login' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
+
+                <button-base :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
+                    Pré-inscription
+                </button-base>
             </div>
         </div>
 
         <popin-newsletter :is-active="isNewsletter" origin="header" @close="isNewsletter = false" />
+
+        <default-nav :is-active="isNavOpen" v-if="user" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'DefaultHeader',
+    name: 'Header',
     data: () => ({
         isOpen: false,
+        isNavOpen: false,
         isNewsletter: false
     }),
     computed: {
@@ -46,30 +61,68 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .DefaultHeader {
+    .Header {
         position: fixed;
         top: 0;
         width: 100%;
         z-index: 90;
-        background-color: var(--color-bg-2xstrong);
+        background-color: var(--color-bg-strong);
+        border-bottom: 1px solid var(--color-border); 
+        transition: all 250ms ease;
+
+        &.is-transparent {
+            background-color: transparent;
+            border-color: transparent;
+
+            .Header_button.QuickMenu ::v-deep .QuickMenu_button,
+            .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
+                background-color: var(--color-bg-xstrong);
+            }
+        }
+
+        &.is-scrolled {
+            background-color: var(--color-bg-xstrong);
+            border-color: transparent;
+            
+            .Header_button.QuickMenu ::v-deep .QuickMenu_button,
+            .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
+                background-color: var(--color-bg-strong);
+            }
+        }
+
     }
 
-    .DefaultHeader_wrapper {
-        height: 60px;
+    .Header_button {
+
+        & + & {
+            margin-left: 3px;
+        }
+    }
+
+    .Header_left {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 30;
+    }
+
+    .Header_wrapper {
+        height: 65px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         position: relative;
+        padding: 0 15px 0 5px;
     }
 
-    .DefaultHeader_nav {
+    .Header_nav {
         display: flex;
         align-items: center;
         font: var(--ft-m-medium);
         line-height: 1;
     }
 
-    .DefaultHeader_burger {
+    .Header_burger {
         width: 45px;
         height: 45px;
         display: none;
@@ -78,7 +131,7 @@ export default {
         font-size: 22px;
     }
 
-    .DefaultHeader_navItem {
+    .Header_navItem {
         font: var(--ft-title-3xs);
         line-height: 1;
         display: flex;
@@ -92,18 +145,18 @@ export default {
     }
 
     @include breakpoint-s {
-        .DefaultHeader_burger {
+        .Header_burger {
             display: flex;
         }
 
-        .DefaultHeader_logo {
+        .Header_logo {
 
             &::before {
                 display: none;
             }
         }
 
-        .DefaultHeader_nav {
+        .Header_nav {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -116,11 +169,11 @@ export default {
             transition: all 200ms ease;
         }
 
-        .DefaultHeader_wrapper {
+        .Header_wrapper {
             padding: 0 10px 0 16px;
         }
             
-        .DefaultHeader_navItem {
+        .Header_navItem {
             display: flex;
             padding: 20px 0;
             margin: 0 20px;
@@ -137,9 +190,9 @@ export default {
             }
         }
 
-        .DefaultHeader.is-open {
+        .Header.is-open {
 
-            .DefaultHeader_nav {
+            .Header_nav {
                 display: block;
             }
         }

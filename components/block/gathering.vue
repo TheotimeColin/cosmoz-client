@@ -6,10 +6,12 @@
 
             <div class="BlockGathering_content">
                 <div class="ft-s-bold fx-center width-100">
-                    <div v-if="!statusOnly">
-                        {{ tagline }}
-                    </div>
+                    <div>Organisé par antiswipe LGBTQ</div>
                     <div class="BlockGathering_status">
+                        <div v-if="!statusOnly">
+                            {{ tagline }}
+                        </div>
+                        
                         <template v-if="hasBooked">
                             <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit
                         </template>
@@ -61,9 +63,9 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        hasBooked () { return this.users.find(u => u._id == this.user._id && u.status == 'attending') },
-        hasConfirmed () { return this.users.find(u => u._id == this.user._id && u.status == 'confirmed') },
-        hasGhosted () { return this.users.find(u => u._id == this.user._id && u.status == 'ghosted') },
+        hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
+        hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
+        hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         isPast () {
             return false
         },

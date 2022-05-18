@@ -1,6 +1,6 @@
 <template>
     <div class="Banner" :style="background ? { '--background': `url(${background})` } : undefined">
-        <div class="fx-grow">
+        <div class="Wrapper">
             <slot></slot>
         </div>
     </div>
@@ -11,6 +11,12 @@ export default {
     name: 'Banner',
     props: {
         background: { type: String }
+    },
+    created () {
+        this.$store.commit('page/setHeader', { transparent: true })
+    },
+    beforeDestroy () {
+        this.$store.commit('page/setHeader', { transparent: false })
     }
 }
 </script>
@@ -24,7 +30,8 @@ export default {
     display: flex;
     align-items: flex-end;
     min-height: 180px;
-    padding: 30px 60px;
+    padding: 100px 30px 30px 30px;
+    margin-top: -65px;
 
     &::before {
         content: "";

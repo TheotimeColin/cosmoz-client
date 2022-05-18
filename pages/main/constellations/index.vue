@@ -9,7 +9,7 @@
 export default {
     name: 'ConstellationsIndex',
     middleware: 'onboarded',
-    layout: 'app',
+    
     async fetch () {
 
     },

@@ -81,7 +81,7 @@ export default {
                 type: 'onboarding'
             })
 
-            window.location = this.$config.appUrl
+            window.location = this.localePath({ name: 'feed' })
         }
     }
 }

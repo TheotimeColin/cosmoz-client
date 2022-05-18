@@ -1,7 +1,7 @@
 <template>
     <div v-if="gathering">
         <app-banner :background="gathering.hero">
-            <link-base class="mb-40 d-none@s" :to="{ path: localePath({ name: 'index' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
+            <link-base class="mb-40 d-none@s" :to="{ path: localePath({ name: 'g' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
 
             <div>
                 {{ gathering.title }}
@@ -133,7 +133,7 @@
 
                         <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
-                        <div class="d-flex fx-align-center mt-20">
+                        <div class="d-flex fx-align-center mt-20" v-if="user">
                             <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
                                 événement complet
                             </button-base>
@@ -146,8 +146,8 @@
                         </div>
                     </div>
                     
-                    <div class="text-center mt-5">
-                        <link-base @click="isAdminManage = true" v-if="user.role == 'admin'">Gestion des inscriptions</link-base>
+                    <div class="text-center mt-5" v-if="user && user.role == 'admin' ">
+                        <link-base @click="isAdminManage = true">Gestion des inscriptions</link-base>
                     </div>
                 </div>
             </div>
@@ -192,7 +192,7 @@
             </template>
         </popin>
 
-        <popin :is-active="isAdminManage" @close="isAdminManage = false" v-if="user.role == 'admin'">
+        <popin :is-active="isAdminManage" @close="isAdminManage = false" v-if="user && user.role == 'admin'">
             <template slot="content">
                 <form @submit.prevent="onManageSubmit" class="p-30">
                     <div class="mb-30" v-for="(status, i) in userStatuses" :key="i">
@@ -232,7 +232,6 @@
 <script>
 export default {
     name: 'GatheringPage',
-    layout: 'app',
     async fetch () {
         await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id }})
     },
@@ -262,19 +261,19 @@ export default {
             return this.gathering.createdAt.format('DD MMM YYYY')
         },
         hasBooked () {
-            return this.usersByStatus(['attending']).find(u => u._id == this.user._id)
+            return this.user && this.usersByStatus(['attending']).find(u => u._id == this.user._id)
         },
         isWaiting () {
-            return this.usersByStatus(['waiting']).find(u => u._id == this.user._id)
+            return this.user && this.usersByStatus(['waiting']).find(u => u._id == this.user._id)
         },
         hasWaitingList () {
             return this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
         },
         hasConfirmed () {
-            return this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
+            return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
-            return this.$config.appUrl + this.localePath({ name: 'g-id', params: { id: this.gathering.id }})
+            return this.$config.baseUrl + this.localePath({ name: 'g-id', params: { id: this.gathering.id }})
         },
         googleCal () {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
@@ -289,7 +288,7 @@ export default {
             ]
         },
         qr () {
-            return this.$config.appUrl + '/v/' + this.gathering.id + '?user=' + this.user.id
+            return this.$config.baseUrl + '/v/' + this.gathering.id + '?user=' + this.user.id
         }
     },
     methods: {

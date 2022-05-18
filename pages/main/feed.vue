@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="Wrapper">
-            <div class="d-flex mt-40 d-block@s mt-0@s">
+        <div class="Wrapper pv-60">
+            <div class="d-flex d-block@s mt-0@s">
                 <div class="fx-grow o-hidden">
                     <div class="pv-20 br-s bg-bg" v-if="attending.length > 0">
                         <p class="ft-title-xs mb-20 ph-20">Mes prochaines sorties</p>
@@ -54,7 +54,7 @@
 export default {
     name: 'DashboardIndex',
     middleware: 'onboarded',
-    layout: 'app',
+    
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
             query: {}

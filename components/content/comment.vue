@@ -15,7 +15,7 @@
             </div>
             
             <div class="Comment_actions">
-                <button-base :modifiers="['xs', 'weak']" @mouseenter.native="onReactionTooltip" @mouseleave.native="$tClose" @click="addReaction">
+                <button-base :modifiers="['xs', 'xweak']" @mouseenter.native="onReactionTooltip" @mouseleave.native="$tClose" @click="addReaction">
                     <fa :icon="`${isReacted ? 'fas' : 'far'} fa-heart`"  />
 
                     <span class="ml-3" v-if="reactions.length > 0">{{ reactions.length }}</span>

@@ -32,34 +32,34 @@ exports.authenticate = async function (headers) {
         try {
             let user = null
 
-            if (!headers['authorization']) throw Error('no-headers')
+            if (headers['authorization']) {
+                let token = headers['authorization'].split(' ')[1]
+                if (!token) throw Error('no-token')
 
-            let token = headers['authorization'].split(' ')[1]
-            if (!token) throw Error('no-token')
+                user = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
+                    return new Promise (async (resolve, reject) => {
+                        try {
+                            let fetched = false
 
-            user = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
-                return new Promise (async (resolve, reject) => {
-                    try {
-                        let fetched = false
+                            if (err) throw Error('fail-token')
+                            
+                            fetched = await Entities.user.model.find({ _id: decoded.id }, '-password')
 
-                        if (err) throw Error('fail-token')
-                        
-                        fetched = await Entities.user.model.find({ _id: decoded.id }, '-password')
-
-                        resolve(!err && fetched[0] ? fetched[0] : false)
-                    } catch (e) {
-                        console.error(e)
-                        reject(e)
-                    }
+                            resolve(!err && fetched[0] ? fetched[0] : false)
+                        } catch (e) {
+                            console.error(e)
+                            reject(e)
+                        }
+                    })
                 })
-            })
+            }
 
             // if (!user) throw Error('user-not-found')
 
             resolve(user)
         } catch (e) {
             console.warn(e)
-            reject(null)
+            reject(e)
         }
     })
 }

@@ -6,7 +6,7 @@
                 <p class="ft-italic">{{ error && error.message ? error.message : `Erreur non-spécifiée` }}</p>
 
                 <div class="mt-20">
-                    <button-base :modifiers="['light']" tag="a" :href="user ? $config.appUrl : $config.baseUrl">
+                    <button-base :modifiers="['light']" tag="a" :href="user ? $config.baseUrl : $config.baseUrl">
                         Revenir en lieu sûr
                     </button-base>
                 </div>

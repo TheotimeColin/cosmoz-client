@@ -1,10 +1,6 @@
 <template>
     <nav class="AppNav" :class="{ 'is-active': isActive }">
         <div class="AppNav_head"></div>
-
-        <a :href="$config.appUrl" class="AppNav_logo ft-title-s logo-sparkle-p" @mouseenter="isActive = true" @mouseleave="isActive = false">
-            cosmoz
-        </a>
         
         <div class="AppNav_container">
             <div class="AppNav_header bg-cover-25 bg-night">
@@ -58,9 +54,11 @@
 <script>
 export default {
     name: 'AppNav',
+    props: {
+        isActive: { type: Boolean, default: false }
+    },
     data: () => ({
-        nav: [],
-        isActive: false
+        nav: []
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -70,21 +68,23 @@ export default {
             {
                 label: `Mon actualité`,
                 fa: 'home',
-                to: this.localePath({ name: 'index' }),
-            }, {
-                label: `Constellations`,
-                fa: 'sparkles',
-                to: this.localePath({ name: 'constellations' }),
-                items: [
-                    {
-                        label: `Mes constellations`,
-                        to: this.localePath({ name: 'constellations' })
-                    }, {
-                        label: `Parcourir les constellations`,
-                        to: this.localePath({ name: 'constellations-discover' })
-                    }
-                ]
-            }, {
+                to: this.localePath({ name: 'feed' }),
+            },
+            // {
+            //     label: `Constellations`,
+            //     fa: 'sparkles',
+            //     to: this.localePath({ name: 'constellations' }),
+            //     items: [
+            //         {
+            //             label: `Mes constellations`,
+            //             to: this.localePath({ name: 'constellations' })
+            //         }, {
+            //             label: `Parcourir les constellations`,
+            //             to: this.localePath({ name: 'constellations-discover' })
+            //         }
+            //     ]
+            // },
+            {
                 label: `Rencontres`,
                 fa: 'party-horn',
                 to: this.localePath({ name: 'g' }),
@@ -100,10 +100,6 @@ export default {
                         to: this.localePath({ name: 'affinites' })
                     }
                 ]
-            }, {
-                label: `Mon compte`,
-                fa: 'user',
-                to: this.localePath({ name: 'compte' })
             }
         ]
     }
@@ -113,6 +109,25 @@ export default {
 <style lang="scss" scoped>
 .AppNav {
     position: relative;
+    z-index: 15;
+
+    &.is-active {
+
+        .AppNav_container {
+            transform: translateX(0%);
+        }
+    }
+}
+
+.AppNav_head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 20;
+    transform: translateY(-100%);
+    background-color: var(--color-bg-xstrong);
 }
 
 .AppNav_logo {
@@ -132,6 +147,13 @@ export default {
     width: 300px;
     height: 100vh;
     background-color: var(--color-bg-xstrong);
+    transform: translateX(-100%);
+    transition: all 150ms ease;
+    z-index: 25;
+
+    &:hover {
+        transform: translateX(0%);
+    }
 }
 
 .AppNav_header {
@@ -244,41 +266,6 @@ export default {
 
 .AppNav_navBar {
     display: none;
-}
-
-@include breakpoint-s {
-
-    .AppNav {
-        z-index: 15;
-
-        &.is-active {
-
-            .AppNav_container {
-                transform: translateX(0%);
-            }
-        }
-    }
-
-    .AppNav_head {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 70px;
-        z-index: 20;
-        transform: translateY(-100%);
-        background-color: var(--color-bg-xstrong);
-    }
-    
-    .AppNav_container {
-        transform: translateX(-100%);
-        transition: all 150ms ease;
-        z-index: 25;
-
-        &:hover {
-            transform: translateX(0%);
-        }
-    }
 }
 
 @include breakpoint-xs {

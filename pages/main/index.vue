@@ -156,6 +156,12 @@ export default {
             })
         }
     },
+    created () {
+        this.$store.commit('page/setHeader', { transparent: true })
+    },
+    beforeDestroy () {
+        this.$store.commit('page/setHeader', { transparent: false })
+    },
     mounted () {
         let nextThursday = this.$moment('28-04-2022 18:00', 'DD-MM-YYYY HH:mm')
 

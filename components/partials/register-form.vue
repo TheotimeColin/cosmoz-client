@@ -99,7 +99,7 @@ export default {
                 if (response.data.status != 1) {
                     this.errors = response.data.errors
                 } else {
-                    window.location = this.$config.appUrl
+                    window.location = this.localePath({ name: 'feed' })
                 }
             } catch (e) {
                 console.log(e)

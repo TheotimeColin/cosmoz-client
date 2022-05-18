@@ -51,7 +51,7 @@
 export default {
     name: 'GatheringsPast',
     middleware: 'onboarded',
-    layout: 'app',
+    
     async fetch () {
         await this.$store.dispatch('user/fetch', {
             query: {}

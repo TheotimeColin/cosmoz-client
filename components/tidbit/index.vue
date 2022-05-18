@@ -4,7 +4,7 @@
             <h2 class="ft-title-s fx-grow">{{ $t(`tidbits.${type}.title`) }}</h2>
                 
             <div class="d-flex fxa-center">
-                <button-base icon-before="pen" :modifiers="['xs', 'round', 'weak']" @click="isEdit = true" v-if="!isEdit && editable"/>
+                <button-base icon-before="pen" :modifiers="['xs', 'round', 'xweak']" @click="isEdit = true" v-if="!isEdit && editable"/>
             </div>
         </div>
 

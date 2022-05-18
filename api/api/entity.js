@@ -51,7 +51,6 @@ exports.getEntities = async function (req, res) {
         if (idQuery) data = data[0]
     } catch (e) {
         console.error(e)
-
         errors.push(e.message)
     }
     

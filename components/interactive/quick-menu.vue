@@ -1,11 +1,11 @@
 <template>
-    <div class="QuickMenu" :class="{ 'is-active': isActive }" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
-        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" icon-before="ellipsis" :modifiers="['round', 'xs', 'weak']" @click="isActive = !isActive" />
+    <div class="QuickMenu" :class="{ 'is-active': isActive, 'is-large': large }" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
+        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="['round', ...(large ? ['weak'] : ['xs', 'xweak'])]" @click="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
-            <div class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click="onClick(item)">
+            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native="onClick(item)">
                 <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
-            </div>
+            </component>
         </div>
     </div>
 </template>
@@ -14,7 +14,9 @@
 export default {
     name: 'QuickMenu',
     props: {
-        items: { type: Array, default: () => [] }
+        items: { type: Array, default: () => [] },
+        large: { type: Boolean, default: false },
+        icon: { type: String, default: 'ellipsis'}
     },
     data: () => ({
         isActive: false,
@@ -56,10 +58,14 @@ export default {
 <style lang="scss" scoped>
     .QuickMenu {
         position: relative;
-    }
+        
+        &.is-large {
+            
+            .QuickMenu_actions {
 
-    .QuickMenu_button {
-
+                bottom: -8px;
+            }
+        }
     }
 
     .QuickMenu_actions {
@@ -71,7 +77,7 @@ export default {
         opacity: 0;
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
-        background-color: var(--color-bg-xstrong);
+        background-color: var(--color-bg-2xstrong);
         border-radius: 5px;
         transition: all 100ms ease;
     }
@@ -85,7 +91,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-strong);
+            background-color: var(--color-bg-xstrong);
 
             .QuickMenu_icon {
                 color: var(--color-ft-light);

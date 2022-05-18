@@ -83,7 +83,7 @@ const TIDBITS = ['socials', 'anything']
 
 export default {
     name: 'ProfilePage',
-    layout: 'app',
+    
     async fetch () {
         this.target = await this.$store.dispatch('user/fetchOne', this.$route.params.id)
     },
@@ -94,8 +94,8 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        profile () { return this.$route.params.id == this.user.id ? this.user : this.target },
-        isSelf () { return this.profile && this.user.id == this.profile.id },
+        profile () { return this.user && this.$route.params.id == this.user.id ? this.user : this.target },
+        isSelf () { return this.user && this.profile && this.user.id == this.profile.id },
         tidbits () {
             return this.isSelf ? TIDBITS : TIDBITS.filter(t => this.getTidbit(t).value)
         }
