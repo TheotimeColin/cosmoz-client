@@ -6,21 +6,25 @@
 
             <div class="BlockGathering_content">
                 <div class="ft-s-bold fx-center width-100">
-                    <div>Organisé par antiswipe LGBTQ</div>
-                    <div class="BlockGathering_status">
-                        <div v-if="!statusOnly">
+                    <div class="d-flex fxa-center" v-if="!statusOnly">
+                        <user-icon class="mr-10" /> Organisé par antiswipe LGBTQ
+                    </div>
+                    <div class="BlockGathering_status" v-if="!orgaOnly">
+                        <div >
                             {{ tagline }}
                         </div>
-                        
-                        <template v-if="hasBooked">
-                            <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit
-                        </template>
-                        <template v-else-if="hasConfirmed">
-                            Présence confirmée <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span>
-                        </template>
-                        <template v-else-if="hasGhosted">
-                            Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span>
-                        </template>
+
+                        <div>
+                            <template v-if="hasBooked">
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit
+                            </template>
+                            <template v-else-if="hasConfirmed">
+                                Présence confirmée <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span>
+                            </template>
+                            <template v-else-if="hasGhosted">
+                                Je n'y suis pas allé <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span>
+                            </template>
+                        </div>
                     </div>
                 </div>
 
@@ -56,7 +60,8 @@ export default {
         date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false },
-        statusOnly: { type: Boolean, default: false }
+        statusOnly: { type: Boolean, default: false },
+        orgaOnly: { type: Boolean, default: false }
     },
     data: () => ({
 

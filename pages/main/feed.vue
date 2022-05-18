@@ -29,6 +29,7 @@
                             <template v-for="gathering in upcoming" :slot="gathering._id">
                                 <block-gathering
                                     :modifiers="['square']"
+                                    :status-only="true"
                                     v-bind="gathering"
                                     :key="gathering._id"
                                 />

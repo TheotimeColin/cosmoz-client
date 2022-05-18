@@ -123,6 +123,8 @@ export default {
     }
 
     .Header_nav {
+        display: flex;
+        align-items: center;
         font: var(--ft-m-medium);
         line-height: 1;
     }

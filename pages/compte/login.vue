@@ -118,7 +118,7 @@ export default {
                         this.registerErrors = response.data.errors
                     }
                 } else {
-                    window.location = this.$config.dashboardUrl
+                    this.$router.push(this.localePath({ name: 'feed' }))
                 }
             } catch (e) {
                 console.log(e)
