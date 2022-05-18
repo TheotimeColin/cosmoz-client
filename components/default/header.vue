@@ -2,7 +2,7 @@
     <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left" @mouseenter="isNavOpen = true" @mouseleave="isNavOpen = false">
-                <button-base :modifiers="['round', 'xweak']" class="Header_button" icon-before="bars" v-if="user" />
+                <button-base :modifiers="['round', 'xweak']" class="Header_button d-none@s" icon-before="bars" v-if="user" />
                 <div class="mr-10" v-else></div>
                 
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-m logo-sparkle-p">
@@ -10,8 +10,8 @@
                 </nuxt-link>
             </div>
 
-            <div class="Header_nav" v-if="user">
-                <button-base :modifiers="['weak', 'user']" :to="{ name: 'p-id', params: { id: user.id } }" class="Header_button">
+            <div class="Header_right" v-if="user">
+                <button-base :modifiers="['weak', 'user']" :to="{ name: 'p-id', params: { id: user.id } }" class="Header_button d-none@xs">
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
 
@@ -20,7 +20,7 @@
                 <quick-menu
                     :large="true"
                     icon="caret-down"
-                    class="Header_button"
+                    class="Header_button d-none@xs"
                     :items="[
                         { fa: 'gear', to: { name: 'compte' }, label: `Mes paramètres` },
                         { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
@@ -34,10 +34,14 @@
 
                 <link-base :to="{ name: 'compte-login' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
 
-                <button-base :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
-                    Pré-inscription
-                </button-base>
+                <div class="Header_navItem Header_navItem--button">
+                    <button-base :modifiers="['light', 's']" @click="isNewsletter = true">
+                        Pré-inscription
+                    </button-base>
+                </div>
             </div>
+
+            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user" />
         </div>
 
         <popin-newsletter :is-active="isNewsletter" origin="header" @close="isNewsletter = false" />
@@ -90,6 +94,9 @@ export default {
             }
         }
 
+        &.is-open {
+            background-color: var(--color-bg-xstrong);
+        }
     }
 
     .Header_button {
@@ -116,19 +123,17 @@ export default {
     }
 
     .Header_nav {
-        display: flex;
-        align-items: center;
         font: var(--ft-m-medium);
         line-height: 1;
     }
 
-    .Header_burger {
-        width: 45px;
-        height: 45px;
-        display: none;
+    .Header_right {
+        display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 22px;
+    }
+
+    .Header_burger {
+        display: none;
     }
 
     .Header_navItem {
@@ -145,15 +150,16 @@ export default {
     }
 
     @include breakpoint-s {
-        .Header_burger {
-            display: flex;
+        .Header {
+            box-shadow: 0 0 0 999px rgba(39, 39, 43, 0);
+
+            &.is-open {
+                box-shadow: 0 0 0 999px rgba(39, 39, 43, 0.8);
+            }
         }
 
-        .Header_logo {
-
-            &::before {
-                display: none;
-            }
+        .Header_burger {
+            display: flex;
         }
 
         .Header_nav {
@@ -164,20 +170,22 @@ export default {
             transform: translateY(100%);
             z-index: 100;
             display: none;
-            background-color: var(--color-bg-2xstrong);
-            border-top: 1px solid var(--color-border);
+            background-color: var(--color-bg-xstrong);
+            border-top: 1px solid var(--color-border-weak);
             transition: all 200ms ease;
         }
 
         .Header_wrapper {
-            padding: 0 10px 0 16px;
+            padding: 0 10px 0 15px;
         }
             
         .Header_navItem {
-            display: flex;
-            padding: 20px 0;
-            margin: 0 20px;
-            border-bottom: 1px solid var(--color-border);
+
+            &.LinkBase  {
+                display: flex;
+                padding: 20px 0;
+                margin: 0 20px;
+            }
 
             &.d-block\@s { display: flex; }
 
@@ -186,8 +194,16 @@ export default {
             }
             
             & + & {
+                border-top: 1px solid var(--color-border-weak);
                 margin-left: 20px;
             }
+        }
+
+        .Header_navItem.Header_navItem--button {
+            margin: 0;
+            text-align: center;
+            padding: 15px;
+            background-color: var(--color-bg-2xstrong);
         }
 
         .Header.is-open {

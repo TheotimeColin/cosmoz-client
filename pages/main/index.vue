@@ -4,9 +4,9 @@
             <div class="Wrapper">
                 <div class="fx-grow">
                     <h1 class="ft-title-xl ft-title-m@s ft-title-s@xs">
-                        <span class="d-block@xs">Participe à nos événements.</span><br>
-                        <span class="d-block@xs">Crée de nouvelles affinités.</span><br>
-                        <span class="d-block@xs">Trouve <span class="text-underline">ta constellation.</span></span>
+                        <span class="d-inline-block@xs mb-5@xs">Participe à nos événements.</span><br>
+                        <span class="d-inline-block@xs mb-5@xs">Crée de nouvelles affinités.</span><br>
+                        <span class="">Trouve <span class="text-underline">ta constellation.</span></span>
                     </h1>
                     
                     <h2 class="ft-l max-width-m mt-20 ft-m@xs">
@@ -41,8 +41,8 @@
             <div class="Wrapper">
                 <div class="bg-bg-2xstrong pv-40 br-s">
                     <div class="mb-40 ph-40">
-                        <h2 class="ft-title-m ft-title-m@xs">
-                            Bien plus que de simples événements,<br>des rassemblements sociaux.
+                        <h2 class="ft-title-m ft-title-s@xs">
+                            Mieux que des événements,<br>des rassemblements.
                         </h2>
                         <p class="mt-10 max-width-m">Nos créateurs sont vérifiés et ont tous le même objectif : te faire passer un bon moment avec d'autres personnes qui te ressemblent.</p>
                     </div>
@@ -187,9 +187,10 @@ export default {
 .Homepage_heading {
     background-color: var(--color-bg-strong);
     position: relative;
+    margin-top: -65px;
 
     .Wrapper {
-        padding: 60px 0;
+        padding: 100px 0 60px;
         display: flex;
         position: relative;
         align-items: center;
@@ -213,7 +214,7 @@ export default {
 
         .Wrapper {
             display: block;
-            padding: 30px;
+            padding: 100px 30px 40px;
         }
     }
 

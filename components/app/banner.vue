@@ -65,8 +65,8 @@ export default {
 @include breakpoint-xs {
 
     .Banner {
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 </style>

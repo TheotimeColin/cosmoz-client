@@ -45,6 +45,8 @@
             <div class="AppNav_barItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
                 <nuxt-link class="AppNav_barLabel" :to="item.to">
                     <fa class="icon" :icon="`far fa-${item.fa}`" />
+
+                    <div>{{ item.label }}</div>
                 </nuxt-link>
             </div>
         </div>
@@ -150,9 +152,20 @@ export default {
     transform: translateX(-100%);
     transition: all 150ms ease;
     z-index: 25;
+    box-sizing: content-box;
 
     &:hover {
         transform: translateX(0%);
+    }
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        right: -5px;
+        height: 100%;
+        width: 5px;
     }
 }
 
@@ -275,8 +288,7 @@ export default {
     }
 
     .AppNav_navBar {
-        background-color: var(--color-bg-strong);
-        border-top: 1px solid var(--color-bg);
+        background-color: var(--color-bg-xstrong);
         position: fixed;
         bottom: 0;
         left: 0;
@@ -284,15 +296,18 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        padding: 5px;
+        padding: 10px 5px;
     }
 
     .AppNav_barLabel {
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
+        // width: 60px;
+        // height: 60px;
+        text-align: center;
+
+        & > div {
+            font: var(--ft-2xs);
+        }
     }
 }
 </style>
