@@ -1,5 +1,5 @@
 <template>
-    <popin-base :is-active="selectedUser" :modifiers="['s']" @close="onClose" >
+    <popin :is-active="selectedUser" :modifiers="['s']" @close="onClose" >
         <template slot="content" v-if="selectedUser">
             <div class="bg-cover bg-night text-center p-40" v-if="affinity && received[0]">
                 <div>
@@ -59,7 +59,7 @@
                 </template>
             </div>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

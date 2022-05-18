@@ -68,13 +68,13 @@
             </div>
         </div>
 
-        <popin-base :is-active="editSection" @close="editSection = null" v-if="isSelf">
+        <popin :is-active="editSection" @close="editSection = null" v-if="isSelf">
             <template slot="content">
                 <div class="p-30">
                     <profile-edit :section="editSection" />
                 </div>
             </template>
-        </popin-base>
+        </popin>
     </div>
 </template>
 

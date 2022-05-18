@@ -43,12 +43,12 @@
 export default {
     name: 'GatheringSingle',
     async fetch () {
-        await this.$store.dispatch('gathering/get', { query: { _id: this.$route.params.id }})
+        await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id }})
     },
     computed: {
         gathering () {
             return this.$store.getters['gathering/findOne']({
-                _id: this.$route.params.id
+                id: this.$route.params.id
             })
         }
     },

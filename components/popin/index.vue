@@ -75,7 +75,7 @@ export default {
 }
 
 .PopinBase_body {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     border-radius: 0px;
     width: 80%;
     max-width: 700px;
@@ -123,7 +123,7 @@ export default {
 
 .PopinBase.is-active {
     pointer-events: all;
-        background-color: rgba(40, 40, 40, 0.8);
+        background-color: rgba(39, 39, 43, 0.8);
 
     .PopinBase_body {
         transform: translateY(0);

@@ -16,7 +16,7 @@
         <div class="Wrapper">
             <div class="Footer_container d-flex d-block@s">
                 <div class="fx-grow">
-                    <nuxt-link :to="localePath({ name: '' })" class="ft-title-m logo-sparkle-a">cosmoz</nuxt-link>
+                    <nuxt-link :to="localePath({ name: '' })" class="ft-title-m logo-sparkle-p">cosmoz</nuxt-link>
 
                     <div class="mt-20 row-xs">
                         <div class="col-6 col-12@xs">
@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .Footer {
     color: var(--color-ft-light);
-    background: var(--color-bg-2xstrong);
+    background: var(--color-bg-xstrong);
 }
 
 .Footer_container {

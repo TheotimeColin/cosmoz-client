@@ -1,18 +1,18 @@
 <template>
     <div class="o-hidden">
-        <div class="Wrapper Wrapper--m">
-            <div class="pv-30 br-m max-width-m m-auto">
-                <p class="ft-2xl-bold">Se connecter</p>
+        <div class="Wrapper Wrapper--m pv-60">
+            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s">
+                <p class="ft-title-s">Se connecter</p>
 
-                <form @submit.prevent="submitForm('login')" class="mt-30">
+                <form @submit.prevent="submitForm('login')" class="strong mt-20">
                     <input-base label="Ton adresse e-mail" class="mb-10" :attrs="{ required: true }" v-model="loginForm.email" type="email" />
 
                     <input-base label="Mot de passe" class="mb-10" type="password" :helpers="['reveal']" v-model="loginForm.password" />
 
                     <form-errors :items="loginErrors" />
 
-                    <div class="text-right mt-10">
-                        <link-base class="mr-5" @click="isReset = true" type="button">Mot de passe oublié ?</link-base>
+                    <div class="text-right mt-10 text-center@xs fx-reverse@xs mt-15@xs">
+                        <link-base class="mr-5 mr-0@xs mt-10@xs" @click="isReset = true" type="button">Mot de passe oublié ?</link-base>
 
                         <button-base type="submit" :modifiers="['secondary']" :class="{ 'is-loading': state.isSuccess || state.loading }">
                             Je me connecte
@@ -20,14 +20,24 @@
                     </div>
                 </form>
             </div>
-            <div class="pv-30 br-m max-width-m m-auto">
-                <p class="ft-2xl-bold">Créer mon profil</p>
+            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s mt-30">
+                <p class="ft-title-s">Pas encore de compte ?</p>
+                <p class="ft-l mt-20">On invite régulièrement de nouvelles personnes à rejoindre le réseau. Entre dans notre liste d'attente et reçois ton invitation gratuitement.</p>
 
+                <button-base :modifiers="['light']" class="mt-20" @click="isNewsletter = true">
+                    Entrer sur la liste
+                </button-base>
+            </div>
+
+            <div class="pv-30 br-m max-width-m m-auto" v-if="false">
+                <p class="ft-title-s">Créer mon profil</p>
                 <register-form />
             </div>
         </div>
+        
+        <popin-newsletter :is-active="isNewsletter" origin="login" @close="isNewsletter = false" />
 
-        <popin-base :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false">
+        <popin :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false">
             <template slot="content">
                 <form @submit.prevent="resetPassword" class="p-30">
                     <p class="ft-title-2xs">Réinitialiser ton mot de passe</p>
@@ -43,7 +53,7 @@
                     </div>
                 </form>
             </template>
-        </popin-base>
+        </popin>
     </div>
 </template>
 
@@ -58,6 +68,7 @@ export default {
     data: () => ({
         isReset: false,
         resetSuccess: false,
+        isNewsletter: false,
         state: {
             isSuccess: false,
             loading: false

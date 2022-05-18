@@ -52,8 +52,6 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
   }
 
   let newRoutes = options.routes
-  console.log(newRoutes)
-
   if (routesDirectory) {
     newRoutes = options.routes
       .filter(route => {

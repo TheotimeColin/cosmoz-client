@@ -5,14 +5,14 @@
             <canvas class="QR_canvas" ref="canvas" v-else></canvas>
         </div>
 
-        <popin-base :is-active="zoom" :modifiers="['s']" @close="zoom = false">
+        <popin :is-active="zoom" :modifiers="['s']" @close="zoom = false">
             <template slot="content">
                 <div class="QR p-relative">
                     <img :src="src" v-if="src">
                     <canvas class="QR_canvas" ref="zoomed" v-else></canvas>
                 </div>
             </template>
-        </popin-base>
+        </popin>
     </div>
 </template>
 

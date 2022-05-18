@@ -29,7 +29,9 @@ let Gathering = {
 
         users: { type: Array, default: [], write: 'editor' },
         
-        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' }
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
+
+        organization: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'organization' },
     }, { timestamps: true })
 }
 

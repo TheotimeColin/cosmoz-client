@@ -8,12 +8,18 @@
             <div class="DefaultHeader_nav">
                 <link-base :href="$config.blogUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
                 
-                <link-base :href="$config.appUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false" v-if="user">
-                    {{ user.name ? user.name : user.email }}
-                </link-base>
-                <button-base :modifiers="['light', 's']" class="ml-20 d-none@s" @click="isNewsletter = true" v-else>
-                    Trouver ma constellation
-                </button-base>
+                <template v-if="user">
+                    <button-base :href="$config.appUrl" :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
+                        Mon espace
+                    </button-base>
+                </template>
+                <template v-else>
+                    <link-base :href="$config.appUrl" class="DefaultHeader_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
+
+                    <button-base :modifiers="['light', 's']" class="ml-15 d-none@s" @click="isNewsletter = true">
+                        Pré-inscription
+                    </button-base>
+                </template> 
             </div>
 
             <div class="DefaultHeader_burger" @click="isOpen = !isOpen">

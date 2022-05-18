@@ -1,5 +1,5 @@
 <template>
-    <popin-base :is-active="isActive" :modifiers="['xs']" @close="$emit('close')">
+    <popin :is-active="isActive" :modifiers="['xs']" @close="$emit('close')">
         <template slot="content">
             <div class="p-30">
                 <p class="ft-title-xs mb-20">Réactions <span class="ml-5 round-s bg-bg" v-if="reactions">{{ reactions.length }}</span></p>
@@ -14,7 +14,7 @@
                 </div>
             </div>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

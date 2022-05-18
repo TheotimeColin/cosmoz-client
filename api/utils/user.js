@@ -54,12 +54,12 @@ exports.authenticate = async function (headers) {
                 })
             })
 
-            if (!user) throw Error('user-not-found')
+            // if (!user) throw Error('user-not-found')
 
             resolve(user)
         } catch (e) {
             console.warn(e)
-            reject(e)
+            reject(null)
         }
     })
 }

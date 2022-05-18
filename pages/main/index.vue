@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <div class="Wrapper pv-40">
-            <div class="row fx-align-center pv-20 fx-dir-column-reverse@s">
+        <div class="Wrapper pv-20">
+            <div class="row-s fx-align-center pv-20 fx-dir-column-reverse@s">
                 <div class="col-6 col-12@s mt-30@s">
                     <img :src="assets.landing1" width="100%">
                 </div>
@@ -32,8 +32,39 @@
                     <p>
                         On organise de nombreux événements près de chez toi, où tu peux profiter du soleil ou siroter un cocktail avec des personnes ouvertes et bienveillantes.
                     </p>
+
+                    <div class="ft-title-s tape tape-strong mt-30">Au fait, c'est gratuit.</div>
                 </div>
             </div>
+        </div>
+        <div class="pv-30 bg-bg-2xstrong bg-cover-25 bg-plastic-black">
+            <div class="Wrapper">
+                <div class="bg-bg-2xstrong pv-40 br-s">
+                    <div class="mb-40 ph-40">
+                        <h2 class="ft-title-m ft-title-m@xs">
+                            Bien plus que de simples événements,<br>des rassemblements sociaux.
+                        </h2>
+                        <p class="mt-10 max-width-m">Nos créateurs sont vérifiés et ont tous le même objectif : te faire passer un bon moment avec d'autres personnes qui te ressemblent.</p>
+                    </div>
+
+                    <slider-block
+                        item-class="width-2xs"
+                        :offset="40"
+                    >
+                        <div v-for="gathering in gatherings" :slot="gathering._id" :key="gathering._id">
+                            <block-gathering
+                                :modifiers="['square']"
+                                :status-only="true"
+                                v-bind="gathering"
+                            />
+
+                            <p class="ft-s mt-10">Organisé par antiswipe, rencontres LGBTQ</p>
+                        </div>
+                    </slider-block>
+                </div>
+            </div>
+        </div>
+        <div class="Wrapper pv-20">
             <div class="row fx-align-center pv-20">
                 <div class="col-6 col-12@s">
                     <h2 class="ft-title-l mb-20 ft-title-m@xs">
@@ -85,31 +116,12 @@
         </div>
 
         <div>
-            <div class="Wrapper pt-40 pb-20 p-relative">
-                <div class="row-s">
-                    <div class="col-6 col-12@s">
-                        <h3 class="ft-title-m mb-20">
-                            Des constellations qui te ressemblent<br>et qui rassemblent
-                        </h3>
+            <div class="Wrapper pv-60 p-relative">
+                <p class="ft-title-l mb-40">
+                    Par ici les questions !
+                </p>
 
-                        <p>
-                            Nos constellations se créent autour d'un centre d'intérêt, d'une appartenance ou simplement de personnes qui aiment être ensemble. Chacune est limitée en membres pour conserver des communautés à taille humaine.
-                            <br><br>
-                            Tu peux quitter ou rejoindre d'autres constellations à tout moment, jusqu'à ce que tu trouves les groupes où tu te sens bien.
-                        </p>
-
-                        <button-base :modifiers="['light', 's']" class="mt-30" @click="newsletterActive = true">
-                            Trouver ma constellation
-                        </button-base>
-                    </div>
-                    <div class="col-6 col-12@s">
-                        <transition-group name="fade" component="div" class="row-s n-mt-60 n-mt-0@s mt-30@s">
-                            <div class="col-6 col-12@xs mb-20" v-for="constellation in activeConstellations" :key="constellation.title">
-                                <block-constellation v-bind="constellation" />
-                            </div>
-                        </transition-group>
-                    </div>
-                </div>
+                <faq />
             </div>
         </div>
 
@@ -125,72 +137,26 @@ import landing3 from '@/assets/img/landing/landing_3.webp'
 
 export default {
     name: 'Homepage',
+    async fetch () {
+        await this.$store.dispatch('gathering/fetch', {
+            limit: 3,
+            query: {}
+        })
+    },
     data: () => ({
         newsletterActive: false,
         countdown: '0j 00h 00m 00s',
-        assets: { landing0, landing1, landing2, landing3 },
-        constellations: [],
-        activeConstellations: []
+        assets: { landing0, landing1, landing2, landing3 }
     }),
-    mounted () {
-        this.activeConstellations = [
-            {
-                title: 'Planche & wine lovers', members: 12, events: 14,
-                cover: 'https://images.unsplash.com/photo-1491924778227-f225b115dd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbmV8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
-                logo: 'https://images.unsplash.com/photo-1616631124348-c63521eb484c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Y2hhcmN1dGVyaWV8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'Team scorpio', members: 16, events: 21,
-                cover: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y29uc3RlbGxhdGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1601523266240-897ed285851d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjJ8fHNjb3JwaW9ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: `La taverne (JDR)`, members: 11, events: 6,
-                cover: 'https://images.unsplash.com/photo-1600081523138-0bae23488dea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fG1lZGlldmFsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1614767629805-3bbcf6e26c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZGljZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'Adventure club paris', members: 35, events: 8,
-                cover: 'https://images.unsplash.com/photo-1598959853379-cf6efb7959df?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzF8fGZvcmVzdCUyMHdhbGt8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
-                logo: 'https://images.unsplash.com/photo-1542666365-eb335dc966ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTF8fGZvcmVzdCUyMHdhbGt8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-            }
-        ]
-
-        this.constellations = [
-            {
-                title: 'sorties 35 ans et plus', members: 44, events: 23,
-                cover: 'https://images.unsplash.com/photo-1558346489-19413928158b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d2luZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Y29mZmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'cocktails & more', members: 29, events: 18,
-                cover: 'https://images.unsplash.com/photo-1591243315780-978fd00ff9db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29ja3RhaWxzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1560433956-b2847671bb86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGNvY2t0YWlsc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'kév et les autres', members: 11, events: 5,
-                cover: 'https://images.unsplash.com/photo-1596649299486-4cdea56fd59d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJ1cmdlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1550259114-ad7188f0a967?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGZyaWVzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'loud & queer', members: 41, events: 22,
-                cover: 'https://images.unsplash.com/photo-1542358935821-e4e9f3f3c15d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGxnYnR8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=20',
-                logo: 'https://images.unsplash.com/photo-1545231097-c046d9dcc2f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTh8fGxnYnR8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: '8-bit club', members: 56, events: 13,
-                cover: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmV0cm98ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGdhbWluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-            }, {
-                title: 'brunch ?! brunch.', members: 26, events: 8,
-                cover: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YnJ1bmNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60',
-                logo: 'https://images.unsplash.com/photo-1552334900-c49c6e315adb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c21pbGUlMjBmcmllbmRzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=100&q=60',
-            }
-        ]
-
-        for (let i = 0; i < 4; i++) {
-            setTimeout(() => {
-                setInterval(() => {
-                    this.constellations.push(this.activeConstellations[i])
-                    this.activeConstellations.splice(i, 1, this.constellations[0])
-                    this.constellations.shift()
-                }, 2000 * 4)
-            }, 2000 * i)
+    computed: {
+        gatherings () {
+            return this.$store.getters['gathering/find']({
+                date: '$notNull',
+                display: false
+            })
         }
-
+    },
+    mounted () {
         let nextThursday = this.$moment('28-04-2022 18:00', 'DD-MM-YYYY HH:mm')
 
         while (nextThursday.isBefore(this.$moment())) {

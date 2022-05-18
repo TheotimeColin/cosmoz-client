@@ -1,5 +1,5 @@
 <template>
-    <popin-base
+    <popin
         :id="id"
         class="MediaLibrary"
         :modifiers="['panel']"
@@ -51,7 +51,7 @@
                 </button-base>
             </div>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <popin-base :is-active="isManage" :modifiers="['s']" @close="isManage = false">
+        <popin :is-active="isManage" :modifiers="['s']" @close="isManage = false">
             <template slot="content">
                 <div class="text-center">
                     <div class="bg-cover p-60" :style="{ '--background': `url(${gathering.hero})` }">
@@ -190,9 +190,9 @@
                     </div>
                 </div>
             </template>
-        </popin-base>
+        </popin>
 
-        <popin-base :is-active="isAdminManage" @close="isAdminManage = false" v-if="user.role == 'admin'">
+        <popin :is-active="isAdminManage" @close="isAdminManage = false" v-if="user.role == 'admin'">
             <template slot="content">
                 <form @submit.prevent="onManageSubmit" class="p-30">
                     <div class="mb-30" v-for="(status, i) in userStatuses" :key="i">
@@ -225,7 +225,7 @@
                     </div>
                 </form>
             </template>
-        </popin-base>
+        </popin>
     </div>
 </template>
 

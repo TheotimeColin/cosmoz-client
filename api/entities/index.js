@@ -9,6 +9,7 @@ const location = require('./location')
 const gathering = require('./gathering')
 const article = require('./article')
 const status = require('./status')
+const organization = require('./organization')
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -20,3 +21,4 @@ exports.location = location
 exports.gathering = gathering
 exports.article = article
 exports.status = status
+exports.organization = organization
