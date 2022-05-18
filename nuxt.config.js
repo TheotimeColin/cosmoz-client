@@ -109,6 +109,7 @@ export default {
         domains: process.env.DOMAINS.split(','),
         baseUrl: process.env.BASE_URL,
         appUrl: process.env.APP_URL,
+        adminUrl: process.env.ADMIN_URL,
         blogUrl: process.env.BLOG_URL,
         boutiqueUrl: process.env.SHOP_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
@@ -128,13 +129,13 @@ export default {
         id: process.env.GA_ID
     },
 
-    gtm: {
-        id: process.env.GTM_ID,
-        enabled: process.env.NODE_ENV == 'PRODUCTION',
-        debug: process.env.NODE_ENV != 'PRODUCTION',
-        pageTracking: true,
-        respectDoNotTrack: false
-    },
+    // gtm: {
+    //     id: process.env.GTM_ID,
+    //     enabled: process.env.NODE_ENV == 'PRODUCTION',
+    //     debug: process.env.NODE_ENV != 'PRODUCTION',
+    //     pageTracking: true,
+    //     respectDoNotTrack: false
+    // },
 
     i18n: {
         locales: [

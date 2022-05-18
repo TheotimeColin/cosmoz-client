@@ -20,7 +20,7 @@
         </div>
 
         <div class="Wrapper pv-20">
-            <div class="row-s fx-align-center pv-20 fx-dir-column-reverse@s">
+            <div class="row-s fxa-center pv-20 fx-dir-column-reverse@s">
                 <div class="col-6 col-12@s mt-30@s">
                     <img :src="assets.landing1" width="100%">
                 </div>
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="Wrapper pv-20">
-            <div class="row fx-align-center pv-20">
+            <div class="row fxa-center pv-20">
                 <div class="col-6 col-12@s">
                     <h2 class="ft-title-l mb-20 ft-title-m@xs">
                         2. Connecte-toi avec les personnes que tu apprécies
@@ -79,7 +79,7 @@
                     <img :src="assets.landing2" width="100%">
                 </div>
             </div>
-            <div class="row fx-align-center pv-20 fx-dir-column-reverse@s">
+            <div class="row fxa-center pv-20 fx-dir-column-reverse@s">
                 <div class="col-6 col-12@s mt-30@s">
                     <img :src="assets.landing3" width="100%">
                 </div>

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Entities = require('../entities')
@@ -132,7 +131,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                 }
 
                 if (requiredRole == 'self') {
-                    if (isSelf) granted = true
+                    if (isSelf || user.role == 'admin') granted = true
                 } else if (requiredRole == '$user') {
                     result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
 

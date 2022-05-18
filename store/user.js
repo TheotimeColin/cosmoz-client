@@ -230,24 +230,10 @@ export default {
         items: (state) => {
             return Object.values(state.items).map(item => parseUser(item))
         },
-        find: (state, getters) => (search, raw = false) => {
+        find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
 
-            if (search) {
-                Object.keys(search).forEach(key => {
-                    if (search[key] == '$notNull') {
-                        items = items.filter(item => item[key])
-                    } else if (search[key] == '$notSelf') {
-                        items = items.filter(item => getters.self && item[key] != getters.self._id)
-                    } else if (key == '$in') {
-                        items = items.filter(item => search[key].includes(item._id))
-                    } else {
-                        items = items.filter(item => item[key] == search[key])
-                    }
-                })
-            }
-
-            return items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items

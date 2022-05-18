@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="onSubmit" class="Tidbit">
-        <div class="Tidbit_title d-flex fx-align-center">
+        <div class="Tidbit_title d-flex fxa-center">
             <h2 class="ft-title-s fx-grow">{{ $t(`tidbits.${type}.title`) }}</h2>
                 
             <div class="d-flex fxa-center">

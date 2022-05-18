@@ -24,7 +24,7 @@ export default {
     methods: {
         onChange (e) {
             let files = Object.keys(e.target.files).map(key => e.target.files[key])
-
+            
             this.$emit('input', this.multiple ? files : files[0])
         }
     }

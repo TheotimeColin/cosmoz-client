@@ -104,7 +104,20 @@
                         />
                     </div>
                 </div>
-                <div class="width-s fx-no-shrink n-mt-30 ml-40 p-relative width-xs@s width-100@xs ml-0@xs n-mt-10@xs">
+                <div class="width-s fx-no-shrink n-mt-40 ml-40 p-relative width-xs@s width-100@xs ml-0@xs n-mt-10@xs">
+                    <nuxt-link :to="localePath({ name: 'o-slug', params: { slug: gathering.organization.slug }})" class="p-15 bg-bg br-s mb-10 d-flex c-pointer" v-if="gathering.organization">
+                        <orga-icon
+                            v-bind="gathering.organization"
+                            :no-link="true"
+                            :modifiers="['m']"
+                        />
+
+                        <div class="ml-15">
+                            <p class="ft-s color-ft-weak">Organisé par</p>
+                            <p class="ft-title-2xs">{{ gathering.organization.name }}</p>
+                        </div>
+                    </nuxt-link>
+
                     <div class="p-20 bg-bg br-s">
                         <p>
                             <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
@@ -115,7 +128,7 @@
                     </div>
 
                     <div class="p-20 bg-bg mt-10 br-s" v-if="hasBooked">
-                        <div class="d-flex fx-align-center">
+                        <div class="d-flex fxa-center">
                             <div class="width-3xs fx-no-shrink">
                                 <qr-code :data="qr" />
                             </div>
@@ -139,7 +152,7 @@
 
                         <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
-                        <div class="d-flex fx-align-center mt-20" v-if="user">
+                        <div class="d-flex fxa-center mt-20" v-if="user">
                             <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
                                 événement complet
                             </button-base>
@@ -278,7 +291,7 @@ export default {
             return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
-            return this.$config.baseUrl + this.localePath({ name: 'g-id', params: { id: this.gathering.id }})
+            return this.$config.baseUrl + this.localePath({ name: 'o-slug-id', params: { id: this.gathering.id, slug: this.gathering.organization ? this.gathering.organization.id : 'event' }})
         },
         googleCal () {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`

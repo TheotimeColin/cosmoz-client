@@ -46,14 +46,26 @@ export default {
 
         return { status: 0, code: message, error: errorText }
     },
-    searchItems(items, search) {
+    searchItems(items, search, user) {
         items = [ ...items ]
 
+        let sort = search.sort
+        delete search.sort
+
+
         Object.keys(search).forEach(key => {
-            if (search[key] == '$notNull') {
+            if (typeof search[key] === 'object') {
+                let entries = Object.entries(search[key])[0]
+                
+                if (entries[0] == '$id') {
+                    items = items.filter(item => item[key] && item[key]._id == entries[1])
+                } else if (entries[0] == '$in') {
+                    items = items.filter(item => entries[1].find(i => i[key] == item[key]))
+                }
+            } else if (search[key] == '$notNull') {
                 items = items.filter(item => item[key])
-            } else if (key == '$in') {
-                items = items.filter(item => search[key].find(i => i._id == item._id))
+            } else if (search[key] == '$notSelf') {
+                items = items.filter(item => user && item[key] != user._id)
             } else {
                 let keyValue = Object.keys(search[key])[0]
 
@@ -64,6 +76,19 @@ export default {
                 }
             }
         })
+
+        if (sort) {
+            let key = Object.keys(sort)[0]
+            let value = Object.values(sort)[0]
+
+            items = items.sort((a, b) => {
+                if (!a[key] || !b[key]) return false
+
+                return value == 'desc' ? moment(a[key]).valueOf() - moment(b[key]).valueOf() : moment(b[key]).valueOf() - moment(a[key]).valueOf()
+            })
+        } else {
+            items = items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+        }
 
         return items
     }

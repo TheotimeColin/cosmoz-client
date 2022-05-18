@@ -3,35 +3,22 @@
         <div class="Wrapper pv-60">
             <div class="d-flex d-block@s mt-60">
                 <div class="fx-grow o-hidden">
-                    <div class="pv-20 br-s bg-bg" v-if="attending.length > 0">
-                        <p class="ft-title-xs mb-20 ph-20">Mes prochaines sorties</p>
+                    <placeholder :ratio="33" class="bg-bg-strong" v-if="isLoading" />
+                    <div class="pv-20 br-s bg-bg" v-else>
+                        <p class="ft-title-xs mb-20 ph-20">
+                            {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir` }}
+                        </p>
 
                         <slider-block
                             item-class="width-2xs"
                             :offset="20"
                         >
-                            <div v-for="gathering in attending" :slot="gathering._id" :key="gathering._id">
+                            <template v-for="(gathering, i) in attending.length > 0 ? attending : upcoming" :slot="i">
                                 <block-gathering
                                     :modifiers="['square']"
                                     :status-only="true"
                                     v-bind="gathering"
-                                />
-                            </div>
-                        </slider-block>
-                    </div>
-                    <div class="pv-20 br-s bg-bg" v-else-if="upcoming.length > 0">
-                        <p class="ft-title-xs mb-20 ph-20">Envie de sortir ?</p>
-
-                        <slider-block
-                            item-class="width-2xs"
-                            :offset="20"
-                        >
-                            <template v-for="gathering in upcoming" :slot="gathering._id">
-                                <block-gathering
-                                    :modifiers="['square']"
-                                    :status-only="true"
-                                    v-bind="gathering"
-                                    :key="gathering._id"
+                                    :key="i"
                                 />
                             </template>
                         </slider-block>
@@ -55,13 +42,17 @@
 export default {
     name: 'DashboardIndex',
     middleware: 'onboarded',
-    
     async fetch () {
+        this.isLoading = true
+
         await this.$store.dispatch('gathering/fetch', {
             query: {}
         })
+
+        this.isLoading = false
     },
     data: () => ({
+        isLoading: false,
         format: 'YYYYDDD'
     }),
     computed: {
@@ -73,14 +64,14 @@ export default {
         },
         upcoming () {
             return this.$store.getters['gathering/find']({
-                date: { '$isAfter': this.$moment() },
+                isPast: false,
                 isFull: false
             }).slice(0, 6)
         },
         attending () {
             return this.$store.getters['gathering/find']({
-                date: { '$isAfter': this.$moment() },
-                '$in': this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed')
+                isPast: false,
+                _id: { $in: this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed') }
             })
         }
     },

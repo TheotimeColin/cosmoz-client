@@ -1,5 +1,6 @@
 .p-sticky {
     position: sticky;
+    z-index: 5;
     top: calc(var(--header-base) + var(--offset, 0px));
 }
 
@@ -75,6 +76,10 @@
     }
 }
 
+.page {
+    margin-top: 65px;
+}
+
 .logo-sparkle-a::before {
     top: 10px;
     left: -35px;
@@ -85,6 +90,7 @@
     display: inline-block;
     width: 20px;
     height: 26px;
+    margin-right: 5px;
     vertical-align: bottom;
     top: auto;
     left: auto;

@@ -2,7 +2,7 @@
     <div class="FileUploader">
         <div class="FileUploader_body">
             <div class="FileUploader_input">
-                <input-file @input="addFiles" />
+                <input-file :id="Math.random()" @input="addFiles" />
             </div>
 
             <div class="FileUploader_upload" :class="{ 'is-active': files.length > 0 }">
@@ -69,12 +69,12 @@ export default {
         }
     }),
     computed: {
-        queuedFiles () { return this.$data.files.filter(f => !f.loaded && !f.loading) },
-        loadedFiles () { return this.$data.files.filter(f => f.loaded) },
+        queuedFiles () { return this.files.filter(f => !f.loaded && !f.loading) },
+        loadedFiles () { return this.files.filter(f => f.loaded) },
         status () {
             let status = 'success'
-            if (this.$data.files.filter(f => f.error).length > 0) status = 'partial'
-            if (this.$data.files.filter(f => f.error).length >= this.$data.files.length) status = 'fail'
+            if (this.files.filter(f => f.error).length > 0) status = 'partial'
+            if (this.files.filter(f => f.error).length >= this.files.length) status = 'fail'
 
             return status
         }
@@ -89,7 +89,9 @@ export default {
             return icon
         },
         addFiles (files) {
-            this.$data.files = [ ...this.queuedFiles, ...files.map(file => ({
+            files = Array.isArray(files) ? files : [ files ]
+
+            this.files = [ ...this.queuedFiles, ...files.map(file => ({
                 name: file.name,
                 raw: file,
                 loaded: false,
@@ -97,25 +99,25 @@ export default {
             }))]
         },
         deleteFile (name) {
-            this.$data.files = this.$data.files.filter(i => i.name != name)
+            this.files = this.files.filter(i => i.name != name)
         },
         async upload () {
-            this.$data.state.loading = true
+            this.state.loading = true
 
-            for (const file of this.$data.files) {
-                this.$data.files = setPropertyFor(this.$data.files, { 'name': file.name }, { 'loading': true })
+            for (const file of this.files) {
+                this.files = setPropertyFor(this.files, { 'name': file.name }, { 'loading': true })
 
                 let result = await this.$store.dispatch('library/create', {
                     file: file.raw
                 })
 
-                if (!result) this.$data.files = setPropertyFor(this.$data.files, { 'name': file.name }, { 'error': true })
-                this.$data.files = setPropertyFor(this.$data.files, { 'name': file.name }, { 'loaded': true })
+                if (!result) this.files = setPropertyFor(this.files, { 'name': file.name }, { 'error': true })
+                this.files = setPropertyFor(this.files, { 'name': file.name }, { 'loaded': true })
 
                 this.$emit('upload')
             }
             
-            this.$data.state.loading = false
+            this.state.loading = false
         }
     }
 }

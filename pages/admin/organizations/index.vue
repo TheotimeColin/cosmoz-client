@@ -3,12 +3,10 @@
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
                 <div class="row-xs">
-                    <div class="col-4 col-6@s col-12@xs mb-10" v-for="gathering in gatherings" :key="gathering._id">
-                        <block-gathering
-                            v-bind="gathering"
-                            :modifiers="['square']"
-                            :orga-only="true"
-                            :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                    <div class="col-6 col-6@s col-12@xs mb-10" v-for="organization in organizations" :key="organization._id">
+                        <block-orga
+                            v-bind="organization"
+                            :link="localePath({ name: 'organizations-id', params: { id:  organization._id } })"
                         />
                     </div>
                 </div>
@@ -19,7 +17,7 @@
                     tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :to="{ name: 'gatherings-id', params: { id: 'new' } }"
+                    :to="{ name: 'organizations-id', params: { id: 'new' } }"
                 >
                     Nouveau
                 </button-base>
@@ -30,16 +28,16 @@
 
 <script>
 export default {
-    name: 'GatheringsPage',
+    name: 'OrganizationsPage',
     layout: 'admin',
     middleware: 'admin',
     async fetch () {
-        await this.$store.dispatch('gathering/fetch', {
+        await this.$store.dispatch('organization/fetch', {
             query: {}
         })
     },
     computed: {
-        gatherings () { return this.$store.getters['gathering/find']() },
+        organizations () { return this.$store.getters['organization/find']() },
     }
 }
 </script>

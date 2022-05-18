@@ -67,6 +67,10 @@ export default {
                 type: 'select',
                 label: 'Statut',
                 options: CONSTANTS.status
+            }, {
+                key: 'organization',
+                type: 'string',
+                label: 'Organization'
             }
         ]
     }),
@@ -77,11 +81,6 @@ export default {
     },
     created () {
         this._id = this.$route.params.id
-    },
-    methods: {
-        onUserAttendance () {
-
-        }
     }
 }
 </script>

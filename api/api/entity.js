@@ -302,6 +302,18 @@ const parseQuery = function (query, user) {
                 cancel = true
             }
         }
+        
+        if (typeof value === 'object') {
+            let entries = Object.entries(value)[0]
+
+            if (entries[0] == '$addToSet') {    
+                parsedQuery['$addToSet'] = { [key]: entries[1] }
+            } else if (entries[0] == '$pull') {
+                parsedQuery['$pull'] = { [key]: entries[1] }
+            }
+            
+            delete parsedQuery[key]
+        }
 
         if (typeof value === 'string' && value == '$null') {
             parsedQuery[key] = null

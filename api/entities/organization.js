@@ -4,7 +4,7 @@ let Organization = {
     write: 'admin',
     read: 'public',
     fields: new mongoose.Schema({
-        id: { type: String, write: 'admin' },
+        slug: { type: String, write: 'admin' },
         name: { type: String, write: 'self', read: 'public' },
         intro: { type: String, write: 'self', read: 'public' },
 

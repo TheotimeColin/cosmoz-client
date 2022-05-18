@@ -3,12 +3,12 @@
         <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px' }" ref="rail">
             <div
                 class="SliderBlock_item"
-                v-for="slot in dynSlots"
+                v-for="slotName in dynSlots"
                 :class="[ itemClass ]"
-                :key="slot"
+                :key="slotName"
             >
-                <slot :name="slot">
-                    {{ slot }}
+                <slot :name="slotName">
+                    {{ slotName }}
                 </slot>
             </div>
         </div>
@@ -28,6 +28,7 @@ export default {
     },
     computed: {
         dynSlots () {
+            console.log(this.$slots)
             return Object.keys(this.$slots).filter(key => key != 'submit')
         }
     },

@@ -1,6 +1,6 @@
 <template>
     <div class="o-hidden">
-        <div class="Wrapper Wrapper--m pv-60">
+        <div class="Wrapper Wrapper--m pv-100">
             <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s">
                 <p class="ft-title-s">Se connecter</p>
 
@@ -64,7 +64,7 @@ export default {
     name: 'LoginPage',
     components: { InputBase, SelectBase },
     layout: 'default',
-    middleware: 'loggedIn',
+    middleware: 'notLoggedIn',
     data: () => ({
         isReset: false,
         resetSuccess: false,

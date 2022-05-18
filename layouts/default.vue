@@ -41,6 +41,7 @@ export default {
         this.onWindowResize = Debounce(this.windowResize, 500)
         window.addEventListener('resize', this.onWindowResize)
 
+        this.$store.commit('page/setScrolled', window.scrollY > 5)
         window.addEventListener('scroll', () => {
             let action = window.scrollY > 5
             

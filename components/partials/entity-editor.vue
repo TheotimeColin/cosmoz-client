@@ -1,18 +1,19 @@
 <template>
-    <div class="EntityEditor">
+    <form @submit.prevent class="EntityEditor strong">
         <div class="row">
             <div class="col-8">
                 <slot name="left-before"></slot>
 
-                <div>
-                    <component
-                        v-for="input in form.filter(i => getInput(i))"
-                        class="EntityEditor_input"
-                        :is="getInput(input)"
-                        v-model="formData[input.key]"
-                        v-bind="input"
-                        :key="input.key"
-                    />
+                <div class="bg-bg-xstrong p-30 br-s">
+                    <div class="row-s">
+                        <div class="EntityEditor_input" :class="[ `col-${input.col ? input.col : '12'}` ]" v-for="input in form.filter(i => getInput(i))" :key="input.key">
+                            <component
+                                :is="getInput(input)"
+                                v-model="formData[input.key]"
+                                v-bind="input"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
@@ -26,7 +27,7 @@
 
                     <hr class="Separator mv-20">
 
-                    <div class="d-flex fx-align-center mb-20" v-if="form.find(i => i.key == 'slug')">
+                    <div class="d-flex fxa-center mb-20" v-if="form.find(i => i.key == 'slug')">
                         <input-base
                             label="ID de la page"
                             v-model="formData.slug"
@@ -37,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex fx-align-center mb-20" v-if="form.find(i => i.key == 'id')">
+                    <div class="d-flex fxa-center mb-20" v-if="form.find(i => i.key == 'id')">
                         <input-base
                             label="ID de la page"
                             v-model="formData.id"
@@ -56,7 +57,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
@@ -119,7 +120,10 @@ export default {
     },
     methods: {
         generateSlug () {
-            let slug = this.$data.formData.title
+            let slug = this.$data.formData.title || this.$data.formData.name
+
+            if (!slug) slug = 'no-data'
+
             this.formData.slug = slugify(slug, { lower: true, strict: true })
         },
         generateId () {
@@ -193,9 +197,6 @@ export default {
 
 <style lang="scss" scoped>
 .EntityEditor_input {
-
-    & + & {
-        margin-top: 10px;
-    }
+    margin-bottom: 15px;
 }
 </style>

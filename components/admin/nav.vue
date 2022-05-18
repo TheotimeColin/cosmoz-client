@@ -1,9 +1,8 @@
 <template>
     <nav class="NavAdmin" :class="[]">
-        <nuxt-link to="/" class="NavAdmin_logo">
-            <!-- <icon-base name="logo/logo-main" :height="50" /> -->
-            cosmoz
-        </nuxt-link>
+        <a :href="$config.baseUrl" class="NavAdmin_logo bg-cover bg-night">
+            <span class="ft-title-m logo-sparkle-p">cosmoz</span>
+        </a>
 
         <div class="NavAdmin_items">
             <div class="NavAdmin_item" v-for="(item, i) in items" :key="i">
@@ -29,16 +28,63 @@ export default {
     data: () => ({
         items: [
             { label: 'Tableau de bord', icon: 'mug-tea', exact: true, link: '' },
-
             { label: 'Gatherings', icon: 'calendar-alt', link: 'gatherings' },
             { label: 'Utilisateurs', icon: 'users', link: 'users' },
+            { label: 'Créateurs', icon: 'sparkles', link: 'organizations' },
             { label: 'Blog', icon: 'pen-alt', link: 'articles' },
-            { label: 'Lieux partenaires', icon: 'map-marker-alt', link: 'locations' },
-            
-            // { label: 'Blog', icon: 'newspaper', link: 'articles' },
-            // { label: 'Utilisateurs', icon: 'users', link: 'users' },
             { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' }
         ]
     })
 }
 </script>
+
+<style lang="scss" scoped>
+    .NavAdmin {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--color-bg-xstrong);
+    }
+
+    .NavAdmin_items {
+        width: calc(100% - 20px);
+    }
+
+    .NavAdmin_item {
+        position: relative;
+
+        &:hover {
+            background-color: var(--color-bg-xweak);
+
+            .NavAdmin_sub {
+                display: block;
+            }
+        }
+    }
+
+    .NavAdmin_sub {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        padding: 5px;
+        border: 1px solid var(--color-border);
+        display: none;
+    }
+
+    .NavAdmin_link {
+        display: block;
+        font: var(--ft-m);
+        font-weight: 500;
+        padding: 10px 5px;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .NavAdmin_logo {
+        font: var(--ft-title-m);
+        width: var(--nav-base);
+        padding: 60px 20px;
+        text-align: center;
+    }
+</style>

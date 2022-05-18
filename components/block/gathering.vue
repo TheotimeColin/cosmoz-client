@@ -1,13 +1,13 @@
 <template>
-    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="[ { 'is-past': isPast }, ...$modifiers ]">
+    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="[ ...$modifiers ]">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly">
-                        <user-icon class="mr-10" /> Organisé par antiswipe LGBTQ
+                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && organization">
+                        <orga-icon class="mr-10" v-bind="organization" /> Organisé par {{ organization.name }}
                     </div>
                     <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
                         <div>
@@ -75,7 +75,9 @@ export default {
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false },
         statusOnly: { type: Boolean, default: false },
-        orgaOnly: { type: Boolean, default: false }
+        isPast: { type: Boolean, default: false },
+        orgaOnly: { type: Boolean, default: false },
+        organization: { type: [Object, Boolean], default: false },
     },
     data: () => ({
 
@@ -85,11 +87,8 @@ export default {
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
-        isPast () {
-            return false
-        },
         defaultLink () {
-            return this.localePath({ name: 'g-id', params: { id: this.id } })
+            return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
@@ -103,8 +102,12 @@ export default {
         },
         tagline () {
             let tagline = this.attending.length + ' inscrits'
-
-            if (this.attending.length == 0 && this.max > 0) {
+            
+            if (this.isPast) {
+                tagline = this.attending.length <= 0 ? '' : this.attending.length + ' ont participé'
+            } else if (this.hasBooked) {
+                return tagline
+            } else if (this.attending.length == 0 && this.max > 0) {
                 tagline = `${this.max} places restantes`
             } else if (this.max <= this.attending.length) {
                 tagline = `Événement complet`

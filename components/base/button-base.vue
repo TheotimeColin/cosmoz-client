@@ -42,9 +42,10 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         tag: { type: String },
+        href: { type: String },
         link: { type: String },
         text: { type: String },
-        to: { type: Object, default: () => {} },
+        to: { type: [Object, Boolean], default: false },
         node: { type: Object, default: () => {} },
         iconBefore: { type: String, default: '' },
         iconAfter: { type: String, default: '' },
@@ -56,14 +57,14 @@ export default {
         componentTag () {
             if (this.tag) return this.tag
 
-            if (this.link) return 'a'
+            if (this.link || this.href) return 'a'
             if (this.to) return 'nuxt-link'
 
             return 'button'
         },
         computedAttrs () {
             return {
-                href: this.$props.link,
+                href: this.$props.link ? this.$props.link : this.$props.href,
                 ...this.$props.attrs,
                 ...(this.$props.node ? this.$props.node.attrs : {})
             }

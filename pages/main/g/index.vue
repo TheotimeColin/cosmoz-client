@@ -7,24 +7,27 @@
 
             <div class="d-flex mt-40">
                 <div class="fx-grow">
-                    <div class="d-flex mb-60 mb-30@xs" v-for="(date, i) in gatheringsByDate" :key="i">
-                        <div class="width-3xs d-none@xs">
-                            <tile-date class="p-sticky" style="--offset: 20px" :date="date.date" />
-                        </div>
+                    <div class="mb-60 mb-30@xs" v-for="(date, i) in gatheringsByDate" :key="i">
+                        <p class="ft-title-xs mb-20">{{ $date(date.date) }}</p>
 
-                        <div class="ml-10 fx-grow ml-0@xs">
-                            <p class="ft-title-2xs mb-20 d-none d-block@xs">{{ $date(date.date) }}</p>
-
-                            <div class="Gatherings_item" v-for="gathering in date.gatherings" :key="gathering._id">
-                                <block-gathering
-                                    v-bind="gathering"
-                                />
-                            </div>
+                        <div class="Gatherings_item" v-for="gathering in date.gatherings" :key="gathering._id">
+                            <block-gathering
+                                v-bind="gathering"
+                            />
                         </div>
                     </div>
                 </div>
-                <div class="width-s fx-no-shrink ml-20 d-none@s">
-                    <div class="p-20 bg-bg"></div>
+                <div class="width-s fx-no-shrink ml-40 d-none@s">
+                    <p class="ft-title-xs mb-20">
+                        Créateurs à suivre
+                    </p>
+
+                    <block-orga
+                        v-for="orga in organizations"
+                        class="mb-20"
+                        v-bind="orga"
+                        :key="orga._id"
+                    />
                 </div>
             </div>
         </div>
@@ -38,6 +41,10 @@ export default {
         await this.$store.dispatch('gathering/fetch', {
             query: {}
         })
+
+        await this.$store.dispatch('organization/fetch', {
+            query: {}
+        })
     },
     data: () => ({
         format: 'YYYYDDD'
@@ -47,6 +54,10 @@ export default {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',
                 display: false
+            })
+        },
+        organizations () {
+            return this.$store.getters['organization/find']({
             })
         },
         gatheringsByDate () {

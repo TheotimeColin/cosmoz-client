@@ -1,78 +1,80 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-if="owner.name && gatheringData">
-        <div class="Post_head">
-            <div class="d-flex fxa-center fx-grow">
-                <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
-                    <user-icon class="Post_user" :modifiers="isCurrent ? ['s'] : ['xs']" v-bind="owner" />
-                </nuxt-link>
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }">
+        <template v-if="owner.name && gatheringData">
+            <div class="Post_head">
+                <div class="d-flex fxa-center fx-grow">
+                    <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
+                        <user-icon class="Post_user" :modifiers="isCurrent ? ['s'] : ['xs']" v-bind="owner" />
+                    </nuxt-link>
 
-                <div class="ml-10 ft-s line-1">
-                    <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
-                    <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
+                    <div class="ml-10 ft-s line-1">
+                        <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
+                        <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
+                    </div>
+                </div>
+
+                <quick-menu
+                    class="Post_menu"
+                    :items="actions"
+                />
+            </div>
+            <div class="Post_main">
+                <div class="Post_text" v-html="$options.filters.specials(content)"></div>
+            </div>
+            <div class="Post_footer">
+                <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
+                    <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
+                </div>
+                <div class="Post_action" @click="onAddComment">
+                    <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
                 </div>
             </div>
 
-            <quick-menu
-                class="Post_menu"
-                :items="actions"
+            <content-reaction-popin
+                :is-active="isSeeReactions"
+                :reactions="reactionsOwners"
+                @close="isSeeReactions = false"
             />
-        </div>
-        <div class="Post_main">
-            <div class="Post_text" v-html="$options.filters.specials(content)"></div>
-        </div>
-        <div class="Post_footer">
-            <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
-            </div>
-            <div class="Post_action" @click="onAddComment">
-                <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
-            </div>
-        </div>
+            
+            <transition name="fade">
+                <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
+                    <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
+                
+                    <content-comment
+                        v-for="post in displayedComments"
+                        class="Post_comment"
+                        v-bind="post"
+                        :key="post._id"
+                    />
 
-        <content-reaction-popin
-            :is-active="isSeeReactions"
-            :reactions="reactionsOwners"
-            @close="isSeeReactions = false"
-        />
-        
-        <transition name="fade">
-            <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
-               
-                <content-comment
-                    v-for="post in displayedComments"
-                    class="Post_comment"
-                    v-bind="post"
-                    :key="post._id"
-                />
+                    <content-editor
+                        @submit="onSubmit"
+                        class="Post_comment"
+                        :tiny="true"
+                        placeholder="Ajouter un commentaire..."
+                        @blur="() => children.length == 0 ? isAdd = false : ''"
+                        v-show="isAdd || children.length > 0"
+                        ref="commentInput"
+                    />
+                </div>
+            </transition>
 
-                <content-editor
-                    @submit="onSubmit"
-                    class="Post_comment"
-                    :tiny="true"
-                    placeholder="Ajouter un commentaire..."
-                    @blur="() => children.length == 0 ? isAdd = false : ''"
-                    v-show="isAdd || children.length > 0"
-                    ref="commentInput"
-                />
-            </div>
-        </transition>
+            <div class="Post_delete" v-show="pendingDelete">
+                <div class="max-width-s">
+                    Veux-tu vraiment supprimer ce message et tout ses commentaires ?
 
-        <div class="Post_delete" v-show="pendingDelete">
-            <div class="max-width-s">
-                Veux-tu vraiment supprimer ce message et tout ses commentaires ?
+                    <div class="mt-20">
+                        <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
+                            Annuler
+                        </button-base>
 
-                <div class="mt-20">
-                    <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
-                        Annuler
-                    </button-base>
-
-                    <button-base icon-before="trash" :modifiers="['light']" :loading="isLoading" @click="deletePost">
-                        Oui, supprimer
-                    </button-base>
+                        <button-base icon-before="trash" :modifiers="['light']" :loading="isLoading" @click="deletePost">
+                            Oui, supprimer
+                        </button-base>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -124,7 +126,7 @@ export default {
             if (this.isCurrent) {
                 return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
             } else {
-                return this.localePath({ name: 'g-id', params: { id: this.gatheringData.id } })
+                return this.localePath({ name: 'o-slug-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization._id : 'event' } })
             }
         }
     },

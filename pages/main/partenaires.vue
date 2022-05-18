@@ -2,7 +2,7 @@
     <div class="Partners">
         <div class="bg-cover bg-plastic-black">
             <div class="Wrapper pv-40">
-                <div class="row fx-align-center">
+                <div class="row fxa-center">
                     <div class="col-7 col-12@s">
                         <h1 class="ft-title-l mb-20 ft-title-l@s">Recherche lieux exceptionnels,<br>pour rencontres exceptionnelles.</h1>
 

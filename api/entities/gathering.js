@@ -31,16 +31,18 @@ let Gathering = {
         
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
 
-        organization: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'organization' },
+        organization: { type: mongoose.Schema.Types.ObjectId, write: 'admin', ref: 'organization' },
     }, { timestamps: true })
 }
 
 Gathering.fields.pre('findOne', function () {
     this.populate('cover')
+    this.populate('organization')
 })
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
+    this.populate('organization')
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

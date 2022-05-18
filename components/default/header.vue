@@ -15,6 +15,8 @@
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
 
+                <button-base :modifiers="['round', 'weak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
+
                 <button-base :modifiers="['round', 'weak']" class="Header_button" icon-before="bell" />
 
                 <quick-menu
@@ -28,9 +30,9 @@
                 />
             </div>
             <div class="Header_nav" v-else>
-                <link-base :to="{ name: 'g' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Les événements</link-base>
-
                 <link-base :href="$config.blogUrl" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
+
+                <link-base :to="{ name: 'g' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Les événements</link-base>
 
                 <link-base :to="{ name: 'compte-login' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
 
