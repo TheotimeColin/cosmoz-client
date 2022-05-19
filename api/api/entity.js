@@ -310,11 +310,11 @@ const parseQuery = function (query, user) {
 
             if (entries[0] == '$addToSet') {    
                 parsedQuery['$addToSet'] = { [key]: entries[1] }
+                delete parsedQuery[key]
             } else if (entries[0] == '$pull') {
                 parsedQuery['$pull'] = { [key]: entries[1] }
+                delete parsedQuery[key]
             }
-            
-            delete parsedQuery[key]
         }
 
         if (typeof value === 'string' && value == '$null') {
