@@ -1,26 +1,18 @@
 <template>
     <div class="">
-        <div class="Wrapper pb-60">
-            <h1 class="ft-title-l mt-60">
+        <div class="Wrapper pv-100">
+            <h1 class="ft-title-l">
                 Foire aux questions
             </h1>
 
-            <div class="d-flex mt-40">
-                <div>
-                    <faq />
-                </div>
-                <div class="width-s fx-no-shrink ml-20 d-none@s">
-                    <div class="p-20 bg-bg"></div>
-                </div>
-            </div>
+            <faq class="mt-30" />
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'FAQIndex',
-    layout: 'app'
+    name: 'FAQIndex'
 }
 </script>
 

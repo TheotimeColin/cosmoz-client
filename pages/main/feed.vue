@@ -1,17 +1,20 @@
 <template>
     <div>
         <div class="Wrapper pv-60">
-            <div class="d-flex d-block@s mt-60">
-                <div class="fx-grow o-hidden">
-                    <placeholder :ratio="33" class="bg-bg-strong" v-if="isLoading" />
-                    <div class="pv-20 br-s bg-bg" v-else>
-                        <p class="ft-title-xs mb-20 ph-20">
+            <div class="d-flex d-block@s mt-60 mt-30@xs">
+                <div class="fx-grow">
+                    <div class="pt-20 br-s bg-bg p-0@xs bg-bg-strong@xs">
+                        <p class="ft-title-xs mb-20 ph-20 p-0@xs">
                             {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir` }}
                         </p>
 
                         <slider-block
                             item-class="width-2xs"
-                            :offset="20"
+                            class="outflow@xs"
+                            :ratio="100"
+                            :is-loading="isLoading"
+                            :offset="$smallerThan('xs') ? 15 : 20"
+                            :offset-v="20"
                         >
                             <template v-for="(gathering, i) in attending.length > 0 ? attending : upcoming" :slot="i">
                                 <block-gathering
@@ -24,11 +27,13 @@
                         </slider-block>
                     </div>
 
-                    <p class="ft-title-s mt-40 mb-20">Mes actualités</p>
-                    <content-feed
-                        class="mb-60"
-                        :disable-create="true"
-                    />
+                    <div>
+                        <p class="ft-title-s mt-40 mb-20 ft-title-xs@xs mt-20@xs">Mes actualités</p>
+                        <content-feed
+                            class="mb-60"
+                            :disable-create="true"
+                        />
+                    </div>
                 </div>
                 <div class="width-xs fx-no-shrink ml-20 d-none@s">
                     <div class="p-20 bg-bg"></div>

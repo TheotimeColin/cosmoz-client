@@ -109,67 +109,72 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
         }
         
         let promise = await Promise.all(Object.keys(fields).map(async key => {
-            if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
-                let granted = false
-                let isEncountered = false
-                let isAffinity = false
-                let isSelf = false
+            try {
+                if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
+                    let granted = false
+                    let isEncountered = false
+                    let isAffinity = false
+                    let isSelf = false
 
-                let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
+                    let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
 
-                if (users && user && requested && requested.owner) {
-                    let owner = users.find(u => u._id.equals(user._id))
-                    let requester = users.find(u => u._id.equals(requested.owner))
-                
-                    if (owner && requester) {
-                        isSelf = owner._id.equals(requester._id)
+                    if (users && user && requested && requested.owner) {
+                        let owner = users.find(u => u._id.equals(user._id))
+                        let requester = users.find(u => u._id.equals(requested.owner))
+                    
+                        if (owner && requester) {
+                            isSelf = owner._id.equals(requester._id)
 
-                        isAffinity = owner['affinities'].find(u => u._id.equals(requester._id)) && requester['affinities'].find(u => u._id.equals(owner._id))
+                            isAffinity = owner['affinities'].find(u => u._id.equals(requester._id)) && requester['affinities'].find(u => u._id.equals(owner._id))
 
-                        isEncountered = owner['encounters'].find(u => u._id.equals(requester._id)) && requester['encounters'].find(u => u._id.equals(owner._id))
+                            isEncountered = owner['encounters'].find(u => u._id.equals(requester._id)) && requester['encounters'].find(u => u._id.equals(owner._id))
+                        }
+                    }
+
+                    if (requiredRole == 'self') {
+                        if (isSelf || (user && user.role == 'admin')) granted = true
+                    } else if (requiredRole == '$user') {
+                        result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
+
+                        granted = true
+                    } else if (requiredRole == 'affinity') {
+                        if (isAffinity || isSelf) granted = true
+                    } else if (requiredRole == 'encountered') {
+                        if (isEncountered || isSelf) granted = true
+                    } else if (requiredRole == '$read') {
+                        result[key] = result[key].map(r => {
+                            if (r.read == 'affinity') {
+                                return isAffinity ? r : { ...r, value: 'REDACTED' }
+                            } else if (r.read == 'encountered') {
+                                return isEncountered ? r : { ...r, value: 'REDACTED' }
+                            } else {
+                                return r
+                            }
+                        })
+
+                        granted = true
+                    } else {
+                        granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
+                    }
+
+                    if (fields[key]['replace']) {
+                        let replace = fields[key]['replace']
+                        let targetField = Object.keys(replace)[0]
+
+                        result[key] = user && requested && data[targetField] && data[targetField].includes(user._id) && user[targetField].includes(requested.owner)
+                    }
+                    
+                    if (!granted) {
+                        // console.warn(key + ' not granted')
+                        delete result[key]
                     }
                 }
 
-                if (requiredRole == 'self') {
-                    if (isSelf || user.role == 'admin') granted = true
-                } else if (requiredRole == '$user') {
-                    result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
-
-                    granted = true
-                } else if (requiredRole == 'affinity') {
-                    if (isAffinity || isSelf) granted = true
-                } else if (requiredRole == 'encountered') {
-                    if (isEncountered || isSelf) granted = true
-                } else if (requiredRole == '$read') {
-                    result[key] = result[key].map(r => {
-                        if (r.read == 'affinity') {
-                            return isAffinity ? r : { ...r, value: 'REDACTED' }
-                        } else if (r.read == 'encountered') {
-                            return isEncountered ? r : { ...r, value: 'REDACTED' }
-                        } else {
-                            return r
-                        }
-                    })
-
-                    granted = true
-                } else {
-                    granted = (user ? ROLES[user.role] : 0) >= ROLES[requiredRole]
-                }
-
-                if (fields[key]['replace']) {
-                    let replace = fields[key]['replace']
-                    let targetField = Object.keys(replace)[0]
-
-                    result[key] = user && requested && data[targetField] && data[targetField].includes(user._id) && user[targetField].includes(requested.owner)
-                }
-                
-                if (!granted) {
-                    // console.warn(key + ' not granted')
-                    delete result[key]
-                }
+                return true
+            } catch (e) {
+                console.error(e)
+                return false
             }
-
-            return true
         }))
 
         resolve(result)

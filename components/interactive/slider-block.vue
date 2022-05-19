@@ -1,21 +1,29 @@
 <template>
-    <div class="SliderBlock" :style="{ '--step': step }" ref="container">
-        <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px' }" ref="rail">
-            <div
-                class="SliderBlock_item"
-                v-for="slotName in dynSlots"
-                :class="[ itemClass ]"
-                :key="slotName"
-            >
-                <slot :name="slotName">
-                    {{ slotName }}
-                </slot>
-            </div>
-        </div>
-        
-        <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0" />
+    <div class="SliderBlock" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
+        <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
-        <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps" />
+        <div class="SliderBlock_container" ref="container">
+            <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
+                <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in 5" :key="i" v-show="isLoading">
+                    <placeholder :ratio="ratio" />
+                </div>
+
+                <div
+                    class="SliderBlock_item"
+                    v-for="slotName in dynSlots"
+                    :class="[ itemClass ]"
+                    :key="slotName"
+                >
+                    <slot :name="slotName">
+                        {{ slotName }}
+                    </slot>
+                </div>
+            </div>
+
+            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0 && !isLoading" />
+
+            <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps && !isLoading" />
+        </div>
     </div>
 </template>
 
@@ -24,11 +32,13 @@ export default {
     name: 'SliderBlocks',
     props: {
         itemClass: { type: String, default: '' },
-        offset: { type: Number, default: 0 }
+        offset: { type: Number, default: 0 },
+        offsetV: { type: Number, default: 0 },
+        ratio: { type: Number, default: 0 },
+        isLoading: { type: Boolean, default: false }
     },
     computed: {
         dynSlots () {
-            console.log(this.$slots)
             return Object.keys(this.$slots).filter(key => key != 'submit')
         }
     },
@@ -59,8 +69,15 @@ export default {
 
 <style lang="scss" scoped>
     .SliderBlock {
-        overflow: hidden;
         position: relative;
+    }
+
+    .SliderBlock_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
     }
 
     .SliderBlock_rail {
@@ -75,7 +92,7 @@ export default {
         vertical-align: top;
 
         & + & {
-            margin-left: 10px;
+            margin-right: 10px;
         }
     }
 
@@ -84,7 +101,7 @@ export default {
         position: absolute;
         z-index: 5;
         top: 50%;
-        margin-top: -24px;
+        margin-top: -34px;
     }
 
     .SliderBlock_left {
@@ -97,7 +114,7 @@ export default {
 
     @include breakpoint-xs {
         
-        .SliderBlock {
+        .SliderBlock_container {
             overflow: auto;
         }
 

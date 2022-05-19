@@ -7,7 +7,8 @@
             <div class="fx-grow">
                 <div class="ft-s line-1">
                     <user-icon class="Comment_icon" :modifiers="['xs']" v-bind="owner" />
-                    <span class="subtitle">{{ owner.name }}</span>
+                    
+                    <span class="ft-title-3xs line-1">{{ owner.name }}</span>
                     <span class="ft-xs line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
                 </div>
 

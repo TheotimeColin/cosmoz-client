@@ -7,8 +7,7 @@
         <accordion class="FAQ_question" title="C'est quoi l'objectif de Cosmoz ?">
             Te permettre de sortir et créer du lien social avec des personnes cools et surtout de l'entretenir ensuite.
             <br><br>
-            On a tous déjà ressenti ce besoin de voir de nouvelles têtes, qu'on ait déjà un groupe d'amis existant ou pas. Cosmoz te permet de découvrir de nouvelles activités et te créer de nouveaux amis.<br><br>
-
+            On a tous déjà ressenti ce besoin de voir de nouvelles têtes, qu'on ait déjà un groupe d'amis existant ou pas. Cosmoz te permet de découvrir de nouvelles activités et te créer de nouveaux amis.
         </accordion>
         <accordion class="FAQ_question" title="Je suis vraiment obligé de participer à des événements ?">
             Hé oui. Tout le concept de la plateforme repose sur les connexions réelles. Tu ne pourras pas entrer en contact avec d'autres membres sans les avoir vus en vrai d'abord.<br><br>

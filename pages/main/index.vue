@@ -39,7 +39,7 @@
         </div>
         <div class="pv-30 bg-bg-2xstrong bg-cover-25 bg-plastic-black">
             <div class="Wrapper">
-                <div class="bg-bg-2xstrong pv-40 br-s">
+                <div class="bg-bg-2xstrong pt-40 br-s">
                     <div class="mb-40 ph-40">
                         <h2 class="ft-title-m ft-title-s@xs">
                             Mieux que des événements,<br>des rassemblements.

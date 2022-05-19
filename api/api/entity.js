@@ -72,7 +72,6 @@ exports.createEntity = async function (req, res) {
         let Entity = req.body.type ? Entities[req.body.type] : null
         if (!Entity) throw Error('no-entity-type')
 
-
         let result = req.body._id ? await Entity.model.findById(req.body._id) : null
 
         if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
@@ -104,6 +103,8 @@ exports.createEntity = async function (req, res) {
         if (!data) throw Error('error')
 
         data = await Entity.model.find({ _id: data._id })
+        if (typeCallbacks[req.body.type]) typeCallbacks[req.body.type](data[0]._doc, fields.query, user)
+
         data = await fieldsCheck('read', data[0]._doc, Entity, data[0], user)
     } catch (e) {
         console.warn(e)
@@ -258,6 +259,34 @@ const typeSetters = {
             }
         })
     },
+}
+
+const typeCallbacks = {
+    user: async (data, query, user) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let unfollow = null
+                let orga = (query['$addToSet'] && query['$addToSet'].followed) || (query['$pull'] && query['$pull'].followed)
+
+                if (user.followed.includes(orga) && !data.followed.includes(orga)) {
+                    unfollow = true
+                } else if (!user.followed.includes(orga) && data.followed.includes(orga)) {
+                    unfollow = false
+                }
+
+                if (orga && unfollow !== null) {
+                    await Entities.organization.model.findByIdAndUpdate(orga, {
+                        $inc: { followers: unfollow ? -1 : 1 }
+                    })    
+                }
+
+                resolve(data)
+            } catch (e) {
+                console.warn(e)
+                resolve(data)
+            }
+        })
+    }
 }
 
 const typeDeleters = {

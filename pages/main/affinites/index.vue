@@ -1,6 +1,6 @@
 <template>
     <div class="pb-40">
-        <div class="Wrapper Wrapper--s pb-60 pt-40">
+        <div class="Wrapper Wrapper--s pv-100">
             <p class="ft-title-m mb-20">Mes affinités</p>
 
             <div class="row-xs" v-if="affinities.length > 0">

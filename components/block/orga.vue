@@ -18,8 +18,8 @@
                 <div class="BlockOrga_location">
                     <fa icon="far fa-map-marker-alt" class="mr-3"></fa> {{ location }}
                 </div>
-                <div class="ft-xs">
-                    <fa icon="far fa-user-check" class="mr-3"></fa> 345 abonnés
+                <div class="ft-xs" v-if="followers > 0">
+                    <fa icon="far fa-user-check" class="mr-3"></fa> {{ followers }} abonnés
                 </div>
             </div>
 
@@ -40,6 +40,7 @@ export default {
         intro: { type: String },
         logoSmall: { type: String },
         location: { type: String },
+        followers: { type: Number, default: 0 },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false }
     },

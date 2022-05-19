@@ -296,7 +296,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        padding: 10px 5px;
+        padding: 15px 5px;
     }
 
     .AppNav_barLabel {

@@ -607,6 +607,11 @@
     .p-relative\@s {
         top: auto;
     }
+
+    .fx-reverse\@s {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }
 
 @include breakpoint-xs {

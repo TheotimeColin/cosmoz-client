@@ -1,6 +1,6 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" >
-        <div class="UserIcon_image" :style="src ? { backgroundImage: `url(${src})` } : {}">
+        <div class="UserIcon_image" :style="{ backgroundImage: `url(${src ? src : $bg.night})` }">
             <template v-if="hidePicture || !src">
                 {{ name ? name.slice(0, 1) : 'a' }}
             </template>
@@ -36,7 +36,7 @@ export default {
     }),
     computed: {
         src ()  {
-            return this.hidePicture ? false : (this.pictureSrc ? this.pictureSrc : this.profileLarge)
+            return this.hidePicture ? this.$bg.night : (this.pictureSrc ? this.pictureSrc : this.profileLarge)
         }
     },
     created () {

@@ -7,6 +7,7 @@ let Organization = {
         slug: { type: String, write: 'admin' },
         name: { type: String, write: 'self', read: 'public' },
         intro: { type: String, write: 'self', read: 'public' },
+        followers: { type: Number, default: 0, write: 'private', read: 'public' },
 
         location: { type: String, write: 'self', read: 'public' },
         

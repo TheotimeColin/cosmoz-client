@@ -1,6 +1,6 @@
 <template>
-    <div class="QuickMenu" :class="{ 'is-active': isActive, 'is-large': large }" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
-        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="['round', ...(large ? ['weak'] : ['xs', 'xweak'])]" @click="isActive = !isActive" />
+    <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
+        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
             <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click="onClick(item)">
@@ -11,8 +11,11 @@
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
     name: 'QuickMenu',
+    mixins: [ ModifiersMixin ],
     props: {
         items: { type: Array, default: () => [] },
         large: { type: Boolean, default: false },
@@ -24,6 +27,17 @@ export default {
             close: null
         }
     }),
+    computed: {
+        buttonModifiers () {
+            let modifiers = []
+
+            if (this.large) modifiers = ['weak']
+            else if (this.modifiers.includes('strong')) modifiers = [...modifiers, 'xs', 'weak']
+            else modifiers = [...modifiers, 'xs', 'xweak']
+
+            return [...modifiers, 'round']
+        }
+    },
     watch: {
         isActive: {
             handler (v) {

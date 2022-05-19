@@ -16,7 +16,7 @@ export default {
 <style lang="scss" scoped>
 .Placeholder {
     border-radius: 5px;
-    background-color: var(--color-bg);
+    background-color: rgba(0, 0, 0, 0.15);
     position: relative;
     overflow: hidden;
 
@@ -28,7 +28,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--color-bg-weak) 50%, rgba(0, 0, 0, 0) 100%);
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--color-bg) 50%, rgba(0, 0, 0, 0) 100%);
         animation: placeholder 1000ms cubic-bezier(0.4, 0, 1, 1) 0ms infinite;
     }
 }
