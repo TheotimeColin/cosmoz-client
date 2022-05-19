@@ -305,7 +305,7 @@ const parseQuery = function (query, user) {
             }
         }
         
-        if (typeof value === 'object') {
+        if (value && typeof value === 'object') {
             let entries = Object.entries(value)[0]
 
             if (entries[0] == '$addToSet') {    
