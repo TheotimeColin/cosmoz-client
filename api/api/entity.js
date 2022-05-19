@@ -209,6 +209,8 @@ const typeSetters = {
                         req.app.locals.s3.putObject({
                             Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
                         }, (err, data) => {
+                            if (err) console.error(err)
+                            
                             resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
                         })
                     })
