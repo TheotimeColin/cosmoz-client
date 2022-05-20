@@ -5,15 +5,20 @@ let Status = {
     write: 'user',
     read: 'user',
     fields: new mongoose.Schema({
-        content: { type: String, write: 'user' },
-        attachments: { type: Array, default: [], write: 'user' },
-        reactions: { type: Array, default: [], write: 'user' },
+        read: { type: String, default: 'affinity', write: 'self' },
+
+        content: { type: String, write: 'user', read: '$read' },
+        attachments: { type: Array, default: [], write: 'user', read: '$read' },
+        reactions: { type: Array, default: [], write: 'user', read: '$read' },
 
         children: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'status' }
         ],
+
         gathering: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'gathering' },
+
         parent: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' },
+
         owner: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'user', ref: 'user' }
     }, { timestamps: true })
 }

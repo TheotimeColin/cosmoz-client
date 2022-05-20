@@ -87,8 +87,6 @@ exports.reactStatus = async function (req, res) {
         data = updated.find(d => d._id.equals(fields._id))
 
         if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
-
-        console.log(data)
     } catch (e) {
         console.error(e)
         errors.push(e.message)

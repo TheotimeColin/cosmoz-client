@@ -48,8 +48,11 @@
                     </div>
 
                     <slider-block
+                        :slots="gatherings.map(g => g._id)"
+                        :ratio="100"
                         item-class="width-2xs"
-                        :offset="40"
+                        :offset="$smallerThan('xs') ? 15 : 20"
+                        :offset-v="20"
                     >
                         <div v-for="gathering in gatherings" :slot="gathering._id" :key="gathering._id">
                             <block-gathering
@@ -72,7 +75,7 @@
                     </h2>
 
                     <p>
-                        T'as adoré discuter avec Jenny et Marc toute la soirée ? Si c'est réciproque, des <span class="text-underline">affinités</span> se créent entre vous. On vous proposera de nouvelles sorties selon vos centres d'intérêt.
+                        T'as adoré discuter avec Jenny et Marc toute la soirée ? Si c'est réciproque, ils entrent <span class="text-underline">dans ta constellation</span>. On vous proposera de nouvelles sorties selon vos centres d'intérêt.
                     </p>
                 </div>
                 <div class="col-6 col-12@s mt-30@s">

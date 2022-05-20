@@ -91,8 +91,7 @@ export default {
                 const response = await this.$auth.loginWith('local', { 
                     data: {
                         ...this.formData,
-                        token,
-                        type: 'register'
+                        token, type: 'register'
                     }
                 })
 

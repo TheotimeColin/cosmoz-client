@@ -5,7 +5,7 @@
         </div>
         <div v-else>
             <div class="row-xs">
-                <div class="col-6 mb-10" v-for="v in items" :key="v.type">
+                <div class="col-12 mb-10" v-for="v in items" :key="v.type">
                     <div class="Tidbit_social">
                         <div class="Tidbit_socialHead">
                             <fa class="mr-5" :icon="`fa-brands fa-${v.type}`" />

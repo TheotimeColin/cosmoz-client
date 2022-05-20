@@ -20,18 +20,18 @@
                     </div>
                 </form>
             </div>
-            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s mt-30">
+            
+            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong mt-30" v-if="$route.query.token == 'supersecret'">
+                <p class="ft-title-s">Créer mon profil</p>
+                <register-form />
+            </div>
+            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s mt-30" v-else>
                 <p class="ft-title-s">Pas encore de compte ?</p>
                 <p class="ft-l mt-20">On invite régulièrement de nouvelles personnes à rejoindre le réseau. Entre dans notre liste d'attente et reçois ton invitation gratuitement.</p>
 
                 <button-base :modifiers="['light']" class="mt-20" @click="isNewsletter = true">
                     Entrer sur la liste
                 </button-base>
-            </div>
-
-            <div class="pv-30 br-m max-width-m m-auto" v-if="false">
-                <p class="ft-title-s">Créer mon profil</p>
-                <register-form />
             </div>
         </div>
         

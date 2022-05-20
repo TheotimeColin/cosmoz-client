@@ -215,6 +215,19 @@ Vue.mixin({
         },
         $randomColor () {
             return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
+        },
+        $groupBy (items, type) {
+            return items.reduce((obj, item) => {
+                let newObj = { ...obj }
+
+                if (!newObj[item[type]]) {
+                    newObj[item[type]] = [ item ]
+                } else {
+                    newObj[item[type]].push(item)
+                }
+
+                return newObj
+            }, {})
         }
     }
 })

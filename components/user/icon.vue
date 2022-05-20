@@ -83,7 +83,7 @@ export default {
     right: 0;
     border-radius: 50%;
     font-size: 0;
-    color: var(--color-ft-light);
+    color: var(--color-ft);
     display: flex;
     align-items: center;
     justify-content: center;

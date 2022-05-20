@@ -126,4 +126,12 @@ export default {
             pointer-events: all;
         }
     }
+
+    .QuickMenu--right {
+
+        .QuickMenu_actions {
+            right: auto;
+            left: 0;
+        }
+    }
 </style>

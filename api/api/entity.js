@@ -308,7 +308,7 @@ const typeDeleters = {
 const parseQuery = function (query, user) {
     let parsedQuery = { ...query }
     let options = {}
-    
+
     Object.keys(query).forEach((key, value) => {
         value = query[key]
         
@@ -334,15 +334,17 @@ const parseQuery = function (query, user) {
             }
         }
         
-        if (value && typeof value === 'object') {
-            let entries = Object.entries(value)[0]
+        if (value && (typeof value === 'object' && !Array.isArray(value))) {
+            let entries = Object.entries(value)
 
-            if (entries[0] == '$addToSet') {    
-                parsedQuery['$addToSet'] = { [key]: entries[1] }
-                delete parsedQuery[key]
-            } else if (entries[0] == '$pull') {
-                parsedQuery['$pull'] = { [key]: entries[1] }
-                delete parsedQuery[key]
+            if (entries[0]) {
+                if (entries[0] == '$addToSet') {    
+                    parsedQuery['$addToSet'] = { [key]: entries[1] }
+                    delete parsedQuery[key]
+                } else if (entries[0] == '$pull') {
+                    parsedQuery['$pull'] = { [key]: entries[1] }
+                    delete parsedQuery[key]
+                }
             }
         }
 

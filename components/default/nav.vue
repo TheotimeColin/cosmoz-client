@@ -72,34 +72,22 @@ export default {
                 fa: 'home',
                 to: this.localePath({ name: 'feed' }),
             },
-            // {
-            //     label: `Constellations`,
-            //     fa: 'sparkles',
-            //     to: this.localePath({ name: 'constellations' }),
-            //     items: [
-            //         {
-            //             label: `Mes constellations`,
-            //             to: this.localePath({ name: 'constellations' })
-            //         }, {
-            //             label: `Parcourir les constellations`,
-            //             to: this.localePath({ name: 'constellations-discover' })
-            //         }
-            //     ]
-            // },
             {
-                label: `Rencontres`,
+                label: `Ma constellation`,
+                fa: 'sparkles',
+                to: this.localePath({ name: 'constellation' })
+            },
+            {
+                label: `Rassemblements`,
                 fa: 'party-horn',
                 to: this.localePath({ name: 'g' }),
                 items: [
                     {
-                        label: `Rejoindre un événement`,
+                        label: `Rejoindre un rassemblement`,
                         to: this.localePath({ name: 'g' })
                     }, {
-                        label: `Événements passés`,
+                        label: `Rassemblements passés`,
                         to: this.localePath({ name: 'g-past' })
-                    }, {
-                        label: `Mes affinités`,
-                        to: this.localePath({ name: 'affinites' })
                     }
                 ]
             }

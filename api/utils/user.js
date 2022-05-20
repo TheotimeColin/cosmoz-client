@@ -125,11 +125,16 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         if (owner && requester) {
                             isSelf = owner._id.equals(requester._id)
 
-                            isAffinity = owner['affinities'].find(u => u._id.equals(requester._id)) && requester['affinities'].find(u => u._id.equals(owner._id))
+                            isAffinity = owner['constellation'].find(u => u._id.equals(requester._id)) && requester['constellation'].find(u => u._id.equals(owner._id))
 
                             isEncountered = owner['encounters'].find(u => u._id.equals(requester._id)) && requester['encounters'].find(u => u._id.equals(owner._id))
                         }
                     }
+
+                    if (requiredRole == '$read') {
+                        requiredRole = result['read'] ? result['read'] : 'public'
+                    }
+
 
                     if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
@@ -141,7 +146,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         if (isAffinity || isSelf) granted = true
                     } else if (requiredRole == 'encountered') {
                         if (isEncountered || isSelf) granted = true
-                    } else if (requiredRole == '$read') {
+                    } else if (requiredRole == '$readEach') {
                         result[key] = result[key].map(r => {
                             if (r.read == 'affinity') {
                                 return isAffinity ? r : { ...r, value: 'REDACTED' }

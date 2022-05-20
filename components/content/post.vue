@@ -1,6 +1,6 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }">
-        <template v-if="owner.name && gatheringData">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-show="content || forbidden">
+        <template v-if="owner.name && (this.gathering ? gatheringData : true)">
             <div class="Post_head">
                 <div class="d-flex fxa-center fx-grow">
                     <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
@@ -9,7 +9,11 @@
 
                     <div class="ml-10 ft-s line-1">
                         <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
-                        <p class="ft-italic color-ft-weak mt-5">{{ subtitle }}</p>
+                        <p class="ft-italic color-ft-weak mt-5">
+                            {{ subtitle }}
+
+                            · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }}
+                        </p>
                     </div>
                 </div>
 
@@ -19,9 +23,12 @@
                 />
             </div>
             <div class="Post_main">
-                <div class="Post_text" v-html="$options.filters.specials(content)"></div>
+                <div class="ft-l color-ft-weak pb-20 ph-20" v-if="forbidden">
+                    <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
+                </div>
+                <div class="Post_text" v-html="$options.filters.specials(content)" v-else></div>
             </div>
-            <div class="Post_footer">
+            <div class="Post_footer" v-if="!forbidden">
                 <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
                     <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
                 </div>
@@ -34,8 +41,9 @@
                 :is-active="isSeeReactions"
                 :reactions="reactionsOwners"
                 @close="isSeeReactions = false"
+                v-if="!forbidden"
             />
-            
+
             <transition name="fade">
                 <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
                     <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
@@ -87,6 +95,7 @@ export default {
     props: {
         _id: { type: String },
         content: { type: String },
+        read: { type: String },
         owner: { type: Object },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
@@ -102,11 +111,15 @@ export default {
         isLoading: false,
     }),
     computed: {
+        user () { return this.$store.getters['user/self'] },
+        forbidden () {
+            return (this.read == 'affinity' && !this.owner.isAffinity) && this.owner._id != this.user._id
+        },
         displayedComments () {
-            return this.children.slice(Math.max(0, this.children.length - this.max), this.children.length)
+            return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []
         },
         gatheringData () {
-            return this.$store.getters['gathering/findOne']({ _id: this.gathering })
+            return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
         },
         title () {
             if (this.isCurrent) {
@@ -145,6 +158,7 @@ export default {
             
             this.$emit('submit', {
                 ...data,
+                read: this.read,
                 parent: this._id
             })
         }

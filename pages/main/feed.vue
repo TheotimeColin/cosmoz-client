@@ -5,10 +5,10 @@
                 <div class="fx-grow">
                     <div class="pt-20 br-s bg-bg p-0@xs bg-bg-strong@xs">
                         <p class="ft-title-xs mb-20 ph-20 p-0@xs">
-                            {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir` }}
+                            {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir ?` }}
                         </p>
-
                         <slider-block
+                            :slots="(attending.length > 0 ? attending : upcoming).map(g => g._id)"
                             item-class="width-2xs"
                             class="outflow@xs"
                             :ratio="100"
@@ -16,7 +16,7 @@
                             :offset="$smallerThan('xs') ? 15 : 20"
                             :offset-v="20"
                         >
-                            <template v-for="(gathering, i) in attending.length > 0 ? attending : upcoming" :slot="i">
+                            <template v-for="(gathering, i) in attending.length > 0 ? attending : upcoming" :slot="gathering._id">
                                 <block-gathering
                                     :modifiers="['square']"
                                     :status-only="true"
@@ -31,7 +31,7 @@
                         <p class="ft-title-s mt-40 mb-20 ft-title-xs@xs mt-20@xs">Mes actualités</p>
                         <content-feed
                             class="mb-60"
-                            :disable-create="true"
+                            placeholder="Publier quelque chose..."
                         />
                     </div>
                 </div>

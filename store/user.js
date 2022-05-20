@@ -43,9 +43,14 @@ export default {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
                     id, type: 'user'
                 }))
-                
-                let user = response.data ? parseUser(response.data) : null
 
+                let user = null
+
+                if (response.data) {
+                    commit('updateOne', response.data)
+                    user =  parseUser(response.data)
+                }
+                
                 return user
             } catch (e) {
                 console.error(e)
@@ -193,6 +198,33 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
         },
+        async softFetch ({ state, dispatch }, params) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let result = []
+                    let users = state.items
+
+                    for (let item of params.items) {
+                        if (!users[item]) {
+                            console.log('====== FETCH USERS =======')
+
+                            let newUsers = await dispatch('fetch', {
+                                query: { _id: '$in' + params.items.join(',') }
+                            })
+
+                            if (newUsers) users = storeUtils.refresh(newUsers)
+                        }
+
+                        if (users[item]) result = [ ...result, parseUser(users[item]) ]
+                    }
+
+                    resolve(result)
+                } catch (e) {
+                    console.error(e)
+                    reject([])
+                }
+            })
+        },
         async mapUsers ({ state, dispatch }, params) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -204,7 +236,7 @@ export default {
                             console.log('====== FETCH USERS =======')
 
                             let newUsers = await dispatch('fetch')
-                            users = storeUtils.refresh(newUsers)
+                            if (newUsers) users = storeUtils.refresh(newUsers)
                         }
 
                         let user = users[params.property ? item[params.property] : item]
@@ -221,6 +253,20 @@ export default {
                     reject([])
                 }
             })
+        },
+        async unmatch ({ dispatch }, target) {
+            try {
+                const response = await this.$axios.$post('/affinities/remove-match', { target: target._id })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                await dispatch('fetchOne', target.id)
+                
+                return true
+            } catch (e) {
+                console.error(e)
+                return false
+            }
         }
     },
     getters: {
@@ -232,7 +278,6 @@ export default {
         },
         find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-
             return search ? storeUtils.searchItems(items, search, root.auth.user) : items
         },
         groupBy: (state, getters) => (property) => {
@@ -254,6 +299,10 @@ export default {
         },
         findOne: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
+
+            console.log(items)
+            console.log(search)
+            
             return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
         }
     }

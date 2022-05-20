@@ -10,6 +10,7 @@ const gathering = require('./gathering')
 const article = require('./article')
 const status = require('./status')
 const organization = require('./organization')
+const mention = require('./mention')
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -22,3 +23,4 @@ exports.gathering = gathering
 exports.article = article
 exports.status = status
 exports.organization = organization
+exports.mention = mention

@@ -1,8 +1,9 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_item p-15 mb-10 br-s bg-bg-xstrong"
+            class="Feed_item p-15 mb-20 br-s bg-bg"
             :placeholder="placeholder"
+            :read="read"
             @submit="onSubmit"
             v-if="!disableCreate"
             ref="editor"
@@ -13,7 +14,7 @@
                 class="Feed_item"
                 :ratio="33"
                 v-for="i in 5" :key="i"
-                v-show="isLoading"
+                v-if="isLoading"
             />
 
             <content-post
@@ -45,9 +46,11 @@
 export default {
     name: 'Feed',
     props: {
+        read: { type: String, default: 'affinity' },
         max: { type: Number, default: 5 },
         gathering: { type: String },
-        placeholder: { type: String },
+        author: { type: String },
+        placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false }
     },
@@ -57,11 +60,14 @@ export default {
         page: 0
     }),
     async fetch () {
-        let query = {}
+        let query = { parent: '$null' }
 
         if (this.gathering) {
             query.gathering = this.gathering
-            query.parent = '$null'
+            await this.$store.dispatch('status/fetch', { query })
+        } else if (this.author) {
+            query.owner = this.author
+            query.gathering = '$null'
             await this.$store.dispatch('status/fetch', { query })
         } else {
             await this.$store.dispatch('status/fetchFeed')
@@ -73,6 +79,7 @@ export default {
             let query = {}
         
             if (this.gathering) query.gathering = this.gathering
+            if (this.author) query.owner = this.author
 
             return this.$store.getters['status/find']({
                 ...query
@@ -95,7 +102,7 @@ export default {
                     })
 
                     this.statusesData = await Promise.all(statuses.map(async s => {
-                        let children = await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' })
+                        let children = s.children ? await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' }) : []
 
                         return { ...s, children }
                     }))
@@ -108,10 +115,14 @@ export default {
     methods: {
         async onSubmit (formData) {
             try {
-                const response = await this.$store.dispatch('status/create', {
-                    ...formData,
-                    gathering: this.gathering
-                })
+                let data = { ...formData, read: this.read }
+
+                if (this.gathering) {
+                    data.gathering = this.gathering
+                    data.read = 'public'
+                }
+
+                const response = await this.$store.dispatch('status/create', data)
                 
                 if (response.status == 0) throw Error(response.errors[0])
 

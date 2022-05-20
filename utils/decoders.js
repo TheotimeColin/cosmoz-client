@@ -30,8 +30,6 @@ export default {
         },
         parse: function (form) {
 
-            console.log(form)
-            
             return {
                 ...form,
                 cover: form.cover ? form.cover._id : '',

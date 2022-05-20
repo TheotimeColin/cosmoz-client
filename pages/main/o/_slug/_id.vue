@@ -43,7 +43,7 @@
                             </div>
                         </div>
 
-                        <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
+                        <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" v-if="hasConfirmed && gathering.isPast" />
                     </div>
                     <div class="Gathering_section" v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
                         <div class="p-20 mb-30">
@@ -99,6 +99,7 @@
                         <content-feed
                             placeholder="Une question ? Une information à donner ?"
                             :disable-create="!isAddComment"
+                            read="user"
                             :max="3"
                             :gathering="gathering._id"
                         />

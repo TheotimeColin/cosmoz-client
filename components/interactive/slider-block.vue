@@ -10,13 +10,11 @@
 
                 <div
                     class="SliderBlock_item"
-                    v-for="slotName in dynSlots"
+                    v-for="slotId in slots"
                     :class="[ itemClass ]"
-                    :key="slotName"
+                    :key="slotId"
                 >
-                    <slot :name="slotName">
-                        {{ slotName }}
-                    </slot>
+                    <slot :name="slotId"></slot>
                 </div>
             </div>
 
@@ -31,17 +29,18 @@
 export default {
     name: 'SliderBlocks',
     props: {
+        slots: { type: Array, default: () => [] },
         itemClass: { type: String, default: '' },
         offset: { type: Number, default: 0 },
         offsetV: { type: Number, default: 0 },
         ratio: { type: Number, default: 0 },
         isLoading: { type: Boolean, default: false }
     },
-    computed: {
-        dynSlots () {
-            return Object.keys(this.$slots).filter(key => key != 'submit')
-        }
-    },
+    // computed: {
+    //     dynSlots () {
+    //         return Object.keys(this.$slots).filter(key => key != 'submit')
+    //     }
+    // },
     data: () => ({
         step: 0,
         maxSteps: 0
@@ -90,9 +89,10 @@ export default {
         white-space: normal;
         display: inline-block;
         vertical-align: top;
+        margin-right: 10px;
 
-        & + & {
-            margin-right: 10px;
+        &:last-child {
+            margin-right: 0;
         }
     }
 

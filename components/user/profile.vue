@@ -8,9 +8,6 @@
                 <div class="round bg-sticky color-ft" v-if="isAffinity">
                     <fa icon="far fa-sparkles" />
                 </div>
-                <div class="round bg-bg-light color-ft" v-else-if="gathering && sent">
-                    <fa icon="far fa-check" />
-                </div>
             </div>
             <div>
                 <div class="UserProfile_title">{{ name }}</div>
@@ -41,8 +38,7 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        src ()  { return this.profileLarge },
-        sent () { return this.mentions.find(m => m.user == this.user._id && m.gathering == this.gathering) ? true : false }
+        src ()  { return this.profileLarge }
     },
     created () {
         this.theme = 'is-' + this.$randomColor()

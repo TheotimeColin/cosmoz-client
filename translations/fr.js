@@ -27,17 +27,35 @@ export default {
         },
     },
     permissions: {
+        public: {
+            icon: 'far fa-eye',
+            title: 'Tout le monde',
+            subtitle: `Visible par tout le monde`,
+            error: `Uniquement visible par les membres.`
+        },
         user: {
+            icon: 'far fa-eye',
+            title: 'Tout le monde',
             subtitle: `Visible par tout le monde`,
             error: `Uniquement visible par les membres.`
         },
         encountered: {
+            icon: 'far fa-hand-wave',
+            title: 'Connaissances uniquement',
             subtitle: `Visible par les personnes que j'ai rencontrées`,
             error: `Uniquement visible après une rencontre.`
         },
         affinity: {
-            subtitle: `Visible par mes affinités uniquement`,
-            error: `Uniquement visible par ses affinités.`
+            icon: 'far fa-sparkles',
+            title: 'Constellation uniquement',
+            subtitle: `Visible par ma constellation uniquement`,
+            error: `Uniquement visible par sa constellation.`
+        },
+        extended: {
+            icon: 'far fa-solar-system',
+            title: 'Contellation étendue uniquement',
+            subtitle: `Visible par ma constellation étendue`,
+            error: `Uniquement visible par sa constellation étendue.`
         }
     },
     errors: {

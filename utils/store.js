@@ -60,8 +60,12 @@ export default {
                 if (entries[0] == '$id') {
                     items = items.filter(item => item[key] && item[key]._id == entries[1])
                 } else if (entries[0] == '$in') {
-                    items = items.filter(item => entries[1].find(i => i[key] == item[key]))
+                    let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
+                    
+                    items = items.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
                 }
+            } else if (key == '$in') {
+                items = items.filter(item => search[key].includes(item._id))
             } else if (search[key] == '$notNull') {
                 items = items.filter(item => item[key])
             } else if (search[key] == '$notSelf') {

@@ -13,10 +13,8 @@ let UserEntity = {
         password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
-        qr: { type: String, write: 'private', read: 'self' },
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
-        categories: { type: Array, default: [], write: 'self', read: 'self' },
         ref: { type: String, write: 'self' },
 
         settings: { type: Object, write: 'self', read: 'self' },
@@ -24,7 +22,7 @@ let UserEntity = {
         mentions: { type: Array, default: [], write: 'private', read: 'user' },
         gatherings: { type: Array, default: [], write: 'self', read: 'self' },
 
-        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { affinities: '$requester' } },
+        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { constellation: '$requester' } },
 
         isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
         
@@ -40,7 +38,11 @@ let UserEntity = {
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
-        tidbits: { type: Array, default: [], write: 'self', read: '$read' },
+        constellation: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'user', ref: 'user' }
+        ],
+
+        tidbits: { type: Array, default: [], write: 'self', read: '$readEach' },
 
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })

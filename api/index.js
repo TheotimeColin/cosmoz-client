@@ -22,7 +22,7 @@ require('./entities/index')
 const { createEntity, getEntities, deleteEntity } = require('./api/entity');
 const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribeNewsletter } = require('./api/user');
 const { updateBookingStatus } = require('./api/gathering');
-const { sendMentions } = require('./api/affinities');
+const { sendMentions, unmatch } = require('./api/affinities');
 const { getFeed, postStatus, reactStatus } = require('./api/status');
 
 app.use(morgan('combined'))
@@ -40,7 +40,7 @@ const storage = multer.diskStorage({
     destination : 'uploads/',
     limits: { fieldSize: 2 * 1024 * 1024 },
     filename: function (req, file, cb) {
-      cb(null, file.originalname);
+      cb(null, file.originalname)
     }
 })
 
@@ -73,6 +73,7 @@ mongoose.connection.once('open', async () => {
 
 
     app.post('/affinities/send-mentions', sendMentions)
+    app.post('/affinities/remove-match', unmatch)
 })
 
 module.exports = app

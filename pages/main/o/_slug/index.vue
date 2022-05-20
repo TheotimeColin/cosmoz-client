@@ -63,8 +63,11 @@
                         </p>
 
                         <slider-block
+                            :slots="pastEvents.map(g => g._id)"
+                            :ratio="100"
                             item-class="width-2xs"
-                            :offset="20"
+                            :offset="$smallerThan('xs') ? 15 : 20"
+                            :offset-v="20"
                         >
                             <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
                                 <block-gathering
@@ -152,7 +155,7 @@ export default {
         background-position: center;
         display: flex;
         align-items: flex-start;
-        justify-content: end;
+        justify-content: flex-end;
         padding: 10px;
 
         &::before {

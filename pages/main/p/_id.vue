@@ -6,7 +6,7 @@
                     <div class="p-relative mr-20" @click="() => isSelf ? editSection = 'picture' : ''">
                         <user-icon
                             :no-link="isSelf"
-                            :modifiers="['xl']"
+                            :modifiers="$smallerThan('s') ? ['l'] : ['xl']"
                             v-bind="profile"
                         />
 
@@ -15,27 +15,55 @@
                         </div>
                     </div>
                     <div class="fx-grow">
-                        <p>{{ profile.name }}</p>
-                        <div class="ft-s" v-if="profile.isAffinity">
-                            Vous avez une affinité
+                        <div class="d-flex fxa-center">
+                            <p class="ft-title-l ft-title-m@s">{{ profile.name }}</p>
+                            
+                            <quick-menu
+                                class="ml-10 d-none@s"
+                                :modifiers="['right']"
+                                :items="[
+                                    { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
+                                ]"
+                            />
                         </div>
-                        <div class="ft-s" v-else-if="user.encounters.includes(profile._id)">
-                            Vous vous êtes rencontré
+
+                        <div class="ft-m" v-if="profile.isAffinity">
+                            Fait partie de ta constellation
+                        </div>
+                        <div class="ft-m" v-else-if="user.encounters.includes(profile._id)">
+                            Vous vous êtes rencontrés
                         </div>
                     </div>
                 </div>
 
-                <div class="ml-40 text-center fx-grow ml-0@xs mt-20@xs text-left@xs">
-                    <div class="ft-title-3xs tape tape-strong m-3" v-for="(count, key) in profile.mentionsCategories" :key="key">
-                        {{ $t('mentions.' + key) }} <span class="round round-s bg-bg ml-5">{{ count }}</span>
+                <div class="ml-40 text-right fx-grow ml-0@xs mt-20@xs text-left@xs" v-if="mentions.length > 0">
+                    <div class="ft-title-3xs tape tape-strong m-3" v-for="(items, type) in $groupBy(mentions, 'type')" :key="type">
+                        {{ $t('mentions.' + type) }} <span class="round round-s bg-bg ml-5">{{ items.length }}</span>
                     </div>
                 </div>
             </div>
         </app-banner>
 
-        <div class="Wrapper pv-60 mv-40@xs">
+        <div class="Wrapper pv-60 pv-30@xs">
             <div class="row-s">
-                <div class="col-7">
+                <div class="col-7 col-12@s">
+                    <content-feed
+                        class="mb-60"
+                        :author="profile._id"
+                        :disable-create="!isSelf"
+                    />
+                </div>
+                <div class="col-5 col-12@s">
+                    <div class="bg-bg p-20 br-s mb-20" v-if="common.length > 0 && !isSelf">
+                        <p class="ft-title-2xs">Relations en commun</p>
+
+                        <div class="row-xs mt-10">
+                            <div class="col-6 col-12@s mt-10" v-for="user in common" :key="user._id">
+                                <user-icon :display-name="true" v-bind="user" />
+                            </div>
+                        </div>
+                    </div>
+
                     <div v-if="tidbits.length > 0">
                         <tidbit
                             :type="TYPE"
@@ -45,24 +73,6 @@
                             v-bind="getTidbit(TYPE)"
                             :key="TYPE"
                         />
-                    </div>
-                    <div class="bg-bg-xstrong p-30 text-center br-s" v-else>
-                        <fa icon="far fa-face-sad-tear" class="ft-xl color-ft-xweak line-1"></fa>
-
-                        <p class="mt-10 color-ft-weak line-1">{{ profile.name }} n'a pas encore rempli son profil.</p>
-                    </div>
-                </div>
-                <div class="col-5">
-                    <div class="bg-bg-xstrong p-20 br-s">
-                        <div class="" v-if="profile.createdAt">
-                            <fa icon="far fa-cake-candles" class="mr-5" /> Nous a rejoint {{ $moment(profile.createdAt).fromNow() }}
-                        </div>
-                        <div class="mt-10" v-if="profile.gatheringsCount">
-                            <fa icon="far fa-calendar" class="mr-5" /> {{ profile.gatheringsCount }} participations
-                        </div>
-                        <div class="mt-3" v-if="profile.encounterCount">
-                            <fa icon="far fa-hand-wave" class="mr-5" /> {{ profile.encounterCount }} rencontres
-                        </div>
                     </div>
                 </div>
             </div>
@@ -83,30 +93,55 @@ const TIDBITS = ['socials', 'anything']
 
 export default {
     name: 'ProfilePage',
-    
     async fetch () {
-        this.target = await this.$store.dispatch('user/fetchOne', this.$route.params.id)
+        await this.$store.dispatch('user/fetchOne', this.$route.params.id)
+
+        if (this.target) {
+            await this.$store.dispatch('mention/fetch', { query: {
+                target: this.target._id
+            }})
+        }
     },
     data: () => ({
         TIDBITS,
-        target: null,
-        editSection: null
+        editSection: null,
+        common: [],
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        target () { return this.$store.getters['user/findOne']({ id: this.$route.params.id }) },
         profile () { return this.user && this.$route.params.id == this.user.id ? this.user : this.target },
         isSelf () { return this.user && this.profile && this.user.id == this.profile.id },
         tidbits () {
             return this.isSelf ? TIDBITS : TIDBITS.filter(t => this.getTidbit(t).value)
+        },
+        mentions () {
+            return this.$store.getters['mention/find']({
+                target: this.profile._id
+            })
         }
     },
-    mounted () {
-        console.log(this.profile)
+    watch: {
+        profile: {
+            immediate: true,
+            async handler (v) {
+                if (v) {
+                    if (v.constellation && this.user.constellation) {
+                        this.common = await this.$store.dispatch('user/softFetch', {
+                            items: [ ...new Set(v.constellation.filter(u => this.user.constellation.includes(u))) ]
+                        })
+                    }
+                }
+            }
+        }
     },
     methods: {
         getTidbit (type) {
             let result = this.profile.tidbits && this.profile.tidbits.find(t => t.type == type)
             return result ? result : {}
+        },
+        async unmatch () {
+            await this.$store.dispatch('user/unmatch', this.profile)
         }
     }
 }
