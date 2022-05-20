@@ -32,7 +32,7 @@
                     </button-base>
                 </div>
             </div>
-            <div class="d-flex mt-60 d-block@s mt-30@xs">
+            <div class="d-flex mv-60 d-block@s mt-30@xs">
                 <div class="fx-grow o-hidden">
                     <div v-if="upcomingEvents.length > 0">
                         <p class="ft-title-m mb-20">

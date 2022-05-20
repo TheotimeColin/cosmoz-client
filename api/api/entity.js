@@ -338,6 +338,8 @@ const parseQuery = function (query, user) {
             let entries = Object.entries(value)
 
             if (entries[0]) {
+                entries = entries[0]
+
                 if (entries[0] == '$addToSet') {    
                     parsedQuery['$addToSet'] = { [key]: entries[1] }
                     delete parsedQuery[key]
