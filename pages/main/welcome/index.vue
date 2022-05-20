@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="Wrapper Wrapper--xs pv-40 ft-l">
+        <div class="Wrapper Wrapper--xs pv-100 ft-l">
             <h1 class="ft-title-l mb-30">Envie de voir de nouvelles têtes {{ user.name }} ?</h1>
 
             <conversation :items="conversation" @action="onAction" />
@@ -51,7 +51,7 @@ export default {
             }, {
                 id: '1',
                 step: 1,
-                content: `Cosmoz est une plateforme qui met le réel au premier plan. Tu vas participer à des événements gratuits, locaux et surtout super conviviaux. <br><br>Sur place tu vas rencontrer de nouvelles têtes, créer des affinités et surtout  passer un bon moment (promis).`,
+                content: `Cosmoz est une plateforme qui met le réel au premier plan. Tu vas participer à des événements gratuits, locaux et surtout super conviviaux. <br><br>Sur place tu vas rencontrer de nouvelles têtes, créer de nouveaux liens et surtout passer un bon moment (promis).`,
                 actions: [
                     { id: 'disagree', label: `Woah, doucement`, value: -1 },
                     { id: 'agree', label: `Trop cool ! Et ensuite ?` },
@@ -59,8 +59,7 @@ export default {
             }, {
                 id: '2',
                 step: 2,
-                content: `En fonction des affinités que tu crées, on te proposera de rejoindre des tribus : des groupes de 10 à 60 personnes qui s'apprécient.<br><br>
-                Vous pourrez interagir et surtout, continuer à vous voir en organisant de nouvelles sorties ensemble.<br><br>Tu auras toujours une tribu sur laquelle compter si tu as envie de sortir.`,
+                content: `Bla bla`,
                 actions: [
                     { id: 'disagree', label: `Voir la FAQ`, value: -1 },
                     { id: 'agree', label: `Je me lance`, action: this.onEnd },
