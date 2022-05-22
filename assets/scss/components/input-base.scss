@@ -1,5 +1,13 @@
 .InputBase {
     color: var(--color-ft-light);
+    
+    
+    &.is-focused {
+
+        .InputBase_label {
+            color: var(--color-ft-light);
+        }
+    }
 }
 
 .InputBase_label,
@@ -33,16 +41,12 @@
     }
 }
 
-form.strong {
+.strong {
 
     .InputBase_label,
     .SelectBase_label {
         background-color: var(--color-bg-xstrong) !important;
     }
-}
-
-.ToggleBase {
-    
 }
 
 .Toggle_checkbox:checked + .Toggle_container {

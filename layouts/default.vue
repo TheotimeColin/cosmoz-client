@@ -4,6 +4,8 @@
         
         <div class="LayoutDefault_content">
             <Nuxt />
+
+            <popin-register />
         </div>
 
         <default-footer />

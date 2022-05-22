@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="pv-30 bg-bg-2xstrong bg-cover-25 bg-plastic-black">
+        <div class="pv-30 bg-bg-2xstrong bg-cover-25 bg-plastic-black" v-if="gatherings.length > 0">
             <div class="Wrapper">
                 <div class="bg-bg-2xstrong pt-40 br-s">
                     <div class="mb-40 ph-40">
@@ -57,11 +57,10 @@
                         <div v-for="gathering in gatherings" :slot="gathering._id" :key="gathering._id">
                             <block-gathering
                                 :modifiers="['square']"
-                                :status-only="true"
+                                :orga-only="true"
+                                :orga-short="true"
                                 v-bind="gathering"
                             />
-
-                            <p class="ft-s mt-10">Organisé par antiswipe, rencontres LGBTQ</p>
                         </div>
                     </slider-block>
                 </div>

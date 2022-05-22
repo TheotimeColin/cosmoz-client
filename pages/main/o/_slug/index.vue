@@ -32,7 +32,8 @@
                     </button-base>
                 </div>
             </div>
-            <div class="d-flex mv-60 d-block@s mt-30@xs">
+            
+            <div class="d-flex pv-60 d-block@s pt-30@xs">
                 <div class="fx-grow o-hidden">
                     <div v-if="upcomingEvents.length > 0">
                         <p class="ft-title-m mb-20">
@@ -82,7 +83,7 @@
 
                 <div class="width-s fx-no-shrink ml-40 width-100@s ml-0@s mb-40@s">
                     <div class="bg-bg p-20 br-s">
-
+                        
                     </div>
                 </div>
             </div>
@@ -123,7 +124,7 @@ export default {
             })
         },
         isFollowed () {
-            return this.user.followed.includes(this.orga._id)
+            return this.user ? this.user.followed.includes(this.orga._id) : false
         },
         pastEvents () {
             return this.gatherings.filter(g => g.isPast)
@@ -141,10 +142,27 @@ export default {
             })
             
             setTimeout(() => {
-                this.followAction = this.isFollowed ? 1 : -1
+                this.followAction = this.isFollowed ? -1 : 1
                 this.isLoading = false
             }, 50)
         }
+    },
+    head () {
+        let meta = {
+            title: this.orga.name + ' organise ses événements sur Cosmoz',
+            meta: [
+                { hid: 'description', name: 'description', content: this.orga.intro },
+
+                { property: 'og:title', content: this.orga.name  + ' organise ses événements sur Cosmoz' },
+                { property: 'og:url', content: this.$config.baseUrl + '/o/' + this.orga.slug },
+                { property: 'og:image', content: this.orga.logo },
+                { property: 'og:description', content: this.orga.intro },
+                { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
+                { property: 'twitter:card', content: 'summary_large_image' },
+            ]
+        }
+
+        return meta
     }
 }
 </script>

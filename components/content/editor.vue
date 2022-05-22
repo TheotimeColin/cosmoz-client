@@ -6,7 +6,7 @@
             <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
 
             <transition name="fade">
-                <div class="Editor_secondary" v-show="isFocused || true">
+                <div class="Editor_secondary" v-show="isFocused">
                     <div class="fx-grow pr-20">
                         <p class="ft-s color-ft-weak line-2" v-if="read">
                             <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.

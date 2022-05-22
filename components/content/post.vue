@@ -23,7 +23,7 @@
                 />
             </div>
             <div class="Post_main">
-                <div class="ft-l color-ft-weak pb-20 ph-20" v-if="forbidden">
+                <div class="ft-l color-ft-xweak pb-20 ph-20" v-if="forbidden">
                     <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
                 </div>
                 <div class="Post_text" v-html="$options.filters.specials(content)" v-else></div>

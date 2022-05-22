@@ -25,11 +25,20 @@ export default {
             classes: [],
             title: ''
         },
+        popins: {
+            register: null
+        },
         meta: {
             title: ''
-        }    
+        }
     }),
     mutations: {
+        register (state, v) {
+            state.popins = {
+                ...state.popins,
+                register: v
+            }
+        },
         setMode (state, v) {
             state.isPWA = v
         },

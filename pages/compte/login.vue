@@ -1,10 +1,10 @@
 <template>
     <div class="o-hidden">
         <div class="Wrapper Wrapper--m pv-100">
-            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s">
+            <div class="p-30 br-m max-width-m m-auto bg-bg br-s">
                 <p class="ft-title-s">Se connecter</p>
 
-                <form @submit.prevent="submitForm('login')" class="strong mt-20">
+                <form @submit.prevent="submitForm('login')" class="mt-20">
                     <input-base label="Ton adresse e-mail" class="mb-10" :attrs="{ required: true }" v-model="loginForm.email" type="email" />
 
                     <input-base label="Mot de passe" class="mb-10" type="password" :helpers="['reveal']" v-model="loginForm.password" />
@@ -21,11 +21,11 @@
                 </form>
             </div>
             
-            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong mt-30" v-if="$route.query.token == 'supersecret'">
+            <div class="p-30 br-m max-width-m m-auto bg-bg mt-30" v-if="$route.query.token == 'supersecret'">
                 <p class="ft-title-s">Créer mon profil</p>
                 <register-form />
             </div>
-            <div class="p-30 br-m max-width-m m-auto bg-bg-xstrong br-s mt-30" v-else>
+            <div class="p-30 br-m max-width-m m-auto bg-bg br-s mt-30" v-else>
                 <p class="ft-title-s">Pas encore de compte ?</p>
                 <p class="ft-l mt-20">On invite régulièrement de nouvelles personnes à rejoindre le réseau. Entre dans notre liste d'attente et reçois ton invitation gratuitement.</p>
 

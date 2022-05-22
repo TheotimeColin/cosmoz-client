@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="strong" @submit.prevent="onSubmit">
+        <form @submit.prevent="onSubmit">
             <input-base
                 label="Ton prénom"
                 class="mb-10"

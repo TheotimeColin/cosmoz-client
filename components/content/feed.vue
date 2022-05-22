@@ -10,12 +10,6 @@
         />
 
         <transition-group name="fade">
-            <placeholder
-                class="Feed_item"
-                :ratio="33"
-                v-for="i in 5" :key="i"
-                v-if="isLoading"
-            />
 
             <content-post
                 v-for="status in displayedStatuses"
@@ -60,6 +54,8 @@ export default {
         page: 0
     }),
     async fetch () {
+        this.isLoading = true
+
         let query = { parent: '$null' }
 
         if (this.gathering) {
@@ -94,8 +90,11 @@ export default {
             immediate: true,
             deep: true,
             async handler (v) {
-                if (v && process.client) {
-                    this.isLoading = true
+                this.isLoading = true
+                
+
+                if (v) {
+                    if (this.statusesData.length !== v.length) this.statusesData = []
 
                     let statuses = await this.$store.dispatch('user/mapUsers', {
                         items: v, property: 'owner'
@@ -107,8 +106,9 @@ export default {
                         return { ...s, children }
                     }))
 
-                    this.isLoading = false
                 }
+
+                this.isLoading = false
             }
         }
     },

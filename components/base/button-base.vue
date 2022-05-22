@@ -79,12 +79,13 @@ export default {
     font: var(--ft-title-2xs);
     line-height: 1;
     color: var(--color-ft-light);
-    border: 2px solid var(--color-ft);
-    background-color: var(--color-ft);
+    border: 2px solid var(--color-bg-2xstrong);
+    background-color: var(--color-bg-2xstrong);
     padding: 12px 15px;
     border-radius: 40px;
     transition: all 150ms ease;
     text-align: center;
+    align-items: center;
     transform-origin: center;
     justify-content: center;
     position: relative;
@@ -100,6 +101,10 @@ export default {
     &:active {
         transform: scale(0.96);
     }
+}
+
+.ButtonBase_text {
+    line-height: 1;
 }
 
 .ButtonBase_content {
@@ -234,7 +239,7 @@ export default {
 }
 
 .ButtonBase--xs {
-    padding: 10px;
+    padding: 5px 10px;
     min-width: 39px;
     min-height: 39px;
     font: var(--ft-title-3xs);

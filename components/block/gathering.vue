@@ -7,7 +7,7 @@
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
                     <div class="d-flex fxa-center mr-10" v-if="!statusOnly && organization">
-                        <orga-icon class="mr-10" v-bind="organization" /> Organisé par {{ organization.name }}
+                        <orga-icon class="mr-10" v-bind="organization" /> {{ orgaShort ? '' : 'Organisé par'}} {{ organization.name }}
                     </div>
                     <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
                         <div>
@@ -77,6 +77,7 @@ export default {
         statusOnly: { type: Boolean, default: false },
         isPast: { type: Boolean, default: false },
         orgaOnly: { type: Boolean, default: false },
+        orgaShort: { type: Boolean, default: false },
         organization: { type: [Object, Boolean], default: false },
     },
     data: () => ({
