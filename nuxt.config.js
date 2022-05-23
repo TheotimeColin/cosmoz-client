@@ -43,8 +43,7 @@ export default {
             '~/components/partials',
             '~/components/base',
             '~/components/forms',
-            '~/components/interactive',
-            '~/components/utils'
+            '~/components/interactive'
         ]
     },         
 
