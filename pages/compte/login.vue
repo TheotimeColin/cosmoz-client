@@ -29,13 +29,11 @@
                 <p class="ft-title-s">Pas encore de compte ?</p>
                 <p class="ft-l mt-20">On invite régulièrement de nouvelles personnes à rejoindre le réseau. Entre dans notre liste d'attente et reçois ton invitation gratuitement.</p>
 
-                <button-base :modifiers="['light']" class="mt-20" @click="isNewsletter = true">
+                <button-base :modifiers="['light']" class="mt-20" @click="$store.commit('page/register', 'login')">
                     Entrer sur la liste
                 </button-base>
             </div>
         </div>
-        
-        <popin-newsletter :is-active="isNewsletter" origin="login" @close="isNewsletter = false" />
 
         <popin :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false">
             <template slot="content">
@@ -68,7 +66,6 @@ export default {
     data: () => ({
         isReset: false,
         resetSuccess: false,
-        isNewsletter: false,
         state: {
             isSuccess: false,
             loading: false

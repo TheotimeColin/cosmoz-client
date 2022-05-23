@@ -2,7 +2,7 @@
     <div>
         <blog-banner class="bg-aluminium">
             <div>
-                <h1 class="ft-title-xl ft-title-l@xs">Le blog en ligne de la rencontre hors-ligne</h1>
+                <h1 class="ft-title-2xl ft-title-l@xs">Le blog en ligne de la rencontre hors-ligne</h1>
                 <p class="mt-20">Le passé, le présent et le futur de la rencontre.</p>
             </div>
         </blog-banner>

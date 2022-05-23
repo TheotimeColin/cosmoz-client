@@ -3,7 +3,7 @@
         <blog-banner :background="article.hero">
             <div class="text-center text-left@s">
                 <p class="tape tape-strong mb-20 text-upper ft-m-bold" style="padding-right: 11px; letter-spacing: 0.05em"><i>{{ $t(`articles.categories.${article.category}`) }}</i></p>
-                <h1 class="ft-title-xl ft-title-l@xs">{{ article.title|specials }}</h1>
+                <h1 class="ft-title-2xl ft-title-l@xs">{{ article.title|specials }}</h1>
                 <p class="mt-20 ft-xl">{{ article.excerpt|specials }}</p>
             </div>
         </blog-banner>

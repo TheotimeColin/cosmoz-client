@@ -21,7 +21,7 @@
                 </template>
                 <template v-else>
                     <p class="ft-title-m">
-                        Entrer sur la liste d'attente
+                        On dirait qu'il n'y plus de place dans le Cosmoz pour le moment
                     </p>
 
                     <p class="mt-10">On ouvre progressivement nos constellations. Un peu de patience, on te recontactera vite !</p>

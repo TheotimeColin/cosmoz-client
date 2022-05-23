@@ -1,7 +1,7 @@
 <template>
     <div class="Error bg-cover bg-night">
         <div class="Wrapper">
-            <p class="ft-title-xl ft-title-l@s">Oups, c'est une erreur {{ error ? error.statusCode : '' }}</p>
+            <p class="ft-title-2xl ft-title-l@s">Oups, c'est une erreur {{ error ? error.statusCode : '' }}</p>
             <p class="ft-italic">{{ error && error.message ? error.message : `Erreur non-spécifiée` }}</p>
 
             <div class="mt-20">

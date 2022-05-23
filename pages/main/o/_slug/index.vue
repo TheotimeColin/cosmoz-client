@@ -148,6 +148,8 @@ export default {
         }
     },
     head () {
+        if (!this.orga) return {}
+        
         let meta = {
             title: this.orga.name + ' organise ses événements sur Cosmoz',
             meta: [

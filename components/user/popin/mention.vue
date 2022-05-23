@@ -126,8 +126,6 @@ export default {
                     return
                 }
 
-                console.log(response)
-
                 this.isSuccess = true
                 if (response.data.match) this.isMatch = true
             } catch (e) {

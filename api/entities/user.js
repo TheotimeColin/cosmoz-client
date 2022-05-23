@@ -5,7 +5,7 @@ const Entities = require('../index.js')
 const { generatePassword } = require('../utils/user')
 
 let UserEntity = {
-    read: 'user',
+    read: 'public',
     write: 'self',
     fields: new mongoose.Schema({
         id: { type: String, write: 'private' },
@@ -16,6 +16,7 @@ let UserEntity = {
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
         ref: { type: String, write: 'self' },
+        referral: { type: String, write: 'self' },
 
         settings: { type: Object, write: 'self', read: 'self' },
         notifications: { type: Array, default: [], write: 'self', read: 'self' },

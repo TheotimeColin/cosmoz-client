@@ -315,6 +315,7 @@
 }
 
 .round,
+.round-m,
 .round-s,
 .round-xs {
     width: 35px;
@@ -338,6 +339,12 @@
 
 .line-2 {
     line-height: 1.2;
+}
+
+.round-m {
+    font-size: 18px;
+    width: 45px;
+    height: 45px;
 }
 
 .round-s {

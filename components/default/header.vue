@@ -31,23 +31,19 @@
                 />
             </div>
             <div class="Header_nav" v-else>
-                <link-base :href="$config.blogUrl" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Le super blog</link-base>
-
-                <link-base :to="{ name: 'g' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Les événements</link-base>
+                <link-base :to="{ name: 'events' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Cosmoz events</link-base>
 
                 <link-base :to="{ name: 'compte-login' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
 
                 <div class="Header_navItem Header_navItem--button">
-                    <button-base :modifiers="['light', 's']" @click="isNewsletter = true">
-                        Pré-inscription
+                    <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">
+                        Je m'inscris
                     </button-base>
                 </div>
             </div>
 
             <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user" />
         </div>
-
-        <popin-newsletter :is-active="isNewsletter" origin="header" @close="isNewsletter = false" />
 
         <default-nav :is-active="isNavOpen" v-if="user" />
     </div>
@@ -58,8 +54,7 @@ export default {
     name: 'Header',
     data: () => ({
         isOpen: false,
-        isNavOpen: false,
-        isNewsletter: false
+        isNavOpen: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },

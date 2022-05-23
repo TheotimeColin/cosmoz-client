@@ -28,6 +28,9 @@
                             <span class="mr-10">
                                 {{ user.ref ? user.ref : 'Unknown' }}
                             </span>
+                            <span class="mr-10" v-if="user.referral">
+                                {{ user.referral }}
+                            </span>
                             <span class="color-ft-weak">{{ $moment(user.createdAt).format('DD MMM hh:mm') }}</span>
                         </div>
                     </div>

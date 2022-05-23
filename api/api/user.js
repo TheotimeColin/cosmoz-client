@@ -187,13 +187,15 @@ exports.subscribeNewsletter = async function (req, res) {
             if (!challenge.success) throw Error('challenge-failed')
         }
 
+        console.log(req.body)
+
         user = await Entities.user.model.findOne({ email: req.body.email })
         if (!user) {
             user = await Entities.user.model.create({
                 email: req.body.email,
                 name: req.body.name,
+                referral: req.body.referral,
                 ref: req.body.ref,
-                categories: req.body.categories,
                 role: 'user'
             })
 
@@ -213,7 +215,7 @@ exports.subscribeNewsletter = async function (req, res) {
             PRENOM: req.body.name
         }
 
-        $fetch(encodeURI(`https://wirepusher.com/send?id=${process.env.WIRE_PUSHER}&title=${req.body.name} s'est abonné(e)&message=${req.body.email}&type=subscriber`))
+        let fetch = await $fetch(encodeURI(`https://wirepusher.com/send?id=${process.env.WIRE_PUSHER}&title=${req.body.name} s'est abonné(e)&message=${req.body.email}&type=subscriber`))
 
         if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
     } catch (e) {

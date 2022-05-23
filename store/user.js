@@ -300,9 +300,6 @@ export default {
         findOne: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
 
-            console.log(items)
-            console.log(search)
-            
             return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
         }
     }
