@@ -245,6 +245,7 @@ export default {
         bottom: auto;
         left: -25%;
         width: 150%;
+        
     }
 
     .fx-dir-column-reverse\@s {
