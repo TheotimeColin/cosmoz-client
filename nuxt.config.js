@@ -105,13 +105,15 @@ export default {
 
     publicRuntimeConfig: {
         baseDomain: process.env.BASE_DOMAIN,
-        domains: process.env.DOMAINS.split(','),
+        socialDomain: process.env.SOCIAL_DOMAIN,
+
+        socialUrl: process.env.SOCIAL_URL,
         baseUrl: process.env.BASE_URL,
         appUrl: process.env.APP_URL,
         adminUrl: process.env.ADMIN_URL,
         blogUrl: process.env.BLOG_URL,
-        boutiqueUrl: process.env.SHOP_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
+
         PEXELS: process.env.PEXELS,
         gtm: {
             id: process.env.GTM_ID

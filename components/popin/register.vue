@@ -8,7 +8,7 @@
                             <span>C'est bien noté !</span>
                         </div>
                     
-                        <p class="mt-20" v-if="referral">Génial, tu feras partie de la constellation de {{ referral.name }} lorsqu'elle sera prête.</p>
+                        <p class="mt-20" v-if="referral">Génial, tu feras partie de sa constellation lorsqu'elle sera prête.</p>
                         <p class="mt-20" v-else>Merci pour ton intérêt, on a hâte que tu puisses enfin créer la constellation qui te comblera ✨</p>
 
                         <p class="ft-title-2xs mt-30">Place dans la liste d'attente : {{ Math.round(users.length * 1.5) }}.</p>
@@ -38,7 +38,7 @@
                 <template v-else>
                     <template v-if="referral">
                         <p class="ft-title-m">
-                            {{ referral.name }} t'as invité dans sa constellation
+                            {{ referral }} t'as invité dans sa constellation
                         </p>
 
                         <p class="mt-10">Tu dois sûrement faire partie de son groupe d'amis préférés ! 😎 Cosmoz, c'est le réseau vraiment social pour les groupes d'amis.</p>
@@ -60,7 +60,7 @@
 
                         <div class="text-right mt-20">
                             <button-base :modifiers="['light']">
-                                {{ referral ? `Rejoindre ${referral.name}` : `Entrer en liste d'attente` }}
+                                {{ referral ? `Rejoindre sa constellation` : `Entrer en liste d'attente` }}
                             </button-base>
                         </div>
                     </form>
@@ -95,7 +95,7 @@ export default {
             return this.$store.state.page.popins.register ? true : false
         },
         referralLink () {
-            return this.$config.baseUrl + `?r=${this.formData.email}`
+            return this.$config.socialUrl + `?r=${this.formData.email}`
         },
         shareLink () {
             return window && window.navigator.share ? {
@@ -108,9 +108,7 @@ export default {
             return this.$store.getters['user/find']()
         },
         referral () {
-            return this.$route.query.r ? this.$store.getters['user/findOne']({
-                email: this.$route.query.r
-            }) : null
+            return this.$route.query.r ? this.$route.query.r : null
         }
     },
     methods: {
@@ -124,7 +122,7 @@ export default {
             const response = await this.$store.dispatch('newsletter/subscribe', {
                 ...this.formData,
                 ref: this.$store.state.page.popins.register,
-                referral: this.referral ? this.referral.email : '',
+                referral: this.referral ? this.referral : '',
                 token
             })
 

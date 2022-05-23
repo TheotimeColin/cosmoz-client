@@ -60,7 +60,7 @@ exports.logUser = async function (req, res) {
                 let createContact = new req.app.locals.sendinBlue.CreateContact()
 
                 createContact.email = req.body.email
-                createContact.listIds = req.body.newsletter ? [9, 6] : [9]
+                createContact.listIds = [3, 5]
 
                 createContact.attributes = {
                     PRENOM: req.body.name
@@ -207,7 +207,7 @@ exports.subscribeNewsletter = async function (req, res) {
         let createContact = new req.app.locals.sendinBlue.CreateContact()
 
         createContact.email = req.body.email
-        createContact.listIds = [2, 3]
+        createContact.listIds = [3, 4]
 
         createContact.attributes = {
             PRENOM: req.body.name

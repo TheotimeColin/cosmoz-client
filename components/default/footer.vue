@@ -3,18 +3,21 @@
         <div class="Wrapper">
             <div class="Footer_container d-flex d-block@s">
                 <div class="fx-grow">
-                    <nuxt-link :to="localePath({ name: '' })" class="ft-title-m logo-sparkle-p">cosmoz</nuxt-link>
+                    <nuxt-link :to="localePath({ name: 'index' })" class="ft-title-m">
+                        <img :src="assets.logo" height="28">
+                    </nuxt-link>
 
                     <div class="mt-20 row-xs">
                         <div class="col-6 col-12@xs">
                             <link-base class="Footer_navItem" :href="$config.baseUrl">C'est quoi Cosmoz ?</link-base>
 
-                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/events'">Cosmoz Events</link-base>
+                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/faq'">Foire aux Questions</link-base>
 
                             <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base>
                         </div>
                         <div class="col-6 col-12@xs mt-15@xs">
-                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/faq'">Foire aux Questions</link-base>
+                            <link-base class="Footer_navItem" :href="$config.baseUrl">Cosmoz Events</link-base>
+                            <link-base class="Footer_navItem" :href="$config.socialUrl">Cosmoz Social</link-base>
                         </div>
                     </div>
                 </div>
@@ -29,11 +32,12 @@
 
 <script>
 import socials from '@/assets/img/social/banner_1.gif'
+import logo from '@/assets/img/logo/logo_white_sparkles.webp'
 
 export default {
     name: 'DefaultFooter',
     data: () => ({
-        assets: { socials }
+        assets: { socials, logo }
     })
 }
 </script>
