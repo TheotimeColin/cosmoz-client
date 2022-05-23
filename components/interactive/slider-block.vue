@@ -1,24 +1,26 @@
 <template>
-    <div class="SliderBlock" :style="{ '--step': step }">
-        <div class="SliderBlock_rail">
-            <div
-                class="SliderBlock_item"
-                v-for="slot in dynSlots"
-                :class="[ itemClass, { 'is-active': slot == activeSlot } ]"
-                :key="slot"
-            >
-                <slot :name="slot">
-                    {{ slot }}
-                </slot>
-            </div>
-        </div>
+    <div class="SliderBlock" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
+        <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
-        <div class="SliderBlock_footer" v-if="!hideFooter">
-            <div class="SliderBlock_bullets">
-                <div class="SliderBlock_bullet" :class="{ 'is-active': slot == activeSlot }" v-for="slot in dynSlots" :key="slot"></div>
+        <div class="SliderBlock_container" ref="container">
+            <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
+                <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in 5" :key="i" v-show="isLoading">
+                    <placeholder :ratio="ratio" />
+                </div>
+
+                <div
+                    class="SliderBlock_item"
+                    v-for="slotId in slots"
+                    :class="[ itemClass ]"
+                    :key="slotId"
+                >
+                    <slot :name="slotId"></slot>
+                </div>
             </div>
 
-            <slot name="submit"></slot>
+            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0 && !isLoading" />
+
+            <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps && !isLoading" />
         </div>
     </div>
 </template>
@@ -27,74 +29,107 @@
 export default {
     name: 'SliderBlocks',
     props: {
-        step: { type: Number, default: 0 },
-        hideFooter: { type: Boolean, default: false },
+        slots: { type: Array, default: () => [] },
         itemClass: { type: String, default: '' },
+        offset: { type: Number, default: 0 },
+        offsetV: { type: Number, default: 0 },
+        ratio: { type: Number, default: 0 },
         isLoading: { type: Boolean, default: false }
     },
-    computed: {
-        dynSlots () {
-            return Object.keys(this.$slots).filter(key => key != 'submit')
-        },
-        activeSlot () {
-            return this.dynSlots[this.step]
-        }  
-    },
+    // computed: {
+    //     dynSlots () {
+    //         return Object.keys(this.$slots).filter(key => key != 'submit')
+    //     }
+    // },
+    data: () => ({
+        step: 0,
+        maxSteps: 0
+    }),
     mounted () {
-
+        this.checkDimensions()
+    },
+    methods: {
+        checkDimensions () {
+            if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
+                this.maxSteps = 0
+            } else {
+                this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
+            }
+        },
+        next () {
+            this.step += 1
+        },
+        prev () {
+            this.step -= 1
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .SliderBlock {
+        position: relative;
+    }
+
+    .SliderBlock_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
         overflow: hidden;
     }
 
     .SliderBlock_rail {
         white-space: nowrap;
         transition: all 300ms ease;
-        transform: translateX(calc(-100% * var(--step)))
+        transform: translateX(calc(-50% * var(--step)));
     }
 
     .SliderBlock_item {
         white-space: normal;
-        width: 100%;
         display: inline-block;
         vertical-align: top;
-        opacity: 0;
-        pointer-events: none;
-        transition: all 300ms ease;
-        transform: scale(0.9);
+        margin-right: 10px;
 
-        &.is-active {
-            opacity: 1;
-            pointer-events: all;
-            transform: none;
+        &:last-child {
+            margin-right: 0;
         }
     }
 
-    .SliderBlock_footer {
-        display: flex;
-        align-items: center;
-        margin: 0 40px 40px;
-        justify-content: space-between;
+    .SliderBlock_left,
+    .SliderBlock_right {
+        position: absolute;
+        z-index: 5;
+        top: 50%;
+        margin-top: -34px;
     }
 
-    .SliderBlock_bullets {
-        display: flex;
-        align-items: center;
+    .SliderBlock_left {
+        left: 15px;
     }
 
-    .SliderBlock_bullet {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background-color: var(--color-bg-weak);
-        margin-right: 5px;
+    .SliderBlock_right {
+        right: 15px;
+    }
 
-        &.is-active {
-            background-color: var(--color-onyx);
+    @include breakpoint-xs {
+        
+        .SliderBlock_container {
+            overflow: auto;
+        }
+
+        .SliderBlock_left,
+        .SliderBlock_right {
+            display: none;
+        }
+
+        .SliderBlock_rail {
+
+            &::after {
+                content: "";
+                display: inline-block;
+                width: 50%;
+            }
         }
     }
 </style>

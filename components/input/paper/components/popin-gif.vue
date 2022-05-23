@@ -1,5 +1,5 @@
 <template>
-    <popin-base
+    <popin
         :modifiers="['s', 'absolute-header']"
         :is-active="isActive"
         @close="$emit('close')"
@@ -25,7 +25,7 @@
                 Insérer GIF
             </button-base>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

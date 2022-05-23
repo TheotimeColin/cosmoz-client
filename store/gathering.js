@@ -79,6 +79,19 @@ export default {
             } catch (e) {
                 return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
             }
+        },
+        async updateBookStatus ({ commit }, params) {
+            try {
+                const response = await this.$axios.$post('/gathering/book', params)
+                
+                if (response.status == 0) throw Error(response.errors[0])
+
+                commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
         }
     },
     getters: {
@@ -94,20 +107,27 @@ export default {
                 }
 
                 return {
-                    ...item, thumbnail, hero,
+                    ...item,
+                    thumbnail,
+                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status.status == 'confirmed').length >= item.max,
+                    isPast: moment(item.date).isBefore(moment()),
+                    display: moment(item.date).isBefore(moment()),
+                    hero,
+                    users: item.users.map(user => {
+                        if (user.picture) {
+                            if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
+                            
+                            if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
+                        }
+
+                        return user
+                    })
                 }
             })
         },
-        find: (state, getters) => (search, raw = false) => {
+        find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            
-            if (search) {
-                Object.keys(search).forEach(key => {
-                    items = items.filter(item => item[key] == search[key])
-                })
-            }
-
-            return items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
+            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items

@@ -12,20 +12,33 @@ export default {
         isNavCompact: false,
         isBodyOverflow: true,
         isPWA: false,
+        isScrolled: false,
         breakpoint: "",
         body: {
             classes: [ 'is-fill' ],
             background : ''
         },
+        header: {
+            transparent: false
+        },
         banner: {
             classes: [],
             title: ''
         },
+        popins: {
+            register: null
+        },
         meta: {
             title: ''
-        }    
+        }
     }),
     mutations: {
+        register (state, v) {
+            state.popins = {
+                ...state.popins,
+                register: v
+            }
+        },
         setMode (state, v) {
             state.isPWA = v
         },
@@ -53,8 +66,14 @@ export default {
         setBanner (state, banner ) {
             state.banner = { ...state.banner, ...banner  }
         },
+        setHeader (state, header) {
+            state.header = { ...state.header, ...header  }
+        },
         setClasses (state, classes) {
             state.body = { ...state.body, classes }
+        },
+        setScrolled (state, action) {
+            state.isScrolled = action
         },
         setProperty (state, params) {
             state.meta = {

@@ -11,12 +11,9 @@
 
             <div class="Page_side">
                 <button-base
-                    tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :attrs="{
-                        to: localePath({ name: 'locations-id', params: { id: 'new' } })
-                    }"
+                    :to="{ name: 'locations-id', params: { id: 'new' } }"
                 >
                     Créer un nouveau lieu
                 </button-base>

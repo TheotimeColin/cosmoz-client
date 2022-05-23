@@ -85,7 +85,7 @@
         margin: 10px 0 20px 0;
 
         li {
-            margin: 20px 0 20px 40px;
+            margin: 5px 0 5px 40px;
             line-height: 1.6;
 
             &:last-child {
@@ -148,8 +148,14 @@
     //     padding: 3px 8px 3px 5px;
     //     color: var(--color-ft-light);
     //     font-style: italic;
-    //     background-color: var(--color-bg-strong);
+    //     background-color: var(--color-bg-2xstrong);
     // }
+}
+
+.TextBody--gathering {
+    font: var(--ft-m);
+    line-height: 1.5;
+    color: var(--color-ft-light);
 }
 
 .TextBody--simple {

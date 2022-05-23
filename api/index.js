@@ -21,6 +21,9 @@ const app = express()
 require('./entities/index')
 const { createEntity, getEntities, deleteEntity } = require('./api/entity');
 const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribeNewsletter } = require('./api/user');
+const { updateBookingStatus } = require('./api/gathering');
+const { sendMentions, unmatch } = require('./api/affinities');
+const { getFeed, postStatus, reactStatus } = require('./api/status');
 
 app.use(morgan('combined'))
 app.use('/webhooks', express.raw({ type: "*/*" }))
@@ -37,7 +40,7 @@ const storage = multer.diskStorage({
     destination : 'uploads/',
     limits: { fieldSize: 2 * 1024 * 1024 },
     filename: function (req, file, cb) {
-      cb(null, file.originalname);
+      cb(null, file.originalname)
     }
 })
 
@@ -61,6 +64,16 @@ mongoose.connection.once('open', async () => {
     app.post('/user/reset', requestResetPassword)
     app.post('/user/reset/confirm', resetPassword)
     app.post('/user/subscribe', subscribeNewsletter)
+
+    app.post('/gathering/book', updateBookingStatus)
+
+    app.get('/status/feed', getFeed)
+    app.post('/status/post', postStatus)
+    app.post('/status/react', reactStatus)
+
+
+    app.post('/affinities/send-mentions', sendMentions)
+    app.post('/affinities/remove-match', unmatch)
 })
 
 module.exports = app

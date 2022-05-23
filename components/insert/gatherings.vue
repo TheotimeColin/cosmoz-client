@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 .InsertGatherings {
     padding: 40px;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-2xstrong);
     color: var(--color-ft-light);
 
     a {

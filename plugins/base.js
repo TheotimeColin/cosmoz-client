@@ -1,9 +1,19 @@
 import Vue from 'vue'
 import moment from 'moment'
-import { ButtonBase, PopinBase } from 'instant-coffee-core'
 import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
+
+import { library, config } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { far } from '@fortawesome/pro-regular-svg-icons'
+import { faHeart } from '@fortawesome/pro-solid-svg-icons'
+import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+
+config.autoAddCss = false
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp)
+
+Vue.component('fa', FontAwesomeIcon)
 
 moment.locale('fr')
 
@@ -87,11 +97,24 @@ Vue.mixin({
         $dashboardUrl () { return this.$config.dashboardUrl },
         $blogUrl () { return this.$config.blogUrl },
         $shopUrl () { return this.$config.shopUrl },
-        $bg () { return CONSTANTS.bg }
+        $bg () { return CONSTANTS.bg },
+        $const () { return CONSTANTS },
+        $windowSize () { return this.$store.state.page.breakpoint },
     },
     methods: {
         $randomBetween: (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
+        },
+        $date (date, short) {
+            let day = this.$moment(date)
+
+            if (this.$moment().format('YYYYMMD') == day.format('YYYYMMD')) {
+                return `Aujourd'hui`
+            } else if (this.$moment().add(1, 'day').format('YYYYMMD') == day.format('YYYYMMD')) {
+                return `Demain`
+            } else {
+                return day.format(short ? 'dddd' : 'dddd D MMMM')
+            }
         },
         $random: (array) => {
             return array[Math.floor(Math.random() * (array.length))]
@@ -113,6 +136,11 @@ Vue.mixin({
                     text: `"${text}"`,
                     type: 'success'
                 })
+            })
+        },
+        $tLoad (e, params = {}) {
+            this.$store.commit('tooltips/open', {
+                element: e.target, params: { load: true }, ...params
             })
         },
         $tOpen (content, e, params = {}) {
@@ -148,7 +176,7 @@ Vue.mixin({
                 name: "Théotime Colin",
                 brand: {
                     "@type": "Organization",
-                    name: "Gatherings",
+                    name: "Cosmoz",
                     email: "bonjour@gatherings.fr",
                 }
             }
@@ -183,13 +211,25 @@ Vue.mixin({
             return this.$store.getters['page/smallerThan'](v)
         },
         $biggerThan (v) {
-            console.log('bigger')
-            console.log(this.$store.getters['page/biggerThan'](v))
             return this.$store.getters['page/biggerThan'](v)
+        },
+        $randomColor () {
+            return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
+        },
+        $groupBy (items, type) {
+            return items.reduce((obj, item) => {
+                let newObj = { ...obj }
+
+                if (!newObj[item[type]]) {
+                    newObj[item[type]] = [ item ]
+                } else {
+                    newObj[item[type]].push(item)
+                }
+
+                return newObj
+            }, {})
         }
     }
 })
 
-Vue.component('ButtonBase', ButtonBase)
-Vue.component('PopinBase', PopinBase)
 Vue.use(NuxtHammer)

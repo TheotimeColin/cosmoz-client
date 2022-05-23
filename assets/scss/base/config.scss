@@ -44,66 +44,77 @@ $gutters: (
 $colors: (
     "ft-strong": #000000,
     "ft": #000000,
-    "ft-weak": #929292,
-    "ft-xweak": #c9c9c9,
-    "ft-light": #ffffff,
+    "ft-weak": #6c6e85,
+    "ft-xweak": #51516b,
+    "ft-light": #f3f3f3,
 
-    "cream-xweak": #F6F4F1,
-    "cream-weak": #EBEAE8,
-    "cream": #CAC6BE,
-    "cream-strong": #aca69a,
-    "cream-xstrong": #565049,
+    "cosmoz": #2c0cac,
 
-    "alpine-xweak": #E4EEE9,
-    "alpine-weak": #cfded5,
-    "alpine": #a5c3ae,
-    "alpine-strong": #649a7a,
-    "alpine-xstrong": #34684e,
+    // "cream-xweak": #F6F4F1,
+    // "cream-weak": #EBEAE8,
+    // "cream": #CAC6BE,
+    // "cream-strong": #aca69a,
+    // "cream-xstrong": #565049,
 
-    "rose-2xstrong": #2a2022,
-    "rose-xstrong": #44282e,
+    // "alpine-xweak": #E4EEE9,
+    // "alpine-weak": #cfded5,
+    // "alpine": #a5c3ae,
+    // "alpine-strong": #649a7a,
+    // "alpine-xstrong": #34684e,
 
-    "memo-xweak": #eeece4,
-    "memo-weak": #ede7d1,
-    "memo": #d8ccaa,
-    "memo-strong": #c8bb9b,
-    "memo-xstrong": #72653b,
+    // "rose-2xstrong": #2a2022,
+    // "rose-xstrong": #44282e,
+
+    // "memo-xweak": #eeece4,
+    // "memo-weak": #ede7d1,
+    // "memo": #d8ccaa,
+    // "memo-strong": #c8bb9b,
+    // "memo-xstrong": #72653b,
     
-    "ocean-xweak": #e1e5f3,
-    "ocean-weak": #e5e6ed,
-    "ocean": #a9acce,
-    "ocean-strong": #7a7a92,
-    "ocean-xstrong": #4f4d6e,
+    // "ocean-xweak": #e1e5f3,
+    // "ocean-weak": #e5e6ed,
+    // "ocean": #a9acce,
+    // "ocean-strong": #7a7a92,
+    // "ocean-xstrong": #4f4d6e,
 
-    "tulip-xweak": #f3e2ee,
-    "tulip-weak": #eadde6,
-    "tulip": #c6b5c2,
-    "tulip-strong": #aa8da6,
-    "tulip-xstrong": #664b64,
+    // "tulip-xweak": #f3e2ee,
+    // "tulip-weak": #eadde6,
+    // "tulip": #c6b5c2,
+    // "tulip-strong": #aa8da6,
+    // "tulip-xstrong": #664b64,
 
-    "merlot": #a16363,
-    "merlot-strong": #693737,
-    "merlot-xstrong": #361313,
+    // "merlot": #a16363,
+    // "merlot-strong": #693737,
+    // "merlot-xstrong": #361313,
+
+    "sticky": #FFEE80,
+    "sticky-weak": #FFEE80,
+    "sticky-xweak": #FFF7CC,
+
+    "black": #000000,
     
-    "bg-strong": #000000,
-    "bg": #1D1D1D,
-    "bg-light": #ffffff,
-    "bg-weak": #2b2b2b,
-    "bg-xweak": #373737,
+    "bg-2xstrong": #111015,
+    "bg-xstrong": #16151e,
+    "bg-strong": #1d1b27,
+    "bg": #232332,
+    "bg-weak": #2c2c3c,
+    "bg-xweak": #3c3d45,
     "bg-2xweak": #f7f7f7,
+    "bg-light": #f3f3f3,
 
-    "border": #3A3A3A,
-    "border-weak": #fafafa,
+    "border": #303346,
+    "border-weak": #292738,
     "border-strong": #B3B3B3,
 
     "disabled": #d3d4dc,
+    "love": #ec2c5d,
     "error": #FF2D42,
     "success": #10c773,
 
     "shadow": rgba(207, 215, 231, 0.3)
 );
 
-$main-colors: ("cream", "alpine", "memo", "ocean", "tulip");
+$main-colors: ("cream", "alpine", "memo", "ocean", "tulip", "merlot");
 
 $fonts: (
     "ft": (
@@ -127,15 +138,16 @@ $fonts: (
         )
     ),
     "ft-title": (
-        "name": "'Ramillas'",
+        "name": "'PP Right Grotesk'",
         "sizes": (
-            "3xs": "13px/1",
-            "2xs": "16px/1",
-            "xs": "18px/1.25",
-            "s": "22px/1.25",
-            "m": "24px/1.25",
+            "3xs": "14px/1.2",
+            "2xs": "16px/1.2",
+            "xs": "18px/1.2",
+            "s": "22px/1.2",
+            "m": "24px/1.2",
             "l": "30px/1.2",
-            "xl": "40px/1.2"
+            "xl": "35px/1.2",
+            "2xl": "40px/1.2"
         )
     ),
     "ft-icon": (

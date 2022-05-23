@@ -10,10 +10,10 @@
 
             <div class="Flashes_actions">
                 <div class="Flashes_action" v-if="flash.type == 'error'">
-                    <i class="fal fa-copy"></i>
+                    <i class="far fa-copy"></i>
                 </div>
                 <div class="Flashes_action" @click="$store.commit('flashes/remove', flash.id)">
-                    <i class="fal fa-times"></i>
+                    <i class="far fa-times"></i>
                 </div>
             </div>
 

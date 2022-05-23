@@ -5,22 +5,46 @@ const Entities = require('../index.js')
 const { generatePassword } = require('../utils/user')
 
 let UserEntity = {
-    read: 'admin',
+    read: 'public',
     write: 'self',
     fields: new mongoose.Schema({
-        email: { type: String, write: 'self' },
-        password: { type: String, write: 'self', read: 'private' },
-        role: { type: String, write: 'admin', default: 'guest' },
+        id: { type: String, write: 'private' },
+        email: { type: String, write: 'admin', read: 'admin' },
+        password: { type: String, write: 'admin', read: 'private' },
+        role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
         name: { type: String, write: 'self' },
-        surname: { type: String, write: 'self' },
-        address: { type: String, write: 'self' },
-        address2: { type: String, write: 'self' },
+        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
+
         ref: { type: String, write: 'self' },
-        city: { type: String, write: 'self' },
-        postalCode: { type: String, write: 'self' },
-        country: { type: String, write: 'self' },
-        settings: { type: Object, write: 'self' },
-        categories: { type: Array, default: [], write: 'self' },
+        referral: { type: String, write: 'self' },
+
+        settings: { type: Object, write: 'self', read: 'self' },
+        notifications: { type: Array, default: [], write: 'self', read: 'self' },
+        mentions: { type: Array, default: [], write: 'private', read: 'user' },
+        gatherings: { type: Array, default: [], write: 'self', read: 'self' },
+
+        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { constellation: '$requester' } },
+
+        isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
+        
+        followed: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'user', ref: 'organization' }
+        ],
+
+        encounters: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
+        ],
+
+        affinities: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
+        ],
+
+        constellation: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'user', ref: 'user' }
+        ],
+
+        tidbits: { type: Array, default: [], write: 'self', read: '$readEach' },
+
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
     }, { timestamps: true })
 }
@@ -36,7 +60,7 @@ UserEntity.fields.pre('save', async function(next) {
 })
 
 UserEntity.fields.pre('find', function () {
-    this.populate('shops')
+    this.populate('picture')
 })
 
 UserEntity.fields.methods.comparePassword = function(candidatePassword) {

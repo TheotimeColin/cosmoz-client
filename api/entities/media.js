@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 let Media = {
-    write: 'editor',
+    write: 'user',
     read: 'public',
     fields: new mongoose.Schema({
         id: { type: String, write: 'editor' },
@@ -12,7 +12,5 @@ let Media = {
     }, { timestamps: true })
 }
 
-Media.model = global.Media ? global.Media.model : mongoose.model('media', Media.fields)
-global.Media = Media
 
 module.exports = Media

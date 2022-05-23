@@ -5,7 +5,8 @@
             entity-type="gathering"
             :block-type="{ type: 'block-gathering', classes: 'max-width-s m-auto' }"
             :form="form"
-        />
+        >
+        </entity-editor>
     </div>
 </template>
 
@@ -20,8 +21,9 @@ export default {
     components: { InputBase, SelectBase },
     data: () => ({
         _id: '',
-        form: [
-            {
+        form: [ {
+                key: 'id'
+            }, {
                 key: 'cover',
                 type: 'media',
                 label: `Couverture`
@@ -30,36 +32,53 @@ export default {
                 type: 'string',
                 label: `Titre principal`
             }, {
-                key: 'subtitle',
-                type: 'string',
-                label: `Sous-titre`
+                key: 'intro',
+                type: 'textarea',
+                label: `Introduction`
             }, {
-                key: 'meetup',
-                type: 'string',
-                label: `Lien Meetup`
+                key: 'description',
+                type: 'paper',
+                label: `Description`
             }, {
-                key: 'price',
-                type: 'number',
-                label: `Prix`
+                key: 'venue',
+                type: 'paper',
+                label: `Le lieu`
             }, {
-                key: 'included',
-                type: 'string',
-                label: `Ce qui est inclus`
-            },  {
+                key: 'important',
+                type: 'paper',
+                label: `Important`
+            }, {
+                key: 'information',
+                type: 'paper',
+                label: `Informations pratiques`
+            }, {
                 key: 'location',
                 type: 'string',
                 label: `Zone`
             }, {
-                key: 'dates',
-                type: 'gathering-date'
+                key: 'max',
+                type: 'number',
+                label: `Nombre de participants`
+            }, {
+                key: 'date',
+                type: 'datetime-local'
             }, {
                 key: 'status',
                 type: 'select',
                 label: 'Statut',
                 options: CONSTANTS.status
+            }, {
+                key: 'organization',
+                type: 'string',
+                label: 'Organization'
             }
         ]
     }),
+    computed: {
+        gathering () {
+            return this.$store.getters[`gathering/findOne`]({ _id: this._id }, true)
+        },
+    },
     created () {
         this._id = this.$route.params.id
     }

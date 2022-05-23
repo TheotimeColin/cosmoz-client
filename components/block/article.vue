@@ -43,21 +43,21 @@ export default {
 .BlockArticle {
     display: block;
     padding: 15px;
-    border: 1px solid var(--color-bg-strong);
+    border: 1px solid var(--color-bg-2xstrong);
     border-radius: 4px;
-    box-shadow: 0 0 0 0 var(--color-bg-strong);
+    box-shadow: 0 0 0 0 var(--color-bg-2xstrong);
     transition: all 100ms ease;
 
     &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 4px 0 0 var(--color-bg-strong);
+        box-shadow: 0 4px 0 0 var(--color-bg-2xstrong);
         background: var(--color-bg-light);
     }
 
     &:active {
         
         transform: translateY(-2px);
-        box-shadow: 0 2px 0 0 var(--color-bg-strong);
+        box-shadow: 0 2px 0 0 var(--color-bg-2xstrong);
     }
 }
 
@@ -73,7 +73,7 @@ export default {
 }
 
 .BlockArticle_cover {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-2xstrong);
     position: relative;
     border-radius: 4px;
     overflow: hidden;

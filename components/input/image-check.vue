@@ -2,7 +2,7 @@
     <div class="ImageCheck" :class="{ 'is-active': value }" :style="{ '--background': `url(${background})` }" @click="$emit('input', !value)">
         <div class="ImageCheck_content">
             <span class="tape tape-strong n-ml-3">
-                {{ label }} <i class="fal fa-check fa-sm ml-3" v-show="value"></i>
+                {{ label }} <fa icon="far fa-check" class="ml-3" v-show="value"></fa>
             </span>
             <p class="ft-s-medium line-2 mt-5">{{ description }}</p>
         </div>

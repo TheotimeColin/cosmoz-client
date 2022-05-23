@@ -9,10 +9,15 @@ export default {
             let position = params.element.getBoundingClientRect()
             delete params.element
 
-            let tooltip = exists ? exists : {
+            let tooltip = exists ? {
+                ...exists,
+                ...params,
+                ...params.params
+            } : {
                 id: Math.random(),
                 content: '',
-                ...params
+                ...params,
+                ...params.params
             }
 
             tooltip.active = true
@@ -24,10 +29,7 @@ export default {
             })) : [ ...state.items, tooltip ]
         },
         close (state) {
-            state.items = state.items.map(item => ({
-                ...item,
-                active: false
-            }))
+            state.items = []
         }
     }
 }

@@ -1,22 +1,25 @@
 <template>
-    <div class="QuickMenu" :class="{ 'is-active': isActive }" ref="body">
-        <div class="QuickMenu_button round-s" @click="isActive = !isActive">
-            <i class="fal fa-ellipsis-stroke-vertical"></i>
-        </div>
+    <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
+        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
-            <div class="QuickMenu_action" v-for="(item, i) in items" :key="i" @click="onClick(item)">
-                {{ item.label }}
-            </div>
+            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click="onClick(item)">
+                <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
+            </component>
         </div>
     </div>
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
     name: 'QuickMenu',
+    mixins: [ ModifiersMixin ],
     props: {
-        items: { type: Array, default: () => [] }
+        items: { type: Array, default: () => [] },
+        large: { type: Boolean, default: false },
+        icon: { type: String, default: 'ellipsis'}
     },
     data: () => ({
         isActive: false,
@@ -24,6 +27,17 @@ export default {
             close: null
         }
     }),
+    computed: {
+        buttonModifiers () {
+            let modifiers = []
+
+            if (this.large) modifiers = ['weak']
+            else if (this.modifiers.includes('strong')) modifiers = [...modifiers, 'xs', 'weak']
+            else modifiers = [...modifiers, 'xs', 'xweak']
+
+            return [...modifiers, 'round']
+        }
+    },
     watch: {
         isActive: {
             handler (v) {
@@ -48,7 +62,6 @@ export default {
     methods: {
         onClick (item) {
             this.isActive = false
-
             if (item.action) item.action() 
         }
     }
@@ -58,16 +71,18 @@ export default {
 <style lang="scss" scoped>
     .QuickMenu {
         position: relative;
-    }
+        
+        &.is-large {
+            
+            .QuickMenu_actions {
 
-    .QuickMenu_button {
-        background-color: var(--color-bg-light);
-        border: 1px solid var(--color-current-weak, var(--color-border));
-        cursor: pointer;
+                bottom: -8px;
+            }
+        }
     }
 
     .QuickMenu_actions {
-        width: 200px;
+        width: 250px;
         position: absolute;
         z-index: 10;
         bottom: -5px;
@@ -75,24 +90,32 @@ export default {
         opacity: 0;
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
-        background-color: var(--color-bg-light);
-        border: 1px solid var(--color-border);
-        border-radius: 10px;
-        box-shadow: 2px 2px 4px 0 var(--color-shadow);
+        background-color: var(--color-bg-2xstrong);
+        border-radius: 5px;
         transition: all 100ms ease;
     }
 
     .QuickMenu_action {
-        font: var(--ft-s-medium);
-        padding: 3px 10px;
+        font: var(--ft-m);
+        padding: 10px 15px;
         display: flex;
         align-items: center;
         min-height: 40px;
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-xweak);
+            background-color: var(--color-bg-xstrong);
+
+            .QuickMenu_icon {
+                color: var(--color-ft-light);
+            }
         }
+    }
+
+    .QuickMenu_icon {
+        color: var(--color-ft-weak);
+        width: 20px;
+        margin-right: 8px;
     }
 
     .QuickMenu.is-active {
@@ -101,6 +124,14 @@ export default {
             opacity: 1;
             transform: translateY(100%);
             pointer-events: all;
+        }
+    }
+
+    .QuickMenu--right {
+
+        .QuickMenu_actions {
+            right: auto;
+            left: 0;
         }
     }
 </style>

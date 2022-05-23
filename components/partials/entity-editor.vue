@@ -1,16 +1,19 @@
 <template>
-    <div class="EntityEditor">
+    <form @submit.prevent class="EntityEditor strong">
         <div class="row">
             <div class="col-8">
-                <div>
-                    <component
-                        v-for="input in form.filter(i => getInput(i))"
-                        class="EntityEditor_input"
-                        :is="getInput(input)"
-                        v-model="formData[input.key]"
-                        v-bind="input"
-                        :key="input.key"
-                    />
+                <slot name="left-before"></slot>
+
+                <div class="bg-bg-xstrong p-30 br-s">
+                    <div class="row-s">
+                        <div class="EntityEditor_input" :class="[ `col-${input.col ? input.col : '12'}` ]" v-for="input in form.filter(i => getInput(i))" :key="input.key">
+                            <component
+                                :is="getInput(input)"
+                                v-model="formData[input.key]"
+                                v-bind="input"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
@@ -24,14 +27,25 @@
 
                     <hr class="Separator mv-20">
 
-                    <div class="d-flex fx-align-center mb-20" v-if="form.find(i => i.key == 'slug')">
+                    <div class="d-flex fxa-center mb-20" v-if="form.find(i => i.key == 'slug')">
                         <input-base
                             label="ID de la page"
                             v-model="formData.slug"
                         />
 
                         <div @click="generateSlug" class="ml-10">
-                            <i class="fal fa-redo"></i>
+                            <fa icon="far fa-redo" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex fxa-center mb-20" v-if="form.find(i => i.key == 'id')">
+                        <input-base
+                            label="ID de la page"
+                            v-model="formData.id"
+                        />
+
+                        <div @click="generateId" class="ml-10">
+                            <fa icon="far fa-redo" />
                         </div>
                     </div>
 
@@ -43,13 +57,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
 import { InputBase, SelectBase } from 'instant-coffee-core'
 import Decoders from '@/utils/decoders'
 import slugify from 'slugify'
+import shortId from 'shortid'
 
 export default {
     name: 'EntityEditor',
@@ -105,14 +120,22 @@ export default {
     },
     methods: {
         generateSlug () {
-            let slug = this.$data.formData.title
-            this.$data.formData.slug = slugify(slug, { lower: true, strict: true })
+            let slug = this.$data.formData.title || this.$data.formData.name
+
+            if (!slug) slug = 'no-data'
+
+            this.formData.slug = slugify(slug, { lower: true, strict: true })
+        },
+        generateId () {
+            this.formData.id = shortId.generate()
         },
         defaultForm () {
             return this.form.reduce((form, input) => {
                 let result = null
 
                 if (input.type == 'number') result = 0
+                if (input.key == 'id') result = shortId.generate()
+                if (input.type == 'date' || input.type == 'datetime-local') result = new Date()
                 if (input.type == 'string' || input.type == 'paper') result = ''
                 if (input.type == 'medias' || input.type == 'gathering-date') result = []
 
@@ -126,7 +149,8 @@ export default {
             if (input.type == 'gathering-date') type = 'input-gathering-date'
             if (input.type == 'paper') type = 'input-paper'
             if (input.type == 'select') type = 'select-base'
-            if (input.key == 'slug') type = null
+            if (input.type == 'date' || input.type == 'datetime-local') type = 'input-date'
+            if (input.key == 'slug' || input.key == 'id') type = null
 
             return type
         },
@@ -144,9 +168,15 @@ export default {
             // }
         },
         async update () {
+            let data = this.parseForm(this.formData)
+
+            Object.keys(data).forEach(key => {
+                if (!this.form.find(f => f.key == key)) delete data[key]
+            })
+
             let response = await this.$store.dispatch(`${this.entityType}/create`, {
                 _id: this._id && this._id != 'new' ? this._id : undefined,
-                params: this.parseForm(this.formData),
+                params: data,
             })
 
             if (response.status == 1) {
@@ -158,6 +188,8 @@ export default {
             this.$store.commit('utils/addFlash', {
                 type: response.status == 1 ? 'success' : 'error'
             })
+
+            this.$emit('update', this.formData)
         }
     }
 }
@@ -165,9 +197,6 @@ export default {
 
 <style lang="scss" scoped>
 .EntityEditor_input {
-
-    & + & {
-        margin-top: 10px;
-    }
+    margin-bottom: 15px;
 }
 </style>

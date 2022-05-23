@@ -1,26 +1,11 @@
 <template>
     <div class="Layout LayoutDefault" :class="[ classes ]">
-        <!-- <div class="bg-ocean-xstrong pv-15">
-            <div class="Wrapper fx-center">
-                <div class="d-flex fx-align-center">
-                    <div class="ft-title-s fx-no-shrink timer">{{ countdown }}</div>
-                    <div class="fx-grow ml-10">
-                        <p class="ft-title-xs">
-                            On se lance bientôt.
-                        </p>
-                        <p>Soyez dans les premiers à réserver votre expérience (surprises à prévoir)</p>
-                    </div>
-                </div>
-                <button-base class="ml-20">
-                    Me prévenir
-                </button-base>
-            </div>
-        </div> -->
-
         <default-header />
         
         <div class="LayoutDefault_content">
             <Nuxt />
+
+            <popin-register />
         </div>
 
         <default-footer />
@@ -28,11 +13,10 @@
 </template>
 
 <script>
-import { TooltipManager } from 'instant-coffee-core'
+import Debounce from 'lodash.debounce'
 
 export default {
     name: 'LayoutDefault',
-    components: { TooltipManager },
     computed: {
         classes () { return this.$store.state.page.body.classes }
     },
@@ -53,21 +37,61 @@ export default {
         // }, 500)
         
         if (process.server) return
-        
+
+        this.windowResize()
+
+        this.onWindowResize = Debounce(this.windowResize, 500)
+        window.addEventListener('resize', this.onWindowResize)
+
+        this.$store.commit('page/setScrolled', window.scrollY > 5)
+        window.addEventListener('scroll', () => {
+            let action = window.scrollY > 5
+            
+            if (this.$store.state.page.isScrolled != action) this.$store.commit('page/setScrolled', action)
+        })
+
         window.addEventListener('beforeinstallprompt', e => e.preventDefault())
     },
     beforeDestroy() {
        this.$recaptcha.destroy()
+       window.removeEventListener('resize', this.onWindowResize)
+    },
+    methods: {
+        windowResize () {
+            this.$store.commit('page/setBreakpoint', window.innerWidth)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.timer {
-    width: 180px;
+.LayoutDefault_content {
+    min-height: calc(100vh - 65px);
+    // padding-top: 65px;
 }
 
-.LayoutDefault_content {
-    margin-top: 65px;
+.page-enter-active,
+.page-leave-active {
+  transition: all 100ms;
+  overflow: hidden;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
+.layout-enter-active, .layout-leave-active {
+  transition: all 100ms;
+}
+
+.layout-enter, .layout-leave-active {
+  opacity: 0;
+  transform: translateY(3px);
 }
 </style>

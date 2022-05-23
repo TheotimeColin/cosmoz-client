@@ -12,7 +12,7 @@
                 <img class="GalleryMosaic_image" :width="Math.min(image.original.width * 0.8, image.width)" :height="Math.min(image.original.height * 0.8, image.height)" :src="image.src" />
 
                 <div class="GalleryMosaic_selector" v-if="selector">
-                    <i class="fal fa-check"></i>
+                    <fa icon="far fa-check" />
                 </div>
 
                 <div class="GalleryMosaic_overlay" :class="{ 'is-active': state.active == image._id }">

@@ -5,7 +5,7 @@
         type="button"
         @click="$emit('click')"
     >
-        <i class="fal" :class="[`fa-${icon}`]" v-if="icon"></i>
+        <fa :icon="`far fa-${icon}`" v-if="icon" />
 
         <div class="TextEditor_list" v-if="$slots['list']">
             <slot name="list"></slot>

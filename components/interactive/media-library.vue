@@ -1,6 +1,6 @@
 <template>
-    <popin-base
-        :id="id"
+    <popin
+        :id="id + Math.random()"
         class="MediaLibrary"
         :modifiers="['panel']"
         :is-active="isActive"
@@ -43,7 +43,7 @@
                 <p v-if="selected.length > 0" @click.stop="selected = []">Désélectionner tout</p>
             </div>
 
-            <div class="d-flex fx-align-center">
+            <div class="d-flex fxa-center">
                 <template v-if="max > 1">{{ selected.length }} / {{ this.$props.max }}</template>
 
                 <button-base class="ml-10" @click.native="onSubmit">
@@ -51,7 +51,7 @@
                 </button-base>
             </div>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

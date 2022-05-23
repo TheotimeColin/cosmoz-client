@@ -1,5 +1,5 @@
 <template>
-    <popin-base :is-active="popin.active" :modifiers="['absolute-header', 's']" @close="onClose">
+    <popin :is-active="popin.active" :modifiers="['absolute-header', 's']" @close="onClose">
         <template slot="content">
             <div class="p-30 text-center">
                 <p class="ft-l-medium mb-20" v-if="popin.data.title">{{ popin.data.title }}</p>
@@ -12,7 +12,7 @@
                 <p>{{ action.count && action.count > count ? (action.count - count) : action.label }}</p>
             </div>
         </template>
-    </popin-base>
+    </popin>
 </template>
 
 <script>

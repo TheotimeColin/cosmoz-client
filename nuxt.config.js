@@ -5,7 +5,7 @@ import fs from 'fs'
 
 export default {
     head: {
-        title: `Gatherings, rencontres hors-ligne en groupe sur Paris.`,
+        title: `Cosmoz, rencontres hors-ligne en groupe sur Paris.`,
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,6 +20,7 @@ export default {
     },
     
     css: [
+        '@fortawesome/fontawesome-svg-core/styles.css',
         '@/assets/scss/global.scss'
     ],
 
@@ -27,7 +28,8 @@ export default {
         scss: [
             '@/assets/scss/base/config.scss',
             'instant-coffee-core/assets/scss/variables.scss',
-            'instant-coffee-core/assets/scss/mixins.scss'
+            'instant-coffee-core/assets/scss/mixins.scss',
+            'instant-coffee-core/assets/scss/atomic.scss'
         ]
     },
 
@@ -76,12 +78,12 @@ export default {
     
     pwa: {
         meta: {
-            title: 'Gatherings',
+            title: 'Cosmoz',
             author: 'Théotime Colin',
         },
         manifest: {
-            name: 'Gatherings',
-            short_name: 'Gatherings',
+            name: 'Cosmoz',
+            short_name: 'Cosmoz',
             background_color: '#000000',
             theme_color: '#000000',
             lang: 'fr',
@@ -106,6 +108,8 @@ export default {
         baseDomain: process.env.BASE_DOMAIN,
         domains: process.env.DOMAINS.split(','),
         baseUrl: process.env.BASE_URL,
+        appUrl: process.env.APP_URL,
+        adminUrl: process.env.ADMIN_URL,
         blogUrl: process.env.BLOG_URL,
         boutiqueUrl: process.env.SHOP_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
@@ -125,13 +129,13 @@ export default {
         id: process.env.GA_ID
     },
 
-    gtm: {
-        id: process.env.GTM_ID,
-        enabled: true,
-        debug: process.env.NODE_ENV != 'PRODUCTION',
-        pageTracking: true,
-        respectDoNotTrack: false
-    },
+    // gtm: {
+    //     id: process.env.GTM_ID,
+    //     enabled: process.env.NODE_ENV == 'PRODUCTION',
+    //     debug: process.env.NODE_ENV != 'PRODUCTION',
+    //     pageTracking: true,
+    //     respectDoNotTrack: false
+    // },
 
     i18n: {
         locales: [
@@ -156,7 +160,7 @@ export default {
           }
         },
         redirect: {
-            logout: false,
+            logout: process.env.baseUrl,
             login: '/compte/login',
             home: false,
             callback: false

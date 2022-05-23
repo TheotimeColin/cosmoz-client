@@ -1,6 +1,6 @@
 export default {
     meta: {
-        append: `| Gatherings, rencontres hors-ligne`
+        append: `| Cosmoz, rencontres hors-ligne`
     },
     base: {
         days: '{n} jour | {n} jours',
@@ -12,6 +12,52 @@ export default {
             article: `Article`
         }
     },
+    mentions: {
+        welcome: `Merci pour l'accueil`,
+        nice: `Super sympa !`,
+        passionate: `Discussion passionnante`,
+        energy: `J'adore ton énergie`
+    },
+    tidbits: {
+        anything: {
+            title: `Zone libre`
+        },
+        socials: {
+            title: `Mes réseaux sociaux`
+        },
+    },
+    permissions: {
+        public: {
+            icon: 'far fa-eye',
+            title: 'Tout le monde',
+            subtitle: `Visible par tout le monde`,
+            error: `Uniquement visible par les membres.`
+        },
+        user: {
+            icon: 'far fa-eye',
+            title: 'Tout le monde',
+            subtitle: `Visible par tout le monde`,
+            error: `Uniquement visible par les membres.`
+        },
+        encountered: {
+            icon: 'far fa-hand-wave',
+            title: 'Connaissances uniquement',
+            subtitle: `Visible par les personnes que j'ai rencontrées`,
+            error: `Uniquement visible après une rencontre.`
+        },
+        affinity: {
+            icon: 'far fa-sparkles',
+            title: 'Constellation uniquement',
+            subtitle: `Visible par ma constellation uniquement`,
+            error: `Uniquement visible par sa constellation.`
+        },
+        extended: {
+            icon: 'far fa-solar-system',
+            title: 'Contellation étendue uniquement',
+            subtitle: `Visible par ma constellation étendue`,
+            error: `Uniquement visible par sa constellation étendue.`
+        }
+    },
     errors: {
         default: {
             generic: `Une erreur est survenue, peux-tu réessayer ?`,
@@ -20,8 +66,8 @@ export default {
             missingFields: `On dirait qu'il me manque des informations, tu veux bien vérifier s'il-te-plaît ?`,
             alreadyRegistered: `Merveilleux, tu as déjà un compte ! Essaye plutôt de te connecter.`,
             'already-subscribed': `Superbe, tu es déjà abonné à notre newsletter !`,
-            'user-not-found': `On dirait que cet utilisateur n'existe pas.`,
-            'token-expired': `Cette demande a expiré, merci de réessayer.`,
+            'user-not-found': `Ton adresse e-mail n'est pas reconnue.`,
+            'token-expired': `Cette demande a expiré, merci de refaire une demande de réinitialisation.`,
             'slug-taken': `Désolé, ce nom de boutique est déjà pris par un autre utilisateur.`
         }
     }

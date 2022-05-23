@@ -21,15 +21,6 @@
                 A répondu
             </button-base>
         </div>
-
-        <!-- <div class="ft-s">
-            <div @click="randomize" v-if="!maxResets && choicesLeft.length > 1 || maxResets && resets < maxResets && choicesLeft.length > 1">
-                <i class="fal fa-rotate-right mr-5"></i> Changer de question ?<span class="round-xs round-xs-current ml-5">{{ !maxResets ? choicesLeft.length - 1 : maxResets - resets }}</span>
-            </div>
-            <div v-else>
-                Cette fois, c'est la bonne !
-            </div>
-        </div> -->
     </div>
 </template>
 

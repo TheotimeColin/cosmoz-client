@@ -7,7 +7,8 @@ export default {
 
             return {
                 ...form,
-                status: status ? status.id : 0
+                status: status ? status.id : 0,
+                organization: form && form.organization ? form.organization._id  : ''
             }
         },
         parse: function (form) {
@@ -16,7 +17,23 @@ export default {
                 ...form,
                 cover: form.cover ? form.cover._id : '',
                 price: form.price ? parseInt(form.price) : 0,
-                status: CONSTANTS.status[form.status].value
+                status: CONSTANTS.status[form.status].value,
+            }
+        }
+    },
+    organization: {
+        decode: function (form) {
+
+            return {
+                ...form
+            }
+        },
+        parse: function (form) {
+
+            return {
+                ...form,
+                cover: form.cover ? form.cover._id : '',
+                logo: form.logo ? form.logo._id : '',
             }
         }
     },

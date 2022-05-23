@@ -1,102 +1,122 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="link ? link : null" class="BlockGathering" :class="{ 'is-past': isPast, 'is-favorite': hasFavorited }">
+    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="[ ...$modifiers ]">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
-            <span v-html="$options.filters.verticalize(title)"></span>
+            <div class="BlockGathering_content">
+                <div class="BlockGathering_header">
+                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && organization">
+                        <orga-icon class="mr-10" v-bind="organization" /> {{ orgaShort ? '' : 'Organisé par'}} {{ organization.name }}
+                    </div>
+                    <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
+                        <div>
+                            <template v-if="hasBooked">
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
+                            </template>
+                            <template v-else-if="hasConfirmed">
+                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée ·
+                            </template>
+                            <template v-else-if="hasGhosted">
+                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                            </template>
 
-            <div class="BlockGathering_heart" @click="onFavorite">
-                <icon-base name="icon/heart-solid" :width="25" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="25" v-show="!hasFavorited" /> <b class="ft-title-s ml-10" v-if="favoritesNumber">{{ favoritesNumber }}</b>
-            </div>
-        </div>
-        
-        <div class="BlockGathering_content">
-            <div class="BlockGathering_location fx-center">
-                <p class="">{{ isPast ? 'Lieu secret' : location }}</p>
-                
-                <div class="BlockGathering_favs d-flex fill-ft-light color-ft-light" @click="onFavorite"><icon-base name="icon/heart-solid" :width="10" v-show="hasFavorited" /> <icon-base name="icon/heart-light" :width="10" v-show="!hasFavorited" /> <span class="ml-5">{{ favoritesNumber }}</span></div>
-            </div>
-
-            <h3 class="BlockGathering_title">
-                {{ subtitle }}
-            </h3>
-        </div>
-
-        <div class="BlockGathering_dates" v-if="!hideDates">
-            <a
-                v-for="(date, i) in dates"
-                :href="date.link"
-                class="BlockGathering_date"
-                :class="{ 'is-past': $moment(date.date).isBefore($moment()) }"
-                :key="i"
-            >
-                <span>
-                    {{ $moment(date.date).format('dddd DD') }}
-
-                    <b> · {{ $moment(date.date).format('H:mm') }}</b>
-                </span>
-
-                <div class="ml-10">
-                    <tag-category class="BlockGathering_tag" :category="date.category" v-if="date.category != 0" />
+                            {{ tagline }}
+                        </div>
+                    </div>
                 </div>
-            </a>
+
+                <div>
+                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!orgaOnly">
+                        <div>
+                            <template v-if="hasBooked">
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
+                            </template>
+                            <template v-else-if="hasConfirmed">
+                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée · 
+                            </template>
+                            <template v-else-if="hasGhosted">
+                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                            </template>
+
+                            {{ tagline }}
+                        </div>
+                    </div>
+
+                    <div class="BlockGathering_location fx-center">
+                        <p class="">
+                            {{ $moment(date).fromNow() }} <span class="loc">· {{ location }}</span>
+                        </p>
+                    </div>
+
+                    <h3 class="BlockGathering_title ellipsis-2">
+                        {{ title|specials }}
+                    </h3>
+                </div>
+            </div>
         </div>
-    </component>
+    </nuxt-link>
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
     name: 'BlockGathering',
+    mixins: [ ModifiersMixin ],
     props: {
-        _id: { type: String },
+        id: { type: String },
         title: { type: String },
-        subtitle: { type: String },
+        max: { type: Number, default: 0 },
+        users: { type: Array, default: () => [] },
         place: { type: String },
         location: { type: String },
-        favorites: { type: Number, default: 0 },
-        dates: { type: Array, default: () => [] },
+        date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false },
-        hideDates: { type: Boolean, default: false }
+        statusOnly: { type: Boolean, default: false },
+        isPast: { type: Boolean, default: false },
+        orgaOnly: { type: Boolean, default: false },
+        orgaShort: { type: Boolean, default: false },
+        organization: { type: [Object, Boolean], default: false },
     },
     data: () => ({
-        hasFavorited: false,
-        hasPendingFavorite: false
+
     }),
-    created () {
-        if (this.$cookies.get('fav-' + this._id)) this.hasFavorited = true
-    },
     computed: {
-        isPast () {
-            return this.dates.length == 0 || !this.dates.reduce((hasDate, date) => {
-                return this.$moment(date.date).isAfter(this.$moment()) ? true : hasDate
-            }, false)
+        user () { return this.$store.getters['user/self'] },
+        hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
+        hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
+        hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
+        defaultLink () {
+            return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
         },
-        favoritesNumber () {
-            return this.favorites + (this.hasPendingFavorite ? 1 : 0)
-        }
-    },
-    methods: {
-        async onFavorite () {
-            if (this.hasFavorited) return
+        attending () {
+            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed')
+        },
+        waiting () {
+            return this.users.filter(u => u.status == 'waiting')
+        },
+        tagline () {
+            let tagline = this.attending.length + ' inscrits'
+            
+            if (this.isPast) {
+                tagline = this.attending.length <= 0 ? '' : this.attending.length + ' ont participé'
+            } else if (this.hasBooked) {
+                return tagline
+            } else if (this.attending.length == 0 && this.max > 0) {
+                tagline = `${this.max} places restantes`
+            } else if (this.max <= this.attending.length) {
+                tagline = `Événement complet`
+            } else if (this.max - this.attending.length <= 5) {
+                tagline = `Plus que ${this.max - this.attending.length} places !`
+            }
 
-            this.$cookies.set('fav-' + this._id, true, { maxAge: 999999 })
-            this.hasPendingFavorite = true
-            this.hasFavorited = true
-
-            await this.$store.dispatch('gathering/create', {
-                _id: this._id,
-                params: { favorites: '$inc' }
-            })
-
-            this.hasPendingFavorite = false
-
-            this.$emit('favorite')
+            return tagline
         }
     }
 }
@@ -104,26 +124,10 @@ export default {
 
 <style lang="scss" scoped>
 .BlockGathering {
-    
+    display: block;
+
     &:hover {
-
-        .BlockGathering_coverImage {
-            opacity: 0.25;
-        }
-
-        .BlockGathering_cover span {
-            transform: scale(0.95);
-            opacity: 0.35;
-            color: var(--color-ft-light);
-            filter: blur(2px);
-        }
-
-        .BlockGathering_heart {
-            transform: scale(1);
-            opacity: 1;
-            filter: none;
-            transition-delay: 100ms;
-        }
+    
     }
 }
 
@@ -133,7 +137,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.3;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
@@ -144,133 +148,100 @@ export default {
 }
 
 .BlockGathering_cover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+    display: block;
+    border-radius: 8px;
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-bg-strong);
-    text-align: center;
+    background-color: var(--color-black);
+    text-align: left;
     position: relative;
-
-    span {
-        padding: 0 15px;
-        position: relative;
-        transition: all 150ms ease;
-    }
     
     &::before {
-        @include ratio(60);
+        @include ratio(40);
     }
-}
-
-.BlockGathering_heart {
-    position: absolute;
-    top: 50%;
-    left: auto;
-    right: auto;
-    font-size: 25px;
-    fill: var(--color-ft-light);
-    margin: -12px auto 0;
-    cursor: pointer;
-    display: inline-flex;
-    filter: blur(1px);
-    transform: scale(1.2);
-    opacity: 0;
-    transition: all 150ms ease;
 }
 
 .BlockGathering_content {
-    margin-top: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.BlockGathering_status {
+    flex-shrink: 0;
+    font: var(--ft-s-bold);
 }
 
 .BlockGathering_title {
-    font: var(--ft-title-xs);
+    font: var(--ft-title-s);
     transition: all 150ms ease; 
 }
 
 .BlockGathering_location {
     margin-bottom: 5px;
     font: var(--ft-xs);
-    color: var(--color-ft-weak);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
-.BlockGathering_dates {
-    margin-top: 10px;
-}
-
-.BlockGathering_date {
-    font: var(--ft-s);
-    line-height: 1;
-    min-height: 43px;
-    text-transform: uppercase;
-    display: inline-flex;
+.BlockGathering_header {
+    display: flex;
     align-items: center;
-    padding: 3px 3px 3px 12px;
-    border: 1px solid var(--color-border);
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    margin: 5px 10px 0 0;
+    justify-content: space-between;
+    font: var(--ft-title-3xs);
+    width: 100%;
+}
 
-    b {
-        font: var(--ft-s);
-        line-height: 1;
+.BlockGathering--square {
+
+    .BlockGathering_content {
+        padding: 15px;
     }
 
-    &.is-past {
-        
-        b {
-            font: var(--ft-s);
-        }
-        
-        span {
-            color: var(--color-ft-weak);
-            text-decoration: line-through;
-        }
+    .BlockGathering_cover {
 
-        .BlockGathering_tag {
-            opacity: 0.5;
+        &::before {
+            @include ratio(100);
         }
     }
 
-    &:hover {
-        color: var(--color-ft);
-        background-color: var(--color-bg-light);
+    .loc {
+        display: none;
+    }
 
-        span {
-            text-decoration: none;
-        }
+    .BlockGathering_location {
+        font: var(--ft-2xs);
+    }
 
-        .BlockGathering_tag {
-            opacity: 1;
-        }
+    .BlockGathering_title {
+        font: var(--ft-title-xs);
     }
 }
 
-@include breakpoint-s {
-    .BlockGathering {
+@include breakpoint-xs {
         
-        &:hover {
-
-            .BlockGathering_coverImage {
-                opacity: 0.5;
-            }
-
-            .BlockGathering_cover span {
-                transform: none;
-                opacity: 1;
-                filter: none;
-                color: var(--color-ft-light);
-            }
-
-            .BlockGathering_heart {
-                display: none;
-            }
+    .BlockGathering_cover {
+        
+        &::before {
+            @include ratio(100);
         }
+    }
+
+    .BlockGathering_header {
+        display: block;
+    }
+
+    .BlockGathering_status {
+        margin-top: 15px;
     }
 }
 

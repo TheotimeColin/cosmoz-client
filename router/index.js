@@ -18,7 +18,7 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
     routesDirectory = matcher[1] || matcher[0];
     // if the subdomain is not in the list of user provided domains, set the rootdirectory to root - domain given by the user
     
-    if (routesDirectory != 'gatherings' && routesDirectory != 'www') {
+    if (routesDirectory != 'cosmoz' && routesDirectory != 'www') {
       let found = subdomains.find(s => s.sub == routesDirectory)
       routesDirectory = found ? found.directory : '';
     } else {
@@ -28,6 +28,7 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
     // Save to the object that will be sent to the client as inline-script
     ssrContext.nuxt.routesDirectory = routesDirectory;
   }
+
   if (process.client) {
     // Get what we saved on SSR
     if (window.__NUXT__ && window.__NUXT__.routesDirectory) {
@@ -50,7 +51,7 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
     }
   }
 
-  let newRoutes = options.routes;
+  let newRoutes = options.routes
   if (routesDirectory) {
     newRoutes = options.routes
       .filter(route => {
@@ -58,19 +59,20 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
         const toRemove = subdomains.map(s => s.directory).filter(domain => {
           return domain != routesDirectory
         })
+
         return !isUnderDirectory(route, toRemove);
-      })
-      .map(route => {
+      }).map(route => {
         // remove directory from path and route-name
         if (isUnderDirectory(route, routesDirectory)) {
           return {
             ...route,
             path: route.path.substr(routesDirectory.length + 1) || "/",
             name: route.name.substr(routesDirectory.length + 1) || "index"
-          };
+          }
         }
-        return route;
-      });
+
+        return route
+      })
   }
 
   return new Router({

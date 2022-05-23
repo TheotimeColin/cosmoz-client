@@ -2,11 +2,12 @@
     <div>
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
-                <div class="row-s">
-                    <div class="col-6 col-12@s mb-40" v-for="gathering in gatherings" :key="gathering._id">
+                <div class="row-xs">
+                    <div class="col-4 col-6@s col-12@xs mb-10" v-for="gathering in gatherings" :key="gathering._id">
                         <block-gathering
                             v-bind="gathering"
-                            :hide-dates="true"
+                            :modifiers="['square']"
+                            :orga-only="true"
                             :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
@@ -18,11 +19,9 @@
                     tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :attrs="{
-                        to: localePath({ name: 'gatherings-id', params: { id: 'new' } })
-                    }"
+                    :to="{ name: 'gatherings-id', params: { id: 'new' } }"
                 >
-                    Créer un nouveau Gathering
+                    Nouveau
                 </button-base>
             </div>
         </div>
