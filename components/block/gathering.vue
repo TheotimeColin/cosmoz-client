@@ -1,5 +1,5 @@
 <template>
-    <nuxt-link :to="link ? link : defaultLink" class="BlockGathering" :class="[ ...$modifiers ]">
+    <div class="BlockGathering" :class="[ ...$modifiers ]">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
@@ -52,10 +52,14 @@
                     <h3 class="BlockGathering_title ellipsis-2">
                         {{ title|specials }}
                     </h3>
+
+                    <p class="ft-l mt-10 ellipsis-2" v-if="displayIntro">{{ intro|specials }}</p>
                 </div>
             </div>
         </div>
-    </nuxt-link>
+
+        <nuxt-link class="BlockGathering_link" :to="link ? link : defaultLink"></nuxt-link>
+    </div>
 </template>
 
 <script>
@@ -67,6 +71,7 @@ export default {
     props: {
         id: { type: String },
         title: { type: String },
+        intro: { type: String },
         max: { type: Number, default: 0 },
         users: { type: Array, default: () => [] },
         place: { type: String },
@@ -78,6 +83,7 @@ export default {
         isPast: { type: Boolean, default: false },
         orgaOnly: { type: Boolean, default: false },
         orgaShort: { type: Boolean, default: false },
+        displayIntro: { type: Boolean, default: false },
         organization: { type: [Object, Boolean], default: false },
     },
     data: () => ({
@@ -92,7 +98,7 @@ export default {
             return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
-            let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
+            let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
         },
         attending () {
@@ -124,11 +130,17 @@ export default {
 
 <style lang="scss" scoped>
 .BlockGathering {
-    display: block;
+    position: relative;
 
     &:hover {
     
     }
+}
+
+.BlockGathering_link {
+    display: block;
+    @include absolute-fill;
+    z-index: 6;
 }
 
 .BlockGathering_coverImage {
@@ -137,7 +149,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.3;
+    opacity: 0.2;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;

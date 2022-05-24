@@ -8,7 +8,7 @@
             <div>
                 {{ gathering.title }}
 
-                <p class="ft-l mt-10" v-if="gathering.intro">
+                <p class="ft-l mt-10 max-width-m" v-if="gathering.intro">
                     {{ gathering.intro }}
                 </p>
             </div>
@@ -46,8 +46,12 @@
                         <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" v-if="hasConfirmed && gathering.isPast" />
                     </div>
                     <div class="Gathering_section" v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
-                        <div class="p-20 mb-30">
-                            Présence non-confirmée
+                        <div class="p-20 mb-30 bg-bg-xstrong br-s">
+                            <p class="ft-title-xs">
+                                <fa icon="far fa-circle-question" class="mr-5" /> Présence non-confirmée
+                            </p>
+
+                            <p class="mt-10">Tu étais inscrit à cet événement mais ton QR code n'a pas été scanné sur place. As-tu bien participé ?</p>
                         </div>
                     </div>
 
@@ -153,16 +157,23 @@
 
                         <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
-                        <div class="d-flex fxa-center mt-20" v-if="user">
-                            <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
-                                événement complet
-                            </button-base>
-                            <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
-                                {{ hasBooked ? `Inscription confirmée` : `En liste d'attente` }}
-                            </button-base>
-                            <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="isManage = true" v-else>
-                                {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je m'inscris !`) }}
-                            </button-base>
+                        <div class="d-flex fxa-center mt-20">
+                            <template v-if="user">
+                                <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
+                                    événement complet
+                                </button-base>
+                                <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
+                                    {{ hasBooked ? `Inscription confirmée` : `En liste d'attente` }}
+                                </button-base>
+                                <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="isManage = true" v-else>
+                                    {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je m'inscris !`) }}
+                                </button-base>
+                            </template>
+                            <template v-else>
+                                <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="$store.commit('page/register', `sub-${gathering._id}`)">
+                                    Je m'inscris !
+                                </button-base>
+                            </template>
                         </div>
                     </div>
                     

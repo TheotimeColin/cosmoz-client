@@ -3,7 +3,7 @@
         <entity-editor
             :_id="_id"
             entity-type="gathering"
-            :block-type="{ type: 'block-gathering', classes: 'max-width-s m-auto' }"
+            :block-type="{ type: 'block-gathering', modifiers: ['square'], classes: 'max-width-s m-auto' }"
             :form="form"
         >
         </entity-editor>

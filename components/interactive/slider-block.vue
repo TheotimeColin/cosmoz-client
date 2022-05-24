@@ -48,6 +48,11 @@ export default {
     mounted () {
         this.checkDimensions()
     },
+    watch: {
+        isLoading (v) {
+            if (!v) this.$nextTick(() => this.checkDimensions())
+        }
+    },
     methods: {
         checkDimensions () {
             if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {

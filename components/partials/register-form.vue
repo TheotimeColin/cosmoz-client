@@ -1,18 +1,35 @@
 <template>
     <div>
-        <form @submit.prevent="onSubmit">
+        <p class="ft-title-m mb-30">
+            {{ formType == 'register' ? `Créer mon compte Cosmoz` : `Se connecter` }}
+        </p>
+
+        <div v-show="hasGoogle">
+            <div class="d-flex fxj-center">
+                <div ref="google"></div>
+            </div>
+
+            <div class="fx-center ft-title-xs mv-20">
+                <hr class="Separator fx-grow mr-10">
+                OU
+                <hr class="Separator fx-grow ml-10">
+            </div>
+        </div>
+
+        <form @submit.prevent="() => onSubmit()">
             <input-base
                 label="Ton prénom"
                 class="mb-10"
                 :attrs="{ required: true }"
                 v-model="formData.name"
+                v-if="formType == 'register'"
             />
 
             <input-base
                 label="Ton adresse e-mail"
                 type="email"
                 class="mb-10"
-                :attrs="{ required: true, autocomplete: 'email', }"
+                :attrs="{ autocomplete: 'email', required: true }"
                 v-model="formData.email"
             />
 
@@ -21,16 +38,47 @@
                 type="password"
                 :helpers="['reveal']"
                 :validator="$validator('password')"
-                :attrs="{ autocomplete: 'new-password' }"
+                :attrs="{ required: true, autocomplete: 'password' }"
                 v-model="formData.password"
             />
 
             <form-errors :items="errors" class="mt-20" />
 
-            <button-base type="submit" :modifiers="['light']" class="mt-20" :class="{ 'is-disabled': state.success || state.loading }" v-if="!noSubmit">
-                {{ state.loading ? 'Une petite seconde...' : `Créer mon profil` }}
-            </button-base>
+            <div class="fx-center mt-20">
+                <div class="mr-20">
+                    <link-base @click="formType = 'login'" v-if="formType == 'register'">Me connecter</link-base>
+
+                    <link-base @click="formType = 'register'" v-if="formType == 'login'">Créer un compte</link-base>
+
+                    <template v-if="formType == 'login'">
+                         · 
+                        <link-base @click="isReset = true">Mot de passe oublié ?</link-base>
+                    </template>
+                </div>
+                
+                <button-base type="submit" :modifiers="['light']" :loading="isLoading" v-if="!noSubmit">
+                    {{ formType == 'register' ? `Créer mon compte` : `Se connecter` }}
+                </button-base>
+            </div>
         </form>
+
+        <popin :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false" v-show="isReset">
+            <template slot="content">
+                <form @submit.prevent="resetPassword" class="strong p-30">
+                    <p class="ft-title-2xs">Réinitialiser mon mot de passe</p>
+                    
+                    <input-base label="Ton adresse e-mail" class="mv-20" type="email" v-model="formData.email" :attrs="{ required: true }" v-show="!resetSuccess" />
+
+                    <form-errors :items="resetErrors" class="mb-20" />
+
+                    <p class="ft-m mv-20" v-show="resetSuccess">Je viens de t'envoyer un e-mail. N'oublie pas de vérifier dans tes spams !</p>
+
+                    <div class="text-right">
+                        <button-base :modifiers="['light']" :class="{ 'is-disabled': resetSuccess }">Envoyer un email</button-base>
+                    </div>
+                </form>
+            </template>
+        </popin>
     </div>
 </template>
 
@@ -43,16 +91,22 @@ export default {
     components: { InputBase, SelectBase, ToggleBase },
     props: {
         type: { type: String },
+        reference: { type: String, default: 'unknown' },
         noSubmit: { type: Boolean, default: false },
         initialData: { type: Object, default: () => ({}) }
     },
     data: () => ({
+        formType: 'register',
         state: {
-            isActive: false,
             success: false,
             loading: false,
         },
+        isLoading: false,
+        isReset: false,
+        resetSuccess: false,
         errors: [],
+        resetErrors: [],
+        hasGoogle: false,
         formData: {
             email: '',
             name: '',
@@ -60,43 +114,63 @@ export default {
         }
     }),
     watch: {
-        ['formData.email'] (v) {
-            this.state.active = true
-        },
-        formData: {
-            immediate: true,
-            deep: true,
-            handler (v) {
-                this.$emit('formChange', this.formData)
-            }
-        },
-        initialData: {
+        type: {
             immediate: true,
             handler (v) {
-                this.formData = {
-                    ...this.formData,
-                    ...v
-                }
+                if (v) this.formType = v
             }
         }
     },
+    mounted () {
+        if (process.server && !window.google) return
+
+        window.google.accounts.id.initialize({
+            client_id: "322716061919-7io9tjlk3pbfqrl9akdrq03q5rqk3kdc.apps.googleusercontent.com",
+            callback: this.onSubmit
+        })
+
+        window.google.accounts.id.renderButton(this.$refs.google, {
+            theme: "outline",
+            text: 'continue_with',
+            shape: 'pill',
+            width: 388,
+            size: "large",
+            logo_alignment: 'center'
+        })
+
+        this.hasGoogle = true
+        // window.google.accounts.id.prompt()
+    },
     methods: {
-        async onSubmit () {
+        async resetPassword () {
+            this.resetErrors = []
+
+            const response = await this.$store.dispatch('user/requestPassword', this.formData.email)
+
+            if (response.status == 0) {
+                this.resetErrors = [ response.error ]
+            } else {
+                this.resetSuccess = true
+            }
+        },
+        async onSubmit (googleCred = null) {
             try {
 
                 this.errors = []
-                this.state.loading = true
+                this.isLoading = true
 
                 const token = await this.$recaptcha.execute('login')
                 const response = await this.$auth.loginWith('local', { 
                     data: {
-                        ...this.formData,
-                        token, type: 'register'
+                        ...(googleCred ? googleCred : this.formData),
+                        ref: this.reference,
+                        token, type: this.formType
                     }
                 })
 
                 if (response.data.status != 1) {
                     this.errors = response.data.errors
+                    this.isLoading = false
                 } else {
                     window.location = this.localePath({ name: 'feed' })
                 }
@@ -104,7 +178,6 @@ export default {
                 console.log(e)
             }
 
-            this.state.loading = false
         }
     }
 }

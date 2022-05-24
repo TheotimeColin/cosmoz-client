@@ -30,7 +30,7 @@ export default {
             { label: 'Tableau de bord', icon: 'mug-tea', exact: true, link: '' },
             { label: 'Gatherings', icon: 'calendar-alt', link: 'gatherings' },
             { label: 'Utilisateurs', icon: 'users', link: 'users' },
-            { label: 'Créateurs', icon: 'sparkles', link: 'organizations' },
+            { label: 'Groupes', icon: 'sparkles', link: 'organizations' },
             { label: 'Blog', icon: 'pen-alt', link: 'articles' },
             { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' }
         ]

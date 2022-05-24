@@ -118,8 +118,8 @@ const sendConfirmationMail = async function (gathering, user) {
                     name: gathering.title,
                     qr: qr,
                     image: cover ? cover.src : '',
-                    link: process.env.BASE_URL + '/g/' + gathering.id,
-                    cancel: process.env.BASE_URL + '/g/' + gathering.id + '?manage'
+                    link: process.env.BASE_URL + '/o/' + gathering.organization.slug + '/' + gathering.id,
+                    cancel: process.env.BASE_URL + '/o/' + gathering.organization.slug + '/' + gathering.id + '?manage'
                 }
             })
 

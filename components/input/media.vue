@@ -28,7 +28,7 @@ export default {
     }),
     computed: {
         thumbnail () {
-            let thumbnail = this.value && this.value.medias.find(m => m.size == 'm')
+            let thumbnail = this.value && this.value.medias && this.value.medias.find(m => m.size == 'm')
             return thumbnail ? thumbnail.src : ''
         }
     },

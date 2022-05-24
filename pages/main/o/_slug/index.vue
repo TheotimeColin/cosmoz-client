@@ -24,11 +24,16 @@
                         Suivi par {{ orga.followers + followAction }} personnes
                     </p>
 
-                    <button-base :modifiers="['light']" icon-before="plus" :loading="isLoading" @click="onFollow" v-if="!this.isFollowed">
+                    <template v-if="user">
+                        <button-base :modifiers="['light']" icon-before="plus" :loading="isLoading" @click="onFollow" v-if="!this.isFollowed">
+                            Suivre
+                        </button-base>
+                        <button-base icon-before="check" :loading="isLoading" @click="onFollow" v-else>
+                            Suivi
+                        </button-base>
+                    </template>
+                    <button-base :modifiers="['light']" icon-before="plus"  @click="$store.commit('page/register', 'follow')" v-else>
                         Suivre
-                    </button-base>
-                    <button-base icon-before="check" :loading="isLoading" @click="onFollow" v-else>
-                        Suivi
                     </button-base>
                 </div>
             </div>

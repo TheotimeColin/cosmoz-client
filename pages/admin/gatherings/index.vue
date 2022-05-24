@@ -3,7 +3,18 @@
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
                 <div class="row-xs">
-                    <div class="col-4 col-6@s col-12@xs mb-10" v-for="gathering in gatherings" :key="gathering._id">
+                    <div class="col-4 col-6@s col-12@xs mb-10" v-for="gathering in gatherings.filter(g => !g.isPast)" :key="gathering._id">
+                        <block-gathering
+                            v-bind="gathering"
+                            :modifiers="['square']"
+                            :orga-only="true"
+                            :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                        />
+                    </div>
+                </div>
+
+                <div class="row-xs mt-60">
+                    <div class="col-4 col-6@s col-12@xs mb-10" v-for="gathering in gatherings.filter(g => g.isPast)" :key="gathering._id">
                         <block-gathering
                             v-bind="gathering"
                             :modifiers="['square']"

@@ -5,35 +5,13 @@
                 <button-base :modifiers="['round', 'xweak']" class="Header_button d-none@s" icon-before="bars" v-if="user" />
                 <div class="mr-10" v-else></div>
                 
-                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-xs">
-                    <img :src="assets.logo" height="24" class="n-mt-5">
+                <nuxt-link :to="localePath({ name: 'index' })" class="Header_logo ft-title-xs">
+                    <img :src="assets.logo" height="24" class="n-mt-5"> social
                 </nuxt-link>
             </div>
 
-            <div class="Header_right" v-if="user">
-                <button-base :modifiers="['weak', 'user']" :to="{ name: 'p-id', params: { id: user.id } }" class="Header_button d-none@xs">
-                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
-                </button-base>
-
-                <button-base :modifiers="['round', 'weak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
-
-                <button-base :modifiers="['round', 'weak']" class="Header_button" icon-before="bell" />
-
-                <quick-menu
-                    :large="true"
-                    icon="caret-down"
-                    class="Header_button d-none@xs"
-                    :items="[
-                        { fa: 'question-circle', to: { name: 'faq' }, label: `Une question ?` },
-                        { fa: 'gear', to: { name: 'compte' }, label: `Mes paramètres` },
-                        { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
-                    ]"
-                />
-            </div>
-            <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Les événements</link-base>
-
-                <link-base class="Header_navItem" :modifiers="['current']"  @click="$store.commit('page/register', 'login')">Se connecter</link-base>
+            <div class="Header_nav">
+                <link-base :href="$config.baseUrl" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Cosmoz events</link-base>
 
                 <div class="Header_navItem Header_navItem--button">
                     <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">
@@ -41,11 +19,9 @@
                     </button-base>
                 </div>
             </div>
-
+            
             <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user && !isLoading" />
         </div>
-
-        <default-nav :is-active="isNavOpen" v-if="user" />
     </div>
 </template>
 
@@ -82,6 +58,7 @@ export default {
         &.is-transparent {
             background-color: rgba(0, 0, 0, 0);
             border-color: rgba(0, 0, 0, 0);
+            transition: none;
 
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {

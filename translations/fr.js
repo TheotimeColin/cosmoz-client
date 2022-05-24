@@ -61,10 +61,10 @@ export default {
     errors: {
         default: {
             generic: `Une erreur est survenue, peux-tu réessayer ?`,
-            emailNotFound: `Cet e-mail n'est pas enregistré, peut-être veux-tu plutôt t'inscrire ?`,
-            wrongCredentials: `Ton mot de passe est incorrect, peux-tu réessayer s'il-te-plaît ?`,
-            missingFields: `On dirait qu'il me manque des informations, tu veux bien vérifier s'il-te-plaît ?`,
-            alreadyRegistered: `Merveilleux, tu as déjà un compte ! Essaye plutôt de te connecter.`,
+            'email-not-found': `Cet e-mail n'est pas enregistré, peut-être veux-tu plutôt t'inscrire ?`,
+            'wrong-credentials': `Ton mot de passe est incorrect, peux-tu réessayer s'il-te-plaît ?`,
+            'missing-fields': `On dirait qu'il me manque des informations, tu veux bien vérifier s'il-te-plaît ?`,
+            'already-registered': `Merveilleux, tu as déjà un compte ! Essaye plutôt de te connecter.`,
             'already-subscribed': `Superbe, tu es déjà abonné à notre newsletter !`,
             'user-not-found': `Ton adresse e-mail n'est pas reconnue.`,
             'token-expired': `Cette demande a expiré, merci de refaire une demande de réinitialisation.`,
