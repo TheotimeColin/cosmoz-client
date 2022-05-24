@@ -76,7 +76,7 @@ export default {
         }],
     ],
 
-    // sitemap: sitemap,
+    sitemap: sitemap,
     
     pwa: {
         meta: {
