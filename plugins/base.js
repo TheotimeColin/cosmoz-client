@@ -20,7 +20,7 @@ moment.locale('fr')
 Vue.mixin({
     filters: {
         specials: (value) => {
-            if (!value || process.server) return ''
+            if (!value || process.server) return value
 
             let characters = ['?', '!', ':']
             

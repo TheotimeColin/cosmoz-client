@@ -10,9 +10,14 @@
                     <div class="mb-60 mb-30@xs" v-for="(date, i) in gatheringsByDate" :key="i">
                         <p class="ft-title-xs mb-20">{{ $date(date.date) }}</p>
 
-                        <div class="Gatherings_item" v-for="gathering in date.gatherings" :key="gathering._id">
+                        <template v-if="isLoading">
+                            <placeholder class="Gatherings_item" :ratio="40" v-for="i in 2" :key="i" />
+                        </template>
+
+                        <div class="Gatherings_item" v-for="gathering in date.gatherings" :key="gathering._id" v-show="!isLoading">
                             <block-gathering
                                 v-bind="gathering"
+                                :display-intro="true"
                             />
                         </div>
                     </div>
@@ -38,6 +43,8 @@
 export default {
     name: 'DashboardIndex',
     async fetch () {
+        this.isLoading = true
+        
         await this.$store.dispatch('gathering/fetch', {
             query: {}
         })
@@ -45,8 +52,11 @@ export default {
         await this.$store.dispatch('organization/fetch', {
             query: {}
         })
+
+        this.isLoading = false
     },
     data: () => ({
+        isLoading: true,
         format: 'YYYYDDD'
     }),
     computed: {

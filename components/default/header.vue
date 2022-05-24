@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user" />
+            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user && !isLoading" />
         </div>
 
         <default-nav :is-active="isNavOpen" v-if="user" />
@@ -54,11 +54,15 @@ export default {
     name: 'Header',
     data: () => ({
         assets: { logo },
+        isLoading: true,
         isOpen: false,
         isNavOpen: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] }
+    },
+    mounted () {
+        this.isLoading = false
     }
 }
 </script>

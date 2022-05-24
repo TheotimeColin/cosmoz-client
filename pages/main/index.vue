@@ -75,7 +75,7 @@
                         <h2 class="ft-title-m ft-title-s@xs">
                             Mieux que des événements,<br>des rassemblements.
                         </h2>
-                        <p class="mt-10 max-width-m">Nos créateurs sont vérifiés et ont tous le même objectif : te faire passer un bon moment avec d'autres personnes qui te ressemblent.</p>
+                        <p class="mt-10 max-width-m">Nos animateurs sont vérifiés et ont tous le même objectif : te faire passer un moment convivial avec d'autres personnes qui te ressemblent.</p>
                     </div>
 
                     <slider-block
