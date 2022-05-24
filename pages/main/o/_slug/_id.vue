@@ -46,8 +46,12 @@
                         <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" v-if="hasConfirmed && gathering.isPast" />
                     </div>
                     <div class="Gathering_section" v-else-if="gathering.isPast && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
-                        <div class="p-20 mb-30">
-                            Présence non-confirmée
+                        <div class="p-20 mb-30 bg-bg-xstrong br-s">
+                            <p class="ft-title-xs">
+                                <fa icon="far fa-circle-question" class="mr-5" /> Présence non-confirmée
+                            </p>
+
+                            <p class="mt-10">Tu étais inscrit à cet événement mais ton QR code n'a pas été scanné sur place. As-tu bien participé ?</p>
                         </div>
                     </div>
 

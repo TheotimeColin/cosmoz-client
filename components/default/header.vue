@@ -6,7 +6,7 @@
                 <div class="mr-10" v-else></div>
                 
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-xs">
-                    <img :src="assets.logo" height="28" class="n-mt-5">
+                    <img :src="assets.logo" height="24" class="n-mt-5">
                 </nuxt-link>
             </div>
 
@@ -80,7 +80,6 @@ export default {
         &.is-transparent {
             background-color: rgba(0, 0, 0, 0);
             border-color: rgba(0, 0, 0, 0);
-            transition: none;
 
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {

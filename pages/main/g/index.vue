@@ -24,7 +24,7 @@
                 </div>
                 <div class="width-s fx-no-shrink ml-40 d-none@s">
                     <p class="ft-title-xs mb-20">
-                        Créateurs à suivre
+                        Groupes à suivre
                     </p>
 
                     <block-orga
@@ -43,8 +43,6 @@
 export default {
     name: 'DashboardIndex',
     async fetch () {
-        this.isLoading = true
-        
         await this.$store.dispatch('gathering/fetch', {
             query: {}
         })

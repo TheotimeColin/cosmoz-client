@@ -6,7 +6,7 @@
                 <div class="mr-10" v-else></div>
                 
                 <nuxt-link :to="localePath({ name: 'index' })" class="Header_logo ft-title-xs">
-                    <img :src="assets.logo" height="28" class="n-mt-5"> social
+                    <img :src="assets.logo" height="24" class="n-mt-5"> social
                 </nuxt-link>
             </div>
 
