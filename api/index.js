@@ -80,7 +80,7 @@ module.exports = app
 
 if (require.main === module) {
     const port = process.env.PORT || 80
-    app.listen(port, () => {
+    app.listen(port, process.env.HOST || '0.0.0.0', () => {
         console.log(`============> API server listening on port ${port}`)
     })
 }

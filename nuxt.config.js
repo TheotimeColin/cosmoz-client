@@ -123,14 +123,7 @@ export default {
         },
         recaptcha: {
             siteKey: process.env.RECAPTCHA
-        },
-        googleAnalytics: {
-            id: process.env.GA_ID
         }
-    },
-
-    googleAnalytics: {
-        id: process.env.GA_ID
     },
 
     gtm: {
