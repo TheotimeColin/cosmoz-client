@@ -68,17 +68,12 @@ export default {
     created () {
         this.nav = [
             {
-                label: `Mon actualité`,
+                label: `Actualité`,
                 fa: 'home',
                 to: this.localePath({ name: 'feed' }),
             },
             {
-                label: `Ma constellation`,
-                fa: 'sparkles',
-                to: this.localePath({ name: 'constellation' })
-            },
-            {
-                label: `Rassemblements`,
+                label: `Événements`,
                 fa: 'party-horn',
                 to: this.localePath({ name: 'g' }),
                 items: [
@@ -90,6 +85,11 @@ export default {
                         to: this.localePath({ name: 'g-past' })
                     }
                 ]
+            },
+            {
+                label: `Constellation`,
+                fa: 'sparkles',
+                to: this.localePath({ name: 'constellation' })
             }
         ]
     }

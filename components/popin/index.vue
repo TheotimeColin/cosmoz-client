@@ -37,6 +37,7 @@ export default {
         isActive: {
             handler (v) {
                 if (!this.autoClose) return 
+                
                 if (v && this.$data.listeners.close) {
                     setTimeout(() => {
                         document.addEventListener('click', this.$data.listeners.close)
@@ -123,9 +124,9 @@ export default {
 
 .PopinBase.is-active {
     pointer-events: all;
-        background-color: rgba(39, 39, 43, 0.8);
+    background-color: rgba(39, 39, 43, 0.8);
 
-    .PopinBase_body {
+    & > .PopinBase_body {
         transform: translateY(0);
         opacity: 1;
     }

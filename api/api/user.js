@@ -1,9 +1,13 @@
 const jwt = require('jsonwebtoken')
+const jwt_decode = require('jwt-decode')
+const sanitize = require('sanitize-html')
+
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const shortid = require('shortid')
 const moment = require('moment')
 const { sendMail } = require('../utils/mailing')
+const { createMediaCollection } = require('../utils/files')
 
 const { authenticate } = require('../utils/user')
 const { ErrorModel } = require('sib-api-v3-sdk')
@@ -17,34 +21,55 @@ exports.logUser = async function (req, res) {
         let register = req.body.type == 'register'
         let authenticated = false
         let user = null
+        let data = {}
 
-        if (!req.body.email || !req.body.password || !req.body.token) throw Error('missingFields')
+        if (req.body.credential) {
+            const responsePayload = jwt_decode(req.body.credential)
+
+            data = {
+                email: responsePayload.email,
+                name: responsePayload.given_name,
+            }
+
+            if (responsePayload.picture && false) {
+                let picture = await createMediaCollection(responsePayload.picture.replace('s96-c', 's500-c'), {
+                    direct: true,
+                    size: 'profile',
+                    path: 'library/g-users'
+                })
+
+                if (picture) data.picture = picture
+            }
+        } else {
+            if (!req.body.email || !req.body.password || !req.body.token) throw Error('missing-fields')
+
+            data = {
+                email: sanitize(req.body.email),
+                password: req.body.password,
+                name: sanitize(req.body.name)
+            }
         
-        if (process.env.RECAPTCHA_BYPASS != "true") {
-            const challenge = await $fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${req.body.token}`)
+            if (process.env.RECAPTCHA_BYPASS != "true") {
+                const challenge = await $fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${req.body.token}`)
 
-            if (!challenge.success) throw Error('challenge-failed')
+                if (!challenge.success) throw Error('challenge-failed')
+            }
         }
-
-        user = await Entities.user.model.findOne({ email: req.body.email })
         
-        if (register && user) throw Error('alreadyRegistered')
-        if (!register && !user) throw Error('emailNotFound')
+        if (!data.email) throw Error('no-data-provided')
+
+        user = await Entities.user.model.findOne({ email: data.email })
+        
+        if (!req.body.credential && register && user) throw Error('already-registered')
+        if (!register && !user) throw Error('email-not-found')
         
         if (user) {
-            authenticated = await user.comparePassword(req.body.password)
+            authenticated = req.body.credential ? true : await user.comparePassword(data.password)
         } else if (register) {
             user = await Entities.user.model.create({
                 id: shortid.generate(),
-                email: req.body.email,
-                password: req.body.password,
-                name: req.body.name,
-                surname: req.body.surname,
-                address: req.body.address,
-                address2: req.body.address2,
-                postalCode: req.body.postalCode,
-                city: req.body.city,
-                country: req.body.country,
+                ...data,
+                ref: sanitize(req.body.ref),
                 role: 'user'
             })
 
@@ -59,11 +84,11 @@ exports.logUser = async function (req, res) {
                 let apiInstance = new req.app.locals.sendinBlue.ContactsApi()
                 let createContact = new req.app.locals.sendinBlue.CreateContact()
 
-                createContact.email = req.body.email
+                createContact.email = data.email
                 createContact.listIds = [3, 5]
 
                 createContact.attributes = {
-                    PRENOM: req.body.name
+                    PRENOM: data.name
                 }
                 
                 if (process.env.NODE_ENV == "PRODUCTION") await apiInstance.createContact(createContact)
@@ -77,7 +102,7 @@ exports.logUser = async function (req, res) {
                 expiresIn: 864000
             })
         } else {
-            throw Error('wrongCredentials')
+            throw Error('wrong-credentials')
         }
     } catch (e) {
         console.error(e)
@@ -96,7 +121,7 @@ exports.getUser = async function (req, res) {
 
     try {
         user = await authenticate(req.headers)
-        if (!user) throw Error('wrongCredentials')
+        if (!user) throw Error('wrong-credentials')
     } catch (e) {
         console.error(e)
         errors.push(e.message)

@@ -21,6 +21,7 @@
                     <component
                         :is="blockType.type"
                         :class="blockType.classes"
+                        :modifiers="blockType.modifiers"
                         v-bind="formData"
                         v-if="blockType && blockType.type"
                     />

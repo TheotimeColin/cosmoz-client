@@ -31,7 +31,9 @@
                 />
             </div>
             <div class="Header_nav" v-else>
-                <link-base :to="{ name: 'compte-login' }" class="Header_navItem" :modifiers="['current']" @click="isOpen = false">Se connecter</link-base>
+                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Les événements</link-base>
+
+                <link-base class="Header_navItem" :modifiers="['current']"  @click="$store.commit('page/register', 'login')">Se connecter</link-base>
 
                 <div class="Header_navItem Header_navItem--button">
                     <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">

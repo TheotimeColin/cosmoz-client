@@ -98,7 +98,7 @@ export default {
             return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
-            let thumbnail = this.cover && this.cover.medias.find(m => m.size == 's')
+            let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
         },
         attending () {

@@ -13,10 +13,14 @@ export default {
         },
         parse: function (form) {
             
+            if (form.cover) {
+                form.cover = form.cover._id
+            } else {
+                delete form.cover
+            }
+
             return {
                 ...form,
-                cover: form.cover ? form.cover._id : '',
-                price: form.price ? parseInt(form.price) : 0,
                 status: CONSTANTS.status[form.status].value,
             }
         }

@@ -23,14 +23,14 @@
                                 <span class="bg-bg-xstrong p-5" v-if="user.gatherings.filter(g => g.status == 'ghosted').length > 0">{{ user.gatherings.filter(g => g.status == 'ghosted').length }} no-show</span>
                             </div>
                         </div>
-
-                        <div class="fx-no-shrink  ml-20">
+                        <div class="fx-no-shrink ml-20">
                             <span class="mr-10">
                                 {{ user.ref ? user.ref : 'Unknown' }}
                             </span>
                             <span class="mr-10" v-if="user.referral">
                                 {{ user.referral }}
                             </span>
+                            <span>{{ user.id }}</span>
                             <span class="color-ft-weak">{{ $moment(user.createdAt).format('DD MMM hh:mm') }}</span>
                         </div>
                     </div>

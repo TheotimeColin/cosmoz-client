@@ -80,8 +80,12 @@ export default {
             return weeks
         },
     },
-    methods: {
-        
+    head () {
+        let meta = {
+            title: `Les événements ${this.$t('meta.append')}`
+        }
+
+        return meta
     }
 }
 </script>

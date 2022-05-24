@@ -1,7 +1,6 @@
 require('dotenv').config()
 import redirectSSL from 'redirect-ssl'
-import path from 'path'
-import fs from 'fs'
+import sitemap from './router/sitemap.js'
 
 export default {
     head: {
@@ -15,7 +14,8 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
         ],
         script: [
-            { src: 'sib.js', type: 'text/javascript', async: true }
+            { src: 'sib.js', type: 'text/javascript', async: true },
+            { src: 'https://accounts.google.com/gsi/client', async: true, defer: true }
         ]
     },
     
@@ -65,6 +65,7 @@ export default {
         '@nuxtjs/auth',
         '@nuxtjs/moment',
         '@nuxtjs/style-resources',
+        '@nuxtjs/sitemap',
         [ '@nuxtjs/recaptcha', {
             hideBadge: true,
             version: 3,
@@ -74,6 +75,8 @@ export default {
             publishableKey: process.env.STRIPE_PUBLIC,
         }],
     ],
+
+    sitemap: sitemap,
     
     pwa: {
         meta: {
@@ -130,13 +133,13 @@ export default {
         id: process.env.GA_ID
     },
 
-    // gtm: {
-    //     id: process.env.GTM_ID,
-    //     enabled: process.env.NODE_ENV == 'PRODUCTION',
-    //     debug: process.env.NODE_ENV != 'PRODUCTION',
-    //     pageTracking: true,
-    //     respectDoNotTrack: false
-    // },
+    gtm: {
+        id: process.env.GTM_ID,
+        enabled: process.env.NODE_ENV == 'PRODUCTION',
+        debug: process.env.NODE_ENV != 'PRODUCTION',
+        pageTracking: true,
+        respectDoNotTrack: false
+    },
 
     i18n: {
         locales: [
@@ -149,7 +152,7 @@ export default {
 
     serverMiddleware: [
         { path: '/api', handler: '~/api' },
-        // redirectSSL.create({ enabled: true })
+        redirectSSL.create({ enabled: process.env.NODE_ENV == 'PRODUCTION' })
     ],
 
     server: {},

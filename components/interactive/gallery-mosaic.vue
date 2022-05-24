@@ -49,7 +49,7 @@ export default {
     },
     computed: {
         imageRows () {
-            let images = this.$props.items.slice()
+            let images = this.items.slice()
             
             let rows = []
             let safeguard = 0
@@ -66,17 +66,20 @@ export default {
                     safeguard++
                     
                     let current = images[0].sizes['s']
-                    let width = (this.$props.height / current.height) * current.width
+                    if (current && current.height) {
+                        let width = (this.$props.height / current.height) * current.width
 
-                    currentRow.images.push({
-                        ...current,
-                        collection: images[0],
-                        original: current,
-                        width: width,
-                        height: this.$props.height
-                    })
+                        currentRow.images.push({
+                            ...current,
+                            collection: images[0],
+                            original: current,
+                            width: width,
+                            height: this.$props.height
+                        })
 
-                    currentRow.width += width
+                        currentRow.width += width
+                    }
+
                     images.shift()
                 }
 

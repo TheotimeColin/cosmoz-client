@@ -2,7 +2,7 @@
     <div class="bg-gum-xweak o-hidden">
         <div class="Wrapper Wrapper--xs">
             
-            <div class="mv-150 bg-bg-strong br-s p-30">
+            <div class="mv-150 bg-bg br-s p-30">
                 <p class="ft-title-s">Créer un nouveau mot de passe</p>
 
                 <div class="text-center" v-if="isSuccess">
@@ -13,7 +13,7 @@
                     </button-base>
                 </div>
 
-                <form class="strong" @submit.prevent="submitForm()" v-else>
+                <form @submit.prevent="submitForm()" v-else>
                     <input-base
                         label="Nouveau mot de passe" 
                         class="mv-20"
@@ -27,7 +27,7 @@
                     <form-errors :items="errors" class="mb-20" />
 
                     <div class="text-right">
-                        <button-base type="submit" :class="{ 'is-loading': isLoading, 'is-disabled': !formData.password }">
+                        <button-base type="submit" :modifiers="['light']" :class="{ 'is-loading': isLoading, 'is-disabled': !formData.password }">
                             Confirmer
                         </button-base>
                     </div>

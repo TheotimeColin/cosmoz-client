@@ -10,7 +10,6 @@ let MediaCollection = {
     read: 'public',
     fields: new mongoose.Schema({
         title: { type: String, write: 'editor' },
-        createdDate: { type: Date, default: Date.now },
         medias: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'media' }
         ],

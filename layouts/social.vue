@@ -5,7 +5,7 @@
         <div class="LayoutDefault_content">
             <Nuxt />
 
-            <popin-register />
+            <popin-register-social />
         </div>
 
         <default-footer />
