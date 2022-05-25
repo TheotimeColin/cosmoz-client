@@ -43,13 +43,13 @@
         <accordion class="FAQ_question" title="Que puis-je faire dans constellation ?">
             Les constellations sont des lieux de sociabilisation pour tes amis, mais aussi les amis de tes amis.
 
-            <p class="p-15 mt-15 bg-bg-strong br-s">
+            <div class="p-15 mt-15 bg-bg-strong br-s">
                 <ul class="pl-20">
                     <li>Organiser et participer facilement à des sorties de groupe</li>
                     <li>Partager son humeur du moment ou solliciter l'avis de la communauté</li>
                     <li>Apprendre à se connaître avec des jeux et créer une vraie cohésion</li>
                 </ul>
-            </p>
+            </div>
         </accordion>
         <accordion class="FAQ_question" title="Pourquoi seulement 150 membres par constellation ?">
             Notre objectif est de créer des communautés à taille humaine. Au-delà de ce nombre, il devient difficile de maintenir des relations avec tout le monde et de sous-groupes ont tendance à se créer.

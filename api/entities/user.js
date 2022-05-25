@@ -12,7 +12,11 @@ let UserEntity = {
         email: { type: String, write: 'admin', read: 'admin' },
         password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
+
         name: { type: String, write: 'self' },
+        alias: { type: String, write: 'self' },
+        birthdate: { type: Date, write: 'self', read: 'self' },
+
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
         ref: { type: String, write: 'self' },

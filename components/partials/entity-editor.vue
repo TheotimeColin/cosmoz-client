@@ -150,7 +150,7 @@ export default {
             if (input.type == 'gathering-date') type = 'input-gathering-date'
             if (input.type == 'paper') type = 'input-paper'
             if (input.type == 'select') type = 'select-base'
-            if (input.type == 'date' || input.type == 'datetime-local') type = 'input-date'
+            if (input.type == 'date' || input.type == 'datetime-local') type = 'input-date-time'
             if (input.key == 'slug' || input.key == 'id') type = null
 
             return type

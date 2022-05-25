@@ -7,11 +7,11 @@ import CONSTANTS from '@/utils/constants'
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
-import { faHeart } from '@fortawesome/pro-solid-svg-icons'
+import { faHeart, faLock } from '@fortawesome/pro-solid-svg-icons'
 import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 config.autoAddCss = false
-library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp)
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock)
 
 Vue.component('fa', FontAwesomeIcon)
 

@@ -1,27 +1,62 @@
 <template>
     <div>
-        <div class="Wrapper Wrapper--xs pv-100 ft-l">
-            <h1 class="ft-title-l mb-30">Envie de voir de nouvelles têtes {{ user.name }} ?</h1>
+        <div class="Wrapper Wrapper--s pv-100 ft-l">
+            <h1 class="ft-title-l mv-30">Bienvenue chez Cosmoz {{ user.name }} !</h1>
 
-            <conversation :items="conversation" @action="onAction" />
+            <div class="d-flex mt-60 max-width-m">
+                <div class="color-ft round-m bg-bg-light fx-no-shrink mr-15">
+                    <fa icon="far fa-heart" />
+                </div>
+
+                <div>
+                    <h3 class="ft-title-s mb-10">
+                        Le premier réseau vraiment social.
+                    </h3>
+                    <p class="ft-l">Notre seul objectif ? Étendre ton réseau de connaissances pour que tu aies toujours des potes avec qui sortir.</p>
+                </div>
+            </div>
+
+            <div class="d-flex mt-60 max-width-m ml-auto">
+                <div class="color-ft round-m bg-bg-light fx-no-shrink mr-15">
+                    <fa icon="far fa-lock" />
+                </div>
+
+                <div>
+                    <h3 class="ft-title-s mb-10">
+                        Ici, tout le monde se connaît.
+                    </h3>
+                    <p class="ft-l">Ton profil et ce que tu publies est uniquement visible par les personnes que tu as rencontrées en vrai.</p>
+                </div>
+            </div>
+
+            
+            <div class="d-flex mt-60 max-width-m">
+                <div class="color-ft round-m bg-bg-light fx-no-shrink mr-15">
+                    <fa icon="far fa-sparkles" />
+                </div>
+
+                <div>
+                    <h3 class="ft-title-s mb-10">
+                        Sortir & étendre ta constellation.
+                    </h3>
+                    <p class="ft-l">En participant à nos événements, tu vas créer de nouveaux liens avec des personnes géniales.</p>
+                </div>
+            </div>
+
+
+            <div class="mt-60 p-20 bg-bg-xstrong text-right br-s">
+                <button-base :modifiers="['light']" icon-after="arrow-right" :to="{ name: 'welcome-profile' }">
+                    Continuer
+                </button-base>
+            </div>
         </div>
 
-        <div class="p-relative bg-bg-2xstrong" v-if="doubt">
+        <div class="p-relative bg-bg-2xstrong">
             <div id="faq" class="anchor"></div>
 
             <div class="Wrapper Wrapper--s pv-40 ft-l">
                 <h2 class="ft-title-m mb-30">Un doute, une question ?</h2>
                 <faq />
-            </div>
-        </div>
-        <div class="bg-cover bg-ice-cream" v-if="doubt">
-            <div class="Wrapper Wrapper--s pv-40 ft-l text-center">
-                <h3 class="ft-title-l mb-30">On a réussi à te convaincre de te lancer ?</h3>
-
-                <div>
-                    <button-base>Non, j'ai des questions</button-base>
-                    <button-base :modifiers="['light']" @click="onEnd">Je découvre la plateforme</button-base>
-                </div>
             </div>
         </div>
     </div>
@@ -30,57 +65,12 @@
 <script>
 export default {
     name: 'WelcomeIndex',
-    data: () => ({
-        step: 0,
-        doubt: false,
-        conversation: []
-    }),
     computed: {
         user () { return this.$store.getters['user/self'] },
     },
-    created () {
-        this.conversation = [
-            {
-                id: '0',
-                step: 0,
-                content: `On est persuadés qu'aucun algorithme ne pourra jamais prédire la compatibilité et que le mieux à faire, c'est de se rencontrer et de voir si des affinités se créent.`,
-                actions: [
-                    { id: 'disagree', label: `Je préfère le virtuel`, value: -1 },
-                    { id: 'agree', label: `Le réel, y'a que ça de vrai` },
-                ]
-            }, {
-                id: '1',
-                step: 1,
-                content: `Cosmoz est une plateforme qui met le réel au premier plan. Tu vas participer à des événements gratuits, locaux et surtout super conviviaux. <br><br>Sur place tu vas rencontrer de nouvelles têtes, créer de nouveaux liens et surtout passer un bon moment (promis).`,
-                actions: [
-                    { id: 'disagree', label: `Woah, doucement`, value: -1 },
-                    { id: 'agree', label: `Trop cool ! Et ensuite ?` },
-                ]
-            }, {
-                id: '2',
-                step: 2,
-                content: `Bla bla`,
-                actions: [
-                    { id: 'disagree', label: `Voir la FAQ`, value: -1 },
-                    { id: 'agree', label: `Je me lance`, action: this.onEnd },
-                ]
-            }
-        ]
-    },
     methods: {
-        onAction (v) {
-            if (v === -1) {
-                this.doubt = true
-                this.$router.push('#faq')
-            }
-        },
         async onEnd () {
-            await this.$store.dispatch('user/updateNotification', {
-                id: 'welcomed',
-                type: 'onboarding'
-            })
 
-            window.location = this.localePath({ name: 'feed' })
         }
     }
 }

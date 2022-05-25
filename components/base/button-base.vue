@@ -131,6 +131,10 @@ export default {
     margin-right: 8px;
 }
 
+.ButtonBase_iconAfter {
+    margin-left: 8px;
+}
+
 @keyframes baseSpin {
     0% {
         transform: translate3d(-50%, -50%, 0) rotate(0deg);

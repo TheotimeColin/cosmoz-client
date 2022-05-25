@@ -29,8 +29,8 @@
                     v-model="formData.read"
                     :options="[
                         { label: 'Tout le monde', value: 'user', disabled: ['socials'].includes(type) },
-                        { label: `Les personnes que j'ai rencontrées`, value: 'encountered' },
-                        { label: 'Mes affinités', value: 'affinity' },
+                        { label: `Mes rencontres`, value: 'encountered' },
+                        { label: 'Ma constellation', value: 'affinity' },
                     ]"
                 />
             </div>

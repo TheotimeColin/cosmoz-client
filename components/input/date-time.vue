@@ -1,7 +1,7 @@
 <template>
-    <div class="InputBase InputDate is-value">
+    <div class="InputBase InputDate">
         <label class="InputBase_label">{{ label }}</label>
-        <input class="InputBase_element" v-bind="attrs" type="date" v-model="localValue">
+        <input class="InputBase_element" type="datetime-local" v-model="localValue">
     </div>
 </template>
 
@@ -13,8 +13,7 @@ export default {
     components: { InputBase },
     props: {
         label: { type: String, default: '' },
-        value: { type: [String, Date] },
-        attrs: { type: Object, default: () => {} }
+        value: { type: [String, Date] }
     },
     data: () => ({
         localValue: null
@@ -28,7 +27,7 @@ export default {
         value: {
             immediate: true,
             handler (v) {
-                this.localValue = (v ? this.$moment(v) : this.$moment()).format('yyyy-MM-DD')
+                this.localValue = (v ? this.$moment(v) : this.$moment()).format('yyyy-MM-DDTHH:mm')
             }
         },
         localValue: {
