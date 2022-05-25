@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--xs pv-100 ft-l pb-20@xs">
+        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--xs pv-100 ft-l pv-40@xs">
             <h1 class="ft-title-l mt-30 mb-10 mt-0@xs">Personnalisons un peu ton profil.</h1>
 
             <p>On a juste besoin de quelques infos pour te proposer des sorties qui peuvent te plaire.</p>
@@ -37,7 +37,7 @@
                 <input-file class="mt-20" v-model="newPicture" />
             </div>
 
-            <div class="mt-20 p-20 bg-bg-xstrong text-right br-s">
+            <div class="Footer mt-20 p-20 bg-bg-xstrong text-right br-s">
                 <button-base :modifiers="['light']" icon-after="arrow-right" :loading="isLoading">
                     Continuer
                 </button-base>
@@ -47,7 +47,7 @@
         <div class="p-relative bg-bg-2xstrong">
             <div id="faq" class="anchor"></div>
 
-            <div class="Wrapper Wrapper--s pv-40 ft-l">
+            <div class="Wrapper Wrapper--s pv-60 ft-l">
                 <h2 class="ft-title-m mb-30">Un doute, une question ?</h2>
                 <faq />
             </div>
@@ -61,6 +61,7 @@ import { InputBase } from 'instant-coffee-core'
 export default {
     name: 'WelcomeProfile',
     middleware: ['loggedIn'],
+    layout: 'full',
     components: { InputBase },
     data: () => ({
         isPseudo: false,
@@ -123,5 +124,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @include breakpoint-xs {
 
+        .Footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            z-index: 10;
+        }
+    }
 </style>

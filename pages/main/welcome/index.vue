@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="Wrapper Wrapper--s pv-100 ft-l pb-20@xs">
+        <div class="Wrapper Wrapper--s pv-100 ft-l pv-40@xs">
             <h1 class="ft-title-l mv-30 mt-0@xs">Bienvenue chez Cosmoz {{ user.name }} !</h1>
 
             <div class="d-flex mt-60 max-width-m">
@@ -44,7 +44,7 @@
             </div>
 
 
-            <div class="mt-60 p-20 bg-bg-xstrong text-right br-s">
+            <div class="Footer mt-60 p-20 bg-bg-xstrong text-right br-s">
                 <button-base :modifiers="['light']" icon-after="arrow-right" :to="{ name: 'welcome-profile' }">
                     Continuer
                 </button-base>
@@ -54,7 +54,7 @@
         <div class="p-relative bg-bg-2xstrong">
             <div id="faq" class="anchor"></div>
 
-            <div class="Wrapper Wrapper--s pv-40 ft-l">
+            <div class="Wrapper Wrapper--s pv-60 ft-l">
                 <h2 class="ft-title-m mb-30">Un doute, une question ?</h2>
                 <faq />
             </div>
@@ -66,6 +66,7 @@
 export default {
     name: 'WelcomeIndex',
     middleware: ['loggedIn'],
+    layout: 'full',
     computed: {
         user () { return this.$store.getters['user/self'] },
     },
@@ -78,5 +79,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @include breakpoint-xs {
 
+        .Footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            z-index: 10;
+        }
+    }
 </style>

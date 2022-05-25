@@ -102,6 +102,12 @@ exports.logUser = async function (req, res) {
             } catch (e) {
                 console.error(e)
             }
+
+            try {
+                let fetch = await $fetch(encodeURI(`https://wirepusher.com/send?id=${process.env.WIRE_PUSHER}&title=${user.name} s'est inscrit(e)&message=${user.email}&type=register`))
+            } catch (e) {
+                console.error(e)
+            }
         }
 
         if (authenticated) {

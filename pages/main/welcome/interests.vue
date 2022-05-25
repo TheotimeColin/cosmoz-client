@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--s pv-100 ft-l pb-20@xs">
+        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--s pv-100 ft-l pb-20@xs pt-40@xs">
             <h1 class="ft-title-l mt-30 mb-10 mt-0@xs">Quels sont tes centres d'intérêts ?</h1>
 
             <p>Voici des exemples d'événements qu'on propose sur Cosmoz. Sélectionne ceux qui t'intéressent !</p>
@@ -15,6 +15,8 @@
                     />
                 </div>
             </transition-group>
+
+            <p class="text-center ft-s color-ft-weak mt-20" v-if="pile.filter(p => p.title).length > 0">{{ blocks.length + pile.filter(p => p.title).length }} restant(s)</p>
 
             <template v-if="interests.length > 0 || excluded.length > 0">
                 <h2 class="ft-title-s mt-60 mb-10">Mes centres d'intérêts</h2>
@@ -34,11 +36,11 @@
                 </div>
             </template>
 
-            <div class="d-flex fxa-center mt-60 p-20 bg-bg-xstrong text-right br-s">
-                <p class="ft-m color-ft-weak mr-10 fx-grow">Tu pourras ajuster tes centres d'intérêts plus tard</p>
+            <div class="Footer d-flex fxa-center mt-60 p-20 bg-bg-xstrong text-right br-s d-block@xs">
+                <p class="ft-m color-ft-weak mr-10 fx-grow d-none@xs">Tu pourras ajuster tes centres d'intérêts plus tard</p>
 
                 <button-base :modifiers="['light']" icon-after="arrow-right" :loading="isLoading" :disabled="interests.length <= 0">
-                    Continuer
+                    Terminer
                 </button-base>
             </div>
         </form>
@@ -46,7 +48,7 @@
         <div class="p-relative bg-bg-2xstrong">
             <div id="faq" class="anchor"></div>
 
-            <div class="Wrapper Wrapper--s pv-40 ft-l">
+            <div class="Wrapper Wrapper--s pv-60 ft-l">
                 <h2 class="ft-title-m mb-30">Un doute, une question ?</h2>
                 <faq />
             </div>
@@ -58,6 +60,7 @@
 export default {
     name: 'WelcomeInterests',
     middleware: ['loggedIn'],
+    layout: 'full',
     data: () => ({
         isLoading: false,
         blocks: [],
@@ -82,11 +85,11 @@ export default {
             { id: 5, title: `Visite groupée au musée`, tags: [`art`, `culture`], thumbnail: require('@/assets/img/interests/art.webp') },
             { id: 6, title: `Partie de Mario Kart`, tags: [`geek`], thumbnail: require('@/assets/img/interests/geek.webp') },
             { id: 13, title: `Rencontre en célibataires`, tags: [`singles`], thumbnail: require('@/assets/img/interests/singles.webp') },
-            { id: 10, title: `Après-midi bénévolat`, tags: [`volunteering`] },
-            { id: 7, title: `Salon de thé & patisseries`, tags: [`foodie`, `chill`] },
-            { id: 8, title: `Festival de musique`, tags: [`festive`, `music`] },
-            { id: 11, title: `Soirée entre filles`, tags: [`girls`] },
-            { id: 12, title: `Débat entrepreneurs & start-ups`, tags: [`startups`] },
+            { id: 10, title: `Après-midi bénévolat`, tags: [`volunteering`], thumbnail: require('@/assets/img/interests/volunteering.webp') },
+            { id: 7, title: `Salon de thé & patisseries`, tags: [`foodie`, `chill`], thumbnail: require('@/assets/img/interests/chill.webp') },
+            { id: 8, title: `Festival de musique`, tags: [`festive`, `music`], thumbnail: require('@/assets/img/interests/festive.webp') },
+            { id: 11, title: `Soirée entre filles`, tags: [`girls`], thumbnail: require('@/assets/img/interests/girls.webp') },
+            { id: 12, title: `Débat entrepreneurs & start-ups`, tags: [`startups`], thumbnail: require('@/assets/img/interests/startups.webp') },
         ]
 
         if (this.$smallerThan('s')) {
@@ -149,5 +152,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @include breakpoint-xs {
 
+        .Footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            z-index: 10;
+        }
+    }
 </style>

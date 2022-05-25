@@ -29,6 +29,7 @@ export default {
     background-color: var(--color-bg);
     overflow: hidden;
     border-radius: 3px;
+    position: relative;
 
     &.is-active {
 
