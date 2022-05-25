@@ -8,7 +8,7 @@
             <popin-register />
         </div>
 
-        <default-footer />
+        <default-footer class="Footer" />
     </div>
 </template>
 
@@ -93,5 +93,20 @@ export default {
 .layout-enter, .layout-leave-active {
   opacity: 0;
   transform: translateY(3px);
+}
+
+@include breakpoint-xs {
+
+    .LayoutDefault {
+        padding-bottom: 72px;
+    }
+
+    .LayoutDefault_content {
+        padding-bottom: 100px;
+    }
+
+    .Footer {
+        display: none;
+    }
 }
 </style>

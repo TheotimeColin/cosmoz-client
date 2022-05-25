@@ -28,7 +28,7 @@
                     </p>
 
                     <block-orga
-                        v-for="orga in organizations"
+                        v-for="orga in organizations.slice(0, 2)"
                         class="mb-20"
                         v-bind="orga"
                         :key="orga._id"

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="Wrapper pv-60">
+        <div class="Wrapper pv-100">
             <p class="ft-2xl-bold">Hey {{ user.name }} !</p> {{ user.email }}
 
             <div class="mt-30">

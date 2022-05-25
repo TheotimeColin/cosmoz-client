@@ -14,6 +14,8 @@
                             <link-base class="Footer_navItem" :href="$config.baseUrl + '/faq'">Foire aux Questions</link-base>
 
                             <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base>
+
+                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/cgu'">CGU</link-base>
                         </div>
                         <div class="col-6 col-12@xs mt-15@xs">
                             <link-base class="Footer_navItem" :href="$config.baseUrl">Cosmoz Events</link-base>
@@ -22,8 +24,8 @@
                     </div>
                 </div>
 
-                <a href="https://www.instagram.com/gatheringsfr/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
-                    <span class="ft-title-xs tape ft-title-2xs@xs">Passe nous voir sur Insta @gatheringsfr</span>
+                <a href="https://www.instagram.com/cosmoz.social/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
+                    <span class="ft-title-xs tape ft-title-2xs@xs">Passe nous voir sur Insta @cosmoz.social</span>
                 </a>
             </div>
         </div>

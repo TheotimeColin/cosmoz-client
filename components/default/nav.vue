@@ -31,22 +31,21 @@
                     </div>
                 </div>
                 <div class="AppNav_footer">
-                    <p class="subtitle ft-title-3xs">Mes constellations</p>
-
                     <div class="mt-10 p-20 b text-center br-xs">
-                        Tu n'appartiens à aucune constellation.
-                        <link-base :to="{ name: 'faq' }">Comment en rejoindre une ?</link-base>
+                        Une question ? Besoin d'aide ?
+                        <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="AppNav_navBar">
-            <div class="AppNav_barItem" :class="{ 'is-active': item.to == $route.path || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
+            <div class="AppNav_barItem" :class="{ 'is-active': (item.to == '/' && $route.path == item.to) || (item.to !== '/' && $route.path.includes(item.to)) || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
                 <nuxt-link class="AppNav_barLabel" :to="item.to">
-                    <fa class="icon" :icon="`far fa-${item.fa}`" />
-
-                    <div>{{ item.label }}</div>
+                    <div>
+                        <fa class="icon d-block" :icon="`far fa-${item.fa}`" />
+                        {{ item.label }}
+                    </div>
                 </nuxt-link>
             </div>
         </div>
@@ -284,17 +283,28 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        padding: 15px 5px;
+        padding: 6px;
     }
 
     .AppNav_barLabel {
-        display: block;
-        // width: 60px;
-        // height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
         text-align: center;
+
+        &.is-active {
+            color: var(--cosmoz-weak);
+        }
 
         & > div {
             font: var(--ft-2xs);
+        }
+
+        .icon {
+            font-size: 18px;
+            margin: 0 auto 5px;
         }
     }
 }

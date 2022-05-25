@@ -204,11 +204,17 @@ export default {
 
 @include breakpoint-xs {
 
+    .PopinBase_close {
+        font-size: 26px;
+    }
+
     .PopinBase--panel .PopinBase_body {
         width: 100%;
     }
     
     .PopinBase_body {
+        width: 100%;
+        max-width: 100% !important;
         height: 100vh;
         border-radius: 0;
     }

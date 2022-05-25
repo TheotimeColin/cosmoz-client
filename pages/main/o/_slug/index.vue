@@ -19,7 +19,7 @@
                         <h2 class="ft-m ft-s@s">{{ orga.intro }}</h2>
                     </div>
                 </div>
-                <div class="d-flex fxa-center ml-20 ml-0@s fx-reverse@s pv-15@s mt-15@s br-s bg-bg-xstrong@s">
+                <div class="d-flex fxa-center ml-20 ml-0@s fx-reverse@s pv-15@s mt-15@s br-s bg-bg-strong@s">
                     <p class="ft-s text-right mr-10 mr-0@s mt-5@s" v-if="orga.followers + followAction > 0">
                         Suivi par {{ orga.followers + followAction }} personnes
                     </p>

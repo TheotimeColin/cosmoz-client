@@ -10,11 +10,11 @@
             <div class="BlogHeader_nav">
                 <link-base :href="$config.baseUrl" class="BlogHeader_navItem" @click="isOpen = false">Découvrir Cosmoz</link-base>
 
-                <a href="https://www.instagram.com/gatheringsfr" class="BlogHeader_navItem" target="_blank">
+                <a href="https://www.instagram.com/cosmoz.social" class="BlogHeader_navItem" target="_blank">
                     <icon-base name="icon/instagram" class="fill-ft-light" :width="20" /> <span class="d-none ml-10 d-block@s">Cosmoz sur Instagram</span>
                 </a>
 
-                <a href="https://www.meetup.com/fr-FR/pro/gatherings" class="BlogHeader_navItem" target="_blank">
+                <a href="https://www.meetup.com/fr-FR/pro/cosmoz" class="BlogHeader_navItem" target="_blank">
                     <icon-base name="icon/meetup" class="fill-ft-light" :width="25" /> <span class="d-none ml-10 d-block@s">Rejoindre notre Meetup</span>
                 </a>
             </div>

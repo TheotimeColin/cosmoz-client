@@ -22,7 +22,7 @@
                 <quick-menu
                     :large="true"
                     icon="caret-down"
-                    class="Header_button d-none@xs"
+                    class="Header_button"
                     :items="[
                         { fa: 'question-circle', to: { name: 'faq' }, label: `Une question ?` },
                         { fa: 'gear', to: { name: 'compte' }, label: `Mes paramètres` },

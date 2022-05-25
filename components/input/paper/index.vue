@@ -1,5 +1,6 @@
 <template>
     <div class="TextEditor">
+        <p class="ft-m-bold mb-5">{{ label }}</p>
         <editor-menu-bar :editor="editor" v-slot="{ isActive, getMarkAttrs, getNodeAttrs }" v-if="editable">
             <div class="TextEditor_menu">
                 <div class="TextEditor_first">
@@ -69,6 +70,7 @@ export default {
     components: { EditorContent, EditorMenuBar, ButtonEditor, ButtonHeadings, ButtonInsert, ButtonBlocks, MediaLibrary, PopinLink, PopinYoutube, PopinGif },
     props: {
         value: { type: String, default: '' },
+        label: { type: String, default: '' },
         editable: { type: Boolean, default: true }
     },
     data: () => ({

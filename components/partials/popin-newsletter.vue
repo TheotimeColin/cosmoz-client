@@ -15,8 +15,8 @@
                         </button-base>
                     </div>
                         
-                    <a href="https://www.instagram.com/gatheringsfr/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
-                        <span class="ft-title-xs tape">Passe nous voir sur Insta @gatheringsfr</span>
+                    <a href="https://www.instagram.com/cosmoz.social/" target="_blank" class="Insta" :style="{ backgroundImage: `url(${assets.socials})` }">
+                        <span class="ft-title-xs tape">Passe nous voir sur Insta @cosmoz.social</span>
                     </a>
                 </template>
                 <template v-else>
