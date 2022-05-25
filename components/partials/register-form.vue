@@ -133,7 +133,7 @@ export default {
             theme: "outline",
             text: 'continue_with',
             shape: 'pill',
-            width: 388,
+            width: 250,
             size: "large",
             logo_alignment: 'center'
         })

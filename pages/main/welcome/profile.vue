@@ -1,15 +1,15 @@
 <template>
     <div>
-        <div class="Wrapper Wrapper--xs pv-100 ft-l">
-            <h1 class="ft-title-l mt-30 mb-10">Personnalisons un peu ton profil.</h1>
+        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--xs pv-100 ft-l pb-20@xs">
+            <h1 class="ft-title-l mt-30 mb-10 mt-0@xs">Personnalisons un peu ton profil.</h1>
 
             <p>On a juste besoin de quelques infos pour te proposer des sorties qui peuvent te plaire.</p>
 
             <div class="mt-40 bg-bg p-20 br-s">
-                <div class="d-flex mt-5">
+                <div class="d-flex mt-5 d-block@xs">
                     <input-base label="Ton vrai prénom" v-model="formData.name" :attrs="{ required: true }" />
 
-                    <input-toggle class="fx-no-shrink ml-10" label="Utiliser un pseudo" :value="isPseudo" @input="onTogglePseudo"/>
+                    <input-toggle class="fx-no-shrink ml-10 ml-0@xs mt-10@xs" label="Utiliser un pseudo" :value="isPseudo" @input="onTogglePseudo"/>
                 </div>
 
                 <div class="ft-m mt-15 p-20 br-s bg-bg-xstrong strong" v-if="isPseudo">
@@ -25,11 +25,11 @@
 
             <div class="mt-20 bg-bg p-20 br-s">
                 <div class="d-flex fxa-center">
-                    <user-icon class="" :no-link="true" :hide-picture="true" :modifiers="['xl']" v-bind="user" />
+                    <user-icon :no-link="true" :hide-picture="true" :modifiers="['xl']" v-bind="user" />
 
                     <fa icon="far fa-long-arrow-right" class="mh-15" />
 
-                    <user-icon class="" :no-link="true" :modifiers="['xl']" v-bind="user" :picture-src="picture" />
+                    <user-icon :no-link="true" :modifiers="['xl']" v-bind="user" :picture-src="picture" />
                 </div>
             
                 <p class="ft-m mt-15"><fa icon="fas fa-lock" class="mr-3" /> Ta photo de profil est uniquement visible par les personnes que tu as rencontrées en vrai. Tu peux donc mettre une photo de ton visage en toute sécurité !</p>
@@ -38,11 +38,11 @@
             </div>
 
             <div class="mt-20 p-20 bg-bg-xstrong text-right br-s">
-                <button-base :modifiers="['light']" icon-after="arrow-right">
+                <button-base :modifiers="['light']" icon-after="arrow-right" :loading="isLoading">
                     Continuer
                 </button-base>
             </div>
-        </div>
+        </form>
 
         <div class="p-relative bg-bg-2xstrong">
             <div id="faq" class="anchor"></div>
@@ -60,9 +60,11 @@ import { InputBase } from 'instant-coffee-core'
 
 export default {
     name: 'WelcomeProfile',
+    middleware: ['loggedIn'],
     components: { InputBase },
     data: () => ({
         isPseudo: false,
+        isLoading: false,
         newPicture: null,
         formData: {
             name: '',
@@ -78,21 +80,43 @@ export default {
     },
     mounted () {
         this.formData.name = this.user.name
+        this.formData.birthdate = this.user.birthdate
+        
+        if (this.user.alias) {
+            this.formData.alias = this.user.alias
+            this.isPseudo = true
+        }
     },
     methods: {
         onTogglePseudo (v) {
-            console.log(v)
             this.isPseudo = v
 
             if (!v) this.formData.alias = ''
         },
-        async onEnd () {
-            await this.$store.dispatch('user/updateNotification', {
-                id: 'welcomed',
-                type: 'onboarding'
-            })
+        async onSubmit () {
+            this.isLoading = true
+            
+            try {
+                let data = this.formData
 
-            window.location = this.localePath({ name: 'feed' })
+                if (this.newPicture) {
+                    let result = await this.$store.dispatch('library/create', {
+                        file: this.newPicture,
+                        size: 'profile',
+                        path: '$user'
+                    })
+
+                    data.picture = result._id
+                }
+                
+                await this.$store.dispatch('user/update', data)
+
+                this.$router.push(this.localePath({ name: 'welcome-interests' }))
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
         }
     }
 }

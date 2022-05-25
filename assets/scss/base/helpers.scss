@@ -160,11 +160,20 @@
     }
 }
 
-.tag {
-    display: inline-block;
-    font: var(--ft-s);
+.tag,
+.tag-s {
+    display: inline-flex;
+    align-items: center;
+    font: var(--ft-title-2xs);
     color: var(--color-ft);
     background: var(--color-bg-light);
+    border-radius: 30px;
+    padding: 8px 15px;
+    line-height: 1;
+}
+
+.tag-s {
+    font: var(--ft-title-3xs);
     padding: 5px 10px;
 }
 

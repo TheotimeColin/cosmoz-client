@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="Wrapper Wrapper--s pv-100 ft-l">
-            <h1 class="ft-title-l mv-30">Bienvenue chez Cosmoz {{ user.name }} !</h1>
+        <div class="Wrapper Wrapper--s pv-100 ft-l pb-20@xs">
+            <h1 class="ft-title-l mv-30 mt-0@xs">Bienvenue chez Cosmoz {{ user.name }} !</h1>
 
             <div class="d-flex mt-60 max-width-m">
                 <div class="color-ft round-m bg-bg-light fx-no-shrink mr-15">
@@ -65,6 +65,7 @@
 <script>
 export default {
     name: 'WelcomeIndex',
+    middleware: ['loggedIn'],
     computed: {
         user () { return this.$store.getters['user/self'] },
     },

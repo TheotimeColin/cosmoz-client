@@ -81,7 +81,7 @@ export default {
                 
                 if (response.errors.length > 0) throw Error(response.errors[0])
 
-                this.$auth.fetchUser()
+                await this.$auth.fetchUser()
     
                 return response
             } catch (e) {
@@ -103,7 +103,7 @@ export default {
                 
                 if (response.errors.length > 0) throw Error(response.errors[0])
 
-                this.$auth.fetchUser()
+                await this.$auth.fetchUser()
     
                 return response
             } catch (e) {
@@ -164,7 +164,7 @@ export default {
                 
                 if (response.errors.length > 0) throw Error(response.errors[0])
 
-                this.$auth.fetchUser()
+                await this.$auth.fetchUser()
     
                 return response
             } catch (e) {

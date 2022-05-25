@@ -33,7 +33,7 @@ export default {
 
 <style lang="scss" scoped>
 .InputFile {
-    background-color: var(--color-bg-xweak);
+    background-color: var(--color-bg-strong);
     border: 2px dotted var(--color-border);
     border-radius: 4px;
     min-height: 150px;

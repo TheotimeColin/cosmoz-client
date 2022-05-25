@@ -58,6 +58,28 @@ export default {
             error: `Uniquement visible par sa constellation étendue.`
         }
     },
+    interests: {
+        nature: `En pleine nature`,
+        sport: `Sportif en herbe`,
+        outside: `À l'extérieur`,
+        afterwork: `Afterworks`,
+        drinks: `Trinquer ensemble`,
+        foodie: `Bons petits plats`,
+        games: `Jouer ensemble`,
+        insolite: `Insolite`,
+        geek: `Univers geek`,
+        lgbtq: `Communauté LGBTQ+`,
+        movies: `Ciné & pop-corn`,
+        art: `Art & musées`,
+        culture: `Culture`,
+        volunteering: `Bénévolat`,
+        chill: `Au calme`,
+        festive: `En mode festif`,
+        music: `Music lover`,
+        startups: `Entrepreneurs`,
+        girls: `Girls only`,
+        singles: `Entre célibs`
+    },
     errors: {
         default: {
             generic: `Une erreur est survenue, peux-tu réessayer ?`,

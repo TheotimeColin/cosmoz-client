@@ -16,6 +16,7 @@ let UserEntity = {
         name: { type: String, write: 'self' },
         alias: { type: String, write: 'self' },
         birthdate: { type: Date, write: 'self', read: 'self' },
+        interests: { type: Array, default: [], write: 'self', read: 'affinity' },
 
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
