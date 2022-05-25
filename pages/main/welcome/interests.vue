@@ -70,18 +70,18 @@ export default {
     },
     created () {
         this.pile = [
-            { id: 0, title: `Randonnée en forêt`, tags: [`nature`, `sport`, `outside`] },
-            { id: 1, title: `Afterwork sur les quais`, tags: [`afterwork`, `drinks`, `outside`] },
-            { id: 2, title: `Après-midi jeux de société`, tags: [`games`] },
+            { id: 0, title: `Randonnée en forêt`, tags: [`nature`, `sport`, `outside`], thumbnail: require('@/assets/img/interests/nature.webp') },
+            { id: 1, title: `Afterwork sur les quais`, tags: [`afterwork`, `drinks`, `outside`], thumbnail: require('@/assets/img/interests/afterworks.webp') },
+            { id: 2, title: `Après-midi jeux de société`, tags: [`games`], thumbnail: require('@/assets/img/interests/games.webp') },
         ]
 
         this.blocks = [
-            { id: 3, title: `Restaurant insolite`, tags: [`foodie`, `insolite`] },
-            { id: 4, title: `Soirée cinéma`, tags: [`movies`] },
-            { id: 9, title: `Sortie entre LGBTQ+`, tags: [`lgbtq`] },
-            { id: 5, title: `Visite groupée au musée`, tags: [`art`, `culture`] },
-            { id: 6, title: `Partie de Mario Kart`, tags: [`geek`] },
-            { id: 13, title: `Rencontre en célibataires`, tags: [`singles`] },
+            { id: 3, title: `Restaurant insolite`, tags: [`foodie`, `insolite`], thumbnail: require('@/assets/img/interests/foodie.webp') },
+            { id: 4, title: `Soirée cinéma`, tags: [`movies`], thumbnail: require('@/assets/img/interests/movies.webp') },
+            { id: 9, title: `Sortie entre LGBTQ+`, tags: [`lgbtq`], thumbnail: require('@/assets/img/interests/lgbtq.webp') },
+            { id: 5, title: `Visite groupée au musée`, tags: [`art`, `culture`], thumbnail: require('@/assets/img/interests/art.webp') },
+            { id: 6, title: `Partie de Mario Kart`, tags: [`geek`], thumbnail: require('@/assets/img/interests/geek.webp') },
+            { id: 13, title: `Rencontre en célibataires`, tags: [`singles`], thumbnail: require('@/assets/img/interests/singles.webp') },
             { id: 10, title: `Après-midi bénévolat`, tags: [`volunteering`] },
             { id: 7, title: `Salon de thé & patisseries`, tags: [`foodie`, `chill`] },
             { id: 8, title: `Festival de musique`, tags: [`festive`, `music`] },

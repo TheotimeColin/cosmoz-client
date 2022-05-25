@@ -29,6 +29,7 @@ exports.logUser = async function (req, res) {
             data = {
                 email: responsePayload.email,
                 name: responsePayload.given_name,
+                password: shortid.generate()
             }
 
             if (responsePayload.picture && false) {
@@ -60,22 +61,28 @@ exports.logUser = async function (req, res) {
 
         user = await Entities.user.model.findOne({ email: data.email })
         
-        if (!req.body.credential && register && user) throw Error('already-registered')
+        if (!req.body.credential && register && user && user.password) throw Error('already-registered')
         if (!register && !user) throw Error('email-not-found')
         
-        if (user) {
+        if (user && user.password) {
             authenticated = req.body.credential ? true : await user.comparePassword(data.password)
-        } else if (register) {
-            user = await Entities.user.model.create({
-                id: shortid.generate(),
-                ...data,
-                ref: sanitize(req.body.ref),
-                role: 'user'
-            })
+        } else if (register || (user && !user.password)) {
+            if (user) {
+                user.id = shortid.generate()
+                if (data.name) user.name = data.name
+                user.password = data.password
+            } else {
+                user = await Entities.user.model.create({
+                    id: shortid.generate(),
+                    ...data,
+                    ref: sanitize(req.body.ref),
+                    role: 'user'
+                })
+            }
 
             user.owner = user._id
-            user.save()
-            
+            await user.save()
+
             if (!user) throw Error('error')
 
             authenticated = true
