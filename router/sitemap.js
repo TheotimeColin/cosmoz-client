@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export default async function sitemap () {
-    return new Promise((resolve, reject) => {
+export default function sitemap () {
+    return new Promise(async (resolve, reject) => {
         let routes = [
             { url: '/' },
             { url: '/faq' },
