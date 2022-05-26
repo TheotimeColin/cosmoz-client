@@ -13,8 +13,8 @@ let UserEntity = {
         password: { type: String, write: 'admin', read: 'private' },
         role: { type: String, write: 'admin', read: 'editor', default: 'guest' },
 
-        name: { type: String, write: 'self' },
-        alias: { type: String, write: 'self' },
+        name: { type: String, write: 'self', read: 'public', fallback: { alias: 'encountered' } },
+        alias: { type: String, write: 'self', read: 'public' },
         birthdate: { type: Date, write: 'self', read: 'self' },
         interests: { type: Array, default: [], write: 'self', read: 'affinity' },
 

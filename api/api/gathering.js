@@ -93,7 +93,7 @@ exports.updateBookingStatus = async function (req, res) {
 
 const sendConfirmationMail = async function (gathering, user) {
     return new Promise(async (resolve, reject) => {
-        let cover = gathering.cover.medias.find(m => m.size == 'm')
+        let cover = gathering.cover ? gathering.cover.medias.find(m => m.size == 'm') : ''
         let qr = `gatherings/${gathering.id}/${user.id}.png`
 
         try {

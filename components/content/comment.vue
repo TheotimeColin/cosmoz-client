@@ -135,5 +135,9 @@ export default {
             margin-right: 3px;
             vertical-align: middle !important;
         }
+
+        .Comment_main {
+            background-color: var(--color-bg);
+        }
     }
 </style>

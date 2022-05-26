@@ -25,7 +25,7 @@
                     class="Header_button"
                     :items="[
                         { fa: 'question-circle', to: { name: 'faq' }, label: `Une question ?` },
-                        { fa: 'gear', to: { name: 'compte' }, label: `Mes paramètres` },
+                        { fa: 'gear', to: { name: 'compte' }, label: `Mon compte` },
                         { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
                     ]"
                 />

@@ -106,6 +106,7 @@ export default {
         display: block;
 
         &.is-tiny {
+
             .Editor_icon {
                 display: none;
             }
@@ -113,11 +114,19 @@ export default {
             .Editor_main {
                 margin: 0;
             }
+
+            .Editor_input {
+                background-color: var(--color-bg-xstrong);
+            }
         }
     }
 
     .Editor_main {
         margin: 15px 0 0 0;
+    }
+
+    .Editor_secondary {
+        background-color: transparent;
     }
 }
 </style>

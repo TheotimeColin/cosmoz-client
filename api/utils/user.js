@@ -137,7 +137,6 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         requiredRole = result['read'] ? result['read'] : 'public'
                     }
 
-
                     if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
                     } else if (requiredRole == '$user') {
@@ -169,6 +168,16 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         let targetField = Object.keys(replace)[0]
 
                         result[key] = user && requested && data[targetField] && data[targetField].includes(user._id) && user[targetField].includes(requested.owner)
+                    }
+
+                    if (fields[key].fallback) {
+                        let fallback = Object.entries(fields[key].fallback)[0]
+
+                        if (fallback[1] == 'encountered' && result[fallback[0]] && !isEncountered && !isSelf) {
+                            result[key] = result[fallback[0]]
+                        }
+
+                        granted = true
                     }
                     
                     if (!granted) {

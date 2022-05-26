@@ -9,7 +9,7 @@
 
                     <div class="ml-10 ft-s line-1">
                         <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
-                        <p class="ft-italic color-ft-weak mt-5">
+                        <p class="ft-italic color-ft-weak mt-5 ellipsis-1 ellipsis-break">
                             {{ subtitle }}
 
                             · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }}
@@ -18,7 +18,7 @@
                 </div>
 
                 <quick-menu
-                    class="Post_menu"
+                    class="Post_menu fx-no-shrink ml-10"
                     :items="actions"
                 />
             </div>
@@ -271,6 +271,41 @@ export default {
 
         & + & {
             margin-top: 10px;
+        }
+    }
+
+    @include breakpoint-xs {
+
+        .Post {
+            margin: 0 -20px;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--color-border);
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .Post_comments {
+            margin: 0;
+            border: none;
+            padding-top: 0;
+        }
+
+        .Post_text,
+        .Post_head,
+        .Post_footer {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .Post_head {
+            padding-top: 0;
+            display: flex;
+        }
+
+        .Post_menu  {
+            position: relative;
+            top: auto;
+            left: auto;
         }
     }
 

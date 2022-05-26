@@ -25,7 +25,7 @@
                                     :items="[
                                         { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
                                     ]"
-                                    v-if="!isSelf"
+                                    v-if="!isSelf && profile.isAffinity"
                                 />
                             </div>
 

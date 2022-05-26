@@ -572,6 +572,12 @@
     }
 }
 
+.block {
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--color-bg);
+}
+
 @keyframes vehicle {
     0% {
         transform: translate3d(0, 0, 0) rotate(0deg);
@@ -643,5 +649,25 @@
 
     .p-relative\@xs {
         top: auto;
+    }
+
+    .block {
+        padding: 0 20px;
+        margin-left: -20px;
+        margin-right: -20px;
+        background-color: transparent;
+
+        .InputBase_label,
+        .SelectBase_label {
+            background-color: var(--color-bg-strong) !important;
+        }
+
+        .strong {
+            
+            .InputBase_label,
+            .SelectBase_label {
+                background-color: var(--color-bg-xstrong) !important;
+            }
+        }
     }
 }

@@ -70,12 +70,12 @@
                     </div>
                     
                     <div class="Gathering_section mt-30" v-if="gathering.description && gathering.description != '<p></p>'">
-                        <h2 class="ft-title-s mb-15">Détails</h2>
+                        <h2 class="ft-title-m mb-15">Détails</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.description" />
                     </div>
 
                     <div class="Gathering_section" v-if="gathering.venue && gathering.venue != '<p></p>'">
-                        <h2 class="ft-title-s mb-15">À propos du lieu</h2>
+                        <h2 class="ft-title-m mb-15">À propos du lieu</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.venue" />
                     </div>
 
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="Gathering_section" v-if="gathering.information && gathering.information != '<p></p>'">
-                        <h2 class="ft-title-s mb-15">Informations pratiques</h2>
+                        <h2 class="ft-title-m mb-15">Informations pratiques</h2>
                         <text-body :modifiers="['gathering']" :value="gathering.information" />
                     </div>
 

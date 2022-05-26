@@ -80,6 +80,8 @@ export default {
         }
     },
     mounted () {
+        console.log(this.user)
+        
         this.formData.name = this.user.name
         this.formData.birthdate = this.user.birthdate
         
