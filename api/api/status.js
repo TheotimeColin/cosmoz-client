@@ -1,5 +1,6 @@
 const Entities = require('../entities')
-const moment = require('moment')
+const moment = require('moment-timezone')
+moment.tz.setDefault('Europe/Paris')
 const { stripHtml } = require('string-strip-html')
 
 const { authenticate } = require('../utils/user')

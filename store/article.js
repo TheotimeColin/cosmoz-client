@@ -1,5 +1,6 @@
 import storeUtils from '@/utils/store'
-import moment from 'moment'
+import moment from 'moment-timezone'
+moment.tz.setDefault('Europe/Paris')
 import CONSTANTS from '@/utils/constants'
 
 export default {

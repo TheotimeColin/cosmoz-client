@@ -2,7 +2,8 @@ const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { sendMail } = require('../utils/mailing')
-const moment = require('moment')
+const moment = require('moment-timezone')
+moment.tz.setDefault('Europe/Paris')
 const { uploadQR } = require('../utils/files')
 
 exports.updateBookingStatus = async function (req, res) {

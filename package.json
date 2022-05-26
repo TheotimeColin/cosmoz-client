@@ -46,6 +46,7 @@
     "migrate-mongoose": "^4.0.0",
     "mime": "^2.4.4",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
     "mongoose-auto-increment": "^5.0.1",

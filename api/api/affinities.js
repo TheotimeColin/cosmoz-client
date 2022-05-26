@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
-const moment = require('moment')
+const moment = require('moment-timezone')
+moment.tz.setDefault('Europe/Paris')
 
 const { authenticate } = require('../utils/user')
 
