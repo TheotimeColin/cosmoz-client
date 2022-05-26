@@ -4,13 +4,13 @@
             class="Feed_item p-15 mb-20 br-s bg-bg"
             :placeholder="placeholder"
             :read="read"
+            :loading="isSubmitLoading"
             @submit="onSubmit"
             v-if="!disableCreate"
             ref="editor"
         />
 
         <transition-group name="fade">
-
             <content-post
                 v-for="status in displayedStatuses"
                 class="Feed_item"
@@ -50,6 +50,7 @@ export default {
     },
     data: () => ({
         statusesData: [],
+        isSubmitLoading: true,
         isLoading: true,
         page: 0
     }),
@@ -114,6 +115,8 @@ export default {
     },
     methods: {
         async onSubmit (formData) {
+            this.isSubmitLoading = true
+
             try {
                 let data = { ...formData, read: this.read }
 
@@ -136,6 +139,8 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+
+            this.isSubmitLoading = false
         }
     }
 }

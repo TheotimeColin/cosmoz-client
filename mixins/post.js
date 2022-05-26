@@ -1,7 +1,7 @@
 export default {
     data: () => ({
         isDeleted: false,
-        isLoading: false,
+        isDeleteLoading: false,
         isSeeReactions: false,
         reactionsOwners: null,
         pendingDelete: false
@@ -57,7 +57,7 @@ export default {
             })
         },
         async deletePost () {
-            this.isLoading = true
+            this.isDeleteLoading = true
 
             try {
                 const response = await this.$store.dispatch('status/delete', this._id)
@@ -67,7 +67,7 @@ export default {
                 console.error(e)
             }
             
-            this.isLoading = false
+            this.isDeleteLoading = false
         },
         async addReaction (params) {
             let response = await this.$store.dispatch('status/react', {

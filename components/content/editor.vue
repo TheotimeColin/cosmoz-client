@@ -14,7 +14,7 @@
                     </div>
                     <div class="fx-no-shrink">
                         <link-base class="color-ft-weak mr-10" @click="onBlur">Annuler</link-base>
-                        <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit">
+                        <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
                             Envoyer
                         </button-base>
                     </div>
@@ -28,6 +28,7 @@
 export default {
     name: 'Editor',
     props: {
+        isLoading: { type: Boolean, default: false },
         placeholder: { type: String },
         tiny: { type: Boolean, default: false },
         read: { type: String }

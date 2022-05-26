@@ -76,7 +76,7 @@
                             Annuler
                         </button-base>
 
-                        <button-base icon-before="trash" :modifiers="['light']" :loading="isLoading" @click="deletePost">
+                        <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading" @click="deletePost">
                             Oui, supprimer
                         </button-base>
                     </div>
@@ -96,6 +96,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         read: { type: String },
+        isLoading: { type: Boolean, default: false },
         owner: { type: Object },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
@@ -107,8 +108,7 @@ export default {
     data: () => ({
         max: 2,
         isAdd: false,
-        reacted: null,
-        isLoading: false,
+        reacted: null
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
