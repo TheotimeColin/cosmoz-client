@@ -16,6 +16,8 @@ let sendinBlue = SibApiV3Sdk.ApiClient.instance;
 let apiKey = sendinBlue.authentications['api-key']
 apiKey.apiKey = process.env.SENDINBLUE
 
+const cronHourly = require('./crons/hourly.js')
+
 const app = express()
 
 require('./entities/index')
@@ -74,6 +76,8 @@ mongoose.connection.once('open', async () => {
 
     app.post('/affinities/send-mentions', sendMentions)
     app.post('/affinities/remove-match', unmatch)
+
+    cronHourly()
 })
 
 module.exports = app

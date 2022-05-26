@@ -4,13 +4,13 @@ const media = require('./media')
 const mediaCollection = require('./media-collection')
 const user = require('./user')
 const token = require('./token')
-
 const location = require('./location')
 const gathering = require('./gathering')
 const article = require('./article')
 const status = require('./status')
 const organization = require('./organization')
 const mention = require('./mention')
+const mail = require('./mail')
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -24,3 +24,4 @@ exports.article = article
 exports.status = status
 exports.organization = organization
 exports.mention = mention
+exports.mail = mail

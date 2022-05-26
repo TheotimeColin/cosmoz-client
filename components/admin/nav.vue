@@ -32,7 +32,8 @@ export default {
             { label: 'Utilisateurs', icon: 'users', link: 'users' },
             { label: 'Groupes', icon: 'sparkles', link: 'organizations' },
             { label: 'Blog', icon: 'pen-alt', link: 'articles' },
-            { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' }
+            { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' },
+            { label: 'Emails', icon: 'envelope', link: 'other-mails' },
         ]
     })
 }

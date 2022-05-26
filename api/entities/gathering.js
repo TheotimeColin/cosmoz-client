@@ -31,6 +31,8 @@ let Gathering = {
         
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
 
+        reminded: { type: Boolean, default: false, write: 'private', read: 'private' },
+
         organization: { type: mongoose.Schema.Types.ObjectId, write: 'admin', ref: 'organization' },
     }, { timestamps: true })
 }

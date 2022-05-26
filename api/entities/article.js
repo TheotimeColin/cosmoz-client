@@ -14,7 +14,6 @@ let Article = {
     }, { timestamps: true })
 }
 
-
 Article.fields.pre('find', function () {
     this.populate('cover')
 })

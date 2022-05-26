@@ -1,7 +1,7 @@
 const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
-const { sendMail } = require('../utils/mailing')
+const { createMail, sendMail } = require('../utils/mailing')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 const { uploadQR } = require('../utils/files')
@@ -21,7 +21,7 @@ exports.updateBookingStatus = async function (req, res) {
             try {
                 let status = userUpdate.status
 
-                if (user.role !== 'admin' && user.role != 'editor') {
+                if (user.role !== 'admin' && user.role !== 'editor') {
                     if (!user._id.equals(userUpdate._id)) {
                         throw Error('not-authorized-self')
                     } else if (status == 'ghosted' || status == 'confirmed') {
@@ -34,6 +34,21 @@ exports.updateBookingStatus = async function (req, res) {
                 if (status == 'attending') {
                     let sent = await sendConfirmationMail(gathering, user)
                     if (!sent) console.error('failed-mail')
+                }
+
+                if (status == 'confirmed') {
+                    try {
+                        let added = await createMail({
+                            type: 'EVENT_CONFIRM',
+                            date: moment().add(5, 'minutes'),
+                            gathering: gathering._id,
+                            user: userUpdate._id
+                        })
+                        
+                        if (!added) throw Error('failed-queue-email')
+                    } catch (e) {
+                        console.error(e)
+                    }
                 }
 
                 gathering.users = [
