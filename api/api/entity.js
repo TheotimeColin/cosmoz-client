@@ -132,7 +132,7 @@ exports.deleteEntity = async function (req, res) {
         let result = await Entity.model.findById(req.query._id)
         if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
 
-        if (!result.owner.equals(user._id)) throw Error('not-owner')
+        if ((!result.owner || !result.owner.equals(user._id)) && !user.role == 'admin') throw Error('not-owner')
 
         if (typeDeleters[req.query.type]) await typeDeleters[req.query.type](result)
 

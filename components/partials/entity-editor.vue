@@ -55,6 +55,14 @@
                             Sauvegarder
                         </button-base>
                     </div>
+
+                    <div class="bg-bg p-15 br-s mt-20">
+                        <div class="fx-center c-pointer" @click="isDangerZone = !isDangerZone"><p>Danger zone</p> <fa icon="far fa-angle-down" /></div>
+
+                        <div class="mt-20" v-show="isDangerZone">
+                            <link-base @click="deleteEntity">Supprimer cet élément</link-base>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,6 +88,7 @@ export default {
         form: { type: Array, default: () => [] }
     },
     data: () => ({
+        isDangerZone: false,
         state: {
             isLoading: true,
         },
@@ -162,11 +171,11 @@ export default {
             return Decoders[this.entityType].parse(form)
         },
         async deleteEntity () {
-            // let response = await this.$store.dispatch('articles/delete', this.$data._id)
+            let response = await this.$store.dispatch(`${this.entityType}/delete`, this._id)
 
-            // if (response.status == 1) {
-            //     this.$router.push({ path: this.localePath({ name: 'admin-articles' }) })
-            // }
+            if (response.status == 1) {
+                this.$router.push({ path: this.localePath({ name: `${this.entityType}s` }) })
+            }
         },
         async update () {
             let data = this.parseForm(this.formData)
