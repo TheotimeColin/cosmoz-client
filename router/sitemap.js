@@ -10,29 +10,29 @@ export default async function sitemap () {
     try {
         const orgas = await axios.get('https://cosmoz.events/api' + '/entities?type=organization')
 
-        if (orgas && orgas.data) {
-            routes = [
-                ...routes,
-                ...orgas.data.data.filter(g => g.slug).map(g => ({
-                    url: `/o/${g.slug}`,
-                    changefreq: 'daily',
-                    lastmod: g.updatedAt
-                }))
-            ]
-        }
+        // if (orgas && orgas.data) {
+        //     routes = [
+        //         ...routes,
+        //         ...orgas.data.data.filter(g => g.slug).map(g => ({
+        //             url: `/o/${g.slug}`,
+        //             changefreq: 'daily',
+        //             lastmod: g.updatedAt
+        //         }))
+        //     ]
+        // }
 
         const gatherings = await axios.get('https://cosmoz.events/api' + '/entities?type=gathering')
 
-        if (gatherings && gatherings.data) {
-            routes = [
-                ...routes,
-                ...gatherings.data.data.filter(g => g.status == 'active' && g.id).map(g => ({
-                    url: `/o/${g.organization ? g.organization.slug : 'event'}/${g.id}`,
-                    changefreq: 'daily',
-                    lastmod: g.updatedAt
-                }))
-            ]
-        }
+        // if (gatherings && gatherings.data) {
+        //     routes = [
+        //         ...routes,
+        //         ...gatherings.data.data.filter(g => g.status == 'active' && g.id).map(g => ({
+        //             url: `/o/${g.organization ? g.organization.slug : 'event'}/${g.id}`,
+        //             changefreq: 'daily',
+        //             lastmod: g.updatedAt
+        //         }))
+        //     ]
+        // }
     } catch (e) {
         console.warn(e)
     }
