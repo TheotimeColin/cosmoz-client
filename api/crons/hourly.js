@@ -6,7 +6,7 @@ const { sendBulkMail, sendMail } = require('../utils/mailing')
 const Entities = require('../entities')
 
 module.exports = function () {
-    const hourly = new CronJob('* 30 * * * *', async () => {
+    const hourly = new CronJob('* 30 * * * *', () => {
         console.log('=== hourly cron job')
 
         sendPendingEmails()

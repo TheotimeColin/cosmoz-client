@@ -15,10 +15,10 @@
                                 <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
                             </template>
                             <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée ·
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Présence confirmée ·
                             </template>
                             <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
                             </template>
 
                             {{ tagline }}

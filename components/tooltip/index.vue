@@ -31,12 +31,12 @@ export default {
 .Tooltip {
     font: var(--ft-m);
     color: var(--color-ft-weak);
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
     pointer-events: none;
     transform-origin: center;
     transform: scale(0.98) translateY(3px);
     opacity: 0;
-    padding: 12px 18px;
+    padding: 10px 15px;
     border-radius: 5px;
     transition: all 150ms ease;
     pointer-events: none;
@@ -53,5 +53,12 @@ export default {
     transform: scale(1) translateY(0);
     color: var(--color-ft-light);
     pointer-events: all;
+}
+
+@include breakpoint-s {
+
+    .Tooltip {
+        display: none;
+    }
 }
 </style>

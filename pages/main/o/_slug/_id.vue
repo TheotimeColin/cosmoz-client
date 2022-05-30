@@ -57,6 +57,9 @@ export default {
                 id: this.$route.params.id
             })
         },
+        isOrga () {
+            return this.user.role == 'admin'
+        },
         navItems () {
             return [
                 {
@@ -65,12 +68,18 @@ export default {
                     label: 'Détails',
                     props: { gathering: this.gathering }
                 }, {
-                    id: 'delivery',
+                    id: 'feed',
                     component: 'page-gathering-feed',
-                    label: 'Annonces & discussion',
+                    label: 'Discussion',
                     props: { gathering: this.gathering }
                 }, {
-                    id: 'client',
+                    id: 'orga',
+                    component: 'page-gathering-orga',
+                    label: 'Organisation',
+                    disabled: !this.isOrga,
+                    props: { gathering: this.gathering }
+                }, {
+                    id: 'after',
                     component: 'page-gathering-after',
                     label: 'After space',
                     props: { gathering: this.gathering }

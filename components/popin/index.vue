@@ -30,7 +30,8 @@ export default {
     },
     data: () => ({
         listeners: {
-            close: null
+            close: null,
+            echap: null
         }
     }),
     watch: {
@@ -38,22 +39,32 @@ export default {
             handler (v) {
                 if (!this.autoClose) return 
                 
-                if (v && this.$data.listeners.close) {
+                if (v && this.listeners.close) {
                     setTimeout(() => {
-                        document.addEventListener('click', this.$data.listeners.close)
+                        document.addEventListener('click', this.listeners.close)
                     }, 100)
-                } else if (this.$data.listeners.close) {
-                    document.removeEventListener('click', this.$data.listeners.close)
+                } else if (this.listeners.close) {
+                    document.removeEventListener('click', this.listeners.close)
+                }
+
+                if (v && this.listeners.echap) {
+                    document.addEventListener('keydown', this.listeners.echap)
+                } else if (this.listeners.echap) {
+                    document.removeEventListener('keydown', this.listeners.echap)
                 }
             }
         }
     },
     beforeDestroy () {
-        document.removeEventListener('click', this.$data.listeners.close)
+        document.removeEventListener('click', this.listeners.close)
     },
     mounted () {
-        this.$data.listeners.close = (e) => {
+        this.listeners.close = (e) => {
             if (!this.$refs.body.contains(e.target)) this.$emit('close')
+        }
+
+        this.listeners.echap = (e) => {
+            if (e.which == 27) this.$emit('close')
         }
     }
 }

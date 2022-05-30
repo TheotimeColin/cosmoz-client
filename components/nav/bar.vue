@@ -113,13 +113,13 @@ export default {
 
             &::after {
                 right: -2px;
-                background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 100%);
+                background: linear-gradient(to right, rgba(29, 27, 39, 0) 0%, rgba(29, 27, 39, 0.95) 100%);
             }
 
             &::before {
                 width: 10%;
                 left: -2px;
-                background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 100%);
+                background: linear-gradient(to left, rgba(29, 27, 39, 0) 0%, rgba(29, 27, 39, 0.95) 100%);
             }
 
             .NavBar_container {

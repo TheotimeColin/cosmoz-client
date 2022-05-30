@@ -27,9 +27,8 @@ export default {
     styleResources: {
         scss: [
             '@/assets/scss/base/config.scss',
-            'instant-coffee-core/assets/scss/variables.scss',
-            'instant-coffee-core/assets/scss/mixins.scss',
-            'instant-coffee-core/assets/scss/atomic.scss'
+            '@/assets/scss/base/variables.scss',
+            '@/assets/scss/base/mixins.scss',
         ]
     },
 
@@ -86,10 +85,11 @@ export default {
         manifest: {
             name: 'Cosmoz',
             short_name: 'Cosmoz',
-            background_color: '#000000',
-            theme_color: '#000000',
+            background_color: '#1d1b27',
+            theme_color: '#1d1b27',
             lang: 'fr',
             display: 'standalone',
+            start_url: '/feed'
         },
         workbox: {
             runtimeCaching: [ {

@@ -6,6 +6,7 @@
             <Nuxt />
 
             <popin-register />
+            <tooltip-manager />
         </div>
 
         <default-footer class="Footer" />

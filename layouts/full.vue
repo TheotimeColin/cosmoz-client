@@ -2,6 +2,7 @@
     <div class="Layout LayoutDefault" :class="[ classes ]">
         <div class="LayoutDefault_content">
             <Nuxt />
+            <tooltip-manager />
         </div>
     </div>
 </template>

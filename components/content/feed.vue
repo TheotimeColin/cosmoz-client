@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_item p-15 mb-20 br-s bg-bg"
+            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg"
             :placeholder="placeholder"
             :read="read"
             :loading="isSubmitLoading"
@@ -151,6 +151,15 @@ export default {
 
     & + & {
         margin-top: 20px;
+    }
+}
+
+@include breakpoint-xs {
+
+    .Feed_editor {
+        margin: 0 -20px 20px;
+        border-radius: 0;
+        padding: 20px;
     }
 }
 </style>

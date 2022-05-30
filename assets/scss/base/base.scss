@@ -63,3 +63,61 @@ body {
 b b {
     font-weight: 800;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;    
+}
+
+body {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1, h2, h3, h4, h5, p {
+    font: inherit;
+    font-weight: inherit;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+ul, li, ol {
+    margin: 0;
+    padding: 0;
+}
+
+.fa {
+    line-height: 1;
+}
+
+button,
+input,
+textarea {
+    border: none;
+    display: block;
+    appearance: none;
+    font: inherit;
+    color: inherit;
+    background: none;
+}
+
+input, textarea {
+    width: 100%;
+}
+
+fieldset {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+}

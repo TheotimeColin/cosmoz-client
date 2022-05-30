@@ -22,17 +22,6 @@
             </nuxt-link>
         </div>
 
-        <div class="p-20 bg-bg mt-10 br-s" v-if="hasBooked">
-            <div class="d-flex fxa-center">
-                <div class="width-3xs fx-no-shrink">
-                    <qr-code :data="qr" />
-                </div>
-                <div class="ft-s ml-20">
-                    Présente ce QR code à l'organisateur sur place.
-                </div>
-            </div>
-        </div>
-
         <div class="p-20 bg-bg mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
             <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
                 <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
@@ -105,40 +94,6 @@
                 </div>
             </template>
         </popin>
-
-        <popin :is-active="isAdminManage" @close="isAdminManage = false" v-if="user && user.role == 'admin'">
-            <template slot="content">
-                <form @submit.prevent="onManageSubmit" class="p-30">
-                    <div class="mb-30" v-for="(status, i) in userStatuses" :key="i">
-                        <p class="ft-title-2xs">{{ status.label }} <span class="round-s bg-bg ml-10">{{ status.users.length }}</span></p>
-
-                        <div class="row-xs mt-10">
-                            <div class="col-6 mt-10" v-for="user in status.users" :key="user._id">
-                                <div class="d-flex fxa-center p-15 b">
-                                    <div>
-                                        <user-icon class="mr-10" v-bind="user" />
-                                        {{ user.name }} 
-                                    </div>
-                                    <div class="fx-grow text-right">
-                                        <button-base class="is-merlot" :modifiers="['round', 'current', 's']" icon-before="do-not-enter" @click.stop="onUserAttendance(user, 'ghosted')"/>
-
-                                        <button-base class="is-tulip" :modifiers="['round', 'current', 's']" icon-before="times" @click.stop="onUserAttendance(user, 'cancelled')"/>
-
-                                        <button-base class="is-alpine" :modifiers="['round', 'current', 's']" icon-before="check" @click.stop="onUserAttendance(user, 'confirmed')"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-right" v-if="userChanges.length > 0">
-                        <button-base type="submit" :modifiers="['light']">
-                            Confirmer les changements
-                        </button-base>
-                    </div>
-                </form>
-            </template>
-        </popin>
     </div>
 </template>
 
@@ -150,9 +105,7 @@ export default {
     },
     data: () => ({
         isLoading: false,
-        isManage: false,
-        isAdminManage: false,
-        userChanges: []
+        isManage: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -176,23 +129,11 @@ export default {
         },
         googleCal () {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
-        },
-        userStatuses () {
-            return [
-                { label: 'En attente', users: this.usersByStatus(['attending']) },
-                { label: 'Confirmé', users: this.usersByStatus(['confirmed']) },
-                { label: 'Annulé', users: this.usersByStatus(['cancelled']) },
-                { label: 'Pas prévenu', users: this.usersByStatus(['ghosted']) },
-                { label: `Liste d'attente`, users: this.usersByStatus(['waiting']) },
-            ]
-        },
-        qr () {
-            return this.$config.baseUrl + '/v/' + this.gathering.id + '?user=' + this.user.id
         }
     },
     methods: {
         usersByStatus (statuses) {
-            let users = Object.values([ ...this.gathering.users, ...this.userChanges ].reduce((all, current) => ({
+            let users = Object.values(this.gathering.users.reduce((all, current) => ({
                 ...all, [current._id]: current 
             }), {}))
 
@@ -213,29 +154,6 @@ export default {
             }
 
             this.isLoading = false
-        },
-        onUserAttendance (user, status) {
-            this.userChanges = this.userChanges.filter(u => u._id != user._id)
-
-            this.userChanges = [
-                ...this.userChanges,
-                { ...user, status }
-            ]
-        },
-        async onManageSubmit () {
-            this.isLoading = true
-
-            try {
-                await this.$store.dispatch('gathering/updateBookStatus', {
-                    _id: this.gathering._id,
-                    users: this.userChanges.map(u => ({ _id: u._id, status: u.status }))
-                })
-            } catch (e) {
-                console.error(e)
-            }
-
-            this.isLoading = false
-            this.userChanges = []
         }
     }
 }
