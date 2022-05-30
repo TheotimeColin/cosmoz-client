@@ -26,7 +26,7 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
             const SIZES = {
                 profile: [
                     { id: 's', width: 100 },
-                    { id: 'm', width: 300 }
+                    { id: 'm', width: 500 }
 
                 ],
                 default: [
