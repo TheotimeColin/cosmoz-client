@@ -36,7 +36,7 @@
 
             <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
-            <div class="d-flex fxa-center mt-20">
+            <div class="d-flex fxa-center mt-20" v-if="!hasConfirmed">
                 <template v-if="user">
                     <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
                         événement complet

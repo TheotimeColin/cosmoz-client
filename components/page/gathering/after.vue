@@ -3,7 +3,7 @@
         <div class="Gathering_section" v-if="hasConfirmed">
             <div class="pt-20 mb-30 bg-bg br-s">
                 <p class="ft-title-s mb-20 ph-20">
-                    Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
+                    Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
                 </p>
 
                 <slider-block
@@ -27,15 +27,34 @@
                     <fa icon="far fa-circle-question" class="mr-5" /> Présence non-confirmée
                 </p>
 
-                <p class="mt-10">Tu étais inscrit à cette rencontrée mais tu n'as pas scanné le QR code sur place.</p>
+                <p class="mt-10">Ta présence n'est pas encore confirmée. Scanne le QR code qui sera disponible sur place pour avoir accès à cet espace.</p>
             </div>
         </div>
         <div class="Gathering_section" v-else>
-            <div class="p-20 bg-bg-xstrong br-s text-center">
-                <fa icon="far fa-hand-wave" class="ft-xl color-ft-xweak line-1 mb-10"></fa>
-
-                <p>Cet espace est réservé aux personnes qui ont participé à la rencontre.</p>
+            <div class="p-20 bg-bg br-s text-center">
+                <div class="row">
+                    <div class="col-4 col-12@s">
+                        <h3 class="ft-title-2xs">
+                            <fa icon="far fa-camera-polaroid" class="color-ft-weak" />
+                            <p class="mt-5">Partage les photos prises pendant la rencontre</p>
+                        </h3>
+                    </div>
+                    <div class="col-4 col-12@s mt-30@s">
+                        <h3 class="ft-title-2xs">
+                            <fa icon="far fa-hand-wave" class="color-ft-weak" />
+                            <p class="mt-5">Remercie & interagis avec les autres participants</p>
+                        </h3>
+                    </div>
+                    <div class="col-4 col-12@s mt-30@s">
+                        <h3 class="ft-title-2xs">
+                            <fa icon="far fa-sparkles" class="color-ft-weak" />
+                            <p class="mt-5">Ajoute les personnes que tu as appréciées</p>
+                        </h3>
+                    </div>
+                </div>
             </div>
+
+            <p class="color-ft-weak mt-20 text-center">Cet espace est réservé aux personnes qui ont participé à la rencontre.</p>
         </div>
     </div>
 </template>

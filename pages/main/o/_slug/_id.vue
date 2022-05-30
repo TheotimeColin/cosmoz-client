@@ -81,7 +81,7 @@ export default {
                 }, {
                     id: 'after',
                     component: 'page-gathering-after',
-                    label: 'After space',
+                    label: 'Space',
                     props: { gathering: this.gathering }
                 }
             ]
