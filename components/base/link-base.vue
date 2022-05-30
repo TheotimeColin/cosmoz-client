@@ -41,14 +41,15 @@ export default {
 
 <style lang="scss" scoped>
 .LinkBase {
-    font: var(--ft-s);
+    font: var(--ft-title-3xs);
     line-height: 1;
     display: inline-block;
     cursor: pointer;
     padding: 0;
     color: var(--color-ft-light);
-    text-underline-offset: 0.085rem;
+    text-underline-offset: 0.25rem;
     text-decoration: underline;
+    text-decoration-color: var(--color-ft-weak);
 
     &:hover {
         text-decoration: none;

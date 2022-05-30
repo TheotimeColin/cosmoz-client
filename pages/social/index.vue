@@ -132,10 +132,10 @@
                         Envie de voir de nouvelles têtes ? Nouveau en ville ? On a pensé à toi.
                     </h2>
                     
-                    <p>On a créé <span class="text-underline">Cosmoz Events</span> pour les personnes qui ont envie d'étendre leur constellation. Participe à des rassemblements super conviviaux près de chez toi, et crée de nouvelles affinités !</p>
+                    <p>On a créé <span class="text-underline">Cosmoz Events</span> pour les personnes qui ont envie d'étendre leur constellation. Participe à des rencontres super conviviales près de chez toi, et crée de nouvelles affinités !</p>
 
                     <button-base :href="$config.baseUrl" :modifiers="['light']" class="mt-30 n-ml-3">
-                        Découvrir nos rassemblements
+                        Découvrir nos rencontres
                     </button-base>
                 </div>
             </div>

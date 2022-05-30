@@ -77,10 +77,10 @@ export default {
                 to: this.localePath({ name: 'g' }),
                 items: [
                     {
-                        label: `Rejoindre un rassemblement`,
+                        label: `Participer à une rencontre`,
                         to: this.localePath({ name: 'g' })
                     }, {
-                        label: `Rassemblements passés`,
+                        label: `Mes rencontres passées`,
                         to: this.localePath({ name: 'g-past' })
                     }
                 ]

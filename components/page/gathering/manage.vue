@@ -24,15 +24,17 @@
 
         <div class="p-20 bg-bg mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
             <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
-                <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id" v-bind="participant" />
+                <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).slice(0, 7)" :key="participant._id" v-bind="participant" />
             </div>
-        
-            <template v-if="usersByStatus(['attending']).length > 3 && !hasBooked">
-                {{ attending }} et {{ usersByStatus(['attending']).length - 3 }} autres participent !
-            </template>
-            <template v-else>
-                {{ usersByStatus(['attending', 'confirmed']).length }} inscrits
-            </template>
+            
+            <link-base @click="isList = true">
+                <template v-if="usersByStatus(['attending', 'confirmed']).length > 3 && !hasBooked">
+                    {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 3 }} autres participent
+                </template>
+                <template v-else>
+                    {{ usersByStatus(['attending', 'confirmed']).length }} inscrits
+                </template>
+            </link-base>
 
             <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
@@ -55,6 +57,20 @@
                 </template>
             </div>
         </div>
+
+        <popin :is-active="isList" :modifiers="['s']" @close="isList = false">
+            <template slot="content">
+                <div class="p-30">
+                    <p class="ft-title-s mb-15">Participations</p>
+
+                    <div class="row-xs">
+                        <div class="col-6 pt-10 col-12@xs" v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id">
+                            <user-icon :display-name="true" :modifiers="['m']" v-bind="participant" />
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </popin>
 
         <popin :is-active="isManage" :modifiers="['s']" @close="isManage = false">
             <template slot="content">
@@ -105,12 +121,13 @@ export default {
     },
     data: () => ({
         isLoading: false,
-        isManage: false
+        isManage: false,
+        isList: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
         attending () {
-            return this.$shuffle(this.usersByStatus(['attending'])).slice(0, 3).map(u => u.name).join(', ')
+            return this.$shuffle(this.usersByStatus(['attending', 'confirmed'])).slice(0, 2).map(u => u.name).join(', ')
         },
         hasBooked () {
             return this.user && this.usersByStatus(['attending']).find(u => u._id == this.user._id)

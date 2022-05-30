@@ -12,13 +12,13 @@
                     <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
                         <div>
                             <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
                             </template>
                             <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Présence confirmée ·
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> 
                             </template>
                             <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
                             </template>
 
                             {{ tagline }}
@@ -30,13 +30,13 @@
                     <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!orgaOnly">
                         <div>
                             <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> Inscrit ·
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
                             </template>
                             <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success ml-5"><fa icon="far fa-check" /></span> Présence confirmée · 
+                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
                             </template>
                             <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak ml-5"><fa icon="far fa-warning" /></span> Je n'y suis pas allé ·
+                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
                             </template>
 
                             {{ tagline }}

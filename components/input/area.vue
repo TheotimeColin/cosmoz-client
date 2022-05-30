@@ -58,6 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 .Area {
+    border-radius: 6px;
 
     &.is-m .Area_input {
         font: var(--ft-l);

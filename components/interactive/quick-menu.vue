@@ -88,6 +88,7 @@ export default {
         bottom: -5px;
         right: 0;
         opacity: 0;
+        padding: 5px;
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
         background-color: var(--color-bg-2xstrong);
@@ -96,8 +97,9 @@ export default {
     }
 
     .QuickMenu_action {
-        font: var(--ft-m);
-        padding: 10px 15px;
+        font: var(--ft-title-3xs);
+        border-radius: 4px;
+        padding: 12px 12px;
         display: flex;
         align-items: center;
         min-height: 40px;
