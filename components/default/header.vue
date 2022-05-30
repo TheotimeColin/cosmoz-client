@@ -31,7 +31,7 @@
                 />
             </div>
             <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Les rencontres</link-base>
+                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres</link-base>
 
                 <link-base class="Header_navItem" :modifiers="['current']"  @click="$store.commit('page/register', 'login')">Se connecter</link-base>
 

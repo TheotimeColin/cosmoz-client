@@ -31,6 +31,7 @@
 export default {
     props: {
         items: { type: Array },
+        default: { type: String },
         value: { type: [String, Boolean], default: false },
     },
     data: () => ({
@@ -74,10 +75,11 @@ export default {
             }
         }
     },
-    mounted () {
+    created () {
+        if (this.default && !this.$route.query.section) this.section = this.default 
+
         setTimeout(() => {
             this.isInit = true
-            this.setQuery()
         }, 100)
     },
     methods: {
@@ -113,7 +115,7 @@ export default {
                 let query = { ...this.$route.query }
                 let index = this.items.indexOf(this.currentSection)
 
-                if (this.section) {
+                if (this.section && this.section !== 'index') {
                     query.section = this.section
                 } else {
                     delete query.section

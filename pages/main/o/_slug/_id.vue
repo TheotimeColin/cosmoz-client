@@ -12,7 +12,7 @@
             </app-banner>
             <div class="Wrapper o-hidden@s">
                 <div class="d-flex fx-reverse@xs">
-                    <nav-body class="fx-grow pt-20 pb-60" :items="navItems" />
+                    <nav-body class="fx-grow pt-20 pb-60" :items="navItems" :default="hasBooked ? 'after' : ''" />
 
                     <div class="width-s fx-no-shrink n-mt-60 ml-40 mb-60 p-relative" v-if="$biggerThan('s')">
                         <page-gathering-manage :gathering="gathering" />
@@ -48,7 +48,6 @@ export default {
     },
     data: () => ({
         isLoading: true,
-
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -58,7 +57,10 @@ export default {
             })
         },
         isOrga () {
-            return this.user.role == 'admin'
+            return this.user && this.user.role == 'admin'
+        },
+        hasBooked () {
+            return this.gathering.users.find(s => s.status == 'confirmed' && s._id == this.user._id)
         },
         navItems () {
             return [

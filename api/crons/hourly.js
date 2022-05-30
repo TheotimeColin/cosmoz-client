@@ -6,6 +6,7 @@ const { sendBulkMail, sendMail } = require('../utils/mailing')
 const Entities = require('../entities')
 
 module.exports = function () {
+    console.log('===> init cron')
     const hourly = new CronJob('* 30 * * * *', () => {
         console.log('=== hourly cron job')
 

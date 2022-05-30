@@ -5,7 +5,7 @@
                 <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
             </p>
             <p class="mt-5">
-                <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ gathering.location }} {{ gathering.location }} {{ gathering.location }} {{ gathering.location }}
+                <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ user ? gathering.location : `Information réservée aux membres` }}
             </p>
 
             <nuxt-link :to="localePath({ name: 'o-slug', params: { slug: gathering.organization.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.organization">
@@ -29,7 +29,7 @@
             
             <link-base @click="isList = true">
                 <template v-if="usersByStatus(['attending', 'confirmed']).length > 3 && !hasBooked">
-                    {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 3 }} autres participent
+                    {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 2 }} autres participent
                 </template>
                 <template v-else>
                     {{ usersByStatus(['attending', 'confirmed']).length }} inscrits
