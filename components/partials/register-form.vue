@@ -1,8 +1,12 @@
 <template>
     <div>
-        <p class="ft-title-m mb-30">
-            {{ formType == 'register' ? `Créer mon compte Cosmoz` : `Se connecter` }}
-        </p>
+        <div class="mb-30">
+            <p class="ft-title-m">
+                {{ formType == 'register' ? `Créer mon compte Cosmoz` : `Se connecter` }}
+            </p>
+            
+            <slot name="description"></slot>
+        </div>
 
         <div v-show="hasGoogle">
             <div class="d-flex fxj-center">
@@ -91,6 +95,7 @@ export default {
     components: { InputBase, SelectBase, ToggleBase },
     props: {
         type: { type: String },
+        redirect: { type: Boolean, default: true },
         reference: { type: String, default: 'unknown' },
         noSubmit: { type: Boolean, default: false },
         initialData: { type: Object, default: () => ({}) }
@@ -172,7 +177,7 @@ export default {
                     this.errors = response.data.errors
                     this.isLoading = false
                 } else {
-                    window.location = this.localePath({ name: 'feed' })
+                    if (this.redirect) window.location = this.localePath({ name: 'feed' })
                 }
             } catch (e) {
                 console.log(e)

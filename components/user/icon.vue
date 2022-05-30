@@ -10,7 +10,13 @@
             </div>
         </div>
 
-        <link-base :invert="true" class="UserIcon_name" v-if="displayName">{{ name ? name : '' }}</link-base>
+        <div class="ml-10" v-if="displayName">
+            <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
+                {{ name ? name : '' }}
+            </component>
+            
+            <slot></slot>
+        </div>
     </component>
 </template>
 
@@ -71,8 +77,8 @@ export default {
 
 .UserIcon_name {
     font: var(--ft-title-2xs);
+    line-height: 1;
     font-size: 15px;
-    margin-left: 10px;
 }
 
 .UserIcon_badge {
@@ -131,6 +137,10 @@ export default {
         width: 20px;
         height: 20px;
         font-size: 10px;
+    }
+
+    .UserIcon_name {
+        font: var(--ft-title-xs);
     }
 }
 

@@ -17,7 +17,7 @@
             </div>
         </transition-group>
 
-        <div class="mt-5 d-flex fx-justify-end fxa-center">
+        <div class="mt-5 d-flex fxj-end fxa-center">
             <button-base icon-before="angle-left" type="button" :modifiers="['light', 'round', 'xs']" @click="offset -= limit" v-show="this.offset > 0" />
 
             <p class="ft-xs-medium mh-10">{{ (this.offset / this.limit) + 1 }} / {{ this.maxPages }}</p>

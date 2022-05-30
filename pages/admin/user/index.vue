@@ -13,7 +13,7 @@
                         v-model="form.name"
                     />
 
-                    <div class="d-flex fx-justify-end mt-20">
+                    <div class="d-flex fxj-end mt-20">
                         <button-base :modifiers="['s']" :attrs="{ type: 'submit' }">
                             Enregistrer
                         </button-base>

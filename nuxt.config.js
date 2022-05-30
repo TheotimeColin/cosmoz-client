@@ -159,7 +159,7 @@ export default {
           }
         },
         redirect: {
-            logout: process.env.baseUrl,
+            logout: false,
             login: '/compte/login',
             home: false,
             callback: false

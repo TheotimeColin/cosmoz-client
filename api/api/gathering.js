@@ -24,7 +24,7 @@ exports.updateBookingStatus = async function (req, res) {
                 if (user.role !== 'admin' && user.role !== 'editor') {
                     if (!user._id.equals(userUpdate._id)) {
                         throw Error('not-authorized-self')
-                    } else if (status == 'ghosted' || status == 'confirmed') {
+                    } else if (status == 'ghosted') {
                         throw Error('not-authorized')
                     } else if (status == 'attending' && gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= gathering.max) {
                         throw Error('g-full')

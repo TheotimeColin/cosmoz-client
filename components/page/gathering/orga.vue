@@ -61,7 +61,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         qr () {
-            return this.$config.baseUrl + '/v/' + this.gathering.id + '?user=' + this.user.id
+            return this.$config.baseUrl + '/v/' + this.gathering._id
         },
         userStatuses () {
             return [

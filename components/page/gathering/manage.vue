@@ -69,10 +69,10 @@
 
                             <link-base class="mv-20" :href="googleCal" target="_blank">Ajouter à Google Calendar</link-base>
                             
-                            <p class="p-10 bg-bg-weak br-s">Tu as dû recevoir un email avec le QR code à faire scanner sur place le jour J. Vérifie tes spam !</p>
+                            <p class="p-10 bg-bg-weak br-s">Tu as dû recevoir un email de confirmation. Vérifie tes spam !</p>
                         </template>
                         <template v-else>
-                            Attention, pour conserver ton futur accès aux événements <span class="text-underline">n'oublie pas de te désincrire</span> si tu as un empêchement !
+                            Attention, pour conserver ton accès aux futures rencontres <span class="text-underline">n'oublie pas de te désincrire</span> si tu as un empêchement !
                         </template>
                         
                         <div>

@@ -4,8 +4,10 @@
 
 <script>
 export default {
-    mounted () {
-        this.$auth.logout()
+    async mounted () {
+        await this.$auth.logout()
+
+        window.location = this.$config.baseUrl
     }
 }
 </script>
