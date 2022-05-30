@@ -3,7 +3,7 @@
         <form @submit.prevent="onSubmit" class="Wrapper Wrapper--s pv-100 ft-l pb-20@xs pt-40@xs">
             <h1 class="ft-title-l mt-30 mb-10 mt-0@xs">Quels sont tes centres d'intérêts ?</h1>
 
-            <p>Voici des exemples d'événements qu'on propose sur Cosmoz. Sélectionne ceux qui t'intéressent !</p>
+            <p>Voici des exemples de rencontres qu'on propose sur Cosmoz. Sélectionne ceux qui t'intéressent !</p>
 
             <transition-group name="fade" tag="div" class="row-s mt-40" v-if="pile.filter(p => p.title).length > 0">
                 <div class="col-4 col-6@xs mb-20@xs" v-for="block in pile" :key="block.id">

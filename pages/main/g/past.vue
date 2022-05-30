@@ -2,7 +2,7 @@
     <div class="">
         <div class="Wrapper Wrapper--s">
             <h1 class="ft-title-l mt-100">
-                Mes événements passés
+                Mes rencontres passés
             </h1>
 
             <div class="pt-40 pb-60">
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="bg-bg-xstrong p-30 text-center br-s" v-else>
-                    <fa icon="far fa-party-horn" class="ft-xl color-ft-xweak line-1"></fa>
+                    <fa icon="far fa-hand-wave" class="ft-xl color-ft-xweak line-1"></fa>
 
                     <p class="mt-10 mb-20 line-1">Tu n'as pas encore participé à un événement.</p>
 
@@ -37,7 +37,7 @@
                     </button-base>
                     
                     <div class="mt-5">
-                        <link-base :to="{ name: 'faq' }">Des questions sur nos événements ?</link-base>
+                        <link-base :to="{ name: 'faq' }">Des questions sur nos rencontres ?</link-base>
                     </div>
                 </div>
             </div>

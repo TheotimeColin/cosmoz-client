@@ -36,11 +36,11 @@ export default {
         ratio: { type: Number, default: 0 },
         isLoading: { type: Boolean, default: false }
     },
-    // computed: {
-    //     dynSlots () {
-    //         return Object.keys(this.$slots).filter(key => key != 'submit')
-    //     }
-    // },
+    computed: {
+        breakpoint () {
+            return this.$store.state.page.breakpoint
+        }
+    },
     data: () => ({
         step: 0,
         maxSteps: 0
@@ -51,6 +51,9 @@ export default {
     watch: {
         isLoading (v) {
             if (!v) this.$nextTick(() => this.checkDimensions())
+        },
+        breakpoint () {
+            this.$nextTick(() => this.checkDimensions())
         }
     },
     methods: {

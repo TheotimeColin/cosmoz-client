@@ -24,7 +24,7 @@
                         <div class="p-15@s">
                             <user-icon class="mr-10" :display-name="true" v-bind="user" />
                         </div>
-                        <div class="fx-grow text-right text-center@s p-15@s bg-bg-xstrong@s">
+                        <div class="fx-grow text-right p-15@s bg-bg-xstrong@s">
                             <button-base type="button" class="ml-3" :modifiers="['round', 'weak', 'xs']" icon-before="rotate-right" @click.stop="onUserAttendance(user, 'attending')" @mouseenter.native="(e) => $tOpen(`Réinitialiser le statut de cette personne.`, e)" @mouseleave.native="$tClose" v-if="status.id != 'attending'" />
 
                             <button-base type="button" class="ml-3" :modifiers="['round', 'light', 'xs']" icon-before="ghost" @click.stop="onUserAttendance(user, 'ghosted')" @mouseenter.native="(e) => $tOpen(`Cette personne n'est pas venue et n'a pas prévenu. Son taux de participation sera pénalisé.`, e)" @mouseleave.native="$tClose" v-if="status.id != 'ghosted'"/>

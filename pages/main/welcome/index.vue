@@ -39,7 +39,7 @@
                     <h3 class="ft-title-s mb-10">
                         Sortir & étendre ta constellation.
                     </h3>
-                    <p class="ft-l">En participant à nos événements, tu vas créer de nouveaux liens avec des personnes géniales.</p>
+                    <p class="ft-l">En participant à nos rencontres, tu vas créer de nouveaux liens avec des personnes géniales.</p>
                 </div>
             </div>
 

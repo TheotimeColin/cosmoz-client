@@ -3,14 +3,14 @@
         <template v-if="!isLoading && gathering">
             <app-banner :background="gathering.hero">
                 <template slot="return">
-                    <link-base class="d-none@s" :to="{ path: localePath({ name: 'g' }) }" icon-before="long-arrow-left">Retour aux événements</link-base>
+                    <link-base class="d-none@s" :to="{ path: localePath({ name: 'g' }) }" icon-before="long-arrow-left">Retour à la liste</link-base>
                 </template>
                 
                 <div>
                     {{ gathering.title }}
                 </div>
             </app-banner>
-            <div class="Wrapper">
+            <div class="Wrapper o-hidden@s">
                 <div class="d-flex fx-reverse@xs">
                     <nav-body class="fx-grow pt-20 pb-60" :items="navItems" />
 

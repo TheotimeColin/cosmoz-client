@@ -109,7 +109,7 @@ export default {
     flex-grow: 0;
     padding: 0px;
     min-height: 0;
-    border-top: 1px solid var(--color-border);
+    // border-top: 1px solid var(--color-border);
     background-color: var(--color-bg-strong);
 }
 

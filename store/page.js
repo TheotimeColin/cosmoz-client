@@ -13,7 +13,7 @@ export default {
         isBodyOverflow: true,
         isPWA: false,
         isScrolled: false,
-        breakpoint: "",
+        breakpoint: 'l',
         body: {
             classes: [ 'is-fill' ],
             background : ''

@@ -42,7 +42,7 @@
                 <div class="fx-grow o-hidden">
                     <div v-if="upcomingEvents.length > 0">
                         <p class="ft-title-m mb-20">
-                            <span class="round bg-bg-2xstrong mr-5">{{ upcomingEvents.length }}</span> Événements à venir
+                            <span class="round bg-bg-2xstrong mr-5">{{ upcomingEvents.length }}</span> Rencontres à venir
                         </p>
 
                         <block-gathering
@@ -56,7 +56,7 @@
                     <div class="bg-bg-xstrong p-30 text-center br-s" v-else>
                         <fa icon="far fa-clock" class="ft-xl color-ft-xweak line-1"></fa>
 
-                        <p class="mt-10 max-width-m m-auto">Ce créateur n'a pas d'événements programmés pour l'instant. Reste à l'écoute !</p>
+                        <p class="mt-10 max-width-m m-auto">Ce créateur n'a pas de rencontres programmées pour l'instant. Reste à l'écoute !</p>
 
                         <button-base class="mt-20" :modifiers="['light']" icon-before="plus" @click="onFollow" v-if="!this.isFollowed">
                             Suivre
@@ -65,7 +65,7 @@
 
                     <div class="pt-20 br-s bg-bg mv-40" v-if="pastEvents.length > 0">
                         <p class="ft-title-xs mb-20 ph-20">
-                            <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Événements passés
+                            <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Rencontres passés
                         </p>
 
                         <slider-block

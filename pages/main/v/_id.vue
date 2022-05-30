@@ -16,7 +16,7 @@
         <div class="bg-bg p-20 br-s mb-10" v-else>
             <register-form :redirect="false">
                 <template slot="description">
-                    <p class="mt-10">Accède à des événements exclusifs près de chez toi et garde le contact avec tes nouvelles rencontres !</p>
+                    <p class="mt-10">Accède à des rencontres exclusives près de chez toi et garde le contact avec tes nouvelles rencontres !</p>
                 </template>
             </register-form>
         </div>

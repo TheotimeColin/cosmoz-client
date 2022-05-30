@@ -22,7 +22,7 @@
                         <div class="col-6 mt-30 col-12@xs">
                             <h3 class="ft-title-2xs d-flex fxa-center">
                                 <span class="color-ft round-m bg-bg-light fx-no-shrink mr-15">
-                                    <fa icon="far fa-party-horn" />
+                                    <fa icon="far fa-hand-wave" />
                                 </span>
                                 
                                 Organisez et vivez des moments uniques

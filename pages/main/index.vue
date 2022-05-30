@@ -4,7 +4,7 @@
             <div class="Wrapper">
                 <div class="fx-grow">
                     <h1 class="ft-title-2xl ft-title-m@s ft-title-s@xs">
-                        <span class="d-inline-block@xs mb-5@xs">Participe à nos événements.</span><br>
+                        <span class="d-inline-block@xs mb-5@xs">Participe à nos rencontres.</span><br>
                         <span class="d-inline-block@xs mb-5@xs">Crée de nouvelles affinités.</span><br>
                         <span class="">Trouve <span class="text-underline">ta constellation.</span></span>
                     </h1>
@@ -26,11 +26,11 @@
                 </div>
                 <div class="col-6 col-12@s">
                     <h2 class="ft-title-l mb-20 ft-title-m@xs">
-                        1. Participe à nos événements super conviviaux
+                        1. Participe à nos rencontres super conviviales
                     </h2>
 
                     <p>
-                        On organise de nombreux événements près de chez toi, où tu peux profiter du soleil ou siroter un cocktail avec des personnes ouvertes et bienveillantes.
+                        On organise de nombreuses rencontres près de chez toi, où tu peux profiter du soleil ou siroter un cocktail avec des personnes ouvertes et bienveillantes.
                     </p>
 
                     <div class="ft-title-xs tape tape-strong mt-30">Au fait, c'est gratuit.</div>
@@ -73,7 +73,7 @@
                 <div class="bg-bg-2xstrong pt-40 br-s">
                     <div class="mb-40 ph-40">
                         <h2 class="ft-title-m ft-title-s@xs">
-                            Mieux que des événements,<br>des rassemblements.
+                            Mieux que des événements,<br>des rencontres.
                         </h2>
                         <p class="mt-10 max-width-m">Nos animateurs sont vérifiés et ont tous le même objectif : te faire passer un moment convivial avec d'autres personnes qui te ressemblent.</p>
                     </div>

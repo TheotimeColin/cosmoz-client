@@ -72,8 +72,8 @@ export default {
                 to: this.localePath({ name: 'feed' }),
             },
             {
-                label: `Événements`,
-                fa: 'party-horn',
+                label: `Rencontrer`,
+                fa: 'hand-wave',
                 to: this.localePath({ name: 'g' }),
                 items: [
                     {

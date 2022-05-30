@@ -6,14 +6,16 @@
                     <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
                     <user-icon :modifiers="['xl']" v-bind="user" :no-link="true" />
                 </div>
-                <div class="ft-title-m mt-30 mb-10">Nouveau lien stellaire</div>
+                <div class="ft-title-m mt-30 mb-10">Nouvelle personne dans ta constellation</div>
                 <p class="mb-15">{{ selectedUser.name }} t'as envoyé les mentions suivantes :</p>
 
                 <div class="ft-title-xs subtitle tape" v-for="mention in received" :key="mention">
                     {{ $t('mentions.' + mention.type) }}
                 </div>
 
-                <button-base class="mt-20" :modifiers="['light']" :to="{ name: 'p-id', params: { id: selectedUser.id }}">Voir son profil</button-base>
+                <div class="mt-20">
+                    <button-base :modifiers="['light']" :to="{ name: 'p-id', params: { id: selectedUser.id }}">Voir son profil</button-base>
+                </div>
             </div>
             <div class="p-30" v-else>
                 <user-icon :modifiers="['l']" :display-name="true" v-bind="selectedUser" />

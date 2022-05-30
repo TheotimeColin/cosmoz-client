@@ -82,7 +82,7 @@ export default {
     },
     head () {
         let meta = {
-            title: `Les événements ${this.$t('meta.append')}`
+            title: `Les rencontres ${this.$t('meta.append')}`
         }
 
         return meta

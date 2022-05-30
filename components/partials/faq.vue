@@ -9,7 +9,7 @@
             <br><br>
             On a tous déjà ressenti ce besoin de voir de nouvelles têtes, qu'on ait déjà un groupe d'amis existant ou pas. Cosmoz te permet de découvrir de nouvelles activités et te créer de nouveaux amis.
         </accordion>
-        <accordion class="FAQ_question" title="Je suis vraiment obligé de participer à des événements ?">
+        <accordion class="FAQ_question" title="Je suis vraiment obligé de participer à des rencontres ?">
             Hé oui. Tout le concept de la plateforme repose sur les connexions réelles. Tu ne pourras pas entrer en contact avec d'autres membres sans les avoir vus en vrai d'abord.<br><br>
             Ça nous assure 100% de membres réels et authentiques dans notre communauté, qui ont une vraie envie de créer des liens.
         </accordion>
@@ -27,7 +27,7 @@
         </div>
 
         <accordion class="FAQ_question" title="C'est quoi cette histoire d'affinités ?">
-            Après avoir rencontré quelqu'un pendant un de nos événements, tu auras accès à son profil complet. Si vous vous appréciez mutuellement, une affinité se crée.
+            Après avoir faire connaissance avec quelqu'un pendant une de nos rencontres, tu auras accès à son profil complet. Si vous vous appréciez mutuellement, une affinité se crée.
 
             <p class="p-15 mv-15 bg-bg-strong br-s">Une affinité signifie simplement que deux membres aiment passer du temps ensemble de manière amicale.</p>
 
@@ -60,26 +60,26 @@
         </accordion>
 
         <div class="ft-title-2xs color-ft-weak mt-40 mb-15">
-            <fa icon="far fa-party-horn" class="mr-5" /> Sorties & événements
+            <fa icon="far fa-hand-wave" class="mr-5" /> Sorties & rencontres
         </div>
 
         <accordion class="FAQ_question" title="Je suis timide...">
             On a vraiment à coeur d'intégrer nos amis timides, anxieux et/ou introvertis.<br><br>
-            Lors de nos événements officiels, nous privilégions les petits groupes (-20 personnes) et de petits jeux sont prévus pour permettre à tout le monde d'apprendre à se connaître sans pression.<br><br>
+            Lors de nos rencontres, nous privilégions les petits groupes (-20 personnes) et de petits jeux sont prévus pour permettre à tout le monde d'apprendre à se connaître sans pression.<br><br>
             Un animateur est toujours présent sur place pour s'assure que chacun se sente bien et trouve sa place !
         </accordion>
         <accordion class="FAQ_question" title="Je veux uniquement rencontrer des personnes de mon âge ou de mon genre.">
-            Des événements sont réservés à certaines tranches d'âge, identités ou communautés. Tu as la possibilité de les trouver facilement !
+            Des rencontres sont réservées à certaines tranches d'âge, identités ou communautés. Tu as la possibilité de les trouver facilement !
             <br><br>
             Certaines constellations possèdent également des critères pour y entrer. On espère que tu trouveras la communauté dans laquelle tu te sentiras bien.
         </accordion>
-        <accordion class="FAQ_question" title="Et si je m'entends avec personne lors des événements ?">
-            Ça peut arriver. Tu as la possibilité de continuer à participer gratuitement à d'autres événements, jusqu'à que tu te crées quelques affinités !<br><br>
+        <accordion class="FAQ_question" title="Et si je m'entends avec personne lors des rencontres ?">
+            Ça peut arriver. Tu as la possibilité de continuer à participer gratuitement à d'autres rencontres, jusqu'à que tu te crées quelques affinités !<br><br>
             Mais la majorité des membres créent de premières affinités lors de leur premier événement.
         </accordion>
         <accordion class="FAQ_question" title="Que faire si quelqu'un me met mal à l'aise ?">
             Nous avons à coeur de créer une communauté bienveillante. Il peut arriver que certaines personnes aient un comportement déplacé. Un animateur est présent en tant que médiateur, n'hésite pas à lui en parler.<br><br>
-            Si tu n'as pas apprécié tes interactions avec quelqu'un, tu pourras le signifier sur la plateforme. Tu ne reverras plus cette personne lors de nos événements.<br><br>
+            Si tu n'as pas apprécié tes interactions avec quelqu'un, tu pourras le signifier sur la plateforme. Tu ne reverras plus cette personne lors de nos rencontres.<br><br>
             Si cette personne est signalée par plusieurs personnes, nous prendrons les actions nécessaires pour faire respecter nos valeurs.
         </accordion>
     </div>

@@ -11,6 +11,10 @@
         />
 
         <transition-group name="fade">
+            <div class="Feed_item ft-s color-ft-xweak bg-bg-xstrong br-s p-15 text-center" v-show="isLoading || isSubmitLoading" key="loader">
+                <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
+            </div>
+
             <content-post
                 v-for="status in displayedStatuses"
                 class="Feed_item"
@@ -23,7 +27,7 @@
             />
         </transition-group>
 
-        <div class="Feed_item p-20 bg-bg br-s text-center color-ft-weak" v-if="statusesData.length <= 0 && !isLoading">
+        <div class="Feed_item p-20 bg-bg-xstrong ft-s color-ft-xweak br-s text-center" v-if="statusesData.length <= 0 && !isLoading">
             Aucun message sur ce fil.
         </div>
 
@@ -50,7 +54,7 @@ export default {
     },
     data: () => ({
         statusesData: [],
-        isSubmitLoading: true,
+        isSubmitLoading: false,
         isLoading: true,
         page: 0
     }),

@@ -1,29 +1,22 @@
 <template>
     <div>
         <div class="Gathering_section" v-if="hasConfirmed">
-            <div class="p-20 mb-30 bg-bg br-s">
-                <p class="ft-title-s mb-10">
+            <div class="pt-20 mb-30 bg-bg br-s">
+                <p class="ft-title-s mb-20 ph-20">
                     Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
                 </p>
-                
-                <div class="row-xs" v-if="!displayAll">
-                    <div class="col-3 mt-10" v-for="(user, i) in usersByStatus(['confirmed']).filter(u => u._id != user._id).slice(0, 4)" :key="user._id">
-                        <user-profile v-bind="user" :no-link="true"  :gathering="gathering._id" :overlay=" i == 3 ? 'Afficher tout le monde' : ''" @click.native="() => i == 3 ? displayAll = true : selectedUser = user" />
+
+                <slider-block
+                    :slots="usersByStatus(['confirmed']).filter(u => u._id != user._id).map(u => u._id)"
+                    :ratio="150"
+                    item-class="width-2xss"
+                    :offset="$smallerThan('xs') ? 15 : 20"
+                    :offset-v="20"
+                >
+                    <div v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :slot="user._id" :key="user._id">
+                        <user-profile v-bind="user" :no-link="true"  :gathering="gathering._id" @click.native="() => selectedUser = user" />
                     </div>
-                </div>
-                <div class="row-xs" v-else>
-                    <div class="col-4 mt-10" v-for="user in usersByStatus(['confirmed']).filter(u => u._id != user._id)" :key="user._id">
-                        <user-icon
-                            v-bind="user"
-                            :display-name="true"
-                            :modifiers="['m']"
-                            :no-link="true"
-                            class="c-pointer"
-                            @click.native.prevent="selectedUser = user"
-                            :gathering="gathering._id"
-                        />
-                    </div>
-                </div>
+                </slider-block>
             </div>
 
             <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" v-if="hasConfirmed" />
@@ -34,7 +27,14 @@
                     <fa icon="far fa-circle-question" class="mr-5" /> Présence non-confirmée
                 </p>
 
-                <p class="mt-10">Tu étais inscrit à cet événement mais ton QR code n'a pas été scanné sur place. As-tu bien participé ?</p>
+                <p class="mt-10">Tu étais inscrit à cette rencontrée mais tu n'as pas scanné le QR code sur place.</p>
+            </div>
+        </div>
+        <div class="Gathering_section" v-else>
+            <div class="p-20 bg-bg-xstrong br-s text-center">
+                <fa icon="far fa-hand-wave" class="ft-xl color-ft-xweak line-1 mb-10"></fa>
+
+                <p>Cet espace est réservé aux personnes qui ont participé à la rencontre.</p>
             </div>
         </div>
     </div>

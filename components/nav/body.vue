@@ -81,13 +81,25 @@ export default {
         }, 100)
     },
     methods: {
+        isFixedPosition(node) {
+            while (node && node.nodeName.toLowerCase() !== 'body') {
+                if (window.getComputedStyle(node).getPropertyValue('position').toLowerCase() === 'fixed')
+                    { return true; }
+                node = node.parentNode;
+            }
+            return false
+        },
         onPan (v) {
+            if (this.isFixedPosition(v.target)) return
+
             let max = this.$refs.container.offsetWidth
             let force = Math.max(1 - (Math.abs(v.deltaX * 0.1) / max), 0)
 
             this.pan += v.velocityX * force
         },
         onPanEnd (v) {
+            if (this.isFixedPosition(v.target)) return
+            
             this.pan = 0
 
             if (v.deltaX <= -100) {

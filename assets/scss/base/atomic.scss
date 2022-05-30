@@ -55,8 +55,8 @@
     .text-right#{$name} { text-align: right; }
     .text-through#{$name} { text-decoration: line-through; }
 
-    .o-hidden { overflow: hidden; }
-    .o-visible { overflow: visible; }
+    .o-hidden#{$name} { overflow: hidden; }
+    .o-visible#{$name} { overflow: visible; }
 
     /* DISPLAY */
     .d-flex#{$name} { display: flex; }
@@ -89,7 +89,7 @@
     .ft-bold#{$name} { font-weight: bold; }
     .ft-medium#{$name} { font-weight: 500; }
     .ft-bolder#{$name} { font-weight: 900; }
-    .ft-italic { font-style: italic; }
+    .ft-italic#{$name} { font-style: italic; }
     .ft-0#{$name} { font-size: 0; }
     .line-1#{$name} { line-height: 1; }
     
