@@ -2,8 +2,8 @@
     <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left" @mouseenter="isNavOpen = true" @mouseleave="isNavOpen = false">
-                <button-base :modifiers="['round', 'xweak']" class="Header_button d-none@s" icon-before="bars" v-if="user" />
-                <div class="mr-10" v-else></div>
+                <!-- <button-base :modifiers="['round', 'xweak']" class="Header_button d-none@s" icon-before="bars" v-if="user" />
+                <div class="mr-10" v-else></div> -->
                 
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-xs">
                     <img :src="assets.logo" height="24" class="n-mt-5">
@@ -116,6 +116,7 @@ export default {
         align-items: center;
         position: relative;
         z-index: 30;
+        padding-left: 15px;
     }
 
     .Header_wrapper {

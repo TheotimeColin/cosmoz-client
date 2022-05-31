@@ -1,20 +1,14 @@
 
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="orga">
-        <div class="Wrapper">
+        <page-const-nav class="width-xs fx-no-shrink" v-bind="orga" :is-absolute="isEventPage" :is-home="!isMin" />
+
+        <div class="Constellation_content fx-grow">
             <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="orga" />
 
-            <div class="Constellation_content d-flex d-block@s pt-30@xs">
-                <div class="width-xs fx-no-shrink mr-40 width-100@s ml-0@s mb-40@s" v-show="!isEventPage">
-                    <page-const-nav :slug="orga.slug" />
-                </div>
-
-                <div class="fx-grow">
-                    <transition name="page">
-                        <nuxt-child :orga="orga" />
-                    </transition>
-                </div>
-            </div>
+            <transition name="page">
+                <nuxt-child :orga="orga" />
+            </transition>
         </div>
     </div>
 </template>
@@ -26,6 +20,12 @@ export default {
         const response = await this.$store.dispatch('organization/get', {
             query: { slug: this.$route.params.slug }
         })
+    },
+    created () {
+        this.$store.commit('page/set', { isDisableFooter: true })
+    },
+    beforeDestroy () {
+        this.$store.commit('page/set', { isDisableFooter: false })
     },
     data: () => ({
         isLoading: false,
@@ -41,9 +41,7 @@ export default {
         }
     },
     watch: {
-        $route () {
-            if (process.client) window.scrollTo(0, 0)
-        }
+        $route () { if (process.client) window.scrollTo(0, 0) }
     },
     head () {
         if (!this.orga) return {}
@@ -66,15 +64,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>  
-    .Constellation.is-event {
-
-        .Constellation_content {
-            padding: 0;
-        }
+    .Constellation {
+        position: relative;
+        height: calc(100vh - var(--header-height, 0px));
+        overflow: hidden;
+        display: flex;
     }
 
     .Constellation_content {
-        padding: 30px 0;
+        overflow: auto;
     }
 
     .page-enter-active,
@@ -87,7 +85,7 @@ export default {
         transform: translateY(3px);
     }
 
-        .page-leave-to {
+    .page-leave-to {
         opacity: 0;
         transform: translateY(-3px);
     }

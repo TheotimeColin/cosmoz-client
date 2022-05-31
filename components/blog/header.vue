@@ -38,6 +38,12 @@ export default {
 }
 </script>
 
+<style lang="scss">
+    :root {
+        --header-height: 65px;
+    }
+</style>
+
 <style lang="scss" scoped>
     .BlogHeader {
         position: absolute;

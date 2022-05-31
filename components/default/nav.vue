@@ -145,15 +145,15 @@ export default {
         transform: translateX(0%);
     }
 
-    &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        right: -5px;
-        height: 100%;
-        width: 5px;
-    }
+    // &::before {
+    //     content: "";
+    //     display: block;
+    //     position: absolute;
+    //     top: 0;
+    //     right: -5px;
+    //     height: 100%;
+    //     width: 5px;
+    // }
 }
 
 .AppNav_header {

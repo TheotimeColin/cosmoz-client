@@ -8,8 +8,8 @@
             <popin-register />
             <tooltip-manager />
         </div>
-
-        <default-footer class="Footer" />
+        
+        <default-footer class="Footer" v-if="!isDisableFooter" />
     </div>
 </template>
 
@@ -19,7 +19,8 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutDefault',
     computed: {
-        classes () { return this.$store.state.page.body.classes }
+        classes () { return this.$store.state.page.body.classes },
+        isDisableFooter () { return this.$store.state.page.isDisableFooter }
     },
     data: () => ({
         countdown: ''

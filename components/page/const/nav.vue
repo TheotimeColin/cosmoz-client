@@ -1,12 +1,19 @@
 <template>
-    <div class="Nav bg-bg-strong br-s p-sticky" style="--offset: 40px;">
-        <div class="Nav_cat" v-for="(cat, i) in items" :key="i">
-            
-            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+    <div class="Nav bg-bg-strong br-s" :class="{ 'is-absolute': isAbsolute }" style="--offset: 40px;">
+        <transition name="fade">
+            <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
+                <orga-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
+            </div>
+        </transition>
 
-            <nuxt-link v-for="item in cat.children" class="Nav_item" :to="localePath(item.to)" :key="item.label">
-                <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
-            </nuxt-link>
+        <div class="Nav_content">
+            <div class="Nav_cat" v-for="(cat, i) in items" :key="i">
+                <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+
+                <nuxt-link v-for="item in cat.children" class="Nav_item" :to="localePath(item.to)" :key="item.label">
+                    <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
+                </nuxt-link>
+            </div>
         </div>
     </div>
 </template>
@@ -15,7 +22,12 @@
 export default {
     name: 'PageConstNav',
     props: {
-        slug: { type: String }
+        slug: { type: String },
+        hero: { type: String },
+        name: { type: String },
+        logo: { type: Object },
+        isHome: { type: Boolean, default: false },
+        isAbsolute: { type: Boolean, default: false }
     },
     data: () => ({
         items: []
@@ -36,10 +48,10 @@ export default {
             }, {
                 label: `Discussions`,
                 children: [
-                    { label: `annonces`, fa: 'hashtag', to: { name: 'c-slug-feed', params: { slug: this.slug } } },
-                    { label: `général`, fa: 'hashtag', to: { name: 'c-slug-feed', params: { slug: this.slug } } },
-                    { label: `détente`, fa: 'hashtag', to: { name: 'c-slug-feed', params: { slug: this.slug } } },
-                    { label: `entraide`, fa: 'hashtag', to: { name: 'c-slug-feed', params: { slug: this.slug } } },
+                    { label: `annonces`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'annonces' } } },
+                    { label: `général`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'general' } } },
+                    { label: `détente`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'detente' } } },
+                    { label: `entraide`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'entraide' } } },
                 ]
             }
         ]
@@ -49,7 +61,49 @@ export default {
 
 <style lang="scss" scoped>
     .Nav {
+        transition: transform 150ms ease;
+
+        &.is-absolute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 10;
+            transform: translateX(-100%);
+
+            
+            &:hover {
+                transform: translateX(0%);
+            }
+
+            &::before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                right: -5px;
+                height: 100%;
+                width: 5px;
+            }
+        }
+    }
+
+    .Nav_content {
         padding: 15px;
+    }
+
+    .Nav_cover {
+        background-size: cover;
+        background-position: center;
+        background-color: var(--color-bg-xstrong);
+        display: flex;
+        align-items: center;
+        padding: 5px 15px;
+
+        &::after {
+            content: "";
+            @include ratio(33);
+        }
     }
     
     .Nav_cat {

@@ -8,12 +8,15 @@ const BREAKPOINTS = [
 export default {
     namespaced: true,
     state: () => ({
+        subtitle: '',
         current: '',
+        fa: '',
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,
         isPWA: false,
         isScrolled: false,
+        isDisableFooter: false,
         breakpoint: 'l',
         body: {
             classes: [ 'is-fill' ],
@@ -34,6 +37,13 @@ export default {
         }
     }),
     mutations: {
+        set (state, v) {
+            let data = Object.entries(v)
+            
+            data.forEach(key => {
+                state[key[0]] = key[1]
+            })
+        },
         setCurrent (state, v) {
             state.current = v
         },

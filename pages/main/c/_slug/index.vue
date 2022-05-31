@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="p-40">
         <div v-if="upcomingEvents.length > 0">
             <div class="fx-center mb-20">
                 <h1 class="ft-title-s">Prochaine rencontre</h1>

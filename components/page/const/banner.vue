@@ -13,10 +13,17 @@
 
         <div class="ConstBanner_sub outflow@s">
             <div class="d-flex fxa-center">
-                <orga-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" />
+                <orga-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
 
                 <div class="ml-10">
-                    <h1 class="ConstBanner_title ellipsis-1">{{ isEvent ? `Organisé par ` : '' }}{{ name }}</h1>
+                    <h1 class="ConstBanner_title ellipsis-1">
+                        <template v-if="subtitle">
+                            <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle }}
+                        </template>
+                        <template v-else>
+                            {{ isEvent ? `Organisé par ` : '' }}{{ name }}
+                        </template>
+                    </h1>
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>
@@ -35,9 +42,13 @@ export default {
         hero: { type: String },
         name: { type: String },
         intro: { type: String },
-        logo: { type: String },
+        logo: { type: Object },
         isEvent: { type: Boolean, default: false },
         min: { type: Boolean, default: false }
+    },
+    computed: {
+        subtitle () { return this.$store.state.page.subtitle },
+        fa () { return this.$store.state.page.fa }
     }
 }
 </script>
@@ -70,9 +81,8 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 15px; 
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
+        padding: 15px;
+        min-height: 65px;
         background: var(--color-bg-weak);
         transition: all 200ms ease;
     }

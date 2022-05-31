@@ -1,9 +1,5 @@
 <template>
-    <div class="">
-        <h1 class="ft-title-s n-ml-15 mb-30">
-            <fa icon="far fa-calendar" class="mr-10" /> Rencontres prévues
-        </h1>
-        
+    <div class="p-40">
         <div v-if="gatherings.length > 0">
             <block-gathering
                 v-for="gathering in gatherings"
@@ -38,5 +34,19 @@ export default {
             })
         }
     },
+    head () {
+        this.$store.commit('page/set', {
+            subtitle: `Rencontres prévues`, fa: 'calendar'
+        })
+
+        let meta = {
+            title: `Rencontres prévues ${this.$t('meta.append')}`,
+        }
+
+        return meta
+    },
+    beforeDestroy () {
+        this.$store.commit('page/set', { subtitle: '' })
+    }
 }
 </script>

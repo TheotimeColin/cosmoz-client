@@ -55,8 +55,8 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 33vh;
-    padding: 65px 0 30px 0;
+    min-height: 25vh;
+    padding: 10px 0 30px 0;
 }
 
 @include breakpoint-s {
