@@ -107,7 +107,7 @@ export default {
             meta: [
                 { hid: 'description', name: 'description', content: this.gathering.intro },
                 { property: 'og:title', content: `${this.gathering.title} organisé par ${this.gathering.organization ? this.gathering.organization.name : ''} ${this.$t('meta.append')}` },
-                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.gathering.organization ? this.gathering.organization.slug : 'event') + '/' + this.gathering.id },
+                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.gathering.organization ? this.gathering.organization.slug : 'event') + '/events/' + this.gathering.id },
                 { property: 'og:image', content: this.gathering.hero },
                 { property: 'og:description', content: this.gathering.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },

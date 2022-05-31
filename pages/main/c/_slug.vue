@@ -25,7 +25,7 @@ export default {
         this.$store.commit('page/set', { isDisableFooter: true })
     },
     beforeDestroy () {
-        this.$store.commit('page/set', { isDisableFooter: false })
+        this.$store.commit('page/set', { isDisableFooter: false, subtitle: '' })
     },
     data: () => ({
         isLoading: false,

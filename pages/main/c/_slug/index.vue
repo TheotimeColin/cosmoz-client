@@ -1,39 +1,44 @@
 <template>
-    <div class="p-40">
-        <div v-if="upcomingEvents.length > 0">
-            <div class="fx-center mb-20">
-                <h1 class="ft-title-s">Prochaine rencontre</h1>
+    <div class="d-flex p-40">
+        <div class="fx-grow">
+            <div v-if="upcomingEvents.length > 0">
+                <div class="fx-center mb-20">
+                    <h1 class="ft-title-s">Prochaine rencontre</h1>
 
-                <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: orga.slug } }">Voir tout</button-base>
-            </div>
-            <block-gathering
-                class="mb-20"
-                :status-only="true"
-                v-bind="upcomingEvents[0]"
-                :key="upcomingEvents[0]._id"
-            />
-        </div>
-
-        <div class="pt-20 br-s bg-bg-weak mv-40" v-if="pastEvents.length > 0">
-            <p class="ft-title-xs mb-20 ph-20">
-                <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Rencontres passés
-            </p>
-
-            <slider-block
-                :slots="pastEvents.map(g => g._id)"
-                :ratio="100"
-                item-class="width-2xs"
-                :offset="$smallerThan('xs') ? 15 : 20"
-                :offset-v="20"
-            >
-                <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
-                    <block-gathering
-                        :modifiers="['square']"
-                        :status-only="true"
-                        v-bind="gathering"
-                    />
+                    <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: orga.slug } }">Voir tout</button-base>
                 </div>
-            </slider-block>
+                <block-gathering
+                    class="mb-20"
+                    :status-only="true"
+                    v-bind="upcomingEvents[0]"
+                    :key="upcomingEvents[0]._id"
+                />
+            </div>
+
+            <div class="pt-20 br-s bg-bg-weak mv-40" v-if="pastEvents.length > 0">
+                <p class="ft-title-xs mb-20 ph-20">
+                    <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Rencontres passés
+                </p>
+
+                <slider-block
+                    :slots="pastEvents.map(g => g._id)"
+                    :ratio="100"
+                    item-class="width-2xs"
+                    :offset="$smallerThan('xs') ? 15 : 20"
+                    :offset-v="20"
+                >
+                    <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
+                        <block-gathering
+                            :modifiers="['square']"
+                            :status-only="true"
+                            v-bind="gathering"
+                        />
+                    </div>
+                </slider-block>
+            </div>
+        </div>
+        <div class="width-xs ml-40 fx-no-shrink">
+
         </div>
     </div>
 </template>
@@ -68,5 +73,14 @@ export default {
             return this.gatherings.filter(g => !g.isPast)
         }
     },
+    head () {
+        this.$store.commit('page/set', { subtitle: '' })
+
+        let meta = {
+            title: `${this.orga.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
+        }
+
+        return meta
+    }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="p-40">
+    <div class="Wrapper p-40">
         <div v-if="gatherings.length > 0">
             <block-gathering
                 v-for="gathering in gatherings"
@@ -44,9 +44,6 @@ export default {
         }
 
         return meta
-    },
-    beforeDestroy () {
-        this.$store.commit('page/set', { subtitle: '' })
     }
 }
 </script>

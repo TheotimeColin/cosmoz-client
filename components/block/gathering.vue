@@ -95,7 +95,7 @@ export default {
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'c-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
+            return this.localePath({ name: 'c-slug-events-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')

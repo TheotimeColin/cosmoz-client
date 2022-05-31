@@ -17,7 +17,7 @@ export default {
     },
     head () {
         this.$store.commit('page/set', {
-            subtitle: this.$route.params.tag ? this.$route.params.tag : 'général', fa: 'hashtag'
+            subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
         })
 
         let meta = {
@@ -25,9 +25,6 @@ export default {
         }
 
         return meta
-    },
-    beforeDestroy () {
-        this.$store.commit('page/set', { subtitle: '' })
     }
 }
 </script>

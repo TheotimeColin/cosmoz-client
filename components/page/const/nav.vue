@@ -48,10 +48,10 @@ export default {
             }, {
                 label: `Discussions`,
                 children: [
-                    { label: `annonces`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'annonces' } } },
-                    { label: `général`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'general' } } },
-                    { label: `détente`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'detente' } } },
-                    { label: `entraide`, fa: 'hashtag', to: { name: 'c-slug-tag', params: { slug: this.slug, tag: 'entraide' } } },
+                    { label: `annonces`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'annonces' } } },
+                    { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
+                    { label: `détente`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'detente' } } },
+                    { label: `entraide`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'entraide' } } },
                 ]
             }
         ]
@@ -130,7 +130,7 @@ export default {
         }
 
         &:hover,
-        &.is-active-exact {
+        &.is-active {
             background-color: var(--color-bg);
         }
     }

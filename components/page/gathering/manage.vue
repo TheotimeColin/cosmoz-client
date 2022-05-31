@@ -142,7 +142,7 @@ export default {
             return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
-            return this.$config.baseUrl + this.localePath({ name: 'c-slug-id', params: { id: this.gathering.id, slug: this.gathering.organization ? this.gathering.organization.id : 'event' }})
+            return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-id', params: { id: this.gathering.id, slug: this.gathering.organization ? this.gathering.organization.id : 'event' }})
         },
         googleCal () {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
