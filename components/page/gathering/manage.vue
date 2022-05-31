@@ -8,7 +8,7 @@
                 <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ user ? gathering.location : `Information réservée aux membres` }}
             </p>
 
-            <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: gathering.organization.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.organization">
+            <!-- <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: gathering.organization.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.organization">
                 <orga-icon
                     v-bind="gathering.organization"
                     :no-link="true"
@@ -19,7 +19,7 @@
                     <p class="ft-s color-ft-weak">Organisé par</p>
                     <p class="ft-title-2xs">{{ gathering.organization.name }}</p>
                 </div>
-            </nuxt-link>
+            </nuxt-link> -->
         </div>
 
         <div class="p-20 bg-bg-weak mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">

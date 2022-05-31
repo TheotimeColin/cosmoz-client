@@ -42,7 +42,13 @@ export default {
     async fetch () {
         this.isLoading = true 
 
-        await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id }})
+        let result = this.$store.getters['gathering/findOne']({
+            id: this.$route.params.id
+        })
+
+        if (!result) {
+            await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id }})
+        }
 
         this.isLoading = false 
     },
@@ -89,8 +95,11 @@ export default {
             ]
         }
     },
-    methods: {
-        
+    mounted () {
+        this.$store.commit('page/setCurrent', 'event')
+    },
+    beforeDestroy () {  
+        this.$store.commit('page/setCurrent', '')
     },
     head () {
         let meta = {

@@ -1,5 +1,5 @@
 <template>
-    <div class="ConstBanner" :class="{ 'ConstBanner--min': min }">
+    <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent,  }">
         <div class="ConstBanner_cover outflow@s" :style="{ backgroundImage: `url(${hero})` }">
             <quick-menu
                 class="ConstBanner_menu"
@@ -11,12 +11,12 @@
             />
         </div>
 
-        <div class="ConstBanner_sub bg-bg-weak outflow@s">
+        <div class="ConstBanner_sub outflow@s">
             <div class="d-flex fxa-center">
                 <orga-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" />
 
                 <div class="ml-10">
-                    <h1 class="ConstBanner_title ellipsis-1">{{ name }}</h1>
+                    <h1 class="ConstBanner_title ellipsis-1">{{ isEvent ? `Organisé par ` : '' }}{{ name }}</h1>
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>
@@ -36,6 +36,7 @@ export default {
         name: { type: String },
         intro: { type: String },
         logo: { type: String },
+        isEvent: { type: Boolean, default: false },
         min: { type: Boolean, default: false }
     }
 }
@@ -72,6 +73,8 @@ export default {
         padding: 15px; 
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+        background: var(--color-bg-weak);
+        transition: all 200ms ease;
     }
 
     .ConstBanner_title {
@@ -88,14 +91,20 @@ export default {
         }
 
         .ConstBanner_sub {
-            padding: 10px 15px 10px 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
+            padding: 15px;
+            background: var(--color-bg-strong);
         }
 
         .ConstBanner_title {
             font: var(--ft-title-2xs);
             word-break: break-all;
+        }
+    }
+
+    .ConstBanner--event {
+
+        .ConstBanner_sub {
+            border-radius: 0;
         }
     }
 

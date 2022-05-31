@@ -8,6 +8,7 @@ const BREAKPOINTS = [
 export default {
     namespaced: true,
     state: () => ({
+        current: '',
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,
@@ -33,6 +34,9 @@ export default {
         }
     }),
     mutations: {
+        setCurrent (state, v) {
+            state.current = v
+        },
         register (state, v) {
             state.popins = {
                 ...state.popins,

@@ -1,10 +1,10 @@
 
 <template>
-    <div class="Orga page" v-if="orga">
+    <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="orga">
         <div class="Wrapper">
-            <page-const-banner :min="isMin" v-bind="orga" />
+            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="orga" />
 
-            <div class="d-flex pv-30 d-block@s pt-30@xs">
+            <div class="Constellation_content d-flex d-block@s pt-30@xs">
                 <div class="width-xs fx-no-shrink mr-40 width-100@s ml-0@s mb-40@s" v-show="!isEventPage">
                     <page-const-nav :slug="orga.slug" />
                 </div>
@@ -32,7 +32,7 @@ export default {
     }),
     computed: {
         isMin () { return !this.$route.name.includes('c-slug_') },
-        isEventPage () { return this.$route.name.includes('slug-id') },
+        isEventPage () { return this.$store.state.page.current == 'event' },
         user () { return this.$store.getters['user/self'] },
         orga () {
             return this.$store.getters['organization/findOne']({
@@ -65,10 +65,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped>  
+    .Constellation.is-event {
+
+        .Constellation_content {
+            padding: 0;
+        }
+    }
+
+    .Constellation_content {
+        padding: 30px 0;
+    }
+
     .page-enter-active,
     .page-leave-active {
-        transition: all 100ms;
+        transition: all 200ms;
     }
 
     .page-enter {
