@@ -35,7 +35,7 @@
 
             <p class="ft-bold mv-20">Le reste des informations est accessible aux membres.</p>
 
-            <div class="p-30 bg-bg-xstrong br-s text-center">
+            <div class="p-30 bg-bg-strong br-s text-center">
                 <div class="row-s">
                     <div class="col-4 col-12@s">
                         <h3 class="ft-title-2xs">

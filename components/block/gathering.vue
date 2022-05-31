@@ -53,7 +53,7 @@
                         {{ title|specials }}
                     </h3>
 
-                    <p class="ft-l mt-10 ellipsis-2" v-if="displayIntro">{{ intro|specials }}</p>
+                    <!-- <p class="ft-l mt-10 ellipsis-2" v-if="displayIntro">{{ intro|specials }}</p> -->
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@ export default {
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
+            return this.localePath({ name: 'c-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')
@@ -149,7 +149,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.2;
+    opacity: 0.25;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
@@ -165,7 +165,7 @@ export default {
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-black);
+    background-color: var(--color-bg-2xstrong);
     text-align: left;
     position: relative;
     

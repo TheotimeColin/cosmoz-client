@@ -22,7 +22,7 @@
             <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" v-if="hasConfirmed" />
         </div>
         <div class="Gathering_section" v-else-if="user && usersByStatus(['attending', 'waiting']).find(u => u._id == user._id)">
-            <div class="p-20 mb-30 bg-bg-xstrong br-s">
+            <div class="p-20 mb-30 bg-bg-strong br-s">
                 <p class="ft-title-xs">
                     <fa icon="far fa-circle-question" class="mr-5" /> Présence non-confirmée
                 </p>

@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'o-slug', params: { slug }})" class="OrgaIcon" :class="[ ...$modifiers ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'c-slug', params: { slug }})" class="OrgaIcon" :class="[ ...$modifiers ]" >
         <div class="OrgaIcon_image" :style="{ backgroundImage: src ? `url(${src})` : '' }"></div>
 
         <!-- <link-base :invert="true" class="OrgaIcon_name" v-if="displayName">{{ name ? name : '' }}</link-base> -->

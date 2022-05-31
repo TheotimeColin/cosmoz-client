@@ -68,8 +68,12 @@ export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
         if (isUnderDirectory(route, routesDirectory)) {
           return {
             ...route,
-            path: route.path.substr(routesDirectory.length + 1) || "/",
-            name: route.name.substr(routesDirectory.length + 1) || "index"
+            children: route.children ? route.children.map(c => ({
+              ...c,
+              name: c.name.substr(routesDirectory.length + 1) || "index"
+            })) : [],
+            path: route.path && route.path.substr(routesDirectory.length + 1) || "/",
+            name: route.name && route.name.substr(routesDirectory.length + 1) || "index"
           }
         }
 

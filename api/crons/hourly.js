@@ -42,7 +42,7 @@ const sendPendingEmails = async function () {
                     G_location: mail.gathering.location,
                     G_title: mail.gathering.title,
                     G_cover: cover ? cover.src : '',
-                    G_link: process.env.BASE_URL + '/o/' + mail.gathering.organization.slug + '/' + mail.gathering.id
+                    G_link: process.env.BASE_URL + '/c/' + mail.gathering.organization.slug + '/' + mail.gathering.id
                 }
             }
 
@@ -102,8 +102,8 @@ const sendGatheringReminders = async function () {
                     location: gathering.location,
                     name: gathering.title,
                     image: cover ? cover.src : '',
-                    link: process.env.BASE_URL + '/o/' + gathering.organization.slug + '/' + gathering.id,
-                    cancel: process.env.BASE_URL + '/o/' + gathering.organization.slug + '/' + gathering.id + '?manage'
+                    link: process.env.BASE_URL + '/c/' + gathering.organization.slug + '/' + gathering.id,
+                    cancel: process.env.BASE_URL + '/c' + gathering.organization.slug + '/' + gathering.id + '?manage'
                 }
             })
 

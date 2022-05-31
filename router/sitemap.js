@@ -17,7 +17,7 @@ export default function sitemap () {
                     routes = [
                         ...routes,
                         ...orgas.data.data.filter(g => g.slug).map(g => ({
-                            url: `/o/${g.slug}`,
+                            url: `/c/${g.slug}`,
                             changefreq: 'daily',
                             lastmod: g.updatedAt
                         }))
@@ -30,7 +30,7 @@ export default function sitemap () {
                     routes = [
                         ...routes,
                         ...gatherings.data.data.filter(g => g.status == 'active' && g.id).map(g => ({
-                            url: `/o/${g.organization ? g.organization.slug : 'event'}/${g.id}`,
+                            url: `/c/${g.organization ? g.organization.slug : 'event'}/${g.id}`,
                             changefreq: 'daily',
                             lastmod: g.updatedAt
                         }))

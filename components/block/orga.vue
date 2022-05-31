@@ -50,7 +50,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         defaultLink () {
-            return this.localePath({ name: 'o-slug', params: { slug: this.slug } })
+            return this.localePath({ name: 'c-slug', params: { slug: this.slug } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')

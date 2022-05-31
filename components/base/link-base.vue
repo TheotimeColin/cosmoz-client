@@ -47,9 +47,10 @@ export default {
     cursor: pointer;
     padding: 0;
     color: var(--color-ft-light);
-    text-underline-offset: 0.25rem;
+    text-underline-offset: 0.2rem;
     text-decoration: underline;
-    text-decoration-color: var(--color-ft-weak);
+    text-decoration-color: var(--color-ft-xweak);
+    text-decoration-thickness: 2px;
 
     &:hover {
         text-decoration: none;

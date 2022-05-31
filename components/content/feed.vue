@@ -11,7 +11,7 @@
         />
 
         <transition-group name="fade">
-            <div class="Feed_item ft-s color-ft-xweak bg-bg-xstrong br-s p-15 text-center" v-show="isLoading || isSubmitLoading" key="loader">
+            <div class="Feed_item ft-s color-ft-xweak bg-bg-strong br-s p-15 text-center" v-show="isLoading || isSubmitLoading" key="loader">
                 <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
             </div>
 

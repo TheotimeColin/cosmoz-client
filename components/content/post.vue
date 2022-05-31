@@ -139,7 +139,7 @@ export default {
             if (this.isCurrent) {
                 return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
             } else {
-                return this.localePath({ name: 'o-slug-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization._id : 'event' } })
+                return this.localePath({ name: 'c-slug-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization._id : 'event' } })
             }
         }
     },

@@ -2,6 +2,7 @@
     <div class="ConstBanner" :class="{ 'ConstBanner--min': min }">
         <div class="ConstBanner_cover outflow@s" :style="{ backgroundImage: `url(${hero})` }">
             <quick-menu
+                class="ConstBanner_menu"
                 :modifiers="['strong']"
                 :items="[
                     { label: `Copier l'ID`, fa: 'hashtag', action: () => $copy(_id) }
@@ -20,21 +21,6 @@
                 </div>
             </div>
             <div class="d-flex fxa-center ml-20 ml-0@s fx-reverse@s pv-15@s mt-15@s br-s bg-bg-strong@s" v-if="!min">
-                <!-- <p class="ft-s text-right mr-10 mr-0@s mt-5@s" v-if="orga.followers + followAction > 0">
-                    Suivi par {{ orga.followers + followAction }} personnes
-                </p>
-
-                <template v-if="user">
-                    <button-base :modifiers="['light']" icon-before="plus" :loading="isLoading" @click="onFollow" v-if="!this.isFollowed">
-                        Suivre
-                    </button-base>
-                    <button-base icon-before="check" :loading="isLoading" @click="onFollow" v-else>
-                        Suivi
-                    </button-base>
-                </template>
-                <button-base :modifiers="['light']" icon-before="plus"  @click="$store.commit('page/register', 'follow')" v-else>
-                    Suivre
-                </button-base> -->
             </div>
         </div>
     </div>
@@ -62,20 +48,30 @@ export default {
         display: flex;
         align-items: flex-start;
         justify-content: flex-end;
-        padding: 10px;
+        position: relative;
 
         &::before {
             content: "";
             display: block;
-            @include ratio(33);
+            transition: all 300ms ease;
+            transition-delay: 0ms;
+            @include ratio(20);
         }
+    }
+
+    .ConstBanner_menu {
+        position: absolute;
+        top: 10px;
+        right: 10px;
     }
 
     .ConstBanner_sub {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 15px;
+        padding: 15px; 
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .ConstBanner_title {
@@ -83,6 +79,13 @@ export default {
     }
 
     .ConstBanner--min {
+
+        .ConstBanner_cover {
+
+            &::before {
+                @include ratio(0);
+            }
+        }
 
         .ConstBanner_sub {
             padding: 10px 15px 10px 10px;
