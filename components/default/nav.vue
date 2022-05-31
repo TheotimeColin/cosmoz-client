@@ -116,7 +116,7 @@ export default {
     height: 70px;
     z-index: 20;
     transform: translateY(-100%);
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-strong);
 }
 
 .AppNav_logo {
@@ -135,7 +135,7 @@ export default {
     z-index: 10;
     width: 300px;
     height: 100vh;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-strong);
     transform: translateX(-100%);
     transition: all 150ms ease;
     z-index: 25;
@@ -161,7 +161,7 @@ export default {
     padding: 50px 20px 20px 20px;
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-bg-xstrong);
 }
 
 .AppNav_sub {
@@ -209,7 +209,7 @@ export default {
     &:hover:not(.is-active) {
 
         .AppNav_menuLabel {
-            background-color: var(--color-bg-strong);
+            background-color: var(--color-bg);
 
             .icon {
                 color: var(--color-ft-light);
@@ -260,7 +260,7 @@ export default {
     &.is-active-exact,
     &:hover {
         color: var(--color-ft-light);
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg-weak);
     }
 }
 

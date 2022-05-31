@@ -20,7 +20,7 @@
                 <text-body :modifiers="['gathering']" :value="gathering.venue" />
             </div>
 
-            <div class="Gathering_section p-20 bg-bg-weak br-s" v-if="gathering.important && gathering.important != '<p></p>'">
+            <div class="Gathering_section p-20 bg-bg-weak  br-s" v-if="gathering.important && gathering.important != '<p></p>'">
                 <h2 class="ft-title-2xs mb-15 tape">Important</h2>
                 <text-body :modifiers="['gathering']" :value="gathering.important" />
             </div>

@@ -110,7 +110,7 @@ export default {
     padding: 0px;
     min-height: 0;
     // border-top: 1px solid var(--color-border);
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-weak);
 }
 
 .PopinBase_content {

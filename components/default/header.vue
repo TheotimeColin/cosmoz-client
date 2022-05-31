@@ -85,22 +85,22 @@ export default {
 
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
-                background-color: var(--color-bg-xstrong);
-            }
-        }
-
-        &.is-scrolled {
-            background-color: var(--color-bg-xstrong);
-            border-color: rgba(0, 0, 0, 0);
-            
-            .Header_button.QuickMenu ::v-deep .QuickMenu_button,
-            .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
                 background-color: var(--color-bg-strong);
             }
         }
 
+        &.is-scrolled {
+            background-color: var(--color-bg-strong);
+            border-color: rgba(0, 0, 0, 0);
+            
+            .Header_button.QuickMenu ::v-deep .QuickMenu_button,
+            .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
+                background-color: var(--color-bg);
+            }
+        }
+
         &.is-open {
-            background-color: var(--color-bg-xstrong);
+            background-color: var(--color-bg-strong);
         }
     }
 
@@ -210,7 +210,7 @@ export default {
             margin: 0;
             text-align: center;
             padding: 15px;
-            background-color: var(--color-bg-2xstrong);
+            background-color: var(--color-bg-xstrong);
         }
 
         .Header.is-open {

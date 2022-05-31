@@ -1,6 +1,6 @@
 <template>
     <div class="Wrapper Wrapper--xs pv-100 pv-30@xs">
-        <div class="bg-bg p-20 br-s mb-10" v-if="user">
+        <div class="bg-bg-weak p-20 br-s mb-10" v-if="user">
             <div class="fx-center">
                 <user-icon :display-name="true" :no-link="true" :modifiers="['l']" v-bind="user">
                     <p class="color-ft-weak ft-s line-1">{{ user.email }}</p>
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="bg-bg p-20 br-s mb-10" v-else>
+        <div class="bg-bg-weak p-20 br-s mb-10" v-else>
             <register-form :redirect="false">
                 <template slot="description">
                     <p class="mt-10">Accède à des rencontres exclusives près de chez toi et garde le contact avec tes nouvelles rencontres !</p>
@@ -26,12 +26,12 @@
             <placeholder :ratio="45" />
         </div>
         <div v-else-if="!gathering">
-            <div class="bg-bg p-20 br-s mt-10">
+            <div class="bg-bg-weak p-20 br-s mt-10">
                 Il semblerait que cette rencontre n'existe pas. Pas de panique, l'organisateur pourra confirmer ta présence plus tard.
             </div>
         </div>
         <div v-else>
-            <div class="bg-bg p-20 br-s mt-10">
+            <div class="bg-bg-weak p-20 br-s mt-10">
                 <div v-if="isAttending">
                     <div class="d-flex fxa-center" v-if="isStatusLoading">
                         <span class="round bg-bg-strong mr-10"><fa icon="far fa-spinner-third" class="spin" /></span> Un petit instant...

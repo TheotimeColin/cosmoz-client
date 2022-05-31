@@ -31,7 +31,7 @@ export default {
 .Tooltip {
     font: var(--ft-m);
     color: var(--color-ft-weak);
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-bg-xstrong);
     pointer-events: none;
     transform-origin: center;
     transform: scale(0.98) translateY(3px);

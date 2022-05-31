@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="p-20 bg-bg br-s">
+        <div class="p-20 bg-bg-weak br-s">
             <p>
                 <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
             </p>
@@ -22,7 +22,7 @@
             </nuxt-link>
         </div>
 
-        <div class="p-20 bg-bg mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
+        <div class="p-20 bg-bg-weak mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
             <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
                 <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).slice(0, 7)" :key="participant._id" v-bind="participant" />
             </div>
@@ -85,7 +85,7 @@
 
                             <link-base class="mv-20" :href="googleCal" target="_blank">Ajouter à Google Calendar</link-base>
                             
-                            <p class="p-10 bg-bg-weak br-s">Tu as dû recevoir un email de confirmation. Vérifie tes spam !</p>
+                            <p class="p-10 bg-bg-weak  br-s">Tu as dû recevoir un email de confirmation. Vérifie tes spam !</p>
                         </template>
                         <template v-else>
                             Attention, pour conserver ton accès aux futures rencontres <span class="text-underline">n'oublie pas de te désincrire</span> si tu as un empêchement !

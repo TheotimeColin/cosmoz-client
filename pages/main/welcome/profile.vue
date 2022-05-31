@@ -5,7 +5,7 @@
 
             <p>On a juste besoin de quelques infos pour te proposer des sorties qui peuvent te plaire.</p>
 
-            <div class="mt-40 bg-bg p-20 br-s">
+            <div class="mt-40 bg-bg-weak p-20 br-s">
                 <div class="d-flex mt-5 d-block@xs">
                     <input-base label="Ton vrai prénom" v-model="formData.name" :attrs="{ required: true }" />
 
@@ -23,7 +23,7 @@
                     <fa icon="fas fa-lock" class="mr-3" /> Ta date de naissance reste privée.</p>
             </div>
 
-            <div class="mt-20 bg-bg p-20 br-s">
+            <div class="mt-20 bg-bg-weak p-20 br-s">
                 <div class="d-flex fxa-center">
                     <user-icon :no-link="true" :hide-picture="true" :modifiers="['xl']" v-bind="user" />
 

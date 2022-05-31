@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .BlockConstellation {
-    background: var(--color-bg);
+    background: var(--color-bg-weak);
     text-align: center;
 }
 

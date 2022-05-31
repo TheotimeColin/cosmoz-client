@@ -13,7 +13,7 @@
 .InputBase_label,
 .SelectBase_label {
     color: var(--color-ft-weak);
-    background-color: var(--color-bg) !important;
+    background-color: var(--color-bg-weak) !important;
 }
 
 .InputBase_element {
@@ -29,7 +29,7 @@
 }
 
 .SelectBase_options {
-    background-color: var(--color-bg) !important;
+    background-color: var(--color-bg-weak) !important;
 }
 
 .SelectBase_option {
@@ -44,7 +44,7 @@
 .InputBase_errorPopin {
     border: none;
     border-radius: 5px;
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-bg-xstrong);
 }
 
 .strong {
@@ -60,5 +60,5 @@
 }
 
 .Toggle_container::after{
-    background: var(--color-bg-2xstrong);
+    background: var(--color-bg-xstrong);
 }

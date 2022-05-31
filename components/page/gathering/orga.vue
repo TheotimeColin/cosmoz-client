@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="p-20 bg-bg mt-10 br-s">
+        <div class="p-20 bg-bg-weak mt-10 br-s">
             <div class="d-flex fxa-center d-block@xs">
                 <div class="width-3xs fx-no-shrink m-auto mb-20@xs width-2xs@xs">
                     <qr-code :data="qr" />
@@ -17,10 +17,10 @@
                 <div class="mb-30" v-for="status in userStatuses.filter(s => s.users.length > 0)" :key="status.id">
                     <div class="d-flex fxa-center" v-if="status.label">
                         <fa :icon="`far fa-${status.fa}`" class="mr-10" />
-                        <p class="ft-title-2xs">{{ status.label }} <span class="round-s bg-bg ml-10">{{ status.users.length }}</span></p>
+                        <p class="ft-title-2xs">{{ status.label }} <span class="round-s bg-bg-weak ml-10">{{ status.users.length }}</span></p>
                     </div>
 
-                    <div class="d-flex fxa-center p-15 bg-bg br-s o-hidden mt-10 d-block@s p-0@s" v-for="user in status.users" :key="user._id">
+                    <div class="d-flex fxa-center p-15 bg-bg-weak br-s o-hidden mt-10 d-block@s p-0@s" v-for="user in status.users" :key="user._id">
                         <div class="p-15@s">
                             <user-icon class="mr-10" :display-name="true" v-bind="user" />
                         </div>

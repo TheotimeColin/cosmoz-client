@@ -117,7 +117,7 @@ export default {
 
 <style lang="scss" scoped>
 .Tidbit {
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
     position: relative;
     overflow: hidden;
     border-radius: 10px;

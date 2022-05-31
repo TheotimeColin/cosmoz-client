@@ -98,7 +98,7 @@ export default {
 }
 
 .Editor_input {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg);
 }
 
 @include breakpoint-xs {

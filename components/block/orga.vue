@@ -137,7 +137,7 @@ export default {
     min-height: 105px;
     color: var(--color-ft-light);
     padding: 15px;
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
 }
 
 @include breakpoint-xs {

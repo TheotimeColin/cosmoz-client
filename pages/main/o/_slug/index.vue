@@ -1,53 +1,18 @@
 <template>
     <div class="Orga page" v-if="orga">
         <div class="Wrapper">
-            <div class="Orga_cover outflow@s" :style="{ backgroundImage: `url(${orga.hero})` }">
-                <quick-menu
-                    :modifiers="['strong']"
-                    :items="[
-                        { label: `Copier l'ID`, fa: 'hashtag', action: () => $copy(orga._id) }
-                    ]"
-                />
-            </div>
-
-            <div class="fx-center p-15 bg-bg d-block@s outflow@s">
-                <div class="d-flex fxa-center">
-                    <orga-icon :modifiers="$smallerThan('s') ? ['l'] : ['xl']" v-bind="orga" />
-
-                    <div class="ml-15">
-                        <h1 class="ft-title-xs">{{ orga.name }}</h1>
-                        <h2 class="ft-m ft-s@s">{{ orga.intro }}</h2>
-                    </div>
-                </div>
-                <div class="d-flex fxa-center ml-20 ml-0@s fx-reverse@s pv-15@s mt-15@s br-s bg-bg-strong@s">
-                    <p class="ft-s text-right mr-10 mr-0@s mt-5@s" v-if="orga.followers + followAction > 0">
-                        Suivi par {{ orga.followers + followAction }} personnes
-                    </p>
-
-                    <template v-if="user">
-                        <button-base :modifiers="['light']" icon-before="plus" :loading="isLoading" @click="onFollow" v-if="!this.isFollowed">
-                            Suivre
-                        </button-base>
-                        <button-base icon-before="check" :loading="isLoading" @click="onFollow" v-else>
-                            Suivi
-                        </button-base>
-                    </template>
-                    <button-base :modifiers="['light']" icon-before="plus"  @click="$store.commit('page/register', 'follow')" v-else>
-                        Suivre
-                    </button-base>
-                </div>
-            </div>
+            <page-const-banner v-bind="orga" />
             
-            <div class="d-flex pv-60 d-block@s pt-30@xs">
+            <div class="d-flex pv-30 d-block@s pt-30@xs">
+                <div class="width-xs fx-no-shrink mr-40 width-100@s ml-0@s mb-40@s">
+                    <page-const-nav :slug="orga.slug" />
+                </div>
+
                 <div class="fx-grow o-hidden">
                     <div v-if="upcomingEvents.length > 0">
-                        <p class="ft-title-m mb-20">
-                            <span class="round bg-bg-2xstrong mr-5">{{ upcomingEvents.length }}</span> Rencontres à venir
-                        </p>
-
                         <block-gathering
                             v-for="gathering in upcomingEvents"
-                            class="mt-20"
+                            class="mb-20"
                             :status-only="true"
                             v-bind="gathering"
                             :key="gathering._id"
@@ -63,7 +28,7 @@
                         </button-base>
                     </div>
 
-                    <div class="pt-20 br-s bg-bg mv-40" v-if="pastEvents.length > 0">
+                    <div class="pt-20 br-s bg-bg-weak mv-40" v-if="pastEvents.length > 0">
                         <p class="ft-title-xs mb-20 ph-20">
                             <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Rencontres passés
                         </p>
@@ -83,12 +48,6 @@
                                 />
                             </div>
                         </slider-block>
-                    </div>
-                </div>
-
-                <div class="width-s fx-no-shrink ml-40 width-100@s ml-0@s mb-40@s">
-                    <div class="bg-bg p-20 br-s">
-                        
                     </div>
                 </div>
             </div>
@@ -173,24 +132,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    .Orga_cover {
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-end;
-        padding: 10px;
-
-        &::before {
-            content: "";
-            display: block;
-            @include ratio(33);
-        }
-    }
-
-    @include breakpoint-xs {
-
-    }
-</style>

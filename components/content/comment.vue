@@ -80,7 +80,7 @@ export default {
     .Comment_main {
         display: flex;
         padding: 10px;
-        background: var(--color-bg-weak);
+        background: var(--color-bg-xweak);
         border-radius: 5px;
         flex-grow: 1;
     }
@@ -137,7 +137,7 @@ export default {
         }
 
         .Comment_main {
-            background-color: var(--color-bg);
+            background-color: var(--color-bg-weak);
         }
     }
 </style>

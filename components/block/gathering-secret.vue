@@ -158,7 +158,7 @@ export default {
     border-radius: 5px;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-bg-xstrong);
     text-align: center;
     position: relative;
     overflow: hidden;

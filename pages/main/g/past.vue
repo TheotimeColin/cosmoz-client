@@ -16,7 +16,7 @@
                         />
                         
                         <div class="fx-grow ph-20 ph-0@s">
-                            <div class="p-15 bg-bg br-s">
+                            <div class="p-15 bg-bg-weak br-s">
                                 <p class="ft-title-2xs mb-15">Rencontres :</p>
 
                                 <div>

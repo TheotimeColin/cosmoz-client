@@ -79,8 +79,8 @@ export default {
     font: var(--ft-title-2xs);
     line-height: 1;
     color: var(--color-ft-light);
-    border: 2px solid var(--color-bg-2xstrong);
-    background-color: var(--color-bg-2xstrong);
+    border: 2px solid var(--color-bg-xstrong);
+    background-color: var(--color-bg-xstrong);
     padding: 12px 15px;
     border-radius: 40px;
     transition: all 150ms ease;
@@ -173,13 +173,13 @@ export default {
 }
 
 .ButtonBase--weak {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-weak);
     color: var(--color-ft-weak);
     border-color: transparent;
 
     &.is-active,
     &:hover {
-        background-color: var(--color-bg-xstrong);
+        background-color: var(--color-bg-strong);
     }
 }
 
@@ -189,11 +189,15 @@ export default {
     border-color: transparent;
 
     &.is-active {
-        background-color: var(--color-bg-xstrong);
+        background-color: var(--color-bg-strong);
     }
 
     &:hover {
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg);
+
+        &.is-active {
+            background-color: var(--color-bg-strong);
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="Gathering_section" v-if="hasConfirmed">
-            <div class="pt-20 mb-30 bg-bg br-s">
+            <div class="pt-20 mb-30 bg-bg-weak br-s">
                 <p class="ft-title-s mb-20 ph-20">
                     Tu les as rencontrés <span class="ft-m color-ft-weak ml-5">{{ usersByStatus(['confirmed']).length }} participants</span>
                 </p>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="Gathering_section" v-else>
-            <div class="p-20 bg-bg br-s text-center">
+            <div class="p-20 bg-bg-weak br-s text-center">
                 <div class="row">
                     <div class="col-4 col-12@s">
                         <h3 class="ft-title-2xs">

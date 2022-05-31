@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-editor
-            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg"
+            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak"
             :placeholder="placeholder"
             :read="read"
             :loading="isSubmitLoading"

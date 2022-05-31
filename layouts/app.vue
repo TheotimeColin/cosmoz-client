@@ -53,7 +53,7 @@ export default {
 <style lang="scss" scoped>
 .LayoutApp {
     display: flex;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg);
 }
 
 .LayoutApp_content {

@@ -20,7 +20,7 @@ export default {
     text-align: center;
     position: relative;
     color: var(--color-ft-light);
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-weak);
     display: flex;
     align-items: center;
     min-height: 50vh;

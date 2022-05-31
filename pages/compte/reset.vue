@@ -2,7 +2,7 @@
     <div class="bg-gum-xweak o-hidden">
         <div class="Wrapper Wrapper--xs">
             
-            <div class="mv-150 bg-bg br-s p-30">
+            <div class="mv-150 bg-bg-weak br-s p-30">
                 <p class="ft-title-s">Créer un nouveau mot de passe</p>
 
                 <div class="text-center" v-if="isSuccess">

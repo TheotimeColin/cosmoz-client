@@ -56,7 +56,7 @@
                         </button-base>
                     </div>
 
-                    <div class="bg-bg p-15 br-s mt-20">
+                    <div class="bg-bg-weak p-15 br-s mt-20">
                         <div class="fx-center c-pointer" @click="isDangerZone = !isDangerZone"><p>Danger zone</p> <fa icon="far fa-angle-down" /></div>
 
                         <div class="mt-20" v-show="isDangerZone">

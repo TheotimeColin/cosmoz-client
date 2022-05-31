@@ -40,7 +40,7 @@
 
                     <div class="ml-40 text-right fx-grow ml-0@xs mt-20@xs text-left@xs" v-if="mentions.length > 0">
                         <div class="ft-title-3xs tape tape-strong m-3" v-for="(items, type) in $groupBy(mentions, 'type')" :key="type">
-                            {{ $t('mentions.' + type) }} <span class="round round-s bg-bg ml-5">{{ items.length }}</span>
+                            {{ $t('mentions.' + type) }} <span class="round round-s bg-bg-weak ml-5">{{ items.length }}</span>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         />
                     </div>
                     <div class="col-5 col-12@s">
-                        <div class="bg-bg p-20 br-s mb-20" v-if="common.length > 0 && !isSelf">
+                        <div class="bg-bg-weak p-20 br-s mb-20" v-if="common.length > 0 && !isSelf">
                             <p class="ft-title-2xs">Relations en commun</p>
 
                             <div class="row-xs mt-10">

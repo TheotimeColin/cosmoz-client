@@ -169,7 +169,7 @@ export default {
 <style lang="scss" scoped>
     .Post {
         border-radius: 10px;
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-weak);
         position: relative;
 
         &.is-current {
@@ -207,7 +207,7 @@ export default {
         border-radius: 3px;
         background-size: cover;
         background-position: center;
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-weak);
         position: relative;
     }
 

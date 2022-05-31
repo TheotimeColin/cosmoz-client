@@ -179,12 +179,12 @@
 
 .tape-strong  {
     color: var(--color-ft-light);
-    background: var(--color-bg-2xstrong);
+    background: var(--color-bg-xstrong);
 }
 
 .tape-1 {
     color: var(--color-ft-light);
-    background: var(--color-bg);
+    background: var(--color-bg-weak);
 }
 
 .tape-2 {
@@ -576,7 +576,7 @@
 .block {
     padding: 20px;
     border-radius: 10px;
-    background: var(--color-bg);
+    background: var(--color-bg-weak);
 }
 
 @keyframes vehicle {
@@ -660,7 +660,7 @@
 
         .InputBase_label,
         .SelectBase_label {
-            background-color: var(--color-bg-strong) !important;
+            background-color: var(--color-bg-weak) !important;
         }
 
         .strong {

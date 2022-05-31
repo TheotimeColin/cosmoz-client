@@ -25,7 +25,7 @@ export default {
 
 <style lang="scss" scoped>
 .TileDate {
-    border: 2px solid var(--color-bg);
+    border: 2px solid var(--color-bg-weak);
     color: var(--color-ft-light);
     border-radius: 3px;
     text-align: center;

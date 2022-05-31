@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="mt-40 p-20 bg-bg br-s" v-if="extended.length > 0">
+            <div class="mt-40 p-20 bg-bg-weak br-s" v-if="extended.length > 0">
                 <p class="ft-title-xs mb-5">Constellation étendue</p>
                 <p class="mb-20">Ces personnes font partie de la constellation d'au moins 2 personnes de ta constellation.</p>
 
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="mt-40 p-20 bg-bg br-s">
+            <div class="mt-40 p-20 bg-bg-weak br-s">
                 <p class="ft-title-xs mb-5">Connaissances</p>
                 <p class="mb-20">Tu as rencontré ces personnes lors d'un rassemblement.</p>
 
