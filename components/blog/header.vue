@@ -42,6 +42,12 @@ export default {
     :root {
         --header-height: 65px;
     }
+
+    @include breakpoint-xs {
+        :root {
+            --header-height: 0px;
+        }
+    }
 </style>
 
 <style lang="scss" scoped>

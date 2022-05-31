@@ -89,4 +89,15 @@ export default {
         opacity: 0;
         transform: translateY(-3px);
     }
+
+    @include breakpoint-s {
+        .Constellation {
+            height: auto;
+            overflow: hidden;
+        }
+
+        .Constellation_content {
+            overflow: visible;
+        }
+    }
 </style>

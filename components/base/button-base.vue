@@ -265,9 +265,9 @@ export default {
 }
 
 .ButtonBase--user {
-    padding: 0 15px 0 5px;
+    padding: 0 15px 0 3px;
     flex-shrink: 0;
-    height: 49px;
+    height: 44px;
     display: flex;
     align-items: center;
 }

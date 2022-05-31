@@ -1,5 +1,5 @@
 <template>
-    <div class="Nav bg-bg-strong br-s" :class="{ 'is-absolute': isAbsolute }" style="--offset: 40px;">
+    <div class="Nav bg-bg-strong" :class="{ 'is-absolute': isAbsolute }" style="--offset: 40px;">
         <transition name="fade">
             <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
                 <orga-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />

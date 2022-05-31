@@ -56,7 +56,8 @@ export default {
         content: { type: String },
         owner: { type: Object },
         reactions: { type: Array, default: () => [] },
-        createdAt: { type: [String, Date] }
+        createdAt: { type: [String, Date] },
+        isLoading: { type: Boolean }
     },
     data: () => ({
         isDeleted: false

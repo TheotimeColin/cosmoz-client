@@ -3,7 +3,7 @@
         <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
-            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click="onClick(item)">
+            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native="onClick(item)">
                 <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
             </component>
         </div>
@@ -35,33 +35,36 @@ export default {
             else if (this.modifiers.includes('strong')) modifiers = [...modifiers, 'xs', 'weak']
             else modifiers = [...modifiers, 'xs', 'xweak']
 
+            if (this.modifiers.includes('s')) modifiers = [ ...modifiers, 's']
+
             return [...modifiers, 'round']
         }
     },
     watch: {
         isActive: {
             handler (v) {
-                if (v && this.$data.listeners.close) {
+                if (v && this.listeners.close) {
                     setTimeout(() => {
-                        document.addEventListener('click', this.$data.listeners.close)
+                        document.addEventListener('click', this.listeners.close)
                     }, 100)
-                } else if (this.$data.listeners.close) {
-                    document.removeEventListener('click', this.$data.listeners.close)
+                } else if (this.listeners.close) {
+                    document.removeEventListener('click', this.listeners.close)
                 }
             }
         }
     },
     beforeDestroy () {
-        document.removeEventListener('click', this.$data.listeners.close)
+        document.removeEventListener('click', this.listeners.close)
     },
     mounted () {
-        this.$data.listeners.close = (e) => {
+        this.listeners.close = (e) => {
             if (!this.$refs.body.contains(e.target)) this.isActive = false
         }
     },
     methods: {
         onClick (item) {
             this.isActive = false
+
             if (item.action) item.action() 
         }
     }

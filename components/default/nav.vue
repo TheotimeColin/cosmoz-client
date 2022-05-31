@@ -1,10 +1,14 @@
 <template>
-    <nav class="AppNav" :class="{ 'is-active': isActive }">
-        <div class="AppNav_head"></div>
-        
-        <div class="AppNav_container">
+    <nav
+        class="AppNav"
+        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning }"
+        :style="{ '--pan': (pan + closePan) + 'px', '--opacity': 1 + ((pan + closePan) / 300) }"
+        v-hammer:pan.horizontal="onPan"
+        v-hammer:panend="onPanEnd"
+    >
+        <div class="AppNav_content">
             <div class="AppNav_header bg-cover-25 bg-night">
-                <div class="mt-20" v-if="user">
+                <div v-if="user">
                     <div class="d-flex fxa-center">
                         <user-icon class="mr-10" v-bind="user" :display-name="true" />
                     </div>
@@ -38,29 +42,37 @@
                 </div>
             </div>
         </div>
-        
-        <div class="AppNav_navBar">
-            <div class="AppNav_barItem" :class="{ 'is-active': (item.to == '/' && $route.path == item.to) || (item.to !== '/' && $route.path.includes(item.to)) || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
-                <nuxt-link class="AppNav_barLabel" :to="item.to">
-                    <div>
-                        <fa class="icon d-block" :icon="`far fa-${item.fa}`" />
-                        {{ item.label }}
-                    </div>
-                </nuxt-link>
-            </div>
-        </div>
+        <div class="AppNav_hider" @click="isActive = false"></div>
     </nav>
 </template>
 
 <script>
+import Throttle from 'lodash.throttle'
+
 export default {
     name: 'AppNav',
     props: {
-        isActive: { type: Boolean, default: false }
+        pan: { type: Number, default: 0 },
+        isPanning: { type: Boolean, default: false },
     },
     data: () => ({
-        nav: []
+        isActive: false,
+        nav: [],
+        isClosePanning: false,
+        closePan: 0,
+        onPan: () => {}
     }),
+    watch: {
+        $route () {
+            this.isActive = false
+        },
+        isPanning (v) {
+            if (!v && this.pan > 100) this.isActive = true
+        },
+        isClosePanning (v) {
+            if (!v && this.closePan < -25) this.isActive = false
+        }
+    },
     computed: {
         user () { return this.$store.getters['user/self'] },
     },
@@ -91,32 +103,79 @@ export default {
                 to: this.localePath({ name: 'constellation' })
             }
         ]
+
+        this.onPan = Throttle(v => {
+            this.isClosePanning = true
+            this.closePan = Math.min(0, this.closePan + (v.velocityX * 6))
+        }, 2)
+    },
+    methods: {
+        open () {
+            this.isActive = true
+        },
+        onPanEnd (v) {
+            this.isClosePanning = false
+            this.$nextTick(() => this.closePan = 0)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .AppNav {
-    position: relative;
-    z-index: 15;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: all 150ms ease;
+    z-index: 100;
+    
+    &.is-active:not(.is-panning):not(.is-closing) {
+        transform: translateX(0%) !important;
 
-    &.is-active {
+        .AppNav_hider {
+            pointer-events: all;
+            opacity: 1;
+        }
+    }
 
-        .AppNav_container {
-            transform: translateX(0%);
+    &.is-panning {
+        transform: translateX(calc(-100% + var(--pan, 0px)));
+        transition: none;
+
+        .AppNav_hider {
+            opacity: calc(var(--opacity, 1) - 1);
+        }
+    }
+
+    &.is-closing {
+        transform: translateX(calc(0% + var(--pan, 0px)));
+        transition: none;
+
+        .AppNav_hider {
+            pointer-events: all;
+            opacity: var(--opacity, 1);
         }
     }
 }
 
-.AppNav_head {
+.AppNav_content {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100vh;
+    background-color: var(--color-bg-strong);
+}
+
+.AppNav_hider {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    z-index: 20;
-    transform: translateY(-100%);
-    background-color: var(--color-bg-strong);
+    left: 300px;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    opacity: 0;
 }
 
 .AppNav_logo {
@@ -126,39 +185,8 @@ export default {
     z-index: 30;
 }
 
-.AppNav_container {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 300px;
-    height: 100vh;
-    background-color: var(--color-bg-strong);
-    transform: translateX(-100%);
-    transition: all 150ms ease;
-    z-index: 25;
-    box-sizing: content-box;
-
-    &:hover {
-        transform: translateX(0%);
-    }
-
-    // &::before {
-    //     content: "";
-    //     display: block;
-    //     position: absolute;
-    //     top: 0;
-    //     right: -5px;
-    //     height: 100%;
-    //     width: 5px;
-    // }
-}
-
 .AppNav_header {
-    min-height: 180px;
-    padding: 50px 20px 20px 20px;
+    padding: 20px;
     flex-grow: 0;
     flex-shrink: 0;
     background-color: var(--color-bg-xstrong);
@@ -270,10 +298,6 @@ export default {
 
 @include breakpoint-xs {
     
-    .AppNav_container {
-        display: none;
-    }
-
     .AppNav_navBar {
         background-color: var(--color-bg-xstrong);
         position: fixed;

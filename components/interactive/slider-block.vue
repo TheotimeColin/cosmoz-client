@@ -1,5 +1,5 @@
 <template>
-    <div class="SliderBlock" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
         <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
@@ -43,7 +43,8 @@ export default {
     },
     data: () => ({
         step: 0,
-        maxSteps: 0
+        maxSteps: 0,
+        isSlidable: true
     }),
     mounted () {
         this.checkDimensions()
@@ -122,8 +123,11 @@ export default {
 
     @include breakpoint-xs {
         
-        .SliderBlock_container {
-            overflow: auto;
+        .SliderBlock.is-slideable {
+        
+            .SliderBlock_container {
+                overflow: auto;
+            }
         }
 
         .SliderBlock_left,

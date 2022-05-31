@@ -77,7 +77,7 @@
 }
 
 .page {
-    margin-top: 65px;
+    margin-top: var(--header-height);
 }
 
 .logo-sparkle-a::before {

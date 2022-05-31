@@ -60,8 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 .LayoutDefault_content {
-    min-height: calc(100vh - 65px);
-    // padding-top: 65px;
+    min-height: calc(100vh - var(--header-height));
 }
 
 .page-enter-active,
