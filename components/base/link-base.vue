@@ -74,6 +74,10 @@ export default {
     position: relative;
 }
 
+.LinkBase--l {
+    font: var(--ft-title-2xs);
+}
+
 .LinkBase--weak {
     color: var(--color-ft-weak);
 

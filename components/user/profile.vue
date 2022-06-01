@@ -1,11 +1,11 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <div class="UserProfile_overlay" v-if="overlay">
             {{ overlay }}
         </div>
         <div class="UserProfile_content" v-else>
             <div>
-                <div class="round bg-sticky color-ft" v-if="isAffinity">
+                <div class="round bg-sticky color-ft" v-if="isFriend">
                     <fa icon="far fa-sparkles" />
                 </div>
             </div>
@@ -30,7 +30,7 @@ export default {
         overlay: { type: String },
         mentions: { type: Array, default: () => [] },
         profileLarge: { type: String },
-        isAffinity: { type: Boolean, default: false },
+        isFriend: { type: Boolean, default: false },
         noLink: { type: Boolean, default: false }
     },
     data: () => ({

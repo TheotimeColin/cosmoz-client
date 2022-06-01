@@ -115,7 +115,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                 if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
                     let granted = false
                     let isEncountered = false
-                    let isAffinity = false
+                    let isFriend = false
                     let isSelf = false
 
                     let requiredRole = (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) || 'public'
@@ -127,7 +127,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         if (owner && requester) {
                             isSelf = owner._id.equals(requester._id)
 
-                            isAffinity = owner['constellation'].find(u => u._id.equals(requester._id)) && requester['constellation'].find(u => u._id.equals(owner._id))
+                            isFriend = owner['friends'].find(u => u._id.equals(requester._id)) && requester['friends'].find(u => u._id.equals(owner._id))
 
                             isEncountered = owner['encounters'].find(u => u._id.equals(requester._id)) && requester['encounters'].find(u => u._id.equals(owner._id))
                         }
@@ -143,14 +143,14 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
 
                         granted = true
-                    } else if (requiredRole == 'affinity') {
-                        if (isAffinity || isSelf) granted = true
+                    } else if (requiredRole == 'friend') {
+                        if (isFriend || isSelf) granted = true
                     } else if (requiredRole == 'encountered') {
                         if (isEncountered || isSelf) granted = true
                     } else if (requiredRole == '$readEach') {
                         result[key] = result[key].map(r => {
-                            if (r.read == 'affinity') {
-                                return isAffinity ? r : { ...r, value: 'REDACTED' }
+                            if (r.read == 'friend') {
+                                return isFriend ? r : { ...r, value: 'REDACTED' }
                             } else if (r.read == 'encountered') {
                                 return isEncountered ? r : { ...r, value: 'REDACTED' }
                             } else {

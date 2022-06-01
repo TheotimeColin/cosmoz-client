@@ -1,7 +1,7 @@
 const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
-const { stripHtml } = require('string-strip-html')
+const striptags  = require('striptags')
 
 const { authenticate } = require('../utils/user')
 
@@ -13,7 +13,7 @@ exports.postStatus = async function (req, res) {
         let fields = req.body
         let parent = null
 
-        if (!fields.content || !stripHtml(fields.content).result) throw Error('no-content')
+        if (!fields.content || !striptags(fields.content)) throw Error('no-content')
 
         let user = await authenticate(req.headers)
         if (!user) throw Error('no-user')
@@ -31,7 +31,7 @@ exports.postStatus = async function (req, res) {
             if (!parent[0]) throw Error('no-parent')
         }
 
-        fields.content = stripHtml(fields.content).result
+        fields.content = striptags(fields.content)
         fields.content = fields.content.replace(/\n/g, '<br>')
 
         data = await Entities.status.model.create({
@@ -110,7 +110,7 @@ exports.getFeed = async function (req, res) {
                     $or: [
                         { gathering: { $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) }},
                         { owner: user._id },
-                        { owner: { $in: user.constellation } }
+                        { owner: { $in: user.friends } }
                     ],
                 },
                 { parent: null }

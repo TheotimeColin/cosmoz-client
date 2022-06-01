@@ -25,11 +25,11 @@
                                     :items="[
                                         { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
                                     ]"
-                                    v-if="!isSelf && profile.isAffinity"
+                                    v-if="!isSelf && profile.isFriend"
                                 />
                             </div>
 
-                            <div class="ft-m" v-if="profile.isAffinity">
+                            <div class="ft-m" v-if="profile.isFriend">
                                 Fait partie de ta constellation
                             </div>
                             <div class="ft-m" v-else-if="user.encounters.includes(profile._id)">
@@ -38,11 +38,11 @@
                         </div>
                     </div>
 
-                    <div class="ml-40 text-right fx-grow ml-0@xs mt-20@xs text-left@xs" v-if="mentions.length > 0">
+                    <!-- <div class="ml-40 text-right fx-grow ml-0@xs mt-20@xs text-left@xs" v-if="mentions.length > 0">
                         <div class="ft-title-3xs tape tape-strong m-3" v-for="(items, type) in $groupBy(mentions, 'type')" :key="type">
                             {{ $t('mentions.' + type) }} <span class="round round-s bg-bg-weak ml-5">{{ items.length }}</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </app-banner>
 
@@ -142,11 +142,9 @@ export default {
             immediate: true,
             async handler (v) {
                 if (v && this.user) {
-                    if (v.constellation && this.user.constellation) {
-                        this.common = await this.$store.dispatch('user/softFetch', {
-                            items: [ ...new Set(v.constellation.filter(u => this.user.constellation.includes(u))) ]
-                        })
-                    }
+                    this.common = await this.$store.dispatch('user/softFetch', {
+                        items: [ ...new Set(v.friends.filter(u => this.user.friends.includes(u))) ]
+                    })
                 }
             }
         }

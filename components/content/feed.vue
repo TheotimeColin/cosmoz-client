@@ -44,7 +44,7 @@
 export default {
     name: 'Feed',
     props: {
-        read: { type: String, default: 'affinity' },
+        read: { type: String, default: 'friend' },
         max: { type: Number, default: 5 },
         gathering: { type: String },
         author: { type: String },

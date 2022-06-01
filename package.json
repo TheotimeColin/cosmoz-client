@@ -76,6 +76,7 @@
     "string-similarity": "^4.0.4",
     "string-strip-html": "^9.1.12",
     "stripe": "^8.195.0",
+    "striptags": "^3.2.0",
     "tiptap": "^1.30.0",
     "tiptap-extensions": "^1.33.2"
   },

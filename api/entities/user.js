@@ -16,7 +16,7 @@ let UserEntity = {
         name: { type: String, write: 'self', read: 'public', fallback: { alias: 'encountered' } },
         alias: { type: String, write: 'self', read: 'public' },
         birthdate: { type: Date, write: 'self', read: 'self' },
-        interests: { type: Array, default: [], write: 'self', read: 'affinity' },
+        interests: { type: Array, default: [], write: 'self', read: 'friend' },
 
         picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
 
@@ -28,25 +28,25 @@ let UserEntity = {
         mentions: { type: Array, default: [], write: 'private', read: 'user' },
         gatherings: { type: Array, default: [], write: 'self', read: 'self' },
 
-        isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { constellation: '$requester' } },
-
-        isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
+        affinities: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
+        ],
 
         encounters: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
-        affinities: [
+        isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
+
+        friends: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
 
-        constellation: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'user', ref: 'user' }
-        ],
+        isFriend: { type: Boolean, default: false, write: 'private', read: 'public', replace: { friends: '$requester' } },
 
         tidbits: { type: Array, default: [], write: 'self', read: '$readEach' },
 
-        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     }, { timestamps: true })
 }
 

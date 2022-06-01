@@ -6,24 +6,24 @@
                     <div class="Post_icon">
                         <user-icon class="Post_user" :modifiers="['']" v-bind="owner" />
 
-                        <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
-                        </nuxt-link>
+                        <!-- <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
+                        </nuxt-link> -->
                     </div>
 
-                    <div class="ml-15 ft-s line-1">
+                    <div class="ml-10 ft-s line-1">
                         <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
 
-                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
-                            <template v-if="gatheringData && !isCurrent">
-                                <link-base :modifiers="['weak']" :to="gatheringLink">
-                                    dans {{ gatheringData.title }}
-                                </link-base>
-                                 · 
-                            </template>
+                        <template v-if="gatheringData && !isCurrent">
+                            <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
+                            <link-base :modifiers="['l']" :to="gatheringLink">
+                                 {{ gatheringData.title }}
+                            </link-base>
+                        </template>
 
+                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
                             {{ subtitle }}
 
-                            · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }}
+                            <!-- · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }} -->
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         forbidden () {
-            return (this.read == 'affinity' && !this.owner.isAffinity) && this.owner._id != this.user._id
+            return (this.read == 'friend' && !this.owner.isFriend) && this.owner._id != this.user._id
         },
         displayedComments () {
             return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []

@@ -34,28 +34,30 @@ exports.sendMentions = async function (req, res) {
             owner: user._id
         })
 
-        if (!user.affinities.find(u => target._id.equals(u))) {
-            user.affinities = [
-                ...user.affinities,
-                target._id
-            ]
-        }
-
-        if (target.affinities.find(u => user._id.equals(u))) {
-            data.match = true
-            
-            if (!user.constellation.find(u => target._id.equals(u))) {
-                user.constellation = [
-                    ...user.constellation,
+        if (req.body.requestFriend) {
+            if (!user.affinities.find(u => target._id.equals(u))) {
+                user.affinities = [
+                    ...user.affinities,
                     target._id
                 ]
             }
 
-            if (!target.constellation.find(u => user._id.equals(u))) {
-                target.constellation = [
-                    ...target.constellation,
-                    user._id
-                ]
+            if (target.affinities.find(u => user._id.equals(u))) {
+                data.match = true
+                
+                if (!user.friends.find(u => target._id.equals(u))) {
+                    user.friends = [
+                        ...user.friends,
+                        target._id
+                    ]
+                }
+
+                if (!target.friends.find(u => user._id.equals(u))) {
+                    target.friends = [
+                        ...target.friends,
+                        user._id
+                    ]
+                }
             }
         }
 

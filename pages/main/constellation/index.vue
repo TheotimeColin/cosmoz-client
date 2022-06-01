@@ -35,7 +35,7 @@
 
             <div class="mt-40 p-20 bg-bg-weak br-s">
                 <p class="ft-title-xs mb-5">Connaissances</p>
-                <p class="mb-20">Tu as rencontré ces personnes lors d'un rassemblement.</p>
+                <p class="mb-20">Tu as croisé ces personnes lors d'une rencontre.</p>
 
                 <div class="row-xs" v-if="encounters.length > 0">
                     <div class="col-3 col-4@s col-6@xs mt-10" v-for="user in encounters" :key="user._id">
@@ -83,7 +83,7 @@ export default {
         },
         constellation () {
             return this.$store.getters['user/find']({
-                isAffinity: true,
+                isFriend: true,
                 _id: '$notSelf'
             })
         },

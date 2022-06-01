@@ -27,7 +27,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.mention)
+                if (response.data.mention) commit('updateOne', response.data.mention)
+                
                 this.$auth.fetchUser()
 
                 return response

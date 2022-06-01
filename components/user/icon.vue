@@ -1,13 +1,13 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-affinity': isAffinity } ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" >
         <div class="UserIcon_image" :style="{ backgroundImage: `url(${src ? src : $bg.night})` }">
             <template v-if="hidePicture || !src">
                 {{ name ? name.slice(0, 1) : 'a' }}
             </template>
 
-            <div class="UserIcon_badge" v-if="isAffinity">
+            <!-- <div class="UserIcon_badge" v-if="isFriend">
                 <fa icon="far fa-sparkles" />
-            </div>
+            </div> -->
         </div>
 
         <div class="ml-10" v-if="displayName">
@@ -34,7 +34,7 @@ export default {
         hidePicture: { type: Boolean, default: false },
         profileLarge: { type: String },
         pictureSrc: { type: String },
-        isAffinity: { type: Boolean, default: false },
+        isFriend: { type: Boolean, default: false },
         noLink: { type: Boolean, default: false }
     },
     data: () => ({

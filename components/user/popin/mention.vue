@@ -1,17 +1,16 @@
 <template>
-    <popin :is-active="selectedUser ? true : false" :modifiers="['s']" @close="onClose" >
+    <popin :is-active="selectedUser ? true : false" :modifiers="['m']" @close="onClose" >
         <template slot="content" v-if="selectedUser">
-            <div class="bg-cover bg-night text-center p-40" v-if="affinity && received.length > 0 && sent.length > 0">
-                <div>
+            <div class="bg-cover bg-night text-center p-40" v-if="isFriend && isSent">
+                <div class="d-flex fxa-center fxj-center">
                     <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
+
+                    <fa icon="far fa-sparkles" class="mh-10" />
+
                     <user-icon :modifiers="['xl']" v-bind="user" :no-link="true" />
                 </div>
                 <div class="ft-title-m mt-30 mb-10">Nouvelle personne dans ta constellation</div>
-                <p class="mb-15">{{ selectedUser.name }} t'as envoyé les mentions suivantes :</p>
-
-                <div class="ft-title-xs subtitle tape" v-for="mention in received" :key="mention">
-                    {{ $t('mentions.' + mention.type) }}
-                </div>
+                <p class="mb-15">{{ selectedUser.name }} a également envie de rester en contact !</p>
 
                 <div class="mt-20">
                     <button-base :modifiers="['light']" :to="{ name: 'p-id', params: { id: selectedUser.id }}">Voir son profil</button-base>
@@ -22,22 +21,32 @@
 
                 <hr class="Separator mv-20">
                 
-                <div v-if="sent.length > 0 || isSuccess">
-                    <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
+                <div v-if="isSent.length > 0 || isSuccess">
+                    <template v-if="sent.length > 0">
+                        <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
-                    <div class="ft-title-xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
-                        {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
+                        <div class="ft-title-xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
+                            {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
+                        </div>
+                    </template>
+                    <div class="mt-30 bg-bg p-20 br-s" v-if="isRequested && !isFriend">
+                        <p class="ft-title-2xs"><fa icon="far fa-check" class="mr-5" /> Demandé en ami</p>
                     </div>
                 </div>
                 <div v-else>
-                    <p class="ft-title-xs">Envoyer</p>
-                    <p class="mt-5" v-if="affinity">{{ selectedUser.name }} fait déjà partie de ta constellation, mais tu peux lui renvoyer une mention, juste pour le plaisir !</p>
-                    <p class="mt-5" v-else>Si tu as apprécié passer du temps avec {{ selectedUser.name }}, envoie un autocollant ! {{ selectedUser.name }} sera pas au courant, sauf si c'est réciproque.</p>
+                    <p>Tu peux remercier {{ selectedUser.name }} pour sa présence lors de la rencontre ! C'est anonyme.</p>
 
-                    <div class="mt-20">
-                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'light'] : ['s']" :class="{ 'is-disabled': mentions.length >= 2 && !mentions.includes(mention.value) }" :icon-before="mentions.includes(mention.value) ? mention.icon : ''" v-for="mention in $const.mentions" @click="toggleMention(mention.value)" :key="mention.id">
+                    <div class="mt-10">
+                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'light'] : ['s']" :class="{ 'is-disabled': mentions.length >= 2 && !mentions.includes(mention.value) }" :icon-before="mention.icon" v-for="mention in $const.mentions" @click="toggleMention(mention.value)" :key="mention.id">
                             {{ mention.label }}
                         </button-base>
+                    </div>
+
+                    <div class="mt-30 bg-bg p-20 br-s">
+                        <p class="ft-title-xs">Ajouter en ami ?</p>
+                        <p class="mt-10">{{ selectedUser.name }} ne verra pas ta demande. Vous deviendriez amis seulement si c'est réciproque. </p>
+
+                        <input-toggle class="mt-15" label="Je veux rester en contact" v-model="requestFriend" />
                     </div>
 
                     <form-errors class="mt-20" :items="errors" />
@@ -47,7 +56,7 @@
         <template slot="footer" v-if="selectedUser">
             <div></div>
             
-            <div class="p-15 text-right" v-if="!affinity || (affinity && sent.length <= 0)">
+            <div class="p-15 text-right" v-if="!isFriend || (isFriend && !isSent)">
                 <template v-if="sent.length || isSuccess">
                     <button-base :modifiers="['light']" @click="onClose">
                         Fermer
@@ -55,8 +64,8 @@
                 </template>
                 <template v-else>
                     <link-base class="mr-5">Comment ça marche ?</link-base>
-                    <button-base :modifiers="['light']" :disabled="mentions.length <= 0" @click="onSubmit">
-                        Envoyer
+                    <button-base :modifiers="['light']" :disabled="mentions.length <= 0 && !requestFriend" @click="onSubmit">
+                        Valider
                     </button-base>
                 </template>
             </div>
@@ -80,6 +89,7 @@ export default {
         mentions: [],
         isMatch: false,
         isSuccess: false,
+        requestFriend: false,
         errors: []
     }),
     computed: {
@@ -91,13 +101,15 @@ export default {
                 owner: this.user._id
             })
         },
-        received () {
+        isSent () {
             return this.$store.getters['mention/find']({
                 gathering: this.gathering,
-                target: this.user._id
-            })
+                target: this.selectedUser._id,
+                owner: this.user._id
+            }, true)
         },
-        affinity () { return this.isMatch || this.selectedUser.isAffinity }
+        isFriend () { return this.isMatch || this.selectedUser.isFriend },
+        isRequested () { return this.user.affinities.find(u => u == this.selectedUser._id )}
     },
     methods: {
         toggleMention (type) {
@@ -109,9 +121,9 @@ export default {
         },
         onClose () {
             this.mentions = []
-            this.mentionsResponse = []
             this.isMatch = false
             this.isSuccess = false
+            this.requestFriend = false
 
             this.$emit('close')
         },
@@ -119,6 +131,7 @@ export default {
             try {
                 let response = await this.$store.dispatch('mention/create', {
                     mentions: this.mentions,
+                    requestFriend: this.requestFriend,
                     target: this.selectedUser._id,
                     gathering: this.gathering
                 })

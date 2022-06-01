@@ -45,7 +45,7 @@ export default {
             subtitle: `Visible par les personnes que j'ai rencontrées`,
             error: `Uniquement visible après une rencontre.`
         },
-        affinity: {
+        friend: {
             icon: 'far fa-sparkles',
             title: 'Constellation uniquement',
             subtitle: `Visible par ma constellation uniquement`,
