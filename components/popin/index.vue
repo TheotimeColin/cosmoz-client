@@ -87,7 +87,7 @@ export default {
 }
 
 .PopinBase_body {
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-strong);
     border-radius: 0px;
     width: 80%;
     max-width: 700px;
@@ -109,8 +109,8 @@ export default {
     flex-grow: 0;
     padding: 0px;
     min-height: 0;
-    // border-top: 1px solid var(--color-border);
-    background-color: var(--color-bg-weak);
+    border: none;
+    background-color: var(--color-bg-xstrong);
 }
 
 .PopinBase_content {
