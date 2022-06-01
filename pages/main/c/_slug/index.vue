@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex p-40">
+    <div class="d-flex Wrapper pv-40">
         <div class="fx-grow">
             <div v-if="upcomingEvents.length > 0">
                 <div class="fx-center mb-20">
@@ -37,7 +37,7 @@
                 </slider-block>
             </div>
         </div>
-        <div class="width-xs ml-40 fx-no-shrink">
+        <div class="width-xs ml-40 fx-no-shrink d-none@s">
 
         </div>
     </div>
@@ -74,7 +74,7 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', { subtitle: '' })
+        this.$store.commit('page/set', { subtitle: this.orga.name, fa: '' })
 
         let meta = {
             title: `${this.orga.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,

@@ -45,6 +45,9 @@
     .p-absolute#{$name} { position: absolute; }
     .p-sticky#{$name} { position: sticky; }
 
+    .hide#{$name} { visibility: hidden; height: 0; pointer-events: none; }
+    .show#{$name} { visibility: visible; height: auto; pointer-events: all; }
+
     /* TRANSFORM HELPERS */
     .invert-x#{$name} { transform: scaleX(-1); }
     .invert-y#{$name} { transform: scaleY(-1); }

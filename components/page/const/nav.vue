@@ -10,7 +10,7 @@
             <div class="Nav_cat" v-for="(cat, i) in items" :key="i">
                 <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                <nuxt-link v-for="item in cat.children" class="Nav_item" :to="localePath(item.to)" :key="item.label">
+                <nuxt-link v-for="(item, j) in cat.children" class="Nav_item" :class="{ 'is-index': j == 0 }" :to="localePath(item.to)" :key="item.label">
                     <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
                 </nuxt-link>
             </div>
@@ -130,7 +130,8 @@ export default {
         }
 
         &:hover,
-        &.is-active {
+        &.is-active:not(.is-index),
+        &.is-active-exact.is-index {
             background-color: var(--color-bg);
         }
     }

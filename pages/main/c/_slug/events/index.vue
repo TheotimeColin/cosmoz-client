@@ -1,5 +1,5 @@
 <template>
-    <div class="Wrapper p-40">
+    <div class="Wrapper pv-40">
         <div v-if="gatherings.length > 0">
             <block-gathering
                 v-for="gathering in gatherings"

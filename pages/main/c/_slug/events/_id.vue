@@ -2,10 +2,6 @@
     <div>
         <template v-if="!isLoading && gathering">
             <app-banner :background="gathering.hero">
-                <template slot="return">
-                    <link-base class="d-none@s" :to="{ path: localePath({ name: 'c-slug-events', params: { slug: gathering.organization.slug } }) }" icon-before="long-arrow-left" v-if="gathering.organization">Retour à la liste</link-base>
-                </template>
-                
                 <div>
                     {{ gathering.title }}
                 </div>
@@ -96,6 +92,8 @@ export default {
         }
     },
     mounted () {
+        this.$store.commit('page/set', { subtitle: `Organisé par ${this.gathering.organization.name}`, fa: '' })
+
         this.$store.commit('page/setCurrent', 'event')
     },
     beforeDestroy () {  

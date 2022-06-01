@@ -1,6 +1,8 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'c-slug', params: { slug }})" class="OrgaIcon" :class="[ ...$modifiers ]" >
-        <div class="OrgaIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }"></div>
+        <div class="OrgaIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
+            <p v-if="!logo">{{ name.slice(0, 1) }}</p>
+        </div>
 
         <link-base :invert="true" class="OrgaIcon_name ellipsis-1" v-if="displayName">{{ name ? name : '' }}</link-base>
     </component>
@@ -26,7 +28,7 @@ export default {
         src ()  {
             let src = this.logo ? this.logo.medias.find(m => m.size == 's') : null
 
-            return src && src.src ? src.src : false
+            return src && src.src ? src.src : this.$bg.holo
         }
     },
 }
@@ -43,10 +45,10 @@ export default {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    font: var(--ft-title-xs);
+    font: var(--ft-title-m);
     text-transform: lowercase;
     background-color: var(--color-bg-xweak);
-    color: var(--color-ft-light);
+    color: var(--color-ft);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -76,7 +78,7 @@ export default {
     .OrgaIcon_image {
         width: 45px;
         height: 45px;
-        font-size: 18px;
+        font-size: 22px;
     }
 }
 

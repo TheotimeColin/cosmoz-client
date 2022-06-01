@@ -1,11 +1,16 @@
 <template>
     <div class="Wrapper pv-40">
-        <content-feed />
+        Pas encore de sorties prévues
     </div>
 </template>
 
 <script>
 export default {
+    async fetch () {
+        await this.$store.dispatch('gathering/fetch', {
+            query: { organization: this.orga._id }
+        })
+    },
     props: {
         orga: { type: Object }
     },
@@ -17,11 +22,11 @@ export default {
     },
     head () {
         this.$store.commit('page/set', {
-            subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
+            subtitle: `Sorties prévues`, fa: 'calendar'
         })
 
         let meta = {
-            
+            title: `Sorties prévues ${this.$t('meta.append')}`,
         }
 
         return meta

@@ -1,12 +1,18 @@
 <template>
     <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
-            <div class="Header_left" @mouseenter="isNavOpen = true" @mouseleave="isNavOpen = false">
-                <button-base :modifiers="['round', 's', 'xweak']" class="Header_bars" icon-before="bars" @click="$emit('navOpen')" />
+            <div class="Header_left">
+                <div class="Header_bars" @click="$emit('navOpen')">
+                    <fa icon="far fa-bars" />
+                </div>
                 
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-xs">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
+
+                <div class="ft-title-2xs ellipsis-1 ellipsis-break hide show@xs" v-if="subtitle">
+                    <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle }}
+                </div>
             </div>
 
             <div class="Header_right" v-if="user">
@@ -65,7 +71,9 @@ export default {
         nav: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] }
+        user () { return this.$store.getters['user/self'] },
+        subtitle () { return this.$store.state.page.subtitle },
+        fa () { return this.$store.state.page.fa }
     },
     mounted () {
         this.isLoading = false
@@ -108,7 +116,6 @@ export default {
     width: 100%;
     z-index: 90;
     background-color: rgba(0, 0, 0, 0);
-    border-bottom: 1px solid var(--color-border); 
     transition: all 250ms ease;
 
     &.is-transparent {
@@ -170,6 +177,7 @@ export default {
 .Header_right {
     display: flex;
     align-items: center;
+    margin-left: 20px;
 }
 
 .Header_burger {
@@ -267,11 +275,14 @@ export default {
     }
 
     .Header_wrapper {
-        padding: 0 10px;
+        padding: 0 10px 0 0;
     }
 
     .Header_bars {
         display: flex;
+        padding: 20px;
+        position: relative;
+        z-index: 5;
     }
 
     .Header_left {

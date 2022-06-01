@@ -10,7 +10,7 @@
             <Nuxt />
         </div>
 
-        <default-nav :pan="pan" :is-panning="isPanning" v-if="$smallerThan('xs')" ref="nav" />
+        <default-nav :pan="pan" :is-panning="isPanning" ref="nav" />
 
         <popin-register />
         <tooltip-manager />
@@ -37,7 +37,7 @@ export default {
     }),
     created () {
         this.onPan = Throttle(v => {
-            if (this.$isFixedPosition(v.target)) return
+            if (this.$isFixedPosition(v.target) || this.$biggerThan('xs')) return
 
             this.isPanning = true
             this.pan = Math.min(300, this.pan + (v.velocityX * 6))
@@ -77,8 +77,7 @@ export default {
         windowResize () {
             this.$store.commit('page/setBreakpoint', window.innerWidth)
         },
-        onPanEnd (v) {
-            console.log('end')
+        onPanEnd () {
             this.isPanning = false
             this.$nextTick(() => this.pan = 0)
         }

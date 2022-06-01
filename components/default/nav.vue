@@ -1,47 +1,48 @@
 <template>
     <nav
         class="AppNav"
-        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning }"
+        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': currentConst && $biggerThan('xs'), 'is-desktop': $biggerThan('xs') }"
         :style="{ '--pan': (pan + closePan) + 'px', '--opacity': 1 + ((pan + closePan) / 300) }"
         v-hammer:pan.horizontal="onPan"
         v-hammer:panend="onPanEnd"
     >
         <div class="AppNav_content">
-            <div class="AppNav_header bg-cover-25 bg-night">
-                <div v-if="user">
-                    <div class="d-flex fxa-center">
-                        <user-icon class="mr-10" v-bind="user" :display-name="true" />
-                    </div>
-                    <div class="mt-10">
-                        <fa icon="far fa-calendar" class="mr-5" /> {{ user.gatherings.filter(g => g.status == 'confirmed').length }} participations
-                    </div>
-                    <div class="mt-3">
-                        <fa icon="far fa-hand-wave" class="mr-5" /> {{ user.encounters.length }} rencontres
-                    </div>
-                </div>
+            <div class="AppNav_primary">
+                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" icon-before="home" @click="selected = ''" />
+
+                <orga-icon class="AppNav_orga AppNav_icon" :class="{ 'is-active': selected == orga._id }" :modifiers="['m']" :no-link="true" v-for="orga in organizations" v-bind="orga" :key="orga._id" @click.native="selected = orga._id" />
             </div>
             <div class="AppNav_sub">
-                <div class="AppNav_menu">
-                    <div class="AppNav_menuItem" :class="{ 'is-active': (item.to == '/' && $route.path == item.to) || (item.to !== '/' && $route.path.includes(item.to)) || (item.items && item.items.find(i => i.to == $route.path)) }" v-for="(item, i) in nav" :key="i">
-                        <nuxt-link class="AppNav_menuLabel" :to="item.to">
-                            <span><fa class="icon" :icon="`far fa-${item.fa}`" /> {{ item.label }}</span>
-                        </nuxt-link>
+                <transition-group name="fade">
+                    <div v-if="!selected" key="selected">
+                        <div class="AppNav_header bg-cover bg-night" v-if="user">
+                            <user-icon v-bind="user" :display-name="true" />
+                        </div>
+                        
+                        <div class="AppNav_menu">
+                            <div class="AppNav_menuItem" v-for="(cat, i) in nav" :key="i">
+                                <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                        <div class="AppNav_menuChildren" v-if="item.items">
-                            <nuxt-link class="AppNav_menuSubitem" :to="child.to" v-for="(child, j) in item.items" :key="j">
-                                {{ child.label }}
-                            </nuxt-link>
+                                <div class="AppNav_menuChildren">
+                                    <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
+                                        <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
+                                    </nuxt-link>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="AppNav_footer">
+                            <div class="mt-10 p-20 b text-center br-xs">
+                                Une question ? Besoin d'aide ?
+                                <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="AppNav_footer">
-                    <div class="mt-10 p-20 b text-center br-xs">
-                        Une question ? Besoin d'aide ?
-                        <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
-                    </div>
-                </div>
+                    <page-const-nav v-bind="selectedOrga" v-else key="selectedOrga" />
+                </transition-group>
             </div>
         </div>
+
         <div class="AppNav_hider" @click="isActive = false"></div>
     </nav>
 </template>
@@ -50,6 +51,11 @@
 import Throttle from 'lodash.throttle'
 
 export default {
+    async fetch () {
+        await this.$store.dispatch('organization/fetch', {
+            query: {}
+        })
+    },
     name: 'AppNav',
     props: {
         pan: { type: Number, default: 0 },
@@ -60,6 +66,7 @@ export default {
         nav: [],
         isClosePanning: false,
         closePan: 0,
+        selected: '',
         onPan: () => {}
     }),
     watch: {
@@ -71,36 +78,41 @@ export default {
         },
         isClosePanning (v) {
             if (!v && this.closePan < -25) this.isActive = false
+        },
+        currentConst: {
+            immediate: true,
+            handler (v) {
+                this.selected = v
+            }
+        },
+        isActive (v) {
+            if (!v) setTimeout(() => this.selected = this.currentConst, 200)
         }
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
+        organizations () {
+            return this.$store.getters['organization/find']({
+            })
+        },
+        selectedOrga () {
+            return this.organizations.find(o => o._id == this.selected)
+        },
+        currentConst () { return this.$store.state.page.currentConst }
     },
     created () {
         this.nav = [
             {
-                label: `Actualité`,
-                fa: 'home',
-                to: this.localePath({ name: 'feed' }),
-            },
-            {
-                label: `Rencontrer`,
-                fa: 'hand-wave',
-                to: this.localePath({ name: 'g' }),
-                items: [
-                    {
-                        label: `Participer à une rencontre`,
-                        to: this.localePath({ name: 'g' })
-                    }, {
-                        label: `Mes rencontres passées`,
-                        to: this.localePath({ name: 'g-past' })
-                    }
+                children: [
+                    { label: `Actualité`, fa: 'home', to: { name: 'feed' } },
+                    { label: `Constellation`, fa: 'sparkles', to: { name: 'constellation' } },
                 ]
-            },
-            {
-                label: `Constellation`,
-                fa: 'sparkles',
-                to: this.localePath({ name: 'constellation' })
+            }, {
+                label: `Rencontres`,
+                children: [
+                    { label: `À venir`, fa: 'calendar', to: { name: 'g' } },
+                    { label: `Passées`, fa: 'home', to: { name: 'g-past' } },
+                ]
             }
         ]
 
@@ -124,17 +136,18 @@ export default {
 <style lang="scss" scoped>
 .AppNav {
     position: fixed;
-    top: 0;
+    top: var(--header-height);
     left: 0;
     transform: translateX(-100%);
-    transition: all 150ms ease;
+    transition: all 200ms ease;
     z-index: 100;
     
+    &.is-desktop:hover,
+    &.is-const,
     &.is-active:not(.is-panning):not(.is-closing) {
         transform: translateX(0%) !important;
 
         .AppNav_hider {
-            pointer-events: all;
             opacity: 1;
         }
     }
@@ -153,29 +166,86 @@ export default {
         transition: none;
 
         .AppNav_hider {
-            pointer-events: all;
             opacity: var(--opacity, 1);
         }
+    }
+
+    &.is-const {
+        top: var(--header-height);
+        
+        .AppNav_hider {
+            display: none;
+        }
+    }
+    
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        right: -5px;
+        height: 100%;
+        width: 5px;
     }
 }
 
 .AppNav_content {
     display: flex;
-    flex-direction: column;
-    width: 300px;
+    width: 320px;
     height: 100vh;
     background-color: var(--color-bg-strong);
+}
+
+.AppNav_primary {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--color-bg-xstrong);
+}
+
+.AppNav_icon {
+    cursor: pointer;
+    transition: all 100ms ease-out;
+    opacity: 0.5;
+
+    &:hover {
+        transform: scale(0.95);
+        opacity: 1;
+    }
+
+    &:active {
+        transform: scale(0.90);
+    }
+
+    &.is-active {
+        opacity: 1;
+        pointer-events: none;
+        transform: scale(0.95);
+    }
+
+    & + & {
+        margin-top: 10px;
+    }
+}
+
+.AppNav_sub {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .AppNav_hider {
     position: fixed;
     top: 0;
-    left: 300px;
+    left: 320px;
     width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     pointer-events: none;
     opacity: 0;
+    transition: opacity 150ms ease;
 }
 
 .AppNav_logo {
@@ -186,10 +256,17 @@ export default {
 }
 
 .AppNav_header {
-    padding: 20px;
-    flex-grow: 0;
-    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
     background-color: var(--color-bg-xstrong);
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+
+    &::after {
+        content: "";
+        @include ratio(33);
+    }
 }
 
 .AppNav_sub {
@@ -200,96 +277,40 @@ export default {
 
 .AppNav_menu {
     flex-grow: 1;
-    margin-top: 30px;
-}
-
-.AppNav_footer {
-    padding: 20px;
+    padding: 15px;
 }
 
 .AppNav_menuItem {
-    display: block;
-    margin-right: 30px;
 
-    &.is-active {
-
-        .AppNav_menuLabel {
-            color: var(--color-ft-strong);
-            background-color: var(--color-bg-light);
-
-            .icon {
-                color: var(--color-ft-strong);
-            }
-
-            &::after {
-                transform: rotate(90deg);
-            }
-        }
-
-        .AppNav_menuChildren {
-            opacity: 1;
-            transform: translateX(0px);
-            pointer-events: all;
-            position: relative;
-        }
-    }
-
-    &:hover:not(.is-active) {
-
-        .AppNav_menuLabel {
-            background-color: var(--color-bg);
-
-            .icon {
-                color: var(--color-ft-light);
-            }
-        }
+    & + & {
+        margin-top: 20px;
     }
 }
 
-.AppNav_menuLabel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    font: var(--ft-title-2xs);
-    padding: 15px 20px 15px 30px;
+.AppNav_menuSubitem  {
+    font: var(--ft-title-3xs);
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-ft-light);
+    text-decoration-color: var(--color-ft-xweak);
+    border-radius: 5px;
+    transition: all 100ms ease;
 
-    .icon {
-        width: 25px;
+    display: block;
+    padding: 10px;
+
+    svg {
         margin-right: 5px;
-        text-align: center;
-        color: var(--color-ft-weak);
     }
 
-    &::after {
-        content: "\f105";
-        font: var(--ft-icon-m);
+    &:hover,
+    &.is-active {
+        background-color: var(--color-bg);
     }
 }
 
-.AppNav_menuChildren {
-    padding: 10px 0px 0 0;
-    margin-bottom: 20px;
-    opacity: 0;
-    transform: translateX(-5px);
-    pointer-events: none;
-    position: absolute;
-    transition: all 100ms ease;
-}
-
-.AppNav_menuSubitem {
-    display: block;
-    padding: 6px 0px 6px 60px;
-    border-radius: 3px;
-    color: var(--color-ft-weak);
-    transition: all 100ms ease;
-
-    &.is-active-exact,
-    &:hover {
-        color: var(--color-ft-light);
-        background-color: var(--color-bg-weak);
-    }
+.AppNav_footer {
+    padding: 15px;
 }
 
 .AppNav_navBar {
@@ -297,6 +318,28 @@ export default {
 }
 
 @include breakpoint-xs {
+
+    .AppNav {
+        top: 0;
+        
+        &.is-active:not(.is-panning):not(.is-closing) {
+
+            .AppNav_hider {
+                pointer-events: all;
+            }
+        }
+
+        &.is-closing {
+
+            .AppNav_hider {
+                pointer-events: all;
+            }
+        }
+    }
+
+    .AppNav_hider {
+        transition: none;
+    }
     
     .AppNav_navBar {
         background-color: var(--color-bg-xstrong);

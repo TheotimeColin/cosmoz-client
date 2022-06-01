@@ -11,6 +11,7 @@ export default {
         subtitle: '',
         current: '',
         fa: '',
+        currentConst: '',
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,

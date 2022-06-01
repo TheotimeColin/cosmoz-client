@@ -27,7 +27,7 @@
             />
         </transition-group>
 
-        <div class="Feed_item p-20 bg-bg-xstrong ft-s color-ft-xweak br-s text-center" v-if="statusesData.length <= 0 && !isLoading">
+        <div class="Feed_item p-20 bg-bg-strong ft-s color-ft-xweak br-s text-center" v-if="statusesData.length <= 0 && !isLoading">
             Aucun message sur ce fil.
         </div>
 

@@ -1,10 +1,8 @@
 
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="orga">
-        <page-const-nav class="width-xs fx-no-shrink" v-bind="orga" :is-absolute="isEventPage" :is-home="!isMin" />
-
         <div class="Constellation_content fx-grow">
-            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="orga" />
+            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="orga" class="d-none@xs" v-if="$biggerThan('xs')" />
 
             <transition name="page">
                 <nuxt-child :orga="orga" />
@@ -20,12 +18,11 @@ export default {
         const response = await this.$store.dispatch('organization/get', {
             query: { slug: this.$route.params.slug }
         })
-    },
-    created () {
-        this.$store.commit('page/set', { isDisableFooter: true })
+
+        this.$store.commit('page/set', { currentConst: this.orga._id })
     },
     beforeDestroy () {
-        this.$store.commit('page/set', { isDisableFooter: false, subtitle: '' })
+        this.$store.commit('page/set', { isDisableFooter: false, subtitle: '', currentConst: '' })
     },
     data: () => ({
         isLoading: false,
@@ -69,6 +66,7 @@ export default {
         height: calc(100vh - var(--header-height, 0px));
         overflow: hidden;
         display: flex;
+        margin-left: 320px;
     }
 
     .Constellation_content {
@@ -94,6 +92,7 @@ export default {
         .Constellation {
             height: auto;
             overflow: hidden;
+            margin-left: 0;
         }
 
         .Constellation_content {

@@ -66,8 +66,8 @@ export default {
     }
 
     .Banner_wrapper {
-        min-height: 0vh;
-        padding: 140px 40px 30px;
+        min-height: 33vh;
+        padding: 75px 30px 30px 30px;
         text-align: left;
     }
 }
