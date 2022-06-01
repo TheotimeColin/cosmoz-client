@@ -326,6 +326,10 @@ export default {
 
     .AppNav {
         top: 0;
+
+        &::before {
+            display: none;
+        }
         
         &.is-active:not(.is-panning):not(.is-closing) {
 

@@ -51,7 +51,7 @@ export default {
         this.isLoading = true
 
         await this.$store.dispatch('gathering/fetch', {
-            query: {}
+            query: { status: 'active' }
         })
 
         this.isLoading = false
@@ -64,18 +64,21 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                '$in': this.user.booked
+                '$in': this.user.booked,
+                status: 'active'
             })
         },
         upcoming () {
             return this.$store.getters['gathering/find']({
                 isPast: false,
-                isFull: false
+                isFull: false,
+                status: 'active'
             }).slice(0, 6)
         },
         attending () {
             return this.$store.getters['gathering/find']({
                 isPast: false,
+                status: 'active',
                 _id: { $in: this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed') }
             })
         }

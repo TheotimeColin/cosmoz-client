@@ -1,32 +1,3 @@
-.InputBase {
-    color: var(--color-ft-light);
-    
-    
-    &.is-focused {
-
-        .InputBase_label {
-            color: var(--color-ft-light);
-        }
-    }
-}
-
-.InputBase_label,
-.SelectBase_label {
-    color: var(--color-ft-weak);
-    background-color: var(--color-bg-weak) !important;
-}
-
-.InputBase_element {
-    
-    &::placeholder {
-        color: var(--color-ft-xweak);
-        opacity: 1;
-    }
-}
-
-.Inputbase_helpers {
-    background-color: transparent !important;
-}
 
 .SelectBase_options {
     background-color: var(--color-bg-weak) !important;
@@ -40,21 +11,6 @@
         background-color: var(--color-bg-light);
     }
 }
-
-.InputBase_errorPopin {
-    border: none;
-    border-radius: 5px;
-    background-color: var(--color-bg-xstrong);
-}
-
-.strong {
-
-    .InputBase_label,
-    .SelectBase_label {
-        background-color: var(--color-bg-xstrong) !important;
-    }
-}
-
 .Toggle_checkbox:checked + .Toggle_container {
     background: var(--color-bg-light);
 }

@@ -21,7 +21,7 @@ export default {
 
             return {
                 ...form,
-                status: CONSTANTS.status[form.status].value,
+                status: CONSTANTS.status.find(s => s.id == form.status).value,
             }
         }
     },

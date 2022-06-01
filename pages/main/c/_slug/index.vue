@@ -47,7 +47,7 @@
 export default {
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.constellation._id }
+            query: { constellation: this.constellation._id, status: 'active' }
         })
     },
     props: {
@@ -60,6 +60,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
+                status: 'active',
                 constellation: { '$id': this.constellation._id }
             })
         },

@@ -9,6 +9,7 @@ let Gathering = {
 
         intro: { type: String, write: 'editor' },
         location: { type: String, write: 'editor' },
+        address: { type: String, write: 'editor' },
         date: { type: Date, write: 'editor' },
 
         description: { type: String, write: 'editor' },

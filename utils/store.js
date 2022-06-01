@@ -53,7 +53,6 @@ export default {
         let sort = search.sort
         delete search.sort
 
-
         Object.keys(search).forEach(key => {
             if (typeof search[key] === 'object') {
                 let entries = Object.entries(search[key])[0]

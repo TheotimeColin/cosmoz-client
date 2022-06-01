@@ -63,7 +63,7 @@ export default {
     async fetch () {
         this.isLoading = true 
 
-        await this.$store.dispatch('gathering/get', { query: { _id: this.$route.params.id }})
+        await this.$store.dispatch('gathering/get', { query: { _id: this.$route.params.id, status: 'active' }})
 
         this.isLoading = false 
     },
@@ -80,7 +80,8 @@ export default {
         },
         gathering () {
             return this.$store.getters['gathering/findOne']({
-                _id: this.$route.params.id
+                _id: this.$route.params.id,
+                status: 'active'
             })
         }
     },

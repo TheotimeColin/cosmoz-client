@@ -27,6 +27,5 @@ export default {
         if (v.length > 20) errors.push('Ton nom de boutique ne peut pas excéder 20 caractères')
 
         return { valid: errors.length == 0, errors }
-
     }
 }

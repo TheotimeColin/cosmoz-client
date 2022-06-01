@@ -6,7 +6,6 @@
 
         <template v-if="user">
             <div class="Gathering_section" v-if="gathering.intro">
-                <h2 class="ft-title-m mb-15">Intro</h2>
                 <text-body :modifiers="['gathering']" :value="gathering.intro" />
             </div>
 

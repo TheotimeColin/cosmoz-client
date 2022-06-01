@@ -44,7 +44,7 @@ export default {
     name: 'DashboardIndex',
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
-            query: {}
+            query: { status: 'active' }
         })
 
         await this.$store.dispatch('constellation/fetch', {
@@ -61,6 +61,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',
+                status: 'active',
                 display: false
             })
         },

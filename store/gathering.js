@@ -38,7 +38,7 @@ export default {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
                     ...params.query, type: 'gathering'
                 }))
-   
+
                 commit('updateOne', Array.isArray(response.data) ? response.data[0] : response.data)
 
                 return response.data
@@ -147,8 +147,12 @@ export default {
 
             return items
         },
-        findOne: (state, getters) => (search, raw = false) => {
-            let items = raw ? Object.values(state.items) : getters.items
+        findOne: (state, getters, root) => (search, raw = false) => {
+            let items = raw ? Object.values({ ...state.items }) : getters.items
+
+            let result = storeUtils.searchItems(items, search, root.auth.user)
+            return result[0] ? result[0] : null
+            
             return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
         }
     }

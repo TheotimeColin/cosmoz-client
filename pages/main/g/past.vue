@@ -52,7 +52,7 @@ export default {
     
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
-            query: {}
+            query: { status: 'active' }
         })
     },
     data: () => ({
@@ -63,6 +63,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 _id: { $in: this.user.gatherings },
+                status: 'active',
                 isPast: true,
                 sort: { date: 'asc' }
             })

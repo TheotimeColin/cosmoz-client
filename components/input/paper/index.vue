@@ -1,22 +1,26 @@
 <template>
     <div class="TextEditor">
-        <p class="ft-m-bold mb-5">{{ label }}</p>
+        
         <editor-menu-bar :editor="editor" v-slot="{ isActive, getMarkAttrs, getNodeAttrs }" v-if="editable">
             <div class="TextEditor_menu">
                 <div class="TextEditor_first">
-                    <div class="TextEditor_group" v-for="(group, i) in groups" :key="i">
-                        <component
-                            v-for="command in group"
-                            :is="command.component || 'button-editor'"
-                            :is-active="isActive[command.id] ? isActive[command.id]() : false"
-                            :icon="command.icon"
-                            :current-node="command.isNode ? getNodeAttrs(command.value) : (command.isMark ? getMarkAttrs(command.value) : null)"
-                            @click="command.setCurrent ? state.current = command.id : (command.command ? command.command() : editor.commands[command.id]())"
-                            @update="(v) => command.onUpdate(v) || undefined"
-                            :key="command.id"
-                        />
+                    <p class="ft-s ml-5">{{ label }}</p>
 
-                        <div class="TextEditor_separator"></div>
+                    <div class="fx-center">
+                        <div class="TextEditor_group" v-for="(group, i) in groups" :key="i">
+                            <component
+                                v-for="command in group"
+                                :is="command.component || 'button-editor'"
+                                :is-active="isActive[command.id] ? isActive[command.id]() : false"
+                                :icon="command.icon"
+                                :current-node="command.isNode ? getNodeAttrs(command.value) : (command.isMark ? getMarkAttrs(command.value) : null)"
+                                @click="command.setCurrent ? state.current = command.id : (command.command ? command.command() : editor.commands[command.id]())"
+                                @update="(v) => command.onUpdate(v) || undefined"
+                                :key="command.id"
+                            />
+
+                            <div class="TextEditor_separator" v-if="i !== groups.length - 1"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,6 +75,7 @@ export default {
     props: {
         value: { type: String, default: '' },
         label: { type: String, default: '' },
+        base: { type: Boolean, default: false },
         editable: { type: Boolean, default: true }
     },
     data: () => ({
@@ -103,7 +108,15 @@ export default {
             content: this.$props.value,
         })
 
-        this.$data.groups = [
+        this.$data.groups = this.base ? [
+            [
+                { id: 'undo', label: 'Annuler', icon: 'undo-alt' },
+                { id: 'redo', label: 'Rétablir', icon: 'redo-alt' }
+            ], [
+                { id: 'bold', label: 'Gras', icon: 'bold' },
+                { id: 'italic', label: 'Italique', icon: 'italic' }
+            ],
+        ] : [
             [
                 { id: 'undo', label: 'Annuler', icon: 'undo-alt' },
                 { id: 'redo', label: 'Rétablir', icon: 'redo-alt' }
@@ -163,3 +176,121 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+.TextEditor {
+
+}
+
+.TextEditor_content {
+    outline: none;
+
+    .ProseMirror {
+        min-height: 200px;
+        border: 1px solid var(--color-border);
+        border-top: none;
+        outline: none;
+    }
+}
+
+.TextEditor_menu {
+    position: sticky;
+    z-index: 5;
+    top: var(--header-base);
+    border: 1px solid var(--color-border);
+}
+
+.TextEditor_first,
+.TextEditor_second {
+    background-color: var(--color-bg-strong);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.TextEditor_first {
+    position: relative;
+    z-index: 2;
+}
+
+.TextEditor_second {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-bg-strong);
+    border: 1px solid var(--color-border);
+    transform: translateY(0%);
+    transition: all 100ms ease;
+
+    &.is-active {
+        transform: translateY(100%);
+    }
+}
+
+.TextEditor_group {
+    display: flex;
+    align-items: center;
+}
+
+.TextEditor_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 150ms ease;
+    border-bottom: 2px solid transparent;
+    position: relative;
+    color: var(--color-ft-weak);
+    
+    &.is-active {
+        color: var(--color-ft-light);
+        border-color: var(--color-ft-light);
+    }
+
+    &:hover {
+        background-color: var(--color-bg-weak);
+        color: var(--color-ft-light);
+    }
+}
+
+.TextEditor_button--sub {
+
+    &:hover {
+        
+        .TextEditor_list {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(100%);
+        }
+    }
+}
+
+.TextEditor_list {
+    position: absolute;
+    z-index: 5;
+    bottom: -2px;
+    left: 0;
+    width: 350px;
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    transform: translateY(calc(100% - 10px));
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 6px;
+    transition: all 100ms ease;
+}
+
+.TextEditor_separator {
+    width: 1px;
+    height: 20px;
+    margin: 0 10px;
+    background-color: var(--color-border);
+}
+</style>

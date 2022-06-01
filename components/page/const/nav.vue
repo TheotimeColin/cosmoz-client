@@ -10,7 +10,7 @@
             <div class="Nav_cat" v-for="(cat, i) in items" :key="i">
                 <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                <nuxt-link v-for="(item, j) in cat.children" class="Nav_item" :class="{ 'is-index': j == 0 }" :to="localePath(item.to)" :key="item.label">
+                <nuxt-link v-for="item in cat.children" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
                     <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
                 </nuxt-link>
             </div>
@@ -36,8 +36,13 @@ export default {
         this.items = [
             {
                 children: [
-                    { label: `Page d'accueil`, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } },
+                    { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } },
                     { label: `Rencontres prévues`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } }
+                ]
+            }, {
+                label: `Organisateurs`,
+                children: [
+                    { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
                 ]
             }, {
                 label: `Sorties`,
@@ -71,19 +76,8 @@ export default {
             z-index: 10;
             transform: translateX(-100%);
 
-            
             &:hover {
                 transform: translateX(0%);
-            }
-
-            &::before {
-                content: "";
-                display: block;
-                position: absolute;
-                top: 0;
-                right: -5px;
-                height: 100%;
-                width: 5px;
             }
         }
     }
@@ -121,6 +115,8 @@ export default {
         text-decoration-color: var(--color-ft-xweak);
         border-radius: 5px;
         transition: all 100ms ease;
+        overflow: hidden;
+        white-space: nowrap;
 
         display: block;
         padding: 12px 10px;
@@ -130,8 +126,8 @@ export default {
         }
 
         &:hover,
-        &.is-active:not(.is-index),
-        &.is-active-exact.is-index {
+        &.is-active:not(.is-parent),
+        &.is-active-exact.is-parent {
             background-color: var(--color-bg);
         }
     }

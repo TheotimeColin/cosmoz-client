@@ -16,7 +16,7 @@
                 </div>
             </div>
         </template>
-        <template v-else>
+        <template v-else-if="isLoading">
             <app-banner class="bg-bg-xstrong">
                 <placeholder :ratio="10" />
                 <placeholder class="mt-10" :ratio="10" />
@@ -29,6 +29,11 @@
                 <placeholder class="mt-10 bg-bg" :ratio="50" />
             </div>
         </template>
+        <template v-else-if="!isLoading && !gathering">
+            <div class="Wrapper">
+                <div class="p-20 mv-20 bg-bg-strong text-center">Cet événement n'existe pas (ou plus).</div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -39,11 +44,12 @@ export default {
         this.isLoading = true 
 
         let result = this.$store.getters['gathering/findOne']({
-            id: this.$route.params.id
+            id: this.$route.params.id,
+            status: 'active'
         })
 
         if (!result) {
-            await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id }})
+            await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id, status: 'active' }})
         }
 
         this.isLoading = false 
@@ -55,7 +61,8 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gathering () {
             return this.$store.getters['gathering/findOne']({
-                id: this.$route.params.id
+                id: this.$route.params.id,
+                status: 'active'
             })
         },
         isOrga () {
@@ -92,6 +99,8 @@ export default {
         }
     },
     mounted () {
+        if (!this.gathering) return
+
         this.$store.commit('page/set', { subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: '' })
 
         this.$store.commit('page/setCurrent', 'event')
@@ -100,6 +109,8 @@ export default {
         this.$store.commit('page/setCurrent', '')
     },
     head () {
+        if (!this.gathering) return {}
+
         let meta = {
             title: `${this.gathering.title} organisé par ${this.gathering.constellation ? this.gathering.constellation.name : ''} ${this.$t('meta.append')}`,
             meta: [

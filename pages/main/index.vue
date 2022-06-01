@@ -111,7 +111,7 @@ export default {
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
             limit: 3,
-            query: {}
+            query: { status: 'active' }
         })
     },
     data: () => ({
@@ -122,6 +122,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',
+                status: 'active',
                 display: false
             })
         }
