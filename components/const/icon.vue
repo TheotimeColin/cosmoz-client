@@ -1,10 +1,10 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'c-slug', params: { slug }})" class="OrgaIcon" :class="[ ...$modifiers ]" >
-        <div class="OrgaIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
-            <p v-if="!logo">{{ name.slice(0, 1) }}</p>
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
+        <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
+            <p v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</p>
         </div>
 
-        <link-base :invert="true" class="OrgaIcon_name ellipsis-1" v-if="displayName">{{ name ? name : '' }}</link-base>
+        <link-base :invert="true" class="ConstIcon_name ellipsis-1" v-if="displayName">{{ name ? name : '' }}</link-base>
     </component>
 </template>
 
@@ -12,7 +12,7 @@
 import { ModifiersMixin } from 'instant-coffee-core'
 
 export default {
-    name: 'OrgaIcon',
+    name: 'ConstIcon',
     mixins: [ ModifiersMixin ],
     props: {
         slug: { type: String },
@@ -35,13 +35,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.OrgaIcon {
+.ConstIcon {
     display: inline-flex;
     align-items: center;
     vertical-align: top;
 }
 
-.OrgaIcon_image {
+.ConstIcon_image {
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -58,51 +58,51 @@ export default {
     position: relative;
 }
 
-.OrgaIcon_name {
+.ConstIcon_name {
     font: var(--ft-title-2xs);
     font-size: 15px;
     margin-left: 10px;
 }
 
-.OrgaIcon--xs {
+.ConstIcon--xs {
 
-    .OrgaIcon_image {
+    .ConstIcon_image {
         width: 20px;
         height: 20px;
         font-size: 14px;
     }
 }
 
-.OrgaIcon--m {
+.ConstIcon--m {
 
-    .OrgaIcon_image {
+    .ConstIcon_image {
         width: 45px;
         height: 45px;
         font-size: 22px;
     }
 }
 
-.OrgaIcon--l {
+.ConstIcon--l {
 
-    .OrgaIcon_image {
+    .ConstIcon_image {
         width: 50px;
         height: 50px;
         font-size: 20px;
     }
 }
 
-.OrgaIcon--xl {
+.ConstIcon--xl {
 
-    .OrgaIcon_image {
+    .ConstIcon_image {
         width: 65px;
         height: 65px;
         font-size: 40px;
     }
 }
 
-.OrgaIcon--2xl {
+.ConstIcon--2xl {
 
-    .OrgaIcon_image {
+    .ConstIcon_image {
         width: 125px;
         height: 125px;
         font-size: 60px;

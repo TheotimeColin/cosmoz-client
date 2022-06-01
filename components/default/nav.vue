@@ -13,7 +13,7 @@
             <div class="AppNav_primary">
                 <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" icon-before="home" @click="selected = ''" />
 
-                <orga-icon class="AppNav_orga AppNav_icon" :class="{ 'is-active': selected == orga._id }" :modifiers="['m']" :no-link="true" v-for="orga in organizations" v-bind="orga" :key="orga._id" @click.native="selected = orga._id" />
+                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" :no-link="true" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
             </div>
             <div class="AppNav_sub">
                 <transition-group name="fade">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    <page-const-nav v-bind="selectedOrga" v-else key="selectedOrga" />
+                    <page-const-nav v-bind="selectConst" v-else key="selectConst" />
                 </transition-group>
             </div>
         </div>
@@ -53,7 +53,7 @@
 <script>
 export default {
     async fetch () {
-        await this.$store.dispatch('organization/fetch', {
+        await this.$store.dispatch('constellation/fetch', {
             query: {}
         })
     },
@@ -93,12 +93,12 @@ export default {
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
-        organizations () {
-            return this.$store.getters['organization/find']({
+        constellations () {
+            return this.$store.getters['constellation/find']({
             })
         },
-        selectedOrga () {
-            return this.organizations.find(o => o._id == this.selected)
+        selectConst () {
+            return this.constellations.find(o => o._id == this.selected)
         },
         currentConst () { return this.$store.state.page.currentConst }
     },

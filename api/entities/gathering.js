@@ -33,18 +33,18 @@ let Gathering = {
 
         reminded: { type: Boolean, default: false, write: 'private', read: 'private' },
 
-        organization: { type: mongoose.Schema.Types.ObjectId, write: 'admin', ref: 'organization' },
+        constellation: { type: mongoose.Schema.Types.ObjectId, write: 'admin', ref: 'constellation' },
     }, { timestamps: true })
 }
 
 Gathering.fields.pre('findOne', function () {
     this.populate('cover')
-    this.populate('organization')
+    this.populate('constellation')
 })
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
-    this.populate('organization')
+    this.populate('constellation')
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

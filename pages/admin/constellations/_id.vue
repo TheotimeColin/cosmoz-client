@@ -2,8 +2,8 @@
     <div class="p-60">
         <entity-editor
             :_id="_id"
-            entity-type="organization"
-            :block-type="{ type: 'block-orga', classes: 'max-width-s m-auto' }"
+            entity-type="constellation"
+            :block-type="{ type: 'block-const', classes: 'max-width-s m-auto' }"
             :form="form"
         >
         </entity-editor>
@@ -14,7 +14,7 @@
 import { InputBase, SelectBase } from 'instant-coffee-core'
 
 export default {
-    name: 'OrganizationEditPage',
+    name: 'ConstellationEditPage',
     layout: 'admin',
     middleware: 'admin',
     components: { InputBase, SelectBase },
@@ -48,8 +48,8 @@ export default {
         ]
     }),
     computed: {
-        organization () {
-            return this.$store.getters[`organization/findOne`]({ _id: this._id }, true)
+        constellation () {
+            return this.$store.getters[`constellation/findOne`]({ _id: this._id }, true)
         },
     },
     created () {

@@ -1,21 +1,21 @@
 <template>
-    <nuxt-link :to="link ? link : defaultLink" class="BlockOrga" :class="[ ...$modifiers ]">
-        <div class="BlockOrga_cover">
-            <div class="BlockOrga_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }"></div>
+    <nuxt-link :to="link ? link : defaultLink" class="BlockConst" :class="[ ...$modifiers ]">
+        <div class="BlockConst_cover">
+            <div class="BlockConst_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }"></div>
 
-            <div class="BlockOrga_header">
-                <div class="BlockOrga_logo" :style="{ backgroundImage: logoSmall ? `url(${logoSmall})` : '' }"></div>
+            <div class="BlockConst_header">
+                <div class="BlockConst_logo" :style="{ backgroundImage: logoSmall ? `url(${logoSmall})` : '' }"></div>
 
                 <div>
-                    <h3 class="BlockOrga_name">
+                    <h3 class="BlockConst_name">
                         {{ name|specials }}
                     </h3>
                 </div>
             </div>
         </div>
-        <div class="BlockOrga_content">
+        <div class="BlockConst_content">
             <div class="fx-center mb-10">
-                <div class="BlockOrga_location">
+                <div class="BlockConst_location">
                     <fa icon="far fa-map-marker-alt" class="mr-3"></fa> {{ location }}
                 </div>
                 <div class="ft-xs" v-if="followers > 0">
@@ -32,7 +32,7 @@
 import { ModifiersMixin } from 'instant-coffee-core'
 
 export default {
-    name: 'BlockOrga',
+    name: 'BlockConst',
     mixins: [ ModifiersMixin ],
     props: {
         slug: { type: String },
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.BlockOrga {
+.BlockConst {
     display: block;
     border-radius: 10px;
     overflow: hidden;
@@ -72,7 +72,7 @@ export default {
     }
 }
 
-.BlockOrga_coverImage {
+.BlockConst_coverImage {
     position: absolute;
     top: 0;
     left: 0;
@@ -84,7 +84,7 @@ export default {
     transition: all 150ms ease;
 }
 
-.BlockOrga_logo {
+.BlockConst_logo {
     width: 50px;
     height: 50px;
     flex-shrink: 0;
@@ -94,11 +94,11 @@ export default {
     border-radius: 50%;
 }
 
-.BlockOrga_favs {
+.BlockConst_favs {
     cursor: pointer;
 }
 
-.BlockOrga_cover {
+.BlockConst_cover {
     display: block;
     // border-radius: 8px;
     overflow: hidden;
@@ -113,7 +113,7 @@ export default {
     }
 }
 
-.BlockOrga_header {
+.BlockConst_header {
     padding: 15px;
     z-index: 5;
     display: flex;
@@ -122,16 +122,16 @@ export default {
     z-index: 2;
 }
 
-.BlockOrga_name {
+.BlockConst_name {
     font: var(--ft-title-xs);
 }
 
-.BlockOrga_location {
+.BlockConst_location {
     font: var(--ft-xs);
     color: var(--color-ft-weak);
 }
 
-.BlockOrga_content {
+.BlockConst_content {
     font: var(--ft-m);
     line-height: 1.3;
     min-height: 105px;

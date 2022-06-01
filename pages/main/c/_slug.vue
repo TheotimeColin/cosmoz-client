@@ -1,11 +1,11 @@
 
 <template>
-    <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="orga">
+    <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="constellation">
         <div class="Constellation_content fx-grow">
-            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="orga" class="d-none@xs" v-if="$biggerThan('xs')" />
+            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="constellation" class="d-none@xs" v-if="$biggerThan('xs')" />
 
             <transition name="page">
-                <nuxt-child :orga="orga" />
+                <nuxt-child :constellation="constellation" />
             </transition>
         </div>
     </div>
@@ -13,13 +13,13 @@
 
 <script>
 export default {
-    name: 'OrganizationPage',
+    name: 'ConstellationPage',
     async fetch () {
-        const response = await this.$store.dispatch('organization/get', {
+        const response = await this.$store.dispatch('constellation/get', {
             query: { slug: this.$route.params.slug }
         })
 
-        this.$store.commit('page/set', { currentConst: this.orga._id })
+        this.$store.commit('page/set', { currentConst: this.constellation._id })
     },
     beforeDestroy () {
         this.$store.commit('page/set', { isDisableFooter: false, subtitle: '', currentConst: '' })
@@ -31,8 +31,8 @@ export default {
         isMin () { return !this.$route.name.includes('c-slug_') },
         isEventPage () { return this.$store.state.page.current == 'event' },
         user () { return this.$store.getters['user/self'] },
-        orga () {
-            return this.$store.getters['organization/findOne']({
+        constellation () {
+            return this.$store.getters['constellation/findOne']({
                 slug: this.$route.params.slug
             })
         }
@@ -41,16 +41,16 @@ export default {
         $route () { if (process.client) window.scrollTo(0, 0) }
     },
     head () {
-        if (!this.orga) return {}
+        if (!this.constellation) return {}
         
         let meta = {
-            title: this.orga.name + ' organise ses événements sur Cosmoz',
+            title: this.constellation.name + ' organise ses événements sur Cosmoz',
             meta: [
-                { hid: 'description', name: 'description', content: this.orga.intro },
-                { property: 'og:title', content: this.orga.name  + ' organise ses événements sur Cosmoz' },
-                { property: 'og:url', content: this.$config.baseUrl + '/o/' + this.orga.slug },
-                { property: 'og:image', content: this.orga.logo },
-                { property: 'og:description', content: this.orga.intro },
+                { hid: 'description', name: 'description', content: this.constellation.intro },
+                { property: 'og:title', content: this.constellation.name  + ' organise ses événements sur Cosmoz' },
+                { property: 'og:url', content: this.$config.baseUrl + '/o/' + this.constellation.slug },
+                { property: 'og:image', content: this.constellation.logo },
+                { property: 'og:description', content: this.constellation.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
                 { property: 'twitter:card', content: 'summary_large_image' },
             ]

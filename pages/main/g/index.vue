@@ -27,11 +27,11 @@
                         Groupes à suivre
                     </p>
 
-                    <block-orga
-                        v-for="orga in organizations.slice(0, 2)"
+                    <block-const
+                        v-for="constel in constellations.slice(0, 2)"
                         class="mb-20"
-                        v-bind="orga"
-                        :key="orga._id"
+                        v-bind="constel"
+                        :key="constel._id"
                     />
                 </div>
             </div>
@@ -47,7 +47,7 @@ export default {
             query: {}
         })
 
-        await this.$store.dispatch('organization/fetch', {
+        await this.$store.dispatch('constellation/fetch', {
             query: {}
         })
 
@@ -64,8 +64,8 @@ export default {
                 display: false
             })
         },
-        organizations () {
-            return this.$store.getters['organization/find']({
+        constellations () {
+            return this.$store.getters['constellation/find']({
             })
         },
         gatheringsByDate () {

@@ -3,10 +3,10 @@
         <div class="Page_content Wrapper">
             <div class="fx-grow pb-100">
                 <div class="row-xs">
-                    <div class="col-6 col-6@s col-12@xs mb-10" v-for="organization in organizations" :key="organization._id">
-                        <block-orga
-                            v-bind="organization"
-                            :link="localePath({ name: 'organizations-id', params: { id:  organization._id } })"
+                    <div class="col-6 col-6@s col-12@xs mb-10" v-for="constellation in constellations" :key="constellation._id">
+                        <block-const
+                            v-bind="constellation"
+                            :link="localePath({ name: 'constellations-id', params: { id:  constellation._id } })"
                         />
                     </div>
                 </div>
@@ -17,7 +17,7 @@
                     tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :to="{ name: 'organizations-id', params: { id: 'new' } }"
+                    :to="{ name: 'constellations-id', params: { id: 'new' } }"
                 >
                     Nouveau
                 </button-base>
@@ -28,16 +28,16 @@
 
 <script>
 export default {
-    name: 'OrganizationsPage',
+    name: 'ConstellationPage',
     layout: 'admin',
     middleware: 'admin',
     async fetch () {
-        await this.$store.dispatch('organization/fetch', {
+        await this.$store.dispatch('constellation/fetch', {
             query: {}
         })
     },
     computed: {
-        organizations () { return this.$store.getters['organization/find']() },
+        constellations () { return this.$store.getters['constellation/find']() },
     }
 }
 </script>

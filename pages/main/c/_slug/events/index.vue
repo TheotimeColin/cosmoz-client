@@ -16,11 +16,11 @@
 export default {
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
-            query: { organization: this.orga._id }
+            query: { constellation: this.constellation._id }
         })
     },
     props: {
-        orga: { type: Object }
+        constellation: { type: Object }
     },
     data: () => ({
         isLoading: false
@@ -29,7 +29,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                organization: { '$id': this.orga._id },
+                constellation: { '$id': this.constellation._id },
                 isPast: false
             })
         }

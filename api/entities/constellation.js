@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-let Organization = {
+let Constellation = {
     write: 'admin',
     read: 'public',
     fields: new mongoose.Schema({
@@ -23,17 +23,17 @@ let Organization = {
     }, { timestamps: true })
 }
 
-Organization.fields.pre('findOne', function () {
+Constellation.fields.pre('findOne', function () {
     this.populate('logo')
     this.populate('cover')
 })
 
-Organization.fields.pre('find', function () {
+Constellation.fields.pre('find', function () {
     this.populate('logo')
     this.populate('cover')
 })
 
-Organization.model = global.Organization ? global.Organization.model : mongoose.model('organization', Organization.fields)
-global.Organization = Organization
+Constellation.model = global.Constellation ? global.Constellation.model : mongoose.model('constellation', Constellation.fields)
+global.Constellation = Constellation
 
-module.exports = Organization
+module.exports = Constellation

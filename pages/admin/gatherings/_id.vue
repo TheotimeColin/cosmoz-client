@@ -68,9 +68,9 @@ export default {
                 label: 'Statut',
                 options: CONSTANTS.status
             }, {
-                key: 'organization',
+                key: 'constellation',
                 type: 'string',
-                label: 'Organization'
+                label: 'Constellation'
             }
         ]
     }),

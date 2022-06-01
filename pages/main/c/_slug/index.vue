@@ -5,7 +5,7 @@
                 <div class="fx-center mb-20">
                     <h1 class="ft-title-s">Prochaine rencontre</h1>
 
-                    <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: orga.slug } }">Voir tout</button-base>
+                    <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: constellation.slug } }">Voir tout</button-base>
                 </div>
                 <block-gathering
                     class="mb-20"
@@ -47,11 +47,11 @@
 export default {
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
-            query: { organization: this.orga._id }
+            query: { constellation: this.constellation._id }
         })
     },
     props: {
-        orga: { type: Object }
+        constellation: { type: Object }
     },
     data: () => ({
         isLoading: false
@@ -60,11 +60,11 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                organization: { '$id': this.orga._id }
+                constellation: { '$id': this.constellation._id }
             })
         },
         isFollowed () {
-            return this.user ? this.user.followed.includes(this.orga._id) : false
+            return this.user ? this.user.followed.includes(this.constellation._id) : false
         },
         pastEvents () {
             return this.gatherings.filter(g => g.isPast)
@@ -74,10 +74,10 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', { subtitle: this.orga.name, fa: '' })
+        this.$store.commit('page/set', { subtitle: this.constellation.name, fa: '' })
 
         let meta = {
-            title: `${this.orga.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
+            title: `${this.constellation.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
         }
 
         return meta

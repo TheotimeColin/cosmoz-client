@@ -11,12 +11,12 @@ export default function sitemap () {
             ]
     
             try {
-                const orgas = await axios.get('https://cosmoz.events/api' + '/entities?type=organization')
+                const constellations = await axios.get('https://cosmoz.events/api' + '/entities?type=constellation')
     
-                if (orgas && orgas.data) {
+                if (constellations && constellations.data) {
                     routes = [
                         ...routes,
-                        ...orgas.data.data.filter(g => g.slug).map(g => ({
+                        ...constellations.data.data.filter(g => g.slug).map(g => ({
                             url: `/c/${g.slug}`,
                             changefreq: 'daily',
                             lastmod: g.updatedAt
@@ -30,7 +30,7 @@ export default function sitemap () {
                     routes = [
                         ...routes,
                         ...gatherings.data.data.filter(g => g.status == 'active' && g.id).map(g => ({
-                            url: `/c/${g.organization ? g.organization.slug : 'event'}/events/${g.id}`,
+                            url: `/c/${g.constellation ? g.constellation.slug : 'event'}/events/${g.id}`,
                             changefreq: 'daily',
                             lastmod: g.updatedAt
                         }))

@@ -6,10 +6,10 @@
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && organization">
-                        <orga-icon class="mr-10" v-bind="organization" /> {{ orgaShort ? '' : 'Organisé par'}} {{ organization.name }}
+                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellation">
+                        <const-icon class="mr-10" v-bind="constellation" /> {{ constShort ? '' : 'Organisé par'}} {{ constellation.name }}
                     </div>
-                    <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
+                    <div class="BlockGathering_status d-none@xs" v-if="!constOnly">
                         <div>
                             <template v-if="hasBooked">
                                 <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
@@ -27,7 +27,7 @@
                 </div>
 
                 <div>
-                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!orgaOnly">
+                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!constOnly">
                         <div>
                             <template v-if="hasBooked">
                                 <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
@@ -81,10 +81,10 @@ export default {
         link: { type: [Object, Boolean], default: false },
         statusOnly: { type: Boolean, default: false },
         isPast: { type: Boolean, default: false },
-        orgaOnly: { type: Boolean, default: false },
-        orgaShort: { type: Boolean, default: false },
+        constOnly: { type: Boolean, default: false },
+        constShort: { type: Boolean, default: false },
         displayIntro: { type: Boolean, default: false },
-        organization: { type: [Object, Boolean], default: false },
+        constellation: { type: [Object, Boolean], default: false },
     },
     data: () => ({
 
@@ -95,7 +95,7 @@ export default {
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'c-slug-events-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
+            return this.localePath({ name: 'c-slug-events-id', params: { id: this.id, slug: this.constellation ? this.constellation.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')

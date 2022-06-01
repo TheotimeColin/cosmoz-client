@@ -7,7 +7,7 @@
 <script>
 export default {
     props: {
-        orga: { type: Object }
+        constellation: { type: Object }
     },
     data: () => ({
         isLoading: false

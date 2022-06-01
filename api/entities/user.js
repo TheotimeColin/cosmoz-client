@@ -31,10 +31,6 @@ let UserEntity = {
         isAffinity: { type: Boolean, default: false, write: 'private', read: 'public', replace: { constellation: '$requester' } },
 
         isEncountered: { type: Boolean, default: false, write: 'private', read: 'public', replace: { encounters: '$requester' } },
-        
-        followed: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'user', ref: 'organization' }
-        ],
 
         encounters: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }

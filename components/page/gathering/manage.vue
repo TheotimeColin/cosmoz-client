@@ -8,16 +8,16 @@
                 <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ user ? gathering.location : `Information réservée aux membres` }}
             </p>
 
-            <!-- <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: gathering.organization.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.organization">
-                <orga-icon
-                    v-bind="gathering.organization"
+            <!-- <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: gathering.constellation.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.constellation">
+                <const-icon
+                    v-bind="gathering.constellation"
                     :no-link="true"
                     :modifiers="['m']"
                 />
 
                 <div class="ml-15">
                     <p class="ft-s color-ft-weak">Organisé par</p>
-                    <p class="ft-title-2xs">{{ gathering.organization.name }}</p>
+                    <p class="ft-title-2xs">{{ gathering.constellation.name }}</p>
                 </div>
             </nuxt-link> -->
         </div>
@@ -142,7 +142,7 @@ export default {
             return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
-            return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-id', params: { id: this.gathering.id, slug: this.gathering.organization ? this.gathering.organization.id : 'event' }})
+            return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-id', params: { id: this.gathering.id, slug: this.gathering.constellation ? this.gathering.constellation.id : 'event' }})
         },
         googleCal () {
             return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`

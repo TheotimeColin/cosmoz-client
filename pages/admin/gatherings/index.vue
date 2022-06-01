@@ -7,7 +7,7 @@
                         <block-gathering
                             v-bind="gathering"
                             :modifiers="['square']"
-                            :orga-only="true"
+                            :const-only="true"
                             :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
@@ -18,7 +18,7 @@
                         <block-gathering
                             v-bind="gathering"
                             :modifiers="['square']"
-                            :orga-only="true"
+                            :const-only="true"
                             :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>

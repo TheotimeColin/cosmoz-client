@@ -8,7 +8,7 @@ export default {
             return {
                 ...form,
                 status: status ? status.id : 0,
-                organization: form && form.organization ? form.organization._id  : ''
+                constellation: form && form.constellation ? form.constellation._id  : ''
             }
         },
         parse: function (form) {
@@ -25,7 +25,7 @@ export default {
             }
         }
     },
-    organization: {
+    constellation: {
         decode: function (form) {
 
             return {

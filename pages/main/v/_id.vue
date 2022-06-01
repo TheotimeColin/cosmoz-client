@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <block-gathering class="mt-20" :no-link="true" :orga-only="true" :status-only="true" v-bind="gathering" />
+                <block-gathering class="mt-20" :no-link="true" :const-only="true" :status-only="true" v-bind="gathering" />
             </div>
         </div>
     </div>

@@ -88,8 +88,8 @@
                         <div v-for="gathering in gatherings" :slot="gathering._id" :key="gathering._id">
                             <block-gathering
                                 :modifiers="['square']"
-                                :orga-only="true"
-                                :orga-short="true"
+                                :const-only="true"
+                                :const-short="true"
                                 v-bind="gathering"
                             />
                         </div>

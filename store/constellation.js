@@ -22,7 +22,7 @@ export default {
         async fetch ({ state, commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
-                    ...params.query, type: 'organization',
+                    ...params.query, type: 'constellation',
                 }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
@@ -36,7 +36,7 @@ export default {
         async get ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
-                    ...params.query, type: 'organization'
+                    ...params.query, type: 'constellation'
                 }))
 
                 let result = Array.isArray(response.data) ? response.data[0] : response.data
@@ -51,7 +51,7 @@ export default {
         async create ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$post('/entities', {
-                    ...params, type: 'organization'
+                    ...params, type: 'constellation'
                 })
                 
                 if (response.status == 0) throw Error(response.errors[0])
@@ -66,7 +66,7 @@ export default {
         async delete ({ commit }, _id) {
             try {
                 const response = await this.$axios.$delete('/entities', {
-                    params: { _id, type: 'organization' }
+                    params: { _id, type: 'constellation' }
                 })
 
                 commit('utils/addFlash', {

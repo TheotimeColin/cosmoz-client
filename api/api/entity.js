@@ -275,7 +275,7 @@ const typeCallbacks = {
                 }
 
                 if (orga && unfollow !== null) {
-                    await Entities.organization.model.findByIdAndUpdate(orga, {
+                    await Entities.constellation.model.findByIdAndUpdate(orga, {
                         $inc: { followers: unfollow ? -1 : 1 }
                     })    
                 }

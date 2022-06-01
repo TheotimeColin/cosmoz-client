@@ -8,7 +8,7 @@ const location = require('./location')
 const gathering = require('./gathering')
 const article = require('./article')
 const status = require('./status')
-const organization = require('./organization')
+const constellation = require('./constellation')
 const mention = require('./mention')
 const mail = require('./mail')
 
@@ -22,6 +22,6 @@ exports.location = location
 exports.gathering = gathering
 exports.article = article
 exports.status = status
-exports.organization = organization
+exports.constellation = constellation
 exports.mention = mention
 exports.mail = mail

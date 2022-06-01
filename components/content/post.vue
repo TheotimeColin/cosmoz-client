@@ -143,7 +143,7 @@ export default {
             return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
         },
         gatheringLink () {
-            return this.gatheringData ? this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization.slug : 'event' } }) : null
+            return this.gatheringData ? this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.constellation ? this.gatheringData.constellation.slug : 'event' } }) : null
         }
     },
     methods: {
