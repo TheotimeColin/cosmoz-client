@@ -4,6 +4,7 @@
 
         <div
             class="LayoutDefault_content"
+            v-hammer:panstart="onPanStart"
             v-hammer:pan.horizontal="onPan"
             v-hammer:panend="onPanEnd"
         >
@@ -21,7 +22,6 @@
 
 <script>
 import Debounce from 'lodash.debounce'
-import Throttle from 'lodash.throttle'
 
 export default {
     name: 'LayoutDefault',
@@ -33,16 +33,8 @@ export default {
     data: () => ({
         pan: 0,
         isPanning: false,
-        onPan: () => {}
+        isPanCancelled: false,
     }),
-    created () {
-        this.onPan = Throttle(v => {
-            if (this.$isFixedPosition(v.target) || this.$biggerThan('xs')) return
-
-            this.isPanning = true
-            this.pan = Math.min(300, this.pan + (v.velocityX * 6))
-        }, 2)
-    },
     async mounted () {
         try {
             await this.$recaptcha.init()
@@ -77,7 +69,17 @@ export default {
         windowResize () {
             this.$store.commit('page/setBreakpoint', window.innerWidth)
         },
+        onPan (v) {
+            if (this.isPanCancelled) return
+
+            this.isPanning = true
+            this.pan = Math.min(300, v.deltaX)
+        },
+        onPanStart (v) {
+            if (this.$isFixedPosition(v.target) || this.$biggerThan('xs')) this.isPanCancelled = true
+        },
         onPanEnd () {
+            this.isPanCancelled = false
             this.isPanning = false
             this.$nextTick(() => this.pan = 0)
         }

@@ -114,7 +114,7 @@ export default {
     }
 
     .Nav_item {
-        font: var(--ft-title-3xs);
+        font: var(--ft-title-2xs);
         line-height: 1;
         cursor: pointer;
         color: var(--color-ft-light);
@@ -123,10 +123,10 @@ export default {
         transition: all 100ms ease;
 
         display: block;
-        padding: 10px;
+        padding: 12px 10px;
 
         svg {
-            margin-right: 5px;
+            margin-right: 8px;
         }
 
         &:hover,

@@ -10,8 +10,9 @@
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
 
-                <div class="ft-title-2xs ellipsis-1 ellipsis-break hide show@xs" v-if="subtitle">
-                    <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle }}
+                <div class="ft-title-xs ellipsis-1 ellipsis-break hide show@xs" v-if="subtitle">
+                    <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
+                    {{ subtitle }}
                 </div>
             </div>
 

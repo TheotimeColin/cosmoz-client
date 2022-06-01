@@ -1,19 +1,30 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted }" v-show="content || forbidden">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }" v-show="content || forbidden">
         <template v-if="owner.name && (this.gathering ? gatheringData : true)">
             <div class="Post_head">
                 <div class="d-flex fxa-center fx-grow">
-                    <nuxt-link class="Post_icon" :to="titleLink" :style="isCurrent ? {} : { backgroundImage: `url(${gatheringData.thumbnail})` }">
-                        <user-icon class="Post_user" :modifiers="isCurrent ? ['s'] : ['xs']" v-bind="owner" />
-                    </nuxt-link>
+                    <div class="Post_icon">
+                        <user-icon class="Post_user" :modifiers="['']" v-bind="owner" />
 
-                    <div class="ml-10 ft-s line-1">
+                        <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
+                        </nuxt-link>
+                    </div>
+
+                    <div class="ml-15 ft-s line-1">
                         <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
-                        <p class="ft-italic color-ft-weak mt-5 ellipsis-1 ellipsis-break">
+
+                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
+                            <template v-if="gatheringData && !isCurrent">
+                                <link-base :modifiers="['weak']" :to="gatheringLink">
+                                    dans {{ gatheringData.title }}
+                                </link-base>
+                                 · 
+                            </template>
+
                             {{ subtitle }}
 
                             · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }}
-                        </p>
+                        </div>
                     </div>
                 </div>
 
@@ -122,25 +133,17 @@ export default {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
         },
         title () {
-            if (this.isCurrent) {
-                return this.owner.name
-            } else {
-                return this.gatheringData.title
-            }
+            return this.owner.name
         },
         subtitle () {
             let subtitle = this.$moment(this.createdAt).fromNow()
-
-            if (!this.isCurrent) subtitle = this.owner.name + ' · ' + subtitle
-
             return subtitle
         },
         titleLink () {
-            if (this.isCurrent) {
-                return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
-            } else {
-                return this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization.slug : 'event' } })
-            }
+            return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
+        },
+        gatheringLink () {
+            return this.gatheringData ? this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.organization ? this.gatheringData.organization.slug : 'event' } }) : null
         }
     },
     methods: {
@@ -172,21 +175,6 @@ export default {
         background-color: var(--color-bg-weak);
         position: relative;
 
-        &.is-current {
-
-            .Post_icon {
-                background-color: transparent;
-            }
-
-            .Post_user {
-                position: relative !important;
-                bottom: auto;
-                right: auto;
-                width: 100% !important;
-                height: 100% !important;
-            }
-        }
-
         &.is-reacted {
 
             .Post_action--react {
@@ -204,11 +192,18 @@ export default {
         flex-grow: 0;
         width: 35px;
         height: 35px;
-        border-radius: 3px;
+        position: relative;
+    }
+
+    .Post_gathering {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        bottom: -8px;
+        right: -5px;
+        border-radius: 4px;
         background-size: cover;
         background-position: center;
-        background-color: var(--color-bg-weak);
-        position: relative;
     }
 
     .Post_delete {
@@ -220,12 +215,6 @@ export default {
         align-items: center;
         justify-content: center;
         background-color: rgba(0, 0, 0, 0.75);
-    }
-
-    .Post_user {
-        position: absolute !important;
-        bottom: -3px;
-        right: -3px;
     }
 
     .Post_text {

@@ -74,20 +74,12 @@ export default {
     position: relative;
 }
 
-.LinkBase--s {
-    font: var(--ft-xs);
-    line-height: 1;
+.LinkBase--weak {
+    color: var(--color-ft-weak);
 
-    &::before {
-        bottom: -4px;
-    }
-}
-
-.LinkBase--current {
-    color: var(--color-current);
-
-    &::before {
-        background-color: var(--color-current);
+    &:hover {
+        color: var(--color-ft-light);
+        text-decoration: underline;
     }
 }
 </style>

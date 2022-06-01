@@ -2,9 +2,12 @@
     <nav
         class="AppNav"
         :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': currentConst && $biggerThan('xs'), 'is-desktop': $biggerThan('xs') }"
-        :style="{ '--pan': (pan + closePan) + 'px', '--opacity': 1 + ((pan + closePan) / 300) }"
+        :style="{
+            transform: isClosePanning ? `translateX(calc(0% + ${closePan}px))` : `translateX(calc(-100% + ${pan}px))`
+        }"
         v-hammer:pan.horizontal="onPan"
         v-hammer:panend="onPanEnd"
+        v-hammer:pancancel="onPanEnd"
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
@@ -43,13 +46,11 @@
             </div>
         </div>
 
-        <div class="AppNav_hider" @click="isActive = false"></div>
+        <div class="AppNav_hider" :style="{ opacity: isClosePanning ? 1 + (closePan / 300) : (pan / 300) }" @click="isActive = false"></div>
     </nav>
 </template>
 
 <script>
-import Throttle from 'lodash.throttle'
-
 export default {
     async fetch () {
         await this.$store.dispatch('organization/fetch', {
@@ -66,8 +67,7 @@ export default {
         nav: [],
         isClosePanning: false,
         closePan: 0,
-        selected: '',
-        onPan: () => {}
+        selected: ''
     }),
     watch: {
         $route () {
@@ -87,6 +87,8 @@ export default {
         },
         isActive (v) {
             if (!v) setTimeout(() => this.selected = this.currentConst, 200)
+
+            this.$store.commit('page/toggleOverflow', !v)
         }
     },
     computed: {
@@ -115,18 +117,18 @@ export default {
                 ]
             }
         ]
-
-        this.onPan = Throttle(v => {
-            this.isClosePanning = true
-            this.closePan = Math.min(0, this.closePan + (v.velocityX * 6))
-        }, 2)
     },
     methods: {
         open () {
             this.isActive = true
         },
-        onPanEnd (v) {
+        onPan (v) {
+            this.isClosePanning = true
+            this.closePan = Math.min(0, v.deltaX)
+        },
+        onPanEnd () {
             this.isClosePanning = false
+            this.isFirst = false
             this.$nextTick(() => this.closePan = 0)
         }
     }
@@ -148,25 +150,27 @@ export default {
         transform: translateX(0%) !important;
 
         .AppNav_hider {
-            opacity: 1;
+            opacity: 1 !important;
         }
     }
 
     &.is-panning {
-        transform: translateX(calc(-100% + var(--pan, 0px)));
         transition: none;
 
         .AppNav_hider {
             opacity: calc(var(--opacity, 1) - 1);
         }
+
+        .AppNav_sub {
+            overflow: hidden;
+        }
     }
 
     &.is-closing {
-        transform: translateX(calc(0% + var(--pan, 0px)));
         transition: none;
 
-        .AppNav_hider {
-            opacity: var(--opacity, 1);
+        .AppNav_sub {
+            overflow: hidden;
         }
     }
 
@@ -233,7 +237,8 @@ export default {
 .AppNav_sub {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
+    touch-action: pan-y !important;
 }
 
 .AppNav_hider {
@@ -288,7 +293,7 @@ export default {
 }
 
 .AppNav_menuSubitem  {
-    font: var(--ft-title-3xs);
+    font: var(--ft-title-2xs);
     line-height: 1;
     cursor: pointer;
     color: var(--color-ft-light);
@@ -297,10 +302,10 @@ export default {
     transition: all 100ms ease;
 
     display: block;
-    padding: 10px;
+    padding: 12px 10px;
 
     svg {
-        margin-right: 5px;
+        margin-right: 8px;
     }
 
     &:hover,
