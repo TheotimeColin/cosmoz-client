@@ -128,6 +128,6 @@ export default {
     min-height: 50px;
     padding: 15px;
     border-radius: 5px;
-    background-color: var(--color-bg-weak);
+    background-color: var(--color-bg);
 }
 </style>

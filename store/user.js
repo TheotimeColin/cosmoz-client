@@ -56,7 +56,7 @@ export default {
                 return null
             }
         },
-        async fetch ({ state, commit }, params = {}) {
+        async fetch ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
                     ...params.query, type: 'user',
@@ -201,14 +201,15 @@ export default {
             return new Promise(async (resolve, reject) => {
                 try {
                     let result = []
-                    let users = state.items
+                    let users = JSON.parse(JSON.stringify(state.items))
 
                     for (let item of params.items) {
                         if (!users[item]) {
                             console.log('====== FETCH USERS =======')
 
                             let newUsers = await dispatch('fetch', {
-                                query: { _id: '$in' + params.items.join(',') }
+                                query: { _id: '$in' + params.items.join(',') },
+                                refresh: false
                             })
 
                             if (newUsers) users = storeUtils.refresh(newUsers)

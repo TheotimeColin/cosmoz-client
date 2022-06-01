@@ -36,7 +36,7 @@
                 </div>
             </template>
 
-            <div class="Footer d-flex fxa-center mt-60 p-20 bg-bg-xstrong text-right br-s d-block@xs">
+            <div class="Footer d-flex fxa-center mt-60 p-20 bg-bg-strong text-right br-s d-block@xs">
                 <p class="ft-m color-ft-weak mr-10 fx-grow d-none@xs">Tu pourras ajuster tes centres d'intérêts plus tard</p>
 
                 <button-base :modifiers="['light']" icon-after="arrow-right" :loading="isLoading" :disabled="interests.length <= 0">

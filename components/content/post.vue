@@ -1,6 +1,6 @@
 <template>
     <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }" v-show="content || forbidden">
-        <template v-if="owner.name && (this.gathering ? gatheringData : true)">
+        <template>
             <div class="Post_head">
                 <div class="d-flex fxa-center fx-grow">
                     <div class="Post_icon">

@@ -10,11 +10,7 @@ const { user } = require('../api/entities/index')
       user.set('booked', undefined, { strict: false })
       user.set('shops', undefined, { strict: false })
       user.set('advices', undefined, { strict: false })
-      user.affinities = []
-      user.encounters = []
-      user.mentions = []
-      user.gatherings = []
-      user.friends = []
+      user.friends = user.constellation ? user.constellation : []
       user.set('constellation', undefined, { strict: false })
       user.set('followed', undefined, { strict: false })
 

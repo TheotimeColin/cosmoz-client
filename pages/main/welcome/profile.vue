@@ -12,7 +12,7 @@
                     <input-toggle class="fx-no-shrink ml-10 ml-0@xs mt-10@xs" label="Utiliser un pseudo" :value="isPseudo" @input="onTogglePseudo"/>
                 </div>
 
-                <div class="ft-m mt-15 p-20 br-s bg-bg-xstrong strong" v-if="isPseudo">
+                <div class="ft-m mt-15 p-20 br-s bg-bg-strong strong" v-if="isPseudo">
                     <input-base class="mb-10" label="Ton pseudonyme" v-model="formData.alias" :attrs="{ placeholder: 'Capitaine Patate' }" />
 
                     Ce pseudonyme remplace ton prénom pour les personnes que tu n'as encore pas rencontrées en vrai. 
@@ -37,14 +37,14 @@
                 <input-file class="mt-20" v-model="newPicture" />
             </div>
 
-            <div class="Footer mt-20 p-20 bg-bg-xstrong text-right br-s">
+            <div class="Footer mt-20 p-20 bg-bg-strong text-right br-s">
                 <button-base :modifiers="['light']" icon-after="arrow-right" :loading="isLoading">
                     Continuer
                 </button-base>
             </div>
         </form>
 
-        <div class="p-relative bg-bg-2xstrong">
+        <div class="p-relative bg-bg-xstrong">
             <div id="faq" class="anchor"></div>
 
             <div class="Wrapper Wrapper--s pv-60 ft-l">

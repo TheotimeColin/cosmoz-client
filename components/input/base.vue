@@ -160,7 +160,7 @@ export default {
 .InputBase_label,
 .SelectBase_label {
     color: var(--color-ft-weak);
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
 }
 
 .InputBase_element {
@@ -185,7 +185,7 @@ export default {
 
     .InputBase_label,
     .SelectBase_label {
-        background-color: var(--color-bg-xstrong) !important;
+        background-color: var(--color-bg-strong) !important;
     }
 }
 </style>

@@ -44,14 +44,14 @@
             </div>
 
 
-            <div class="Footer mt-60 p-20 bg-bg-xstrong text-right br-s">
+            <div class="Footer mt-60 p-20 bg-bg-strong text-right br-s">
                 <button-base :modifiers="['light']" icon-after="arrow-right" :to="{ name: 'welcome-profile' }">
                     Continuer
                 </button-base>
             </div>
         </div>
 
-        <div class="p-relative bg-bg-2xstrong">
+        <div class="p-relative bg-bg-xstrong">
             <div id="faq" class="anchor"></div>
 
             <div class="Wrapper Wrapper--s pv-60 ft-l">

@@ -11,7 +11,7 @@
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
-                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" icon-before="home" @click="selected = ''" />
+                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" icon-before="sparkles" @click="selected = ''" />
 
                 <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" :no-link="true" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
             </div>
@@ -110,9 +110,9 @@ export default {
                     { label: `Constellation`, fa: 'sparkles', to: { name: 'constellation' } },
                 ]
             }, {
-                label: `Rencontres`,
+                label: `On sort ?`,
                 children: [
-                    { label: `À venir`, fa: 'calendar', to: { name: 'g' } },
+                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'g' } },
                     { label: `Passées`, fa: 'home', to: { name: 'g-past' } },
                 ]
             }
