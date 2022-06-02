@@ -84,9 +84,11 @@ export default {
     props: {
         constellation: { type: Object }
     },
+    async fetch () {
+        await this.fetchEntity(this.$route.params.id)
+    },
     data: () => ({
         entityType: 'gathering',
-        routeName: 'c-slug-manage-events-id',
         inputs: ['cover', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
         options: {
             max: false,
@@ -123,6 +125,11 @@ export default {
         },
         postSubmit () {
             this.formData.coverSelect = ''
+        },
+        postSubmitSuccess () {
+            this.$router.push({
+                path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.constellation.slug, id: this.currentId } })
+            })
         }
     },
     head () {

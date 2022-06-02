@@ -49,7 +49,7 @@ export default {
         displayedRows () {
             return this.rows.slice(0, this.maxRows)
         }
-    },  
+    },
     mounted () {
         this.$data.maxWidth = this.$refs.container.offsetWidth
         this.search(this.query)

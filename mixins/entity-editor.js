@@ -2,11 +2,6 @@
 import Decoders from '@/utils/decoders'
 
 export default {
-    async fetch () {
-        this.currentId = this.$route.params.id
-
-        this.currentId && this.currentId != 'new' ? await this.$store.dispatch(`${this.entityType}/get`, { query: { _id: this.currentId } }) : {}
-    },
     data: () => ({
         currentId: '',
         isLoading: false,
@@ -54,6 +49,11 @@ export default {
         this.isLoading = false
     },
     methods: {
+        async fetchEntity (id) {
+            this.currentId = id
+
+            this.currentId && this.currentId != 'new' ? await this.$store.dispatch(`${this.entityType}/get`, { query: { _id: this.currentId } }) : {}
+        },
         decodeForm (form) {
             return Decoders[this.entityType].decode(form)
         },
@@ -61,7 +61,7 @@ export default {
             return await Decoders[this.entityType].parse(form, this)
         },
         async deleteEntity () {
-            let response = await this.$store.dispatch(`gathering/delete`, this.currentId)
+            let response = await this.$store.dispatch(`${this.entityType}/delete`, this.currentId)
 
             if (response.status == 1) {
                 if (this.postDelete) this.postDelete()
@@ -87,9 +87,7 @@ export default {
                     this.currentId = response.data._id
                     
                     if (this.$route.params.id !== this.currentId) {
-                        this.$router.push({
-                            path: this.localePath({ name: this.routeName, params: { slug: this.constellation.slug, id: this.currentId } })
-                        })
+                        if (this.postSubmitSuccess) this.postSubmitSuccess()
                     }
                 } else {
                     this.errors = [ response.error ]

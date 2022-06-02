@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mediaCollection = require('./media-collection')
 
 let Constellation = {
     write: 'organizer',
@@ -23,6 +24,20 @@ let Constellation = {
         ]
     }, { timestamps: true })
 }
+
+Constellation.fields.pre('findOneAndUpdate', async function(next) {
+    const doc = await this.findOne(this.getFilter())
+
+    if (doc.cover && !doc.cover._id.equals(this._update.cover)) {
+        await mediaCollection.model.deleteOne({ _id: doc.cover._id })
+    }
+
+    if (doc.logo && !doc.logo._id.equals(this._update.logo)) {
+        await mediaCollection.model.deleteOne({ _id: doc.logo._id })
+    }
+
+    next()
+})
 
 Constellation.fields.pre('findOne', function () {
     this.populate('logo')

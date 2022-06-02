@@ -49,13 +49,35 @@ export default {
                 ...form
             }
         },
-        parse: async function (form) {
+        parse: async function (form, $parent) {
+            if (form.coverSelect) {
+                let result = await $parent.$store.dispatch('library/createDirect', {
+                    params: {
+                        title: form.coverSelect.photographer,
+                        medias: [
+                            { size: 's', src: form.coverSelect.src.medium },
+                            { size: 'm', src: form.coverSelect.src.large }
+                        ]
+                    }
+                })
 
-            return {
-                ...form,
-                cover: form.cover ? form.cover._id : '',
-                logo: form.logo ? form.logo._id : '',
+                if (result) form.cover = result._id
+
+                delete form.coverSelect
             }
+
+            if (form.logoSelect) {
+                let result = await $parent.$store.dispatch('library/create', {
+                    file: form.logoSelect
+                })
+
+                form.logo = result._id
+            }
+
+            form.cover = form.cover._id ? form.cover._id : form.cover
+            form.logo = form.logo._id ? form.logo._id : form.logo
+
+            return form
         }
     },
     article: {
