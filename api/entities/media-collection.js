@@ -10,9 +10,7 @@ let MediaCollection = {
     read: 'public',
     fields: new mongoose.Schema({
         title: { type: String, write: 'editor' },
-        medias: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'media' }
-        ],
+        medias: { type: Array, default: [] },
     }, { timestamps: true })
 }
 
@@ -23,24 +21,16 @@ MediaCollection.fields.post('findOneAndDelete', async function (doc, next) {
     })
 
     await Promise.all(doc.medias.map(async media => {
-        media = await Media.model.findById(media)
-
         s3.deleteObject({
             Bucket: process.env.S3_BUCKET, Key: media.id
         }, (e) => {
             console.log(e)
         })
 
-        await media.remove()
-
         return true
     }))
     
     next()
-})
-
-MediaCollection.fields.pre('find', function () {
-    this.populate('medias')
 })
 
 MediaCollection.model = global.MediaCollection ? global.MediaCollection.fields : mongoose.model('mediaCollection', MediaCollection.fields)

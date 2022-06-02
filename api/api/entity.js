@@ -216,16 +216,14 @@ const typeSetters = {
                         })
                     })
 
-                    let media = await Entities.media.model.create({
+                    fs.unlink(file.path, () => {})
+                    return {
                         id: fileDirectory,
                         width: metadata.width,
                         height: metadata.height,
                         size: size.id,
                         src: src
-                    })
-        
-                    fs.unlink(file.path, () => {})
-                    return media._id
+                    }
                 }))
 
                 resolve({ ...params, medias })

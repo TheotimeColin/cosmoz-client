@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-const media = require('./media')
 const mediaCollection = require('./media-collection')
 const user = require('./user')
 const token = require('./token')
@@ -14,7 +13,6 @@ const mail = require('./mail')
 
 mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
 
-exports.media = media
 exports.mediaCollection = mediaCollection
 exports.token = token
 exports.user = user

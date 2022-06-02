@@ -70,15 +70,13 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
 
                 data.id = fileDirectory
                 data.src = src
-
-                let media = await Entities.media.model.create({
-                    ...data,
-                    size: size.id
-                })
                 
                 if (file.path) fs.unlink(file.path, () => {})
                 
-                return media._id
+                return  {
+                    ...data,
+                    size: size.id
+                }
             }))
 
             let mediaCollection = await Entities.mediaCollection.model.create({

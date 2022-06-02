@@ -163,21 +163,31 @@ export default {
             }
         },
         async onSubmit () {
-            let data = this.parseForm(this.formData)
+            try {
+                let data = this.parseForm(this.formData)
 
-            if (this.formData.coverSelect) {
-                
-            }
+                if (this.formData.coverSelect) {
+                    let result = await this.$store.dispatch('library/create', {
+                        file: this.newPicture,
+                        size: 'profile',
+                        path: '$user'
+                    })
 
-            let response = await this.$store.dispatch(`gathering/create`, {
-                _id: this.currentId && this.currentId != 'new' ? this.currentId : undefined,
-                params: data,
-            })
+                    data.cover = result._id
+                }
 
-            if (response.status == 1) {
-                this.currentId = response.data._id
-                
-                this.$router.push({ path: this.localePath({ name: `c-slug-manage-events-id`, params: { slug: this.constellation.slug, id: this.currentId } }) })
+                let response = await this.$store.dispatch(`gathering/create`, {
+                    _id: this.currentId && this.currentId != 'new' ? this.currentId : undefined,
+                    params: data,
+                })
+
+                if (response.status == 1) {
+                    this.currentId = response.data._id
+                    
+                    this.$router.push({ path: this.localePath({ name: `c-slug-manage-events-id`, params: { slug: this.constellation.slug, id: this.currentId } }) })
+                }
+            } catch (e) {
+                console.error(e)
             }
         }
     },

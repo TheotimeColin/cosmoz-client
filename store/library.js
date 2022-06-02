@@ -73,6 +73,22 @@ export default {
                 }
             })
         },
+        async createLinks ({ commit }, params) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await this.$axios.$post('/entities', {
+                        ...params, type: 'mediaCollection'
+                    })
+
+                    if (response.status == 0) throw Error(response.errors[0])
+                    
+                    resolve(response.data)
+                } catch (e) {
+                    console.warn(e)
+                    resolve(null)
+                }
+            })
+        },
         async delete ({ commit }, _id) {
             try {
                 const response = await this.$axios.$delete('/entities', {
