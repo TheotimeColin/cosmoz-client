@@ -1,12 +1,7 @@
 <template>
     <div>
-        <div class="InputBase_minus" @click="$emit('decrement')">
-            <i class="fal fa-minus"></i>
-        </div>
-
-        <div class="InputBase_plus" @click="$emit('increment')">
-            <i class="fal fa-plus"></i>
-        </div>
+        <button-base :modifiers="['round', 'xs']" type="button" @click="$emit('decrement')" icon-before="plus" />
+        <button-base :modifiers="['round', 'xs']" type="button" @click="$emit('increment')" icon-before="plus" />
     </div>
 </template>
 

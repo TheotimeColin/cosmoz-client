@@ -1,5 +1,5 @@
 <template>
-    <div class="InputBase" :class="[ $modifiers, ...classes ]">
+    <div class="InputBase is-" :class="[ $modifiers, ...classes ]">
         <label class="InputBase_label" v-if="label">
             {{ label }}
         </label>
@@ -26,6 +26,8 @@
                 class="InputBase_element"
                 :value="value"
                 :type="computedType"
+                :placeholder="placeholder"
+                :required="required"
                 v-bind="attrs"
                 @focus="state.isFocused = true"
                 @blur="state.isFocused = false"
@@ -35,22 +37,22 @@
 
         <div class="Inputbase_helpers" v-if="helpers.length > 0 || suffix || $slots.default">
             <slot></slot>
-            
-            <helper-number
+
+            <input-helper-number
                 class="Inputbase_helper"
                 @increment="increment(1)"
                 @decrement="increment(-1)"
                 v-if="helpers.includes('number')"
             />
 
-            <helper-reset
+            <input-helper-reset
                 class="Inputbase_helper"
                 :is-active="state.isValue"
                 @click="reset"
                 v-if="helpers.includes('reset')"
             />
 
-            <helper-reveal
+            <input-helper-reveal
                 class="Inputbase_helper"
                 @click.native="reveal = !reveal"
                 :is-revealed="reveal"
@@ -82,6 +84,8 @@ export default {
         label: { type: String, default: '' },
         type: { type: String, default: 'text' },
         suffix: { type: String, default: '' },
+        required: { type: Boolean, default: false },
+        placeholder: { type: String, default: '' },
         value: { type: [String, Number, Boolean, Object, Array] },
         helpers: { type: Array, default: () => [] },
         validator: { type: Function, default: () => ({ valid: true }) },
@@ -115,7 +119,7 @@ export default {
             immediate: true,
             deep: true,
             handler (v) {
-                this.state.isValue = typeof v !== undefined && v !== ''
+                this.state.isValue = typeof v !== 'undefined' && v !== ''
                 this.validate(v)
             }
         }
@@ -147,13 +151,30 @@ export default {
 
 .InputBase {
     color: var(--color-ft-light);
-    
+    border-radius: 4px;
     
     &.is-focused {
+        border-color: var(--color-bg-light);
 
         .InputBase_label {
             color: var(--color-ft-light);
         }
+
+        .InputBase_element {
+
+            &::placeholder {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.InputBase_element {
+    outline: none;
+
+    &::placeholder {
+        color: var(--color-ft-xweak);
+        opacity: 0;
     }
 }
 
@@ -161,14 +182,6 @@ export default {
 .SelectBase_label {
     color: var(--color-ft-weak);
     background-color: var(--color-bg-weak);
-}
-
-.InputBase_element {
-    
-    &::placeholder {
-        color: var(--color-ft-xweak);
-        opacity: 1;
-    }
 }
 
 .Inputbase_helpers {
@@ -186,6 +199,19 @@ export default {
     .InputBase_label,
     .SelectBase_label {
         background-color: var(--color-bg-strong) !important;
+    }
+}
+
+
+.InputBase--light {
+    border-color: var(--color-bg-light);
+
+    .InputBase_element {
+    
+        &::placeholder {
+            color: var(--color-ft-light);
+            opacity: 1;
+        }
     }
 }
 </style>

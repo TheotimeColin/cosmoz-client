@@ -1,7 +1,7 @@
 <template>
-    <div class="InputBase InputDate">
+    <div class="InputBase InputDate is-value">
         <label class="InputBase_label">{{ label }}</label>
-        <input class="InputBase_element" type="datetime-local" v-model="localValue">
+        <input class="InputBase_element" type="datetime-local" v-model="localValue" :required="required">
     </div>
 </template>
 
@@ -13,7 +13,8 @@ export default {
     components: { InputBase },
     props: {
         label: { type: String, default: '' },
-        value: { type: [String, Date] }
+        value: { type: [String, Date] },
+        required: { type: Boolean, default: false }
     },
     data: () => ({
         localValue: null

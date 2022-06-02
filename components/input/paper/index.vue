@@ -1,10 +1,9 @@
 <template>
     <div class="TextEditor">
-        
-        <editor-menu-bar :editor="editor" v-slot="{ isActive, getMarkAttrs, getNodeAttrs }" v-if="editable">
+        <editor-menu-bar class="TextEditor_bar" :editor="editor" v-slot="{ isActive, getMarkAttrs, getNodeAttrs }" v-if="editable">
             <div class="TextEditor_menu">
                 <div class="TextEditor_first">
-                    <p class="ft-s ml-5">{{ label }}</p>
+                    <p class="ft-s color-ft-weak ml-5">{{ label }}</p>
 
                     <div class="fx-center">
                         <div class="TextEditor_group" v-for="(group, i) in groups" :key="i">
@@ -48,7 +47,7 @@
         <media-library v-bind="libraryProps" @input="libraryProps.onInput" v-if="libraryProps" @close="libraryProps = false" />
 
         <div class="TextBody" v-html="value" v-if="!editor"></div>
-        <editor-content class="TextEditor_content TextBody" :editor="editor" ref="text" v-if="editor" />
+        <editor-content class="TextEditor_content TextBody" :editor="editor" placeholder="Ldd" ref="text" v-if="editor" />
     </div>
 </template>
 
@@ -186,23 +185,28 @@ export default {
     outline: none;
 
     .ProseMirror {
-        min-height: 200px;
+        min-height: 100px;
         border: 1px solid var(--color-border);
         border-top: none;
         outline: none;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    .ProseMirror-focused {
+        border-color: var(--color-ft-light);
     }
 }
 
 .TextEditor_menu {
     position: sticky;
     z-index: 5;
-    top: var(--header-base);
-    border: 1px solid var(--color-border);
+    top: var(--header-height);
 }
 
 .TextEditor_first,
 .TextEditor_second {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xweak);
     display: flex;
     align-items: center;
     justify-content: space-between;

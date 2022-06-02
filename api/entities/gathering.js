@@ -19,6 +19,7 @@ let Gathering = {
        
         price: { type: Number, write: 'editor' },
         max: { type: Number, write: 'editor' },
+        guests: { type: Number, write: 'editor' },
 
         targets: { type: Array, default: [], write: 'editor' },
         tags: { type: Array, default: [], write: 'editor' },
@@ -30,6 +31,7 @@ let Gathering = {
 
         users: { type: Array, default: [], write: 'editor' },
         
+        coverAttr: { type: String, write: 'editor', read: 'public' },
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
 
         reminded: { type: Boolean, default: false, write: 'private', read: 'private' },

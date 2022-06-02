@@ -1,18 +1,75 @@
 <template>
     <form @submit.prevent="onSubmit" class="Wrapper pv-40">
-        <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
+        <div class="d-flex">
+            <div class="fx-grow">
+                <div class="block">
+                    <p class="ft-title-s mb-20">De quoi s'agit-il ?</p>
 
-        <input-base class="mv-15" label="Titre de la rencontre" v-model="formData.title"/>
-        <input-base class="mv-15" label="Qu'allez-vous faire ?" v-model="formData.intro"/>
+                    <input-base class="mv-15" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
+                    <input-base class="mv-15" label="Qu'allez-vous faire ? *" v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
+                    <input-date-time class="mt-15" label="Date *" :required="true" v-model="formData.date" />
+                </div>
 
-        
-        <p class="ft-title-s mt-40 mb-30">Où cela va-t-il se passer ?</p>
-        <input-base class="mv-15" label="Nom du lieu" v-model="formData.location"/>
-        <input-base class="mv-15" label="Adresse précise" v-model="formData.address"/>
-        <input-paper class="mv-15" label="Description du lieu" v-model="formData.venue" :base="true" />
+                <div class="block mt-20">
+                    <p class="ft-title-s mb-20">Où cela va-t-il se passer ?</p>
+                    <input-base class="mv-15" label="Nom du lieu *" :required="true" v-model="formData.location"/>
+                    <input-base class="mv-15" label="Adresse précise" v-model="formData.address"/>
+                    <input-paper class="mt-15" label="Description du lieu" v-model="formData.venue" :base="true" />
+                </div>
 
-        <div class="text-right">
-            <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
+                <div class="block mt-20">
+                    <block-gathering
+                        v-bind="formData"
+                        :cover="coverPreview"
+                        :no-link="true"
+                        :status-only="true"
+                        :const-only="true"
+                        class="mb-20"
+                    />
+
+                    <input-pexels @select="(v) => formData.coverSelect = v" />
+                </div>
+
+                <div class="block mt-20">
+                    <p class="ft-title-s mb-20">Quel est le programme ?</p>
+                    <input-paper class="mv-15" label="Description générale *" v-model="formData.description" :base="true" />
+                    <input-paper class="mt-15" label="Informations importantes" v-model="formData.important" :base="true" />
+                </div>
+
+                <div class="block mt-20">
+                    <div class="fx-center">
+                        <p class="ft-title-2xs">Limiter le nombre de places</p>
+                        <input-toggle v-model="options.max" />
+                    </div>
+
+                    <transition name="fade">
+                        <div class="mt-20" v-if="options.max">
+                            <input-base type="number" label="Nombre de places" v-model="formData.max" :attrs="{ min: 5, max: 999 }" />
+                        </div>
+                    </transition>
+                </div>
+
+                <div class="block mt-10">
+                    <div class="fx-center">
+                        <p class="ft-title-2xs">Autoriser les invités</p>
+                        <input-toggle v-model="options.plus" />
+                    </div>
+
+                    <transition name="fade">
+                        <div class="mt-20" v-if="options.plus">
+                            <p class="mb-20">Combien d’amis peuvent accompagner les participants ? Vous pouvez autoriser jusqu’à 5 invités par personne.</p>
+                            <input-base type="number" label="Maximum d'invités" v-model="formData.plus" :attrs="{ min: 0, max: 5 }" />
+                        </div>
+                    </transition>
+                </div>
+
+                <div class="text-right mt-20">
+                    <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
+                </div>
+            </div>
+            <div class="width-xs fx-no-shrink ml-20">
+                Heu
+            </div>
         </div>
     </form>
 </template>
@@ -32,8 +89,14 @@ export default {
     data: () => ({
         currentId: '',
         isLoading: false,
+        options: {
+            max: false,
+            plus: false
+        },
         prevFormData: {},
-        formData: {}
+        formData: {
+            coverSelect: '',
+        }
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -44,6 +107,19 @@ export default {
         },
         changesMade () {
             return JSON.stringify(this.parseForm(this.formData)) != JSON.stringify(this.parseForm(this.prevFormData))
+        },
+        coverPreview () {
+            let preview = ''
+
+            if (this.formData.coverSelect) {
+                preview = {
+                    medias: [ { size: 's', src: this.formData.coverSelect.src.medium } ]
+                }
+            } else if (this.formData.cover) {
+                preview = this.formData.cover
+            }
+            
+            return preview
         }
     },
     watch: {
@@ -88,6 +164,10 @@ export default {
         },
         async onSubmit () {
             let data = this.parseForm(this.formData)
+
+            if (this.formData.coverSelect) {
+                
+            }
 
             let response = await this.$store.dispatch(`gathering/create`, {
                 _id: this.currentId && this.currentId != 'new' ? this.currentId : undefined,

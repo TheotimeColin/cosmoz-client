@@ -1,15 +1,15 @@
 <template>
     <form @submit.prevent="() => search(query)" class="PexelsGallery">
-        <div class="PexelsGallery_search p-20" :style="{ '--background': `url(${random.src ? random.src.large : ''})` }">
-            <div>
-                <input-base type="text" class="mr-10" :modifiers="['no-label']" v-model="query" :attrs="{ placeholder: 'Nature, art abstrait, atelier...' }" />
-                <button-base type="submit" :modifiers="['secondary', 's', 'white']" :class="{ 'is-loading': isLoading }" class="mt-10@s">
+        <div class="PexelsGallery_search" :style="{ '--background': `url(${random.src ? random.src.large : ''})` }">
+            <div class="p-20">
+                <input-base type="text" class="mr-15" :modifiers="['light']" v-model="query" placeholder="Nature, art abstrait, atelier..." />
+                <button-base type="submit" :modifiers="['s', 'light']" :class="{ 'is-loading': isLoading }" class="mt-10@s">
                     Rechercher
                 </button-base>
             </div>
         </div>
 
-        <div class="p-30">
+        <div class="">
             <div ref="container">
                 <div class="PexelsGallery_row" v-for="(row, i) in displayedRows" :key="i">
                     <div class="PexelsGallery_photo" v-for="photo in row.photos" :key="photo.id" :style="{ '--width': photo.width + 'px', '--height': photo.height + 'px' }" @click="$emit('select', photo.original)">
@@ -28,13 +28,10 @@
 </template>
 
 <script>
-import { InputBase } from 'instant-coffee-core'
-
 export default {
     name: 'PexelsGallery',
-    components: { InputBase },
     data: () => ({
-        query: '',
+        query: 'amis',
         prevQuery: '',
         isLoading: false,
         photos: [],
@@ -55,7 +52,7 @@ export default {
     },  
     mounted () {
         this.$data.maxWidth = this.$refs.container.offsetWidth
-        this.search()
+        this.search(this.query)
     },
     methods: {
         getNext () {
@@ -147,15 +144,15 @@ export default {
 <style lang="scss" scoped>
     .PexelsGallery {
         border: 2px solid var(--color-onyx);
-        border-radius: 10px;
         overflow: hidden;
     }
 
     .PexelsGallery_search {
-        border-bottom: 2px solid var(--color-onyx);
         position: relative;
-        background-color: var(--color-onyx);
+        background-color: var(--color-bg-xstrong);
         overflow: hidden;
+        margin-bottom: 10px;
+        border-radius: 5px;
 
         &::before {
             content: "";
@@ -167,7 +164,7 @@ export default {
             background-size: cover;
             background-position: center;
             background-image: var(--background);
-            opacity: 0.3;
+            opacity: 0.2;
             filter: blur(2px);
         }
 
