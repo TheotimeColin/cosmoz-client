@@ -1,44 +1,50 @@
 const mongoose = require('mongoose')
+const mediaCollection = require('./media-collection')
 
 let Gathering = {
-    write: 'public',
+    write: 'organizer',
     read: 'public',
     fields: new mongoose.Schema({
-        id: { type: String, write: 'editor' },
-        title: { type: String, write: 'editor' },
+        id: { type: String, write: 'private' },
+        title: { type: String, write: 'organizer' },
 
-        intro: { type: String, write: 'editor' },
-        location: { type: String, write: 'editor' },
-        address: { type: String, write: 'editor' },
-        date: { type: Date, write: 'editor' },
+        intro: { type: String, write: 'organizer' },
+        location: { type: String, write: 'organizer' },
+        address: { type: String, write: 'organizer' },
+        date: { type: Date, write: 'organizer' },
 
-        description: { type: String, write: 'editor' },
-        venue: { type: String, write: 'editor' },
-        important: { type: String, write: 'editor' },
-        information: { type: String, write: 'editor' },
+        description: { type: String, write: 'organizer' },
+        venue: { type: String, write: 'organizer' },
+        important: { type: String, write: 'organizer' },
+        information: { type: String, write: 'organizer' },
        
-        price: { type: Number, write: 'editor' },
-        max: { type: Number, write: 'editor' },
-        guests: { type: Number, write: 'editor' },
+        max: { type: Number, write: 'organizer' },
+        guests: { type: Number, default: 0, write: 'organizer' },
 
-        targets: { type: Array, default: [], write: 'editor' },
-        tags: { type: Array, default: [], write: 'editor' },
+        tags: { type: Array, default: [], write: 'organizer' },
 
-        meetup: { type: String, write: 'editor' },
-
-        status: { type: String, write: 'editor' },
+        status: { type: String, write: 'organizer' },
         favorites: { type: Number, default: 0, write: 'public' },
 
-        users: { type: Array, default: [], write: 'editor' },
+        users: { type: Array, default: [], write: 'organizer' },
         
-        coverAttr: { type: String, write: 'editor', read: 'public' },
-        cover: { type: mongoose.Schema.Types.ObjectId, write: 'editor', ref: 'mediaCollection' },
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'organizer', ref: 'mediaCollection' },
 
         reminded: { type: Boolean, default: false, write: 'private', read: 'private' },
 
-        constellation: { type: mongoose.Schema.Types.ObjectId, write: 'admin', ref: 'constellation' },
+        constellation: { type: mongoose.Schema.Types.ObjectId, write: 'organizer', ref: 'constellation' },
     }, { timestamps: true })
 }
+
+Gathering.fields.pre('findOneAndUpdate', async function(next) {
+    const doc = await this.findOne(this.getFilter())
+
+    if (doc.cover && !doc.cover._id.equals(this._update.cover)) {
+        await mediaCollection.model.deleteOne({ _id: doc.cover._id })
+    }
+
+    next()
+})
 
 Gathering.fields.pre('findOne', function () {
     this.populate('cover')

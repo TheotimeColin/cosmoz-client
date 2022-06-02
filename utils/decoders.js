@@ -11,18 +11,35 @@ export default {
                 constellation: form && form.constellation ? form.constellation._id  : ''
             }
         },
-        parse: function (form) {
-            
-            if (form.cover) {
-                form.cover = form.cover._id
-            } else {
-                delete form.cover
-            }
+        parse: async (form, $parent) => {
+            return new Promise(async resolve => {
+                if (form.cover && form.cover._id) {
+                    form.cover = form.cover._id
+                } else {
+                    delete form.cover
+                }
 
-            return {
-                ...form,
-                status: CONSTANTS.status.find(s => s.id == form.status).value,
-            }
+                if (form.coverSelect) {
+                    let result = await $parent.$store.dispatch('library/createDirect', {
+                        params: {
+                            title: form.coverSelect.photographer,
+                            medias: [
+                                { size: 's', src: form.coverSelect.src.medium },
+                                { size: 'm', src: form.coverSelect.src.large }
+                            ]
+                        }
+                    })
+
+                    if (result) form.cover = result._id
+
+                    delete form.coverSelect
+                }
+
+                resolve({
+                    ...form,
+                    status: CONSTANTS.status.find(s => s.id == form.status).value,
+                })
+            })
         }
     },
     constellation: {
@@ -32,7 +49,7 @@ export default {
                 ...form
             }
         },
-        parse: function (form) {
+        parse: async function (form) {
 
             return {
                 ...form,
@@ -50,7 +67,7 @@ export default {
                 category: cat ? cat.id : 0
             }
         },
-        parse: function (form) {
+        parse: async function (form) {
             
             return {
                 ...form,

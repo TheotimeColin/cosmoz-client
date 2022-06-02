@@ -79,7 +79,7 @@ exports.createEntity = async function (req, res) {
         fields = result ? await fieldsCheck('write', fields, Entity, result, user) : fields
         delete fields._id
 
-        if (typeSetters[req.body.type]) fields = await typeSetters[req.body.type](fields, req, user)
+        if (typeSetters[req.body.type]) fields = await typeSetters[req.body.type](fields, req, user, result)
 
         fields = parseQuery(fields, user)
 
@@ -95,7 +95,7 @@ exports.createEntity = async function (req, res) {
         }
 
         if (result) {
-            data = await Entity.model.findByIdAndUpdate(req.body._id, fields.query)
+            data = await Entity.model.findOneAndUpdate({ _id: req.body._id }, fields.query)
         } else {
             data = await Entity.model.create(fields.query)
         }
@@ -181,56 +181,67 @@ const typeSetters = {
         return new Promise(async (resolve, reject) => {
             let file = req.file
 
-            params = JSON.parse(params)
+            if (file) {
+                params = JSON.parse(params)
 
-            try {    
-                const SIZES = {
-                    profile: [
-                        { id: 's', width: 100 },
-                        { id: 'm', width: 500 }
+                try {    
+                    const SIZES = {
+                        profile: [
+                            { id: 's', width: 100 },
+                            { id: 'm', width: 500 }
 
-                    ],
-                    default: [
-                        { id: 's', width: 400 },
-                        { id: 'm', width: 1000 }
-                    ]
-                }
-
-                let medias = await Promise.all(SIZES[params.size ? params.size : 'default'].map(async size => {
-                    let original = await sharp(file.path).metadata()
-                    let buffer = await sharp(file.path).resize(Math.min(original.width, size.width)).toBuffer()
-                    let metadata = await sharp(buffer).metadata()
-                    
-                    let prepend = 'library'
-                    if (params.path == '$user') prepend = `users/${user._id}`
-
-                    let fileDirectory = `${prepend}/${shortid.generate()}-${size.id}.${mime.getExtension(file.mimetype)}`
-                    
-                    const src = await new Promise(resolve => {
-                        req.app.locals.s3.putObject({
-                            Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
-                        }, (err, data) => {
-                            if (err) console.error(err)
-                            
-                            resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
-                        })
-                    })
-
-                    fs.unlink(file.path, () => {})
-                    return {
-                        id: fileDirectory,
-                        width: metadata.width,
-                        height: metadata.height,
-                        size: size.id,
-                        src: src
+                        ],
+                        default: [
+                            { id: 's', width: 400 },
+                            { id: 'm', width: 1000 }
+                        ]
                     }
-                }))
 
-                resolve({ ...params, medias })
-            } catch (e) {
-                fs.unlink(file.path, () => {})
-                reject (e)
+                    let medias = await Promise.all(SIZES[params.size ? params.size : 'default'].map(async size => {
+                        let original = await sharp(file.path).metadata()
+                        let buffer = await sharp(file.path).resize(Math.min(original.width, size.width)).toBuffer()
+                        let metadata = await sharp(buffer).metadata()
+                        
+                        let prepend = 'library'
+                        if (params.path == '$user') prepend = `users/${user._id}`
+
+                        let fileDirectory = `${prepend}/${shortid.generate()}-${size.id}.${mime.getExtension(file.mimetype)}`
+                        
+                        const src = await new Promise(resolve => {
+                            req.app.locals.s3.putObject({
+                                Bucket: process.env.S3_BUCKET, Key: fileDirectory, Body: buffer
+                            }, (err, data) => {
+                                if (err) console.error(err)
+                                
+                                resolve(`https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${fileDirectory}`)
+                            })
+                        })
+
+                        fs.unlink(file.path, () => {})
+                        return {
+                            id: fileDirectory,
+                            width: metadata.width,
+                            height: metadata.height,
+                            size: size.id,
+                            src: src
+                        }
+                    }))
+
+                    resolve({ ...params, medias })
+                } catch (e) {
+                    fs.unlink(file.path, () => {})
+                    reject (e)
+                }
             }
+
+            resolve(params)
+        })
+    },
+    gathering: async (params, req, user, doc) => {
+        return new Promise(async (resolve, reject) => {
+            if (!doc.id) params.id = shortid.generate()
+
+            resolve(params)
         })
     },
     product: async (params) => {

@@ -63,6 +63,8 @@
                     </transition>
                 </div>
 
+                <form-errors class="mt-20" :items="errors" />
+
                 <div class="text-right mt-20">
                     <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
                 </div>
@@ -75,41 +77,29 @@
 </template>
 
 <script>
-import Decoders from '@/utils/decoders'
+import EntityEditor from '@/mixins/entity-editor'
 
 export default {
-    async fetch () {
-        this.currentId = this.$route.params.id
-
-        this.currentId && this.currentId != 'new' ? await this.$store.dispatch(`gathering/get`, { query: { _id: this.currentId } }) : {}
-    },
+    mixins: [ EntityEditor ],
     props: {
         constellation: { type: Object }
     },
     data: () => ({
-        currentId: '',
-        isLoading: false,
+        entityType: 'gathering',
+        routeName: 'c-slug-manage-events-id',
+        inputs: ['cover', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
         options: {
             max: false,
             plus: false
         },
-        prevFormData: {},
-        formData: {
-            coverSelect: '',
+        defaultFormData: {
+            coverSelect: ''
         }
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        serverEntity () {
-            return this.$store.getters[`gathering/findOne`]({
-                _id: this.currentId
-            }, true)
-        },
-        changesMade () {
-            return JSON.stringify(this.parseForm(this.formData)) != JSON.stringify(this.parseForm(this.prevFormData))
-        },
         coverPreview () {
-            let preview = ''
+            let preview = {}
 
             if (this.formData.coverSelect) {
                 preview = {
@@ -122,73 +112,17 @@ export default {
             return preview
         }
     },
-    watch: {
-        serverEntity: {
-            immediate: true,
-            deep: true,
-            handler (v) {
-                let form = this.decodeForm(v)
-
-                this.formData = {
-                    ...this.formData,
-                    ...form
-                }
-
-                this.prevFormData = { ...this.formData }
-            }
-        }
-    },
-    created () {
-        this.currentId = this.$route.params.id
-
-        this.formData = {
-            ...this.decodeForm(this.formData),
-            ...this.decodeForm(this.serverEntity)
-        }
-
-        this.isLoading = false
-    },
     methods: {
-        decodeForm (form) {
-            return Decoders['gathering'].decode(form)
-        },
-        parseForm (form) {
-            return Decoders['gathering'].parse(form)
-        },
-        async deleteEntity () {
-            let response = await this.$store.dispatch(`gathering/delete`, this.currentId)
-
-            if (response.status == 1) {
-                this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.constellation.slug } }) })
+        dataMerge () {
+            return {
+                constellation: this.constellation._id
             }
         },
-        async onSubmit () {
-            try {
-                let data = this.parseForm(this.formData)
-
-                if (this.formData.coverSelect) {
-                    let result = await this.$store.dispatch('library/create', {
-                        file: this.newPicture,
-                        size: 'profile',
-                        path: '$user'
-                    })
-
-                    data.cover = result._id
-                }
-
-                let response = await this.$store.dispatch(`gathering/create`, {
-                    _id: this.currentId && this.currentId != 'new' ? this.currentId : undefined,
-                    params: data,
-                })
-
-                if (response.status == 1) {
-                    this.currentId = response.data._id
-                    
-                    this.$router.push({ path: this.localePath({ name: `c-slug-manage-events-id`, params: { slug: this.constellation.slug, id: this.currentId } }) })
-                }
-            } catch (e) {
-                console.error(e)
-            }
+        postDelete () {
+            this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.constellation.slug } }) })
+        },
+        postSubmit () {
+            this.formData.coverSelect = ''
         }
     },
     head () {

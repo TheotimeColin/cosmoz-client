@@ -77,6 +77,14 @@ exports.accessCheck = function (type = 'write', entity, requested = null, user =
         requester = user ? user._id : null
 
         granted = requester && owner && owner.equals(requester)
+    } else if (entity[type] == 'organizer') {
+        requester = user ? user._id : null
+        
+        if (user && user.role == 'admin' || user && requested && requested.constellation && requested.constellation.owners.includes(user._id)) {
+            granted = true
+        } else {
+            granted = false
+        }
     } else {
         userRole = user ? ROLES[user.role] : 0
         requiredRole = ROLES[entity[type]]
@@ -136,8 +144,11 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     if (requiredRole == '$read') {
                         requiredRole = result['read'] ? result['read'] : 'public'
                     }
-
-                    if (requiredRole == 'self') {
+                    
+                    if (requiredRole == 'organizer') {
+                        if (user && user.role == 'admin') granted = true
+                        if (requested.owners && requested.owners.includes(user._id)) granted = true
+                    } else if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
                     } else if (requiredRole == '$user') {
                         result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)

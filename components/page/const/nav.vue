@@ -43,6 +43,7 @@ export default {
                 label: `Organisateurs`,
                 children: [
                     { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
+                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } } },
                 ]
             }, {
                 label: `Sorties`,

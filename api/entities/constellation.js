@@ -1,24 +1,25 @@
 const mongoose = require('mongoose')
 
 let Constellation = {
-    write: 'admin',
+    write: 'organizer',
     read: 'public',
     fields: new mongoose.Schema({
-        slug: { type: String, write: 'admin' },
-        name: { type: String, write: 'self', read: 'public' },
-        intro: { type: String, write: 'self', read: 'public' },
-        followers: { type: Number, default: 0, write: 'private', read: 'public' },
-
-        location: { type: String, write: 'self', read: 'public' },
+        slug: { type: String, write: 'organizer' },
+        name: { type: String, write: 'organizer', read: 'public' },
+        intro: { type: String, write: 'organizer', read: 'public' },
         
-        logo: { type: mongoose.Schema.Types.ObjectId, write: 'self',read: 'public', ref: 'mediaCollection' },
-        cover: { type: mongoose.Schema.Types.ObjectId, write: 'self',read: 'public', ref: 'mediaCollection' },
+        location: { type: String, write: 'organizer', read: 'public' },
+        
+        logo: { type: mongoose.Schema.Types.ObjectId, write: 'organizer',read: 'public', ref: 'mediaCollection' },
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'organizer',read: 'public', ref: 'mediaCollection' },
+
+        members: { type: Array, default: [], write: 'organizer' },
 
         gatherings: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'public', ref: 'gathering' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'organizer', read: 'public', ref: 'gathering' }
         ],
         owners: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'private', ref: 'user' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'organizer', read: 'organizer', ref: 'user' }
         ]
     }, { timestamps: true })
 }

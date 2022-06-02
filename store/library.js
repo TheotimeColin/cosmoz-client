@@ -73,7 +73,7 @@ export default {
                 }
             })
         },
-        async createLinks ({ commit }, params) {
+        async createDirect ({ commit }, params) {
             return new Promise(async (resolve, reject) => {
                 try {
                     const response = await this.$axios.$post('/entities', {
