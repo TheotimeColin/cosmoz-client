@@ -25,10 +25,11 @@
             <h1 class="ft-title-m">Brouillons</h1>
 
             <div class="row-s">
-                <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'draft' && !g.isPast)" :key="gathering._id">
+                <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'draft')" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
+                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -44,6 +45,23 @@
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
+                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :status-only="true"
+                        v-bind="gathering"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="Section" v-if="gatherings.filter(g => g.isPast && g.status == 'disabled').length > 0">
+            <h1 class="ft-title-m">Désactivés</h1>
+
+            <div class="row-s">
+                <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.isPast && g.status == 'disabled')" :key="gathering._id">
+                    <block-gathering
+                        class="mt-20"
+                        :modifiers="['square']"
+                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />

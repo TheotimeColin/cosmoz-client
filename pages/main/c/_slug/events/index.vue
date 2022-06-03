@@ -15,6 +15,10 @@
 <script>
 export default {
     async fetch () {
+        this.$store.commit('page/set', {
+            subtitle: `Rencontres prévues`, fa: 'calendar'
+        })
+
         await this.$store.dispatch('gathering/fetch', {
             query: { constellation: this.constellation._id, status: 'active' }
         })
@@ -36,10 +40,6 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', {
-            subtitle: `Rencontres prévues`, fa: 'calendar'
-        })
-
         let meta = {
             title: `Rencontres prévues ${this.$t('meta.append')}`,
         }

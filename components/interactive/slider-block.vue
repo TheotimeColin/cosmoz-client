@@ -59,6 +59,8 @@ export default {
     },
     methods: {
         checkDimensions () {
+            if (process.server) return
+            
             if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
                 this.maxSteps = 0
             } else {

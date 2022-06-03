@@ -6,14 +6,13 @@
                     <fa icon="far fa-bars" />
                 </div>
                 
-                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo ft-title-xs">
+                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
 
-                <div class="ft-title-xs ellipsis-1 ellipsis-break hide show@s" v-if="subtitle">
-                    <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
-                    {{ subtitle }}
-                </div>
+                <p class="ft-title-xs ellipsis-1 ellipsis-break hide show@s">
+                    {{ subtitle ? subtitle : '' }}
+                </p>
             </div>
 
             <div class="Header_right" v-if="user">

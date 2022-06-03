@@ -4,10 +4,10 @@ export default {
     gathering: {
         decode: function (form) {
             let status = form ? CONSTANTS.status.find(c => c.value == form.status) : null
-
+            
             return {
                 ...form,
-                status: status ? status.id : 0,
+                status: status ? status.value : 0,
                 constellation: form && form.constellation ? form.constellation._id  : ''
             }
         },
@@ -36,8 +36,7 @@ export default {
                 }
 
                 resolve({
-                    ...form,
-                    status: CONSTANTS.status.find(s => s.id == form.status).value,
+                    ...form
                 })
             })
         }

@@ -62,15 +62,29 @@
                         </div>
                     </transition>
                 </div>
-
-                <form-errors class="mt-20" :items="errors" />
-
-                <div class="text-right mt-20">
-                    <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
-                </div>
             </div>
-            <div class="width-xs fx-no-shrink ml-20 d-none@s">
-                Heu
+            <div class="width-s fx-no-shrink ml-20">
+                <div class="p-sticky" style="--offset: 20px;">
+                    <div class="p-15 bg-bg-weak br-s text-right">
+                        <input-select label="Statut" :options="$const.status" v-model="formData.status" class="mb-10" />
+                        {{  formData.status }}
+                        <button-base type="submit" :modifiers="['light']">
+                            Sauvegarder
+                        </button-base>
+
+                        <form-errors class="mt-20" :items="errors" />
+                    </div>
+
+                    <div class="bg-bg-weak p-15 br-s mt-15">
+                        <div class="fx-center c-pointer" @click="options.danger = !options.danger">
+                            <p>Danger zone</p> <fa icon="far fa-angle-down" />
+                        </div>
+
+                        <div class="mt-20" v-show="options.danger">
+                            <link-base @click="deleteEntity">Annuler cet événement</link-base>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -92,7 +106,8 @@ export default {
         inputs: ['cover', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
         options: {
             max: false,
-            plus: false
+            plus: false,
+            danger: false
         },
         defaultFormData: {
             coverSelect: ''

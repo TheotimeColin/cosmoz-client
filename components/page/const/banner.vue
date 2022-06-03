@@ -14,11 +14,12 @@
         <div class="ConstBanner_sub" v-if="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
                 <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
-
+        
                 <div class="ml-10">
                     <h1 class="ConstBanner_title ellipsis-1" v-if="subtitle">
                         <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle }}
                     </h1>
+                    
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>

@@ -51,19 +51,18 @@ export default {
                     { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
                     { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } }, disabled: !this.admins.includes(this.user._id) },
                 ]
-            }, {
-                label: `Sorties`,
-                children: [
-                    { label: `Rejoindre une sortie`, fa: 'party-horn', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } },
-                    { label: `Idées de sorties`, fa: 'lightbulb', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } }
-                ]
-            }, {
+            },
+            // {
+            //     label: `Sorties`,
+            //     children: [
+            //         { label: `Rejoindre une sortie`, fa: 'party-horn', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } },
+            //         { label: `Idées de sorties`, fa: 'lightbulb', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } }
+            //     ]
+            // },
+            {
                 label: `Discussions`,
                 children: [
-                    { label: `annonces`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'annonces' } } },
                     { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
-                    { label: `détente`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'detente' } } },
-                    { label: `entraide`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'entraide' } } },
                 ]
             }
         ]
