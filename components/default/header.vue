@@ -10,7 +10,7 @@
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
 
-                <div class="ft-title-xs ellipsis-1 ellipsis-break hide show@xs" v-if="subtitle">
+                <div class="ft-title-xs ellipsis-1 ellipsis-break hide show@s" v-if="subtitle">
                     <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
                     {{ subtitle }}
                 </div>
@@ -268,7 +268,7 @@ export default {
     display: none;
 }
 
-@include breakpoint-xs {
+@include breakpoint-s {
     
     .AppNav_container,
     .Header_logo {

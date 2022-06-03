@@ -76,7 +76,7 @@ export default {
             this.pan = Math.min(300, v.deltaX)
         },
         onPanStart (v) {
-            if (this.$isFixedPosition(v.target) || this.$biggerThan('xs')) this.isPanCancelled = true
+            if (this.$isFixedPosition(v.target) || this.$biggerThan('s')) this.isPanCancelled = true
         },
         onPanEnd () {
             this.isPanCancelled = false
@@ -118,7 +118,7 @@ export default {
   transform: translateY(3px);
 }
 
-@include breakpoint-xs {
+@include breakpoint-s {
 
     .Footer {
         display: none;

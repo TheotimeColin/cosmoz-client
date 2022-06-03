@@ -573,7 +573,8 @@
     }
 }
 
-.block {
+.block,
+.block-r {
     padding: 20px;
     border-radius: 10px;
     background: var(--color-bg-weak);
@@ -660,7 +661,7 @@
 
         .InputBase_label,
         .SelectBase_label {
-            background-color: var(--color-bg-weak) !important;
+            background-color: var(--color-bg) !important;
         }
 
         .strong {

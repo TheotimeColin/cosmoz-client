@@ -3,21 +3,21 @@
         <div class="d-flex">
             <div class="fx-grow">
                 <div class="block">
-                    <p class="ft-title-s mb-20">De quoi s'agit-il ?</p>
+                    <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
 
                     <input-base class="mv-15" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
                     <input-base class="mv-15" label="Qu'allez-vous faire ? *" v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
                     <input-date-time class="mt-15" label="Date *" :required="true" v-model="formData.date" />
                 </div>
 
-                <div class="block mt-20">
-                    <p class="ft-title-s mb-20">Où cela va-t-il se passer ?</p>
+                <div class="block mt-20 mt-40@xs">
+                    <p class="ft-title-s mb-30">Où cela va-t-il se passer ?</p>
                     <input-base class="mv-15" label="Nom du lieu *" :required="true" v-model="formData.location"/>
                     <input-base class="mv-15" label="Adresse précise" v-model="formData.address"/>
                     <input-paper class="mt-15" label="Description du lieu" v-model="formData.venue" :base="true" />
                 </div>
 
-                <div class="block mt-20">
+                <div class="block mt-20 mt-40@xs">
                     <block-gathering
                         v-bind="formData"
                         :cover="coverPreview"
@@ -30,13 +30,13 @@
                     <input-pexels @select="(v) => formData.coverSelect = v" />
                 </div>
 
-                <div class="block mt-20">
-                    <p class="ft-title-s mb-20">Quel est le programme ?</p>
+                <div class="block mt-20 mt-40@xs">
+                    <p class="ft-title-s mb-30">Quel est le programme ?</p>
                     <input-paper class="mv-15" label="Description générale *" v-model="formData.description" :base="true" />
                     <input-paper class="mt-15" label="Informations importantes" v-model="formData.important" :base="true" />
                 </div>
 
-                <div class="block mt-20">
+                <div class="block-r mt-20">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Limiter le nombre de places</p>
                         <input-toggle v-model="options.max" />
@@ -49,7 +49,7 @@
                     </transition>
                 </div>
 
-                <div class="block mt-10">
+                <div class="block-r mt-10">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Autoriser les invités</p>
                         <input-toggle v-model="options.plus" />
@@ -69,7 +69,7 @@
                     <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
                 </div>
             </div>
-            <div class="width-xs fx-no-shrink ml-20">
+            <div class="width-xs fx-no-shrink ml-20 d-none@s">
                 Heu
             </div>
         </div>

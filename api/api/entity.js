@@ -39,9 +39,10 @@ exports.getEntities = async function (req, res) {
         if (!result) throw Error('search-not-found')
 
         if (Array.isArray(result)) {
-            result = result.filter(r => accessCheck('read', Entity, r, user))
-        } else if (!accessCheck('read', Entity, result, user)) {
-            throw Error('unauthorized')
+            result = result.filter(async r => await accessCheck('read', Entity, r, user))
+        } else {
+            let granted = await accessCheck('read', Entity, result, user) 
+            if (!granted) throw Error('unauthorized')
         }
 
         result = await Promise.all(result.map(async v => fieldsCheck('read', v._doc, Entity, v, user)))
@@ -74,7 +75,8 @@ exports.createEntity = async function (req, res) {
 
         let result = req.body._id ? await Entity.model.findById(req.body._id) : null
 
-        if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
+        let granted = await accessCheck('write', Entity, result, user, fields)
+        if (!granted) throw Error('unauthorized')
 
         fields = result ? await fieldsCheck('write', fields, Entity, result, user) : fields
         delete fields._id
@@ -130,7 +132,9 @@ exports.deleteEntity = async function (req, res) {
         if (!Entity) throw Error('no-entity-type')
 
         let result = await Entity.model.findById(req.query._id)
-        if (!accessCheck('write', Entity, result, user)) throw Error('unauthorized')
+
+        let granted = await accessCheck('write', Entity, result, user)
+        if (!granted) throw Error('unauthorized')
 
         if ((!result.owner || !result.owner.equals(user._id)) && !user.role == 'admin') throw Error('not-owner')
 
@@ -239,7 +243,7 @@ const typeSetters = {
     },
     gathering: async (params, req, user, doc) => {
         return new Promise(async (resolve, reject) => {
-            if (!doc.id) params.id = shortid.generate()
+            if (!doc || !doc.id) params.id = shortid.generate()
 
             resolve(params)
         })

@@ -5,15 +5,20 @@
                 {{ name ? name.slice(0, 1) : 'a' }}
             </template>
 
+
             <!-- <div class="UserIcon_badge" v-if="isFriend">
                 <fa icon="far fa-sparkles" />
             </div> -->
         </div>
 
         <div class="ml-10" v-if="displayName">
-            <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
-                {{ name ? name : '' }}
-            </component>
+            <div class="d-flex fxa-center">
+                <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
+                    {{ name ? name : '' }}
+                </component>
+                
+                <slot name="name"></slot>
+            </div>
             
             <slot></slot>
         </div>

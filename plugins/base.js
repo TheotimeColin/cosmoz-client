@@ -86,6 +86,7 @@ Vue.mixin({
         }
     },
     data: () => ({
+        isMounted: false,
         $categories: {
             news: { color: 'gum', fa: 'fa-thumbtack', slug: 'actualite' },
             seo: { color: 'pond', fa: 'fa-search', slug: 'referencement-seo' },
@@ -93,6 +94,9 @@ Vue.mixin({
             value: { color: 'duck', fa: 'fa-gem', slug: 'valeur-percue' }
         },
     }),
+    mounted () {
+        setTimeout(() => this.isMounted = true, 200)
+    },
     computed: {
         $baseUrl () { return  this.$config.baseUrl },
         $dashboardUrl () { return this.$config.dashboardUrl },

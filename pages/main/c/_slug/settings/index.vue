@@ -16,13 +16,46 @@
                         <input-base class="mt-15" label="Localisation" v-model="formData.location" placeholder="Région, ville..." :required="true" />
                     </div>
                 </div>
-
+                
                 <div class="block mt-20">
                     <div class="Image" :style="{ backgroundImage: `url(${coverPreview})` }">
                         <button-base type="button" :modifiers="['round', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
                     </div>
 
                     <input-pexels class="mt-15" @select="(v) => formData.coverSelect = v" v-if="options.cover"/>
+                </div>
+
+                <div class="block mt-20">
+                    <div class="mb-30">
+                        <p class="ft-title-xs mb-15">Administration</p>
+
+                        <div class="fx-center p-10 br-xs bg-bg-strong mr-5 mb-5" v-for="user in formData.admins" :key="user">
+                            <user-icon :modifiers="['s']" :display-name="true" v-bind="getUser(user)" />
+
+                            <div>
+                                <button-base type="button" icon-before="times" :modifiers="['xs', 'round', 'xweak']" @click="removeUser(user, 'admins')" v-if="formData.admins.length > 1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-30">
+                        <p class="ft-title-xs mb-15">Organisation</p>
+
+                        <div class="p-10 br-xs bg-bg text-center color-ft-xweak" v-if="formData.organizers.length <= 0">
+                            Pas d'organisateurs.
+                        </div>
+                        <div class="fx-center p-10 br-xs bg-bg-strong mr-5 mb-5" v-for="user in formData.organizers" :key="user" v-else>
+                            <user-icon :modifiers="['s']" :display-name="true" v-bind="getUser(user)" />
+
+                            <div>
+                                <button-base type="button" icon-before="crown" :modifiers="['xs', 'round', 'xweak']" @click="addAdmin(user)" />
+
+                                <button-base type="button" icon-before="times" :modifiers="['xs', 'round', 'xweak']" @click="removeUser(user, 'organizers')" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <input-user @input="addUser" :exclude="[...formData.organizers, ...formData.admins ]" />
                 </div>
 
                 <form-errors class="mt-20" :items="errors" />
@@ -48,11 +81,13 @@ export default {
     },
     data: () => ({
         entityType: 'constellation',
-        inputs: ['name', 'location', 'intro', 'cover', 'logo'],
+        inputs: ['name', 'location', 'intro', 'cover', 'logo', 'admins', 'organizers'],
         options: {
             cover: false
         },
         defaultFormData: {
+            organizers: [],
+            admins: [],
             coverSelect: '',
             logoSelect: ''
         }
@@ -60,15 +95,15 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         coverPreview () {
-            let preview = {}
+            let preview = ''
 
             if (this.formData.coverSelect) {
                 preview = this.formData.coverSelect.src.medium
             } else if (this.formData.cover && this.formData.cover.medias) {
-                preview = this.formData.cover.medias.find(m => m.size == 'm')
+                preview = this.formData.cover.medias.find(m => m.size == 'm').src
             }
             
-            return preview ? preview.src : ''
+            return preview
         },
         logoPreview () {
             let logo = ''
@@ -83,12 +118,28 @@ export default {
         }
     },
     methods: {
+        addAdmin (_id) {
+            this.formData.admins = [ ...this.formData.admins, _id ]
+            this.removeUser(_id, 'organizers')
+        },
+        removeUser (_id, type) {
+            this.formData = {
+                ...this.formData,
+                [type]: this.formData[type].filter(u => u !== _id)
+            }
+        },
+        getUser (_id) {
+            return this.$store.getters['user/findOne']({ _id })
+        },
         postSubmit () {
             this.formData = {
                 ...this.formData,
                 logoSelect: '',
                 coverSelect: ''
             }
+        },
+        addUser (v) {
+            this.formData.organizers = [ ...this.formData.organizers, v ]
         }
     },
     head () {

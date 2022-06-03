@@ -7,10 +7,10 @@
         </transition>
 
         <div class="Nav_content">
-            <div class="Nav_cat" v-for="(cat, i) in items" :key="i">
+            <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
                 <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                <nuxt-link v-for="item in cat.children" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
+                <nuxt-link v-for="item in cat.children.filter(c => !c.disabled)" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
                     <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
                 </nuxt-link>
             </div>
@@ -26,12 +26,17 @@ export default {
         hero: { type: String },
         name: { type: String },
         logo: { type: Object },
+        admins: { type: Array },
+        organizers: { type: Array },
         isHome: { type: Boolean, default: false },
         isAbsolute: { type: Boolean, default: false }
     },
     data: () => ({
         items: []
     }),
+    computed: {
+        user () { return this.$store.getters['user/self'] },
+    },
     created () {
         this.items = [
             {
@@ -41,9 +46,10 @@ export default {
                 ]
             }, {
                 label: `Organisateurs`,
+                disabled: !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id),
                 children: [
                     { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
-                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } } },
+                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } }, disabled: !this.admins.includes(this.user._id) },
                 ]
             }, {
                 label: `Sorties`,
@@ -110,6 +116,7 @@ export default {
 
     .Nav_item {
         font: var(--ft-title-2xs);
+        font-size: 15px;
         line-height: 1;
         cursor: pointer;
         color: var(--color-ft-light);
@@ -120,7 +127,7 @@ export default {
         white-space: nowrap;
 
         display: block;
-        padding: 12px 10px;
+        padding: 8px 10px;
 
         svg {
             margin-right: 8px;
@@ -129,7 +136,7 @@ export default {
         &:hover,
         &.is-active:not(.is-parent),
         &.is-active-exact.is-parent {
-            background-color: var(--color-bg);
+            background-color: var(--color-bg-weak);
         }
     }
 </style>

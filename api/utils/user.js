@@ -65,45 +65,65 @@ exports.authenticate = async function (headers) {
     })
 }
 
-exports.accessCheck = function (type = 'write', entity, requested = null, user = null) {
-    let granted = false
-    let requester = null
-    let owner = null
-    let userRole = null
-    let requiredRole = null
+exports.accessCheck = async function (type = 'write', entity, requested = null, user = null, fields = null) {
+    return new Promise(async resolve => {
+        try {
+            let granted = false
+            let requester = null
+            let owner = null
+            let userRole = null
+            let requiredRole = null
 
-    if (entity[type] == 'self') {
-        owner = requested ? requested.owner : null
-        requester = user ? user._id : null
+            if (entity[type] == 'self') {
+                owner = requested ? requested.owner : null
+                requester = user ? user._id : null
 
-        granted = requester && owner && owner.equals(requester)
-    } else if (entity[type] == 'organizer') {
-        requester = user ? user._id : null
-        
-        if (user && user.role == 'admin' || user && requested && requested.constellation && requested.constellation.owners.includes(user._id)) {
-            granted = true
-        } else {
-            granted = false
+                granted = requester && owner && owner.equals(requester)
+            } else if (entity[type] == 'g-organizer') {
+                let constellation = requested && requested.constellation ? requested.constellation : null
+                requester = user ? user._id : null
+
+                if (!constellation && fields && fields.constellation) {
+                    constellation = await Entities.constellation.model.findById(fields.constellation)
+                }
+
+                if (user && user.role == 'admin' || user && constellation && (constellation.admins.includes(user._id) || constellation.organizers.includes(user._id))) {
+                    granted = true
+                } else {
+                    granted = false
+                }
+            } else if (entity[type] == 'g-admin') {
+                requester = user ? user._id : null
+                
+                if (user && user.role == 'admin' || user && requested && requested.constellation && requested.constellation.admins.includes(user._id)) {
+                    granted = true
+                } else {
+                    granted = false
+                }
+            } else {
+                userRole = user ? ROLES[user.role] : 0
+                requiredRole = ROLES[entity[type]]
+
+                granted = userRole >= requiredRole
+            }
+
+            if (!granted) {
+                console.warn(`access-${type}-denied`)
+                console.log(entity.model)
+                
+                if (entity[type] == 'self') {
+                    console.log('requester : ' + requester + ' | owner : ' + owner)
+                } else {
+                    console.log('required : ' + entity[type] + ' | user : ' + (user ? user.role : 'none'))
+                }
+            }
+
+            resolve(granted)
+        } catch (e) {
+            console.error(e)
+            resolve(false)
         }
-    } else {
-        userRole = user ? ROLES[user.role] : 0
-        requiredRole = ROLES[entity[type]]
-
-        granted = userRole >= requiredRole
-    }
-
-    if (!granted) {
-        console.warn(`access-${type}-denied`)
-        console.log(entity.model)
-        
-        if (entity[type] == 'self') {
-            console.log('requester : ' + requester + ' | owner : ' + owner)
-        } else {
-            console.log('required : ' + entity[type] + ' | user : ' + (user ? user.role : 'none'))
-        }
-    }
-
-    return granted
+    })
 }
 
 const fieldsCheck = function (type = 'write', data = {}, entity, requested = null, user = null) {
@@ -145,9 +165,13 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         requiredRole = result['read'] ? result['read'] : 'public'
                     }
                     
-                    if (requiredRole == 'organizer') {
+                    if (requiredRole == 'g-admin') {
                         if (user && user.role == 'admin') granted = true
-                        if (requested.owners && requested.owners.includes(user._id)) granted = true
+                        if (requested.constellation && requested.constellation.admins.includes(user._id)) granted = true
+                    } else if (requiredRole == 'g-organizer') {
+                        if (user && user.role == 'admin') granted = true
+
+                        if (requested.constellation && requested.constellation.organizers.includes(user._id) || requested.constellation && requested.constellation.admins.includes(user._id)) granted = true
                     } else if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
                     } else if (requiredRole == '$user') {

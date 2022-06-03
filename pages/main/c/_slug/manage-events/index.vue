@@ -4,12 +4,12 @@
             <h1 class="ft-title-m">Rencontres à venir</h1>
 
             <div class="row-s">
-                <div class="col-3 pt-20">
+                <div class="col-3 col-12@xs pt-20">
                     <div class="d-flex fxj-center fxa-center height-100 p-20 bg-bg-strong text-center br-s">
                         <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Organiser</button-base>
                     </div>
                 </div>
-                <div class="col-3" v-for="gathering in gatherings.filter(g => g.status == 'active' && !g.isPast)" :key="gathering._id">
+                <div class="col-3 col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'active' && !g.isPast)" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
@@ -25,7 +25,7 @@
             <h1 class="ft-title-m">Brouillons</h1>
 
             <div class="row-s">
-                <div class="col-3" v-for="gathering in gatherings.filter(g => g.status == 'draft' && !g.isPast)" :key="gathering._id">
+                <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'draft' && !g.isPast)" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
@@ -40,7 +40,7 @@
             <h1 class="ft-title-m">Passées</h1>
 
             <div class="row-s">
-                <div class="col-3" v-for="gathering in gatherings.filter(g => g.isPast && g.status == 'active')" :key="gathering._id">
+                <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.isPast && g.status == 'active')" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"

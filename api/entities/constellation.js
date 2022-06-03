@@ -2,26 +2,25 @@ const mongoose = require('mongoose')
 const mediaCollection = require('./media-collection')
 
 let Constellation = {
-    write: 'organizer',
+    write: 'g-organizer',
     read: 'public',
     fields: new mongoose.Schema({
-        slug: { type: String, write: 'organizer' },
-        name: { type: String, write: 'organizer', read: 'public' },
-        intro: { type: String, write: 'organizer', read: 'public' },
+        slug: { type: String, write: 'g-admin' },
+        name: { type: String, write: 'g-admin' },
+        intro: { type: String, write: 'g-admin' },
         
-        location: { type: String, write: 'organizer', read: 'public' },
+        location: { type: String, write: 'g-admin' },
         
-        logo: { type: mongoose.Schema.Types.ObjectId, write: 'organizer',read: 'public', ref: 'mediaCollection' },
-        cover: { type: mongoose.Schema.Types.ObjectId, write: 'organizer',read: 'public', ref: 'mediaCollection' },
+        logo: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
+        cover: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
 
-        members: { type: Array, default: [], write: 'organizer' },
+        members: { type: Array, default: [], write: 'g-organizer' },
+        organizers: { type: Array, default: [], write: 'g-admin' },
+        admins: { type: Array, default: [], write: 'g-admin' },
 
         gatherings: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'organizer', read: 'public', ref: 'gathering' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'gathering' }
         ],
-        owners: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'organizer', read: 'organizer', ref: 'user' }
-        ]
     }, { timestamps: true })
 }
 

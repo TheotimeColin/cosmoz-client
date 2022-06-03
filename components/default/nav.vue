@@ -1,7 +1,7 @@
 <template>
     <nav
         class="AppNav"
-        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': currentConst && $biggerThan('xs'), 'is-desktop': $biggerThan('xs') }"
+        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': currentConst && $biggerThan('s'), 'is-desktop': $biggerThan('s'), 'is-mounted': isMounted }"
         :style="{
             transform: isClosePanning ? `translateX(calc(0% + ${closePan}px))` : `translateX(calc(-100% + ${pan}px))`
         }"
@@ -11,9 +11,9 @@
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
-                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" icon-before="sparkles" @click="selected = ''" />
+                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="sparkles" @click="selected = ''" />
 
-                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" :no-link="true" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
+                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
             </div>
             <div class="AppNav_sub">
                 <transition-group name="fade">
@@ -322,10 +322,21 @@ export default {
     display: none;
 }
 
-@include breakpoint-xs {
-
+@include breakpoint-s {
     .AppNav {
         top: 0;
+        display: none;
+        transition: none;
+
+        &.is-mounted {
+            display: block;
+            transition: all 200ms ease;
+        }
+
+        &.is-panning,
+        &.is-closing {
+            transition: none;
+        }
 
         &::before {
             display: none;

@@ -78,7 +78,7 @@ export default {
         location: { type: String },
         date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
-        link: { type: [Object, Boolean], default: false },
+        link: { type: [Object, Boolean, String], default: false },
         statusOnly: { type: Boolean, default: false },
         isPast: { type: Boolean, default: false },
         constOnly: { type: Boolean, default: false },
