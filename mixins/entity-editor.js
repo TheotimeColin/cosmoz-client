@@ -15,8 +15,11 @@ export default {
                 _id: this.currentId
             }, true)
         },
-        changesMade () {
-            return JSON.stringify(this.parseForm(this.formData)) != JSON.stringify(this.parseForm(this.prevFormData))
+        async changesMade () {
+            let current = await this.parseForm(this.formData)
+            let prev = await this.parseForm(this.prevFormData)
+
+            return JSON.stringify(current) != JSON.stringify(prev)
         },
     },
     watch: {

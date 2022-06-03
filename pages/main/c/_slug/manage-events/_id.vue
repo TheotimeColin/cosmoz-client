@@ -67,7 +67,7 @@
                 <div class="p-sticky" style="--offset: 20px;">
                     <div class="p-15 bg-bg-weak br-s text-right">
                         <input-select label="Statut" :options="$const.status" v-model="formData.status" class="mb-10" />
-                        {{  formData.status }}
+                        
                         <button-base type="submit" :modifiers="['light']">
                             Sauvegarder
                         </button-base>

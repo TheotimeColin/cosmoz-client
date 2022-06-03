@@ -46,10 +46,10 @@ export default {
                 ]
             }, {
                 label: `Organisateurs`,
-                disabled: !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id),
+                disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id),
                 children: [
                     { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
-                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } }, disabled: !this.admins.includes(this.user._id) },
+                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } }, disabled: (this.user && this.user.role != 'admin') && !this.admins.includes(this.user._id) },
                 ]
             },
             // {

@@ -99,8 +99,11 @@ export default {
         serverEntity () {
             return this.$store.getters[`${this.entityType}/findOne`]({ _id: this._id }, true)
         },
-        changesMade () {
-            return JSON.stringify(this.parseForm(this.formData)) != JSON.stringify(this.parseForm(this.prevFormData))
+        async changesMade () {
+            let current = await this.parseForm(this.formData)
+            let prev = await this.parseForm(this.prevFormData)
+
+            return JSON.stringify(current) != JSON.stringify(prev)
         },
     },
     watch: {
@@ -178,7 +181,7 @@ export default {
             }
         },
         async update () {
-            let data = this.parseForm(this.formData)
+            let data = await this.parseForm(this.formData)
 
             Object.keys(data).forEach(key => {
                 if (!this.form.find(f => f.key == key)) delete data[key]

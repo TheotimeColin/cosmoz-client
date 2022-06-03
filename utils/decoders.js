@@ -70,11 +70,11 @@ export default {
                     file: form.logoSelect
                 })
 
-                form.logo = result._id
+                if (result) form.logo = result._id
             }
 
-            form.cover = form.cover._id ? form.cover._id : form.cover
-            form.logo = form.logo._id ? form.logo._id : form.logo
+            if (form.cover) form.cover = form.cover._id ? form.cover._id : form.cover
+            if (form.logo) form.logo = form.logo._id ? form.logo._id : form.logo
 
             return form
         }

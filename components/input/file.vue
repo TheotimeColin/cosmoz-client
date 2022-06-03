@@ -16,7 +16,7 @@
 export default {
     name: 'InputFile',
     props: {
-        id: { type: String, default: 'input-file' },
+        id: { type: [String, Number], default: 'input-file' },
         multiple: { type: Boolean, default: false },
         accept: { type: Array, default: () => ['image/png', 'image/jpeg'] },
         label: { type: String, default: 'Sélectionner un fichier' }

@@ -22,8 +22,8 @@
         </div>
 
         <tooltip-manager />
-        <flashbag />
-        <popin-confirm />
+        <!-- <flashbag />
+        <popin-confirm /> -->
     </div>
 </template>
 
