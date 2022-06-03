@@ -11,7 +11,7 @@
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
-                <button-base class="AppNav_icon" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="sparkles" @click="selected = ''" />
+                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" @click="selected = ''" />
 
                 <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
             </div>
@@ -190,6 +190,15 @@ export default {
         right: -5px;
         height: 100%;
         width: 5px;
+    }
+}
+
+.AppNav_icon--home {
+
+    &:hover,
+    &.is-active {
+        background-color: var(--color-cosmoz);
+        color: var(--color-ft-light);
     }
 }
 

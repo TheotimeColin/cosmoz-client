@@ -126,13 +126,16 @@ export default {
         white-space: nowrap;
 
         display: block;
-        padding: 8px 10px;
+        padding: 10px 10px;
 
         svg {
             margin-right: 8px;
         }
 
-        &:hover,
+        &:hover {
+            background-color: var(--color-bg);
+        }
+
         &.is-active:not(.is-parent),
         &.is-active-exact.is-parent {
             background-color: var(--color-bg-weak);
