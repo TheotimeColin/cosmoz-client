@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Entities = require('../index.js')
+const mediaCollection = require('./media-collection')
 
 let Status = {
     write: 'user',
@@ -8,8 +8,11 @@ let Status = {
         read: { type: String, default: 'friend', write: 'self' },
 
         content: { type: String, write: 'user', read: '$read' },
-        attachments: { type: Array, default: [], write: 'user', read: '$read' },
         reactions: { type: Array, default: [], write: 'user', read: '$read' },
+        
+        images: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'mediaCollection' }
+        ],
 
         children: [
             { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'status' }
@@ -25,9 +28,26 @@ let Status = {
     }, { timestamps: true })
 }
 
+Status.fields.pre('findOne', function () {
+    this.populate('children')
+    this.populate('images')
+})
 
 Status.fields.pre('find', function () {
     this.populate('children')
+    this.populate('images')
+})
+
+Status.fields.pre('remove', async function (next) {
+    if (this.images) {
+        await Promise.all(this.images.map(async image => {
+            let medias = await mediaCollection.model.findOne({ _id: image })
+            await medias.remove()
+            return true
+        }))
+    }
+
+    next()
 })
 
 Status.model = global.Status ? global.Status.model : mongoose.model('status', Status.fields)

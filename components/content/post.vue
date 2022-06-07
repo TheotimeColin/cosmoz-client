@@ -1,103 +1,103 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }" v-show="content || forbidden">
-        <template>
-            <div class="Post_head">
-                <div class="d-flex fxa-center fx-grow">
-                    <div class="Post_icon">
-                        <user-icon class="Post_user" :modifiers="['']" v-bind="owner" />
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }" v-show="true">
+        <div class="Post_head">
+            <div class="d-flex fxa-center fx-grow">
+                <div class="Post_icon">
+                    <user-icon class="Post_user" :modifiers="['']" v-bind="owner" />
 
-                        <!-- <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
-                        </nuxt-link> -->
-                    </div>
-
-                    <div class="ml-10 ft-s line-1">
-                        <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
-
-                        <template v-if="gatheringData && !isCurrent">
-                            <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
-                            <link-base :modifiers="['l']" :to="gatheringLink">
-                                 {{ gatheringData.title }}
-                            </link-base>
-                        </template>
-                        <template v-else-if="constellationData && !isCurrent">
-                            <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
-                            <link-base :modifiers="['l']" :to="gatheringLink">
-                                 {{ constellationData.name }}
-                            </link-base>
-                        </template>
-
-                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
-                            {{ subtitle }}
-                        </div>
-                    </div>
+                    <!-- <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
+                    </nuxt-link> -->
                 </div>
 
-                <quick-menu
-                    class="Post_menu fx-no-shrink ml-10"
-                    :items="actions"
+                <div class="ml-10 ft-s line-1">
+                    <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
+
+                    <template v-if="gatheringData && !isCurrent">
+                        <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
+                        <link-base :modifiers="['l']" :to="gatheringLink">
+                                {{ gatheringData.title }}
+                        </link-base>
+                    </template>
+                    <template v-else-if="constellationData && !isCurrent">
+                        <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
+                        <link-base :modifiers="['l']" :to="gatheringLink">
+                                {{ constellationData.name }}
+                        </link-base>
+                    </template>
+
+                    <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
+                        {{ subtitle }}
+                    </div>
+                </div>
+            </div>
+
+            <quick-menu
+                class="Post_menu fx-no-shrink ml-10"
+                :items="actions"
+            />
+        </div>
+        <div class="Post_main">
+            <div class="ft-l color-ft-xweak pb-20 ph-20" v-if="forbidden">
+                <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
+            </div>
+            <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-else-if="content"></div>
+
+            <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
+        </div>
+        <div class="Post_footer" v-if="!forbidden">
+            <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
+                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
+            </div>
+            <div class="Post_action" @click="onAddComment">
+                <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
+            </div>
+        </div>
+
+        <content-reaction-popin
+            :is-active="isSeeReactions"
+            :reactions="reactionsOwners"
+            @close="isSeeReactions = false"
+            v-if="!forbidden"
+        />
+
+        <transition name="fade">
+            <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
+            
+                <content-comment
+                    v-for="post in displayedComments"
+                    class="Post_comment"
+                    v-bind="post"
+                    :key="post._id"
+                />
+
+                <content-editor
+                    @submit="onSubmit"
+                    class="Post_comment"
+                    :tiny="true"
+                    placeholder="Ajouter un commentaire..."
+                    @blur="() => children.length == 0 ? isAdd = false : ''"
+                    v-show="isAdd || children.length > 0"
+                    ref="commentInput"
                 />
             </div>
-            <div class="Post_main">
-                <div class="ft-l color-ft-xweak pb-20 ph-20" v-if="forbidden">
-                    <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
-                </div>
-                <div class="Post_text" v-html="$options.filters.specials(content)" v-else></div>
-            </div>
-            <div class="Post_footer" v-if="!forbidden">
-                <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                    <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
-                </div>
-                <div class="Post_action" @click="onAddComment">
-                    <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
-                </div>
-            </div>
+        </transition>
 
-            <content-reaction-popin
-                :is-active="isSeeReactions"
-                :reactions="reactionsOwners"
-                @close="isSeeReactions = false"
-                v-if="!forbidden"
-            />
+        <div class="Post_delete" v-show="pendingDelete">
+            <div class="max-width-s">
+                Veux-tu vraiment supprimer ce message et tout ses commentaires ?
 
-            <transition name="fade">
-                <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                    <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
-                
-                    <content-comment
-                        v-for="post in displayedComments"
-                        class="Post_comment"
-                        v-bind="post"
-                        :key="post._id"
-                    />
+                <div class="mt-20">
+                    <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
+                        Annuler
+                    </button-base>
 
-                    <content-editor
-                        @submit="onSubmit"
-                        class="Post_comment"
-                        :tiny="true"
-                        placeholder="Ajouter un commentaire..."
-                        @blur="() => children.length == 0 ? isAdd = false : ''"
-                        v-show="isAdd || children.length > 0"
-                        ref="commentInput"
-                    />
-                </div>
-            </transition>
-
-            <div class="Post_delete" v-show="pendingDelete">
-                <div class="max-width-s">
-                    Veux-tu vraiment supprimer ce message et tout ses commentaires ?
-
-                    <div class="mt-20">
-                        <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
-                            Annuler
-                        </button-base>
-
-                        <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading" @click="deletePost">
-                            Oui, supprimer
-                        </button-base>
-                    </div>
+                    <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading" @click="deletePost">
+                        Oui, supprimer
+                    </button-base>
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </template>
 
@@ -111,6 +111,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         read: { type: String },
+        images: { type: Array, default: () => [] },
         isLoading: { type: Boolean, default: false },
         owner: { type: Object },
         reactions: { type: Array, default: () => [] },
@@ -203,6 +204,18 @@ export default {
         }
     }
 
+    .Post_block {
+        margin-bottom: 20px;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &:only-child:not(.Post_gallery) {
+            margin-bottom: 20px;
+        }
+    }
+
     .Post_icon {
         display: block;
         flex-shrink: 0;
@@ -231,6 +244,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 10;
         background-color: rgba(0, 0, 0, 0.75);
     }
 
@@ -284,21 +298,31 @@ export default {
 
         .Post {
             margin: 0 -20px;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--color-border);
+            padding: 20px 20px 0;
             border-radius: 0;
             background: transparent;
         }
 
         .Post_comments {
-            margin: 0;
+            margin: 0 -20px;
+            padding: 0 20px 20px;
             border: none;
-            padding-top: 0;
+            background-color: var(--color-bg-strong);
+        }
+
+        .Post_footer {
+            padding: 15px 20px;
+            background: var(--color-bg-strong);
+            margin: 0 -20px 0;
+        }
+
+        .Post_gallery {
+            margin-left: -20px;
+            margin-right: -20px;
         }
 
         .Post_text,
-        .Post_head,
-        .Post_footer {
+        .Post_head {
             padding-left: 0;
             padding-right: 0;
         }

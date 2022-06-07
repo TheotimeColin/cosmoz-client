@@ -5,16 +5,21 @@
         <form @submit.prevent="onSubmit" class="Editor_main">
             <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
 
+            <content-type-images class="mt-15" :images="images" :is-editor="true" v-if="images.length > 0" @delete="onImageDelete" />
+            
             <transition name="fade">
                 <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && isFocused">
                     <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
                 </div>
             </transition>
 
+            <form-errors class="mt-15" :items="errors" />
+
             <div class="Editor_secondary">
                 <div class="fx-grow pr-10 text-right">
-                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="image" />
-                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" />
+                    <input-file icon="image" :multiple="true" @input="addImages" />
+
+                    <!-- <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" /> -->
                 </div>
                 <div class="fx-no-shrink">
                     <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
@@ -33,15 +38,20 @@ export default {
         isLoading: { type: Boolean, default: false },
         placeholder: { type: String },
         tiny: { type: Boolean, default: false },
-        read: { type: String }
+        read: { type: String },
+        errors: { type: Array, default: () => [] }
     },
     computed: {  
         user () { return this.$store.getters['user/self'] },
+        images () {
+            return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []
+        }
     },
     data: () => ({
         isFocused: false,
         formData: {
-            content: ''
+            content: '',
+            images: []
         }
     }),
     methods: {
@@ -56,11 +66,21 @@ export default {
         },
         reset () {
             this.formData = {
-                content: ''
+                content: '',
+                images: []
             }
         },
         onSubmit () {
             this.$emit('submit', this.formData)
+        },
+        addImages (v) {
+            this.formData.images = [
+                ...this.formData.images,
+                ...v
+            ].slice(0, 4)
+        },
+        onImageDelete (index) {
+            this.formData.images = this.formData.images.filter((c, i) => i != index)
         }
     }
 }
@@ -119,7 +139,7 @@ export default {
             }
 
             .Editor_input {
-                background-color: var(--color-bg-strong);
+                background-color: var(--color-bg-xstrong);
             }
         }
     }

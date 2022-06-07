@@ -172,6 +172,10 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         if (user && user.role == 'admin') granted = true
 
                         if (requested.constellation && requested.constellation.organizers.includes(user._id) || requested.constellation && requested.constellation.admins.includes(user._id)) granted = true
+                    } else if (requiredRole == 'g-member') {
+                        if (user && user.role == 'admin') granted = true
+
+                        if (requested.constellation && (requested.constellation.members && requested.constellation.members.includes(user._id)) || (requested.constellation && requested.constellation.organizers.includes(user._id)) || (requested.constellation && requested.constellation.admins.includes(user._id))) granted = true
                     } else if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
                     } else if (requiredRole == '$user') {

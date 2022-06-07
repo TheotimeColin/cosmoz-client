@@ -1,6 +1,6 @@
 <template>
     <div class="Wrapper Wrapper--xs pv-40">
-        <content-feed :constellation="constellation._id" read="constellation" />
+        <content-feed :constellation="constellation._id" read="g-member" />
     </div>
 </template>
 

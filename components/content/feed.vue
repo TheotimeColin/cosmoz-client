@@ -4,7 +4,9 @@
             class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak"
             :placeholder="placeholder"
             :read="read"
+            :constellation="constellation"
             :loading="isSubmitLoading"
+            :errors="errors"
             @submit="onSubmit"
             v-if="!disableCreate"
             ref="editor"
@@ -56,6 +58,7 @@ export default {
     },
     data: () => ({
         statusesData: [],
+        errors: [],
         isSubmitLoading: false,
         isLoading: true,
         page: 0
@@ -140,8 +143,11 @@ export default {
                 }
 
                 const response = await this.$store.dispatch('status/create', data)
-                
-                if (response.status == 0) throw Error(response.errors[0])
+
+                if (response.status == 0) {
+                    this.errors = [ response.error ]
+                    throw Error(response.error)
+                }
 
                 if (this.$refs.editor) this.$refs.editor.reset()
                 
@@ -151,7 +157,7 @@ export default {
                     if (parent) parent.reset()
                 }
             } catch (e) {
-                console.log(e)
+                console.error(e)
             }
 
             this.isSubmitLoading = false

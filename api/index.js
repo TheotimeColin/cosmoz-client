@@ -70,9 +70,8 @@ mongoose.connection.once('open', async () => {
     app.post('/gathering/book', updateBookingStatus)
 
     app.get('/status/feed', getFeed)
-    app.post('/status/post', postStatus)
+    app.post('/status/post', upload.array('images', 4), postStatus)
     app.post('/status/react', reactStatus)
-
 
     app.post('/affinities/send-mentions', sendMentions)
     app.post('/affinities/remove-match', unmatch)

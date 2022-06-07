@@ -5,6 +5,7 @@ const shortid = require('shortid')
 const axios = require('axios')
 const fs = require('fs')
 const AWS = require('aws-sdk')
+const mime = require('mime')
 const Entities = require('../entities')
 const resolvePath = require("path");
 
@@ -69,7 +70,7 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
                 }).promise()
 
                 data.id = fileDirectory
-                data.src = src
+                data.src = `https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${data.id}`
                 
                 if (file.path) fs.unlink(file.path, () => {})
                 

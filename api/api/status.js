@@ -3,27 +3,57 @@ const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 const striptags  = require('striptags')
 
-const { authenticate } = require('../utils/user')
+const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
+const { createMediaCollection } = require('../utils/files')
 
 exports.postStatus = async function (req, res) {
     let data = {}
     let errors = []
 
     try {
-        let fields = req.body
-        let parent = null
+        let fields = {
+            ...req.body
+        }
 
-        if (!fields.content || !striptags(fields.content)) throw Error('no-content')
+        let parent = null
+        let constellation = null
+        let gathering = null
+
+        if ((!fields.content || !striptags(fields.content)) && (!req.files || req.files.length == 0)) throw Error('no-content')
 
         let user = await authenticate(req.headers)
         if (!user) throw Error('no-user')
 
         if (fields.gathering) {
-            let gathering = await Entities.gathering.model.findById(fields.gathering)
+            gathering = await Entities.gathering.model.findById(fields.gathering)
 
             if (!gathering) throw Error('no-gathering')
 
             // further checks
+        }
+
+        if (fields.constellation) {
+            constellation = await Entities.constellation.model.findById(fields.constellation)
+
+            if (!constellation) throw Error('no-constellation')
+            if (!constellation.members.includes(user._id) && !constellation.admins.includes(user._id) && !constellation.organizers.includes(user._id) ) throw Error('not-authorized')
+        }
+
+        if (req.files) {
+            let images = await Promise.all(req.files.map(async f => {
+                try {
+                    return await createMediaCollection(f, {
+                        path: constellation ? `constellation/${constellation._id}/posts` : `users/${user._id}/posts`
+                    })
+                } catch (e) {
+                    console.error(e)
+                    throw Error('image-fail')
+                }
+            }))
+
+            if (images && images.filter(i => i).length > 0) {
+                fields.images = images.filter(i => i)
+            }
         }
 
         if (fields.parent) {
@@ -44,15 +74,9 @@ exports.postStatus = async function (req, res) {
             parent[0].children = result.map(c => c._id)
 
             await parent[0].save()
-
-            data = {
-                ...data._doc,
-                parent: {
-                    ...parent[0]._doc,
-                    children: result
-                }
-            }
         }
+
+        data = await Entities.status.model.findOne({ _id: data._id })
     } catch (e) {
         console.error(e)
         errors.push(e.message)
