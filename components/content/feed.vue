@@ -21,6 +21,7 @@
                 v-bind="status"
                 @submit="onSubmit"
                 :active-gathering="gathering"
+                :active-constellation="constellation"
                 :disableCreate="disableInteract"
                 :key="status._id"
                 ref="posts"
@@ -44,9 +45,10 @@
 export default {
     name: 'Feed',
     props: {
-        read: { type: String, default: 'friend' },
+        read: { type: String, default: 'friends' },
         max: { type: Number, default: 5 },
         gathering: { type: String },
+        constellation: { type: String },
         author: { type: String },
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
@@ -65,6 +67,10 @@ export default {
 
         if (this.gathering) {
             query.gathering = this.gathering
+            await this.$store.dispatch('status/fetch', { query })
+        } else if (this.constellation) {
+            query.constellation = this.constellation
+            query.gathering = '$null'
             await this.$store.dispatch('status/fetch', { query })
         } else if (this.author) {
             query.owner = this.author
@@ -127,6 +133,10 @@ export default {
                 if (this.gathering) {
                     data.gathering = this.gathering
                     data.read = 'public'
+                }
+
+                if (this.constellation) {
+                    data.constellation = this.constellation
                 }
 
                 const response = await this.$store.dispatch('status/create', data)

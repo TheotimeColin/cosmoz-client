@@ -6,20 +6,22 @@
             <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
 
             <transition name="fade">
-                <div class="Editor_secondary" v-show="isFocused">
-                    <div class="fx-grow pr-20">
-                        <p class="ft-s color-ft-weak line-2" v-if="read">
-                            <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
-                        </p>
-                    </div>
-                    <div class="fx-no-shrink">
-                        <link-base class="color-ft-weak mr-10" @click="onBlur">Annuler</link-base>
-                        <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
-                            Envoyer
-                        </button-base>
-                    </div>
+                <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && isFocused">
+                    <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
                 </div>
             </transition>
+
+            <div class="Editor_secondary">
+                <div class="fx-grow pr-10 text-right">
+                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="image" />
+                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" />
+                </div>
+                <div class="fx-no-shrink">
+                    <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
+                        Envoyer
+                    </button-base>
+                </div>
+            </div>
         </form>
     </div>
 </template>

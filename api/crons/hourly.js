@@ -5,9 +5,10 @@ moment.tz.setDefault('Europe/Paris')
 const { sendBulkMail, sendMail } = require('../utils/mailing')
 const Entities = require('../entities')
 
-module.exports = function () {
-    console.log('===> init cron')
-    const hourly = new CronJob('* 30 * * * *', () => {
+module.exports = function (app) {
+    if (app.locals.hourly) return
+
+    app.locals.hourly = new CronJob('* 30 * * * *', () => {
         console.log('=== hourly cron job')
 
         sendPendingEmails()

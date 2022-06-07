@@ -116,6 +116,7 @@
     /* BORDERS */
     .b#{$name} { border: 1px solid var(--color-border); }
     .b-top#{$name} { border-top: 1px solid var(--color-border); }
+    .b-bottom#{$name} { border-bottom: 1px solid var(--color-border); }
 
     /* MARGINS, PADDINGS */
     .m-auto#{$name} {

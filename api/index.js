@@ -77,7 +77,7 @@ mongoose.connection.once('open', async () => {
     app.post('/affinities/send-mentions', sendMentions)
     app.post('/affinities/remove-match', unmatch)
 
-    cronHourly()
+    cronHourly(app)
 })
 
 module.exports = app

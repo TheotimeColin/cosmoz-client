@@ -19,11 +19,15 @@
                                  {{ gatheringData.title }}
                             </link-base>
                         </template>
+                        <template v-else-if="constellationData && !isCurrent">
+                            <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
+                            <link-base :modifiers="['l']" :to="gatheringLink">
+                                 {{ constellationData.name }}
+                            </link-base>
+                        </template>
 
                         <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
                             {{ subtitle }}
-
-                            <!-- · <fa :icon="$t(`permissions.${read}.icon`)" class="ml-3" /> {{ this.$t(`permissions.${this.read}.title`) }} -->
                         </div>
                     </div>
                 </div>
@@ -114,7 +118,9 @@ export default {
         disableCreate: { type: Boolean, default: false },
         createdAt: { type: [String, Date] },
         gathering: { type: String },
-        activeGathering: { type: String }
+        constellation: { type: String },
+        activeGathering: { type: String },
+        activeConstellation: { type: String }
     },
     data: () => ({
         max: 2,
@@ -132,6 +138,9 @@ export default {
         gatheringData () {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
         },
+        constellationData () {
+            return this.constellation ? this.$store.getters['constellation/findOne']({ _id: this.constellation }) : null
+        },
         title () {
             return this.owner.name
         },
@@ -143,7 +152,15 @@ export default {
             return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
         },
         gatheringLink () {
-            return this.gatheringData ? this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.constellation ? this.gatheringData.constellation.slug : 'event' } }) : null
+            let link = null
+
+            if (this.gatheringData) {
+                link = this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.constellation ? this.gatheringData.constellation.slug : 'event' } })
+            } else if (this.constellationData) {
+                link = this.localePath({ name: 'c-slug-channel-id', params: { slug: this.constellationData.slug } })
+            }
+
+            return link
         }
     },
     methods: {

@@ -14,7 +14,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         isOwner () { return this.owner._id == this.user._id },
-        isCurrent () { return this.activeGathering == this.gathering },
+        isCurrent () { return (this.activeConstellation && this.activeConstellation == this.constellation) || (this.activeGathering && this.activeGathering == this.gathering) },
         isReacted () { return this.reactions.find(r => r.owner == this.user._id) },
         reactionTooltip () {
             let reaction = ''

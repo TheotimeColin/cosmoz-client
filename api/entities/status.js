@@ -15,6 +15,8 @@ let Status = {
             { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'status' }
         ],
 
+        constellation: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'constellation' },
+
         gathering: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'gathering' },
 
         parent: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' },

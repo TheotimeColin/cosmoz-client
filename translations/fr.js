@@ -45,11 +45,17 @@ export default {
             subtitle: `Visible par les personnes que j'ai rencontrées`,
             error: `Uniquement visible après une rencontre.`
         },
-        friend: {
+        friends: {
+            icon: 'far fa-sparkles',
+            title: 'Amis uniquement',
+            subtitle: `Visible par mes amis uniquement`,
+            error: `Uniquement visible par ses amis.`
+        },
+        constellation: {
             icon: 'far fa-sparkles',
             title: 'Constellation uniquement',
-            subtitle: `Visible par ma constellation uniquement`,
-            error: `Uniquement visible par sa constellation.`
+            subtitle: `Visible par les autres membres`,
+            error: `Uniquement visible par les membres.`
         },
         extended: {
             icon: 'far fa-solar-system',
