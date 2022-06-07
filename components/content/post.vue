@@ -210,10 +210,6 @@ export default {
         &:last-child {
             margin-bottom: 0;
         }
-
-        &:only-child:not(.Post_gallery) {
-            margin-bottom: 20px;
-        }
     }
 
     .Post_icon {
@@ -301,6 +297,13 @@ export default {
             padding: 20px 20px 0;
             border-radius: 0;
             background: transparent;
+        }
+
+        .Post_block {
+            
+            &:only-child:not(.Post_gallery) {
+                margin-bottom: 20px;
+            }
         }
 
         .Post_comments {

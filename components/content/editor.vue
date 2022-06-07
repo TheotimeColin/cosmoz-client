@@ -1,12 +1,18 @@
 <template>
     <div class="Editor" :class="{ 'is-tiny': tiny }">
-        <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" :display-name="$smallerThan('xs')" v-bind="user" />
+        <div class="Editor_first">
+            <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" :display-name="$smallerThan('xs')" v-bind="user" />
 
-        <form @submit.prevent="onSubmit" class="Editor_main">
-            <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
+            <form @submit.prevent="onSubmit" class="Editor_main">
+                <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
+            </form>
+        </div>
 
-            <content-type-images class="mt-15" :images="images" :is-editor="true" v-if="images.length > 0" @delete="onImageDelete" />
-            
+        <div>
+            <div class="mt-15 p-20 bg-bg-strong br-xs" v-if="images.length > 0">
+                <content-type-images :images="images" :is-editor="true" @delete="onImageDelete" />
+            </div>
+
             <transition name="fade">
                 <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && isFocused">
                     <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
@@ -16,18 +22,18 @@
             <form-errors class="mt-15" :items="errors" />
 
             <div class="Editor_secondary">
-                <div class="fx-grow pr-10 text-right">
-                    <input-file icon="image" :multiple="true" @input="addImages" />
+                <div class="d-flex fx-grow pr-10 fxj-end">
+                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" :disabled="images.length > 0" />
 
-                    <!-- <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" /> -->
+                    <input-file icon="image" :multiple="true" @input="addImages" />
                 </div>
                 <div class="fx-no-shrink">
-                    <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
+                    <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
                         Envoyer
                     </button-base>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -88,8 +94,6 @@ export default {
 
 <style lang="scss" scoped>
 .Editor {
-    display: flex;
-    align-items: flex-start;
 
     &.is-tiny {
         
@@ -106,6 +110,11 @@ export default {
             padding-top: 10px;
         }
     }
+}
+
+.Editor_first {
+    display: flex;
+    align-items: flex-start;
 }
 
 .Editor_main {

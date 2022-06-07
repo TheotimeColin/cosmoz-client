@@ -67,6 +67,7 @@ export default {
     padding: 10px;
     right: 0;
     top: 0;
+    z-index: 5;
 }
 
 .Images.is-editor {
