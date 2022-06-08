@@ -16,7 +16,7 @@
 
                 <div class="text-center">
                     <p class="ft-title-s mb-5">Rediriger vers une autre plateforme</p>
-                    <p class="mb-20">Si tu l'as déjà créée via Meetup, EventBrite, Frimake...</p>
+                    <p class="mb-20">Si tu l'as déjà créée via Meetup, EventBrite...</p>
 
                     <button-base :modifiers="['s', 'weak']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug }, query: { link: 'true' } }" icon-before="plus">Ajouter une rencontre</button-base>
                 </div>
@@ -111,6 +111,10 @@ export default {
         }
     },
     head () {
+        this.$store.commit('page/set', {
+            subtitle: `Gestion des rencontres`, fa: 'calendar-pen'
+        })
+
         this.$emit('page', {            
             subtitle: `Gestion des rencontres`, fa: 'calendar-pen'
         })

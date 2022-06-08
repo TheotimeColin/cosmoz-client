@@ -19,6 +19,10 @@ export default {
             subtitle: `Rencontres prévues`, fa: 'calendar'
         })
 
+        this.$store.commit('page/set', {
+            subtitle: `Rencontres prévues`, fa: 'calendar'
+        })
+
         await this.$store.dispatch('gathering/fetch', {
             query: { constellation: this.constellation._id, status: 'active' }
         })

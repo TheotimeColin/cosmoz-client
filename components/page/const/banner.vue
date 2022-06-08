@@ -1,8 +1,8 @@
 <template>
     <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent }">
-        <!-- <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
+        <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
 
-        <div class="ConstBanner_sub" v-if="!isEvent || isEvent && !user">
+        <div class="ConstBanner_sub" v-show="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
                 <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
         
@@ -14,7 +14,7 @@
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 

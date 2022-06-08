@@ -143,6 +143,10 @@ export default {
         }
     },
     head () {
+        this.$store.commit('page/set', {
+            subtitle: `Paramètres de la constellation`
+        })
+
         this.$emit('page', {            
             subtitle: `Paramètres de la constellation`, fa: 'cog'
         })

@@ -299,19 +299,19 @@ export default {
         }
 
         .Post_comments {
-            margin: 0 -20px;
+            margin: 0 -15px;
             padding: 0 20px 20px;
             border: none;
         }
 
         .Post_footer {
             padding: 15px 20px;
-            margin: 0 -20px 0;
+            margin: 0 -15px 0;
         }
 
         .Post_gallery {
-            margin-left: -20px;
-            margin-right: -20px;
+            margin-left: -15px;
+            margin-right: -15px;
         }
 
         .Post_text,

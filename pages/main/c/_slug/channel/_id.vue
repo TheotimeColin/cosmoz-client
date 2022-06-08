@@ -20,6 +20,10 @@ export default {
             subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
         })
 
+        this.$store.commit('page/set', {
+            subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
+        })
+
         let meta = {
             
         }

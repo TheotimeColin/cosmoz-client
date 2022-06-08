@@ -105,6 +105,10 @@ export default {
             subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: ''
         })
 
+        this.$store.commit('page/set', {
+            subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: ''
+        })
+
         this.$store.commit('page/setCurrent', 'event')
     },
     beforeDestroy () {  

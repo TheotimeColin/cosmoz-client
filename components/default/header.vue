@@ -204,6 +204,8 @@ export default {
         &.is-open {
             box-shadow: 0 0 0 999px rgba(39, 39, 43, 0.8);
         }
+        
+        background-color: var(--color-bg-strong);
     }
 
     .Header_burger {
