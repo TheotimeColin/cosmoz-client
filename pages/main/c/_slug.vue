@@ -21,9 +21,6 @@ export default {
             query: { slug: this.$route.params.slug }
         })
 
-        console.log(this.$route.params.slug)
-        console.log(response)
-
         this.$store.commit('page/set', { currentConst: this.constellation._id })
     },
     beforeDestroy () {

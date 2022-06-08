@@ -1,6 +1,6 @@
 <template>
     <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent }">
-        <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
+        <!-- <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
 
         <div class="ConstBanner_sub" v-if="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
@@ -14,7 +14,7 @@
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
