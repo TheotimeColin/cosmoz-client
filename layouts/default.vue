@@ -1,5 +1,5 @@
 <template>
-    <div class="Layout LayoutDefault" :class="[ classes ]">
+    <div class="Layout LayoutDefault" :class="[ classes, { 'is-open-nav': isOpenNav } ]">
         <default-header @navOpen="onNavOpen" />
 
         <div
@@ -28,7 +28,8 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         classes () { return this.$store.state.page.body.classes },
-        isDisableFooter () { return this.$store.state.page.isDisableFooter }
+        isDisableFooter () { return this.$store.state.page.isDisableFooter },
+        isOpenNav () { return this.$store.state.page.isOpenNav }
     },
     data: () => ({
         pan: 0,

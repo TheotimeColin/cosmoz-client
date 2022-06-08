@@ -1,7 +1,7 @@
 <template>
     <nav
         class="AppNav"
-        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': currentConst && $biggerThan('s'), 'is-desktop': $biggerThan('s'), 'is-mounted': isMounted }"
+        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': isOpenNav && $biggerThan('s'), 'is-desktop': $biggerThan('s'), 'is-mounted': isMounted }"
         :style="{
             transform: isClosePanning ? `translateX(calc(0% + ${closePan}px))` : `translateX(calc(-100% + ${pan}px))`
         }"
@@ -11,12 +11,18 @@
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
-                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': selected == '' }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" @click="selected = ''" />
+                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': selected == '' && !isExplore }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" @click="selected = ''" />
 
-                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
+                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+
+                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == selectConst._id }" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst" />
+
+                <hr class="Separator mv-10 bg-bg">
+                
+                <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
             </div>
             <div class="AppNav_sub">
-                <div v-if="!selected" key="selected">
+                <div v-if="!selected && !isExplore" key="selected">
                     <div class="AppNav_header bg-cover bg-night" v-if="user">
                         <user-icon v-bind="user" :display-name="true" />
                     </div>
@@ -37,6 +43,19 @@
                         <div class="mt-10 p-20 b text-center br-xs">
                             Une question ? Besoin d'aide ?
                             <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="isExplore" key="explore">
+                    <div class="AppNav_menu">
+                        <div class="AppNav_menuItem" v-for="(cat, i) in exploreNav" :key="i">
+                            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+
+                            <div class="AppNav_menuChildren">
+                                <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
+                                    <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
+                                </nuxt-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,6 +82,7 @@ export default {
     data: () => ({
         isActive: false,
         nav: [],
+        exploreNav: [],
         isClosePanning: false,
         closePan: 0,
         selected: ''
@@ -93,12 +113,17 @@ export default {
         user () { return this.$store.getters['user/self'] },
         constellations () {
             return this.$store.getters['constellation/find']({
+                members: { $contains: this.user._id }
             })
         },
         selectConst () {
-            return this.constellations.find(o => o._id == this.selected)
+            return this.$store.getters['constellation/findOne']({
+                slug: this.selected
+            })
         },
-        currentConst () { return this.$store.state.page.currentConst }
+        currentConst () { return this.$store.state.page.currentConst },
+        isOpenNav () { return this.$store.state.page.isOpenNav },
+        isExplore () { return this.$route.name.includes('explore') }
     },
     created () {
         this.nav = [
@@ -112,6 +137,14 @@ export default {
                 children: [
                     { label: `Mon agenda`, fa: 'calendar', to: { name: 'g' } },
                     { label: `Passées`, fa: 'home', to: { name: 'g-past' } },
+                ]
+            }
+        ]
+
+        this.exploreNav = [
+            {
+                children: [
+                    { label: `Accueil`, fa: 'compass', to: { name: 'explore' } }
                 ]
             }
         ]
@@ -238,6 +271,15 @@ export default {
 
     & + & {
         margin-top: 10px;
+    }
+}
+
+.AppNav_icon--explore {
+
+    &:hover,
+    &.is-active {
+        background-color: var(--color-emerald);
+        color: var(--color-ft-light);
     }
 }
 

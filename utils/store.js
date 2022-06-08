@@ -63,6 +63,10 @@ export default {
                     let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
                     
                     items = items.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
+                } else if (entries[0] == '$contains') {
+                    items = items.filter(item => {
+                        return item[key].find(u => u == entries[1])
+                    })
                 }
             } else if (key == '$in') {
                 items = items.filter(item => search[key].includes(item._id))

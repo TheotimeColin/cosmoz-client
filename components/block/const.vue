@@ -3,27 +3,25 @@
         <div class="BlockConst_cover">
             <div class="BlockConst_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }"></div>
 
-            <div class="BlockConst_header">
-                <div class="BlockConst_logo" :style="{ backgroundImage: logoSmall ? `url(${logoSmall})` : '' }"></div>
-
-                <div>
-                    <h3 class="BlockConst_name">
-                        {{ name|specials }}
-                    </h3>
-                </div>
-            </div>
+            <div class="BlockConst_logo" :style="{ backgroundImage: logoSmall ? `url(${logoSmall})` : '' }"></div>
         </div>
         <div class="BlockConst_content">
-            <div class="fx-center mb-10">
+            <div>
+                <h3 class="BlockConst_name">
+                    {{ name|specials }}
+                </h3>
+            
+                <p class="ellipsis-3">{{ intro|specials }}"</p>
+            </div>
+
+            <div class="fx-center mt-15">
                 <div class="BlockConst_location">
                     <fa icon="far fa-map-marker-alt" class="mr-3"></fa> {{ location }}
                 </div>
-                <div class="ft-xs" v-if="followers > 0">
-                    <fa icon="far fa-user-check" class="mr-3"></fa> {{ followers }} abonnés
+                <div class="ft-xs" v-if="members.length > 0">
+                    <fa icon="far fa-user-check" class="mr-3"></fa> {{ members.length }} membres
                 </div>
             </div>
-
-            "{{ intro|specials }}"
         </div>
     </nuxt-link>
 </template>
@@ -40,7 +38,7 @@ export default {
         intro: { type: String },
         logoSmall: { type: String },
         location: { type: String },
-        followers: { type: Number, default: 0 },
+        members: { type: Array, default: () => [] },
         cover: { type: Object, default: () => ({}) },
         link: { type: [Object, Boolean], default: false }
     },
@@ -63,13 +61,10 @@ export default {
 
 <style lang="scss" scoped>
 .BlockConst {
-    display: block;
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
     overflow: hidden;
-
-    &:hover {
-    
-    }
 }
 
 .BlockConst_coverImage {
@@ -92,6 +87,8 @@ export default {
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+    position: relative;
+    z-index: 5;
 }
 
 .BlockConst_favs {
@@ -99,31 +96,25 @@ export default {
 }
 
 .BlockConst_cover {
-    display: block;
-    // border-radius: 8px;
+    display: flex;
+    align-items: center;
     overflow: hidden;
     font: var(--ft-name-l);
     line-height: 1;
     background-color: var(--color-black);
     text-align: left;
     position: relative;
-    
+    padding: 15px;
+
     &::before {
-        @include ratio(25);
+        content: "";
+        @include ratio(30);
     }
 }
 
-.BlockConst_header {
-    padding: 15px;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-}
-
 .BlockConst_name {
-    font: var(--ft-title-xs);
+    font: var(--ft-title-2xs);
+    margin-bottom: 10px;
 }
 
 .BlockConst_location {
@@ -133,11 +124,14 @@ export default {
 
 .BlockConst_content {
     font: var(--ft-m);
+    flex-grow: 1;
     line-height: 1.3;
-    min-height: 105px;
     color: var(--color-ft-light);
     padding: 15px;
     background-color: var(--color-bg-weak);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 @include breakpoint-xs {

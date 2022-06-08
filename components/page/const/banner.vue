@@ -6,13 +6,13 @@
             <div class="d-flex fxa-center">
                 <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
         
-                <!-- <div class="ml-10">
-                    <h1 class="ConstBanner_title ellipsis-1" v-show="subtitle">
+                <div class="ml-10">
+                    <!-- <h1 class="ConstBanner_title ellipsis-1" v-show="subtitle">
                         <fa :icon="`far fa-${fa}`" class="mr-5" v-show="fa" /> {{ subtitle ? subtitle : '' }}
-                    </h1>
+                    </h1> -->
                     
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

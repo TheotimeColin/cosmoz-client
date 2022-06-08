@@ -12,6 +12,7 @@ export default {
         current: '',
         fa: '',
         currentConst: '',
+        isOpenNav: false,
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,

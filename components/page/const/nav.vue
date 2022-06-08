@@ -26,8 +26,8 @@ export default {
         hero: { type: String },
         name: { type: String },
         logo: { type: Object },
-        admins: { type: Array },
-        organizers: { type: Array },
+        admins: { type: Array, default: () => [] },
+        organizers: { type: Array, default: () => [] },
         isHome: { type: Boolean, default: false },
         isAbsolute: { type: Boolean, default: false }
     },

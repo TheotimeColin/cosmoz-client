@@ -115,7 +115,7 @@ export default {
     top: 0;
     width: 100%;
     z-index: 90;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: var(--color-bg-strong);
     transition: all 100ms ease;
 
     &.is-transparent {
@@ -204,8 +204,6 @@ export default {
         &.is-open {
             box-shadow: 0 0 0 999px rgba(39, 39, 43, 0.8);
         }
-        
-        background-color: var(--color-bg-strong);
     }
 
     .Header_burger {

@@ -80,6 +80,13 @@
     margin-top: var(--header-height);
 }
 
+.is-open-nav {
+
+    .page {
+        margin-left: 320px;
+    }
+}
+
 .logo-sparkle-a::before {
     top: 10px;
     left: -35px;
@@ -410,7 +417,8 @@
 .SeparatorV {
     border: none;
     height: 1px;
-    background-color: var(--color-current-weak, var(--color-border));
+    width: 100%;
+    background-color: var(--color-border);
 }
 
 .SeparatorV {
