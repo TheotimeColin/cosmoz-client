@@ -86,6 +86,9 @@ exports.postStatus = async function (req, res) {
 
         if (parentData) {
             data = { ...data._doc, parent: parentData }
+            data = await fieldsCheck('read', data, Entities.status, data, user)
+        } else {
+            data = await fieldsCheck('read', data._doc, Entities.status, data, user)
         }
     } catch (e) {
         console.error(e)
@@ -122,6 +125,8 @@ exports.reactStatus = async function (req, res) {
         data = updated.find(d => d._id.equals(fields._id))
 
         if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
+        
+        data = await fieldsCheck('read', data._doc, Entities.status, data, user)
     } catch (e) {
         console.error(e)
         errors.push(e.message)

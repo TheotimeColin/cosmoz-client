@@ -142,9 +142,9 @@ export default {
             immediate: true,
             async handler (v) {
                 if (v && this.user) {
-                    this.common = await this.$store.dispatch('user/softFetch', {
-                        items: [ ...new Set(v.friends.filter(u => this.user.friends.includes(u))) ]
-                    })
+                    // this.common = await this.$store.dispatch('user/softFetch', {
+                    //     items: [ ...new Set(v.friends.filter(u => this.user.friends.includes(u))) ]
+                    // })
                 }
             }
         }

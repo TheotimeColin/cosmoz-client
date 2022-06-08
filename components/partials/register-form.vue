@@ -173,6 +173,8 @@ export default {
                     }
                 })
 
+                console.log(response)
+
                 if (response.data.status != 1) {
                     this.errors = response.data.errors
                     this.isLoading = false

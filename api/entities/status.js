@@ -5,7 +5,7 @@ let Status = {
     write: 'user',
     read: 'user',
     fields: new mongoose.Schema({
-        read: { type: String, default: 'friend', write: 'self' },
+        read: { type: String, default: 'friends', write: 'self' },
 
         content: { type: String, write: 'user', read: '$read' },
         reactions: { type: Array, default: [], write: 'user', read: '$read' },

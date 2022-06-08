@@ -112,9 +112,9 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         constellations () {
-            return this.$store.getters['constellation/find']({
+            return this.user ? this.$store.getters['constellation/find']({
                 members: { $contains: this.user._id }
-            })
+            }) : []
         },
         selectConst () {
             return this.$store.getters['constellation/findOne']({

@@ -61,6 +61,19 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
+        async accept ({ commit }, params) {
+            try {
+                const response = await this.$axios.$post('/constellation/enter', params)
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async leave ({ commit }, id) {
             try {
                 const response = await this.$axios.$post('/constellation/leave', { id })

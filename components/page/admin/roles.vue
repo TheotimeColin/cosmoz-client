@@ -29,8 +29,8 @@
                     </div>
                 </div>
             </div>
-
-            <input-user @input="addUser" :exclude="[...formData.organizers, ...formData.admins ]" />
+            
+            <input-user @input="addUser" :items="serverEntity.members.map(m => getUser(m))" :exclude="[...formData.organizers, ...formData.admins ]" />
         </div>
 
         <form-errors class="mt-20" :items="errors" />

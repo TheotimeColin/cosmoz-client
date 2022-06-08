@@ -72,34 +72,35 @@ exports.accessCheck = async function (type = 'write', entity, requested = null, 
             let requester = null
             let owner = null
             let userRole = null
-            let requiredRole = null
+            let requiredRole = entity[type]
 
-            if (entity[type] == 'self') {
+            if (requiredRole.slice(0, 2) == 'g-') {
+                if (!requested._id || !user) granted = false
+
+                if (user.role == 'admin') {
+                    granted = true
+                } else {
+                    let conste = await Entities.constellation.model.findOne({ _id: requested._id })
+                    
+                    if (conste) {
+                        let allowed = conste.admins
+
+                        if (requiredRole == 'g-organizer' || requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.organizers]
+
+                        if (requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.members]
+
+                        if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
+
+                        granted = allowed.find(u => user._id.equals(u))
+                    } else {
+                        granted = false
+                    }
+                }
+            } else if (entity[type] == 'self') {
                 owner = requested ? requested.owner : null
                 requester = user ? user._id : null
 
                 granted = requester && owner && owner.equals(requester)
-            } else if (entity[type] == 'g-organizer') {
-                let constellation = requested && requested.constellation ? requested.constellation : null
-                requester = user ? user._id : null
-
-                if (!constellation && fields && fields.constellation) {
-                    constellation = await Entities.constellation.model.findById(fields.constellation)
-                }
-
-                if (user && user.role == 'admin' || user && constellation && (constellation.admins.includes(user._id) || constellation.organizers.includes(user._id))) {
-                    granted = true
-                } else {
-                    granted = false
-                }
-            } else if (entity[type] == 'g-admin') {
-                requester = user ? user._id : null
-                
-                if (user && user.role == 'admin' || user && requested && requested.constellation && requested.constellation.admins.includes(user._id)) {
-                    granted = true
-                } else {
-                    granted = false
-                }
             } else {
                 userRole = user ? ROLES[user.role] : 0
                 requiredRole = ROLES[entity[type]]
@@ -173,15 +174,19 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         } else {
                             let conste = await Entities.constellation.model.findOne({ _id: requested.constellation })
                             
-                            let allowed = conste.admins
+                            if (conste) {
+                                let allowed = conste.admins
 
-                            if (requiredRole == 'g-organizer' || requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.organizers]
+                                if (requiredRole == 'g-organizer' || requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.organizers]
 
-                            if (requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.members]
+                                if (requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.members]
 
-                            if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
+                                if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
 
-                            granted = allowed.find(u => user._id.equals(u))
+                                granted = allowed.find(u => user._id.equals(u))
+                            } else {
+                                granted = false
+                            }
                         }
                     } else if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
@@ -189,7 +194,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         result[key] = await fieldsCheck('read', result[key]._doc, Entities.user, result[key], user)
 
                         granted = true
-                    } else if (requiredRole == 'friend') {
+                    } else if (requiredRole == 'friends') {
                         if (isFriend || isSelf) granted = true
                     } else if (requiredRole == 'encountered') {
                         if (isEncountered || isSelf) granted = true

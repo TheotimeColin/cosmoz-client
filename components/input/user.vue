@@ -28,6 +28,7 @@ export default {
     },
     props: {
         label: { type: String, default: '' },
+        items: { type: Array, default: () => [] },
         exclude: { type: Array, default: () => [] },
         value: { type: Array, default: () => [] }
     },
@@ -37,7 +38,7 @@ export default {
     }),
     computed: {
         users () {
-            return this.$store.getters['user/find']({
+            return this.items ? this.items : this.$store.getters['user/find']({
             })
         },
         changesMade () {

@@ -30,7 +30,7 @@
                     :options="[
                         { label: 'Tout le monde', value: 'user', disabled: ['socials'].includes(type) },
                         { label: `Mes rencontres`, value: 'encountered' },
-                        { label: 'Ma constellation', value: 'friend' },
+                        { label: 'Ma constellation', value: 'friends' },
                     ]"
                 />
             </div>
@@ -67,7 +67,7 @@ export default {
         isLoading: false,
         isLocked: false,
         formData: {
-            read: 'friend',
+            read: 'friends',
             value: {}
         }
     }),

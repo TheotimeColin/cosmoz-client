@@ -17,6 +17,11 @@ export default {
             return [
                 {
                     id: 'index',
+                    component: 'page-admin-members',
+                    label: 'Membres',
+                    props: { constellation: this.constellation }
+                }, {
+                    id: 'customization',
                     component: 'page-admin',
                     label: 'Personnalisation',
                     props: { constellation: this.constellation }

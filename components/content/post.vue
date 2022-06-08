@@ -131,7 +131,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         forbidden () {
-            return (this.read == 'friend' && !this.owner.isFriend) && this.owner._id != this.user._id
+            return (this.read == 'friends' && !this.owner.isFriend) && this.owner._id != this.user._id
         },
         displayedComments () {
             return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []
