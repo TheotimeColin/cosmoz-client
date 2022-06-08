@@ -3,7 +3,7 @@
         <div class="Wrapper pv-30">
             <div class="d-flex d-block@s">
                 <div class="fx-grow">
-                    <div class="pt-20 br-s bg-bg-weak p-0@xs bg-bg@xs">
+                    <div class="pt-20 br-s bg-bg-weak p-0@xs bg-bg@xs" v-if="attending.length > 0 || upcoming.length > 0">
                         <p class="ft-title-xs mb-20 ph-20 p-0@xs">
                             {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir ?` }}
                         </p>

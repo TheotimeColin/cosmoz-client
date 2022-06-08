@@ -116,7 +116,7 @@ export default {
     width: 100%;
     z-index: 90;
     background-color: rgba(0, 0, 0, 0);
-    transition: all 250ms ease;
+    transition: all 100ms ease;
 
     &.is-transparent {
         background-color: rgba(0, 0, 0, 0);

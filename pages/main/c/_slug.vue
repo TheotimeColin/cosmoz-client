@@ -2,11 +2,11 @@
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }">
         <div class="Constellation_content fx-grow" v-if="constellation">
-            <!-- <page-const-banner
+            <page-const-banner
                 :min="isMin"
                 :is-event="isEventPage"
-                v-bind="{ ...constellation, ...page }" class="d-none@s" v-if="$biggerThan('s')"
-            /> -->
+                v-bind="{ ...constellation, ...page }" class="d-none@s"
+            />
 
             <nuxt-child :constellation="constellation" @page="(v) => page = v" />
         </div>
@@ -61,6 +61,7 @@ export default {
                 { property: 'twitter:card', content: 'summary_large_image' },
             ]
         }
+        
         return meta
     }
 }

@@ -1,15 +1,6 @@
 <template>
-    <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent,  }">
-        <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }">
-            <!-- <quick-menu
-                class="ConstBanner_menu"
-                :modifiers="['strong']"
-                :items="[
-                    { label: `Copier l'ID`, fa: 'hashtag', action: () => $copy(_id) }
-                ]"
-                v-if="!min"
-            /> -->
-        </div>
+    <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent }">
+        <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
 
         <div class="ConstBanner_sub" v-if="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
@@ -37,7 +28,7 @@ export default {
         name: { type: String },
         intro: { type: String },
         logo: { type: Object },
-        subtitle: { type: String },
+        subtitle: { type: String, default: '' },
         fa: { type: String },
         isEvent: { type: Boolean, default: false },
         min: { type: Boolean, default: false }
