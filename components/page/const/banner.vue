@@ -7,7 +7,7 @@
                 <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
         
                 <div class="ml-10">
-                    <div class="ConstBanner_title ellipsis-1" v-if="subtitle">
+                    <div class="ConstBanner_title ellipsis-1">
                         <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle ? subtitle : '' }}
                     </div>
                     
