@@ -1,7 +1,7 @@
 
 <template>
-    <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="constellation">
-        <div class="Constellation_content fx-grow">
+    <div class="Constellation page" :class="{ 'is-event': isEventPage }">
+        <div class="Constellation_content fx-grow" v-if="constellation">
             <page-const-banner
                 :min="isMin"
                 :is-event="isEventPage"
