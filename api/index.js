@@ -21,12 +21,13 @@ const cronHourly = require('./crons/hourly.js')
 const app = express()
 
 require('./entities/index')
-const { createEntity, getEntities, deleteEntity } = require('./api/entity');
-const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribeNewsletter } = require('./api/user');
+const { createEntity, getEntities, deleteEntity } = require('./api/entity')
+const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribeNewsletter } = require('./api/user')
 const { updateBookingStatus } = require('./api/gathering');
-const { sendMentions, unmatch } = require('./api/affinities');
-const { getFeed, postStatus, reactStatus } = require('./api/status');
-const { scrape } = require('./api/scraper');
+const { sendMentions, unmatch } = require('./api/affinities')
+const { getFeed, postStatus, reactStatus } = require('./api/status')
+const { scrape } = require('./api/scraper')
+const { consteApply, consteLeave } = require('./api/constellation')
 
 app.use(morgan('combined'))
 app.use('/webhooks', express.raw({ type: "*/*" }))
@@ -76,6 +77,9 @@ mongoose.connection.once('open', async () => {
 
     app.post('/affinities/send-mentions', sendMentions)
     app.post('/affinities/remove-match', unmatch)
+
+    app.post('/constellation/apply', consteApply)
+    app.post('/constellation/leave', consteLeave)
 
     app.get('/scraper', scrape)
 

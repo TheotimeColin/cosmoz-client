@@ -28,11 +28,11 @@ let Constellation = {
 Constellation.fields.pre('findOneAndUpdate', async function(next) {
     const doc = await this.findOne(this.getFilter())
 
-    if (doc.cover && !doc.cover._id.equals(this._update.cover)) {
+    if (this._update.cover && doc.cover && !doc.cover._id.equals(this._update.cover)) {
         await mediaCollection.model.deleteOne({ _id: doc.cover._id })
     }
 
-    if (doc.logo && !doc.logo._id.equals(this._update.logo)) {
+    if (this._update.logo && doc.logo && !doc.logo._id.equals(this._update.logo)) {
         await mediaCollection.model.deleteOne({ _id: doc.logo._id })
     }
 

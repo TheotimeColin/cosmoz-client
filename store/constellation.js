@@ -48,6 +48,32 @@ export default {
                 return null
             }
         },
+        async apply ({ commit }, id) {
+            try {
+                const response = await this.$axios.$post('/constellation/apply', { id })
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
+        async leave ({ commit }, id) {
+            try {
+                const response = await this.$axios.$post('/constellation/leave', { id })
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async create ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$post('/entities', {

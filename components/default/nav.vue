@@ -15,7 +15,7 @@
 
                 <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
 
-                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == selectConst._id }" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst" />
+                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == selectConst._id }" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
 
                 <hr class="Separator mv-10 bg-bg">
                 
@@ -236,7 +236,7 @@ export default {
 .AppNav_content {
     display: flex;
     width: 320px;
-    height: 100vh;
+    height: calc(100vh - var(--header-height));
     background-color: var(--color-bg-strong);
 }
 
@@ -420,6 +420,10 @@ export default {
         align-items: center;
         justify-content: space-around;
         padding: 6px;
+    }
+
+    .AppNav_content {
+        height: 100vh;
     }
 
     .AppNav_barLabel {

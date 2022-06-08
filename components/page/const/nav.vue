@@ -1,18 +1,45 @@
 <template>
     <div class="Nav bg-bg-strong" :class="{ 'is-absolute': isAbsolute }" style="--offset: 40px;">
-        <transition name="fade">
+        <div>
             <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
                 <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
             </div>
-        </transition>
 
-        <div class="Nav_content">
-            <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
-                <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+            <div class="Nav_content">
+                <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
+                    <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                <nuxt-link v-for="item in cat.children.filter(c => !c.disabled)" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
-                    <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
-                </nuxt-link>
+                    <nuxt-link v-for="item in cat.children.filter(c => !c.disabled)" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
+                        <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
+                    </nuxt-link>
+                </div>
+            </div>
+        </div>
+
+        <div class="Nav_footer">
+            <div class="p-10">
+                <div class="Nav_cat">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })">
+                        <fa icon="far fa-cog" /> Paramètres
+                    </nuxt-link>
+
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })">
+                        <fa icon="far fa-crown" /> Administration
+                    </nuxt-link>
+                </div>
+            </div>
+
+            <div class="p-15 bg-cosmoz" v-if="followers.includes(user._id)">
+                <p class="ft-title-2xs mb-5">Demande en cours</p>
+                <p class="ft-s mb-15">Ta demande a été envoyée et elle est en attente. Un peu de patience !</p>
+
+                <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" :to="{ name: 'c-slug-rejoindre', params: { slug } }">Gérer ma demande</button-base>
+            </div>
+            <div class="p-15 bg-cosmoz" v-else-if="!members.includes(user._id)">
+                <p class="ft-title-2xs mb-5">Devenir membre</p>
+                <p class="ft-s mb-15">Rejoins la communauté et débloque toutes les sections !</p>
+
+                <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" :to="{ name: 'c-slug-rejoindre', params: { slug } }">Faire la demande</button-base>
             </div>
         </div>
     </div>
@@ -26,6 +53,8 @@ export default {
         hero: { type: String },
         name: { type: String },
         logo: { type: Object },
+        followers: { type: Array, default: () => [] },
+        members: { type: Array, default: () => [] },
         admins: { type: Array, default: () => [] },
         organizers: { type: Array, default: () => [] },
         isHome: { type: Boolean, default: false },
@@ -48,8 +77,7 @@ export default {
                 label: `Organisateurs`,
                 disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id),
                 children: [
-                    { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } },
-                    { label: `Paramètres`, isParent: true, fa: 'cog', to: { name: 'c-slug-settings', params: { slug: this.slug } }, disabled: (this.user && this.user.role != 'admin') && !this.admins.includes(this.user._id) },
+                    { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
                 ]
             },
             // {
@@ -72,7 +100,11 @@ export default {
 
 <style lang="scss" scoped>
     .Nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         transition: transform 150ms ease;
+        height: 100%;
 
         &.is-absolute {
             position: absolute;
@@ -111,6 +143,10 @@ export default {
         & + & {
             margin-top: 20px;
         }
+    }
+
+    .Nav_footer {
+
     }
 
     .Nav_item {
