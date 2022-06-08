@@ -67,23 +67,7 @@ export default {
 <style lang="scss" scoped>  
     .Constellation {
         position: relative;
-        // height: calc(100vh - var(--header-height, 0px));
-        // display: flex;
         margin-left: 320px;
-
-        &::before {
-            content: "";
-            background-color: var(--color-bg-strong);
-            position: absolute;
-            top: 0;
-            left: -100%;
-            height: 200%;
-            width: 100%;
-        }
-    }
-
-    .Constellation_content {
-        // overflow: auto;
     }
 
     .page-enter-active,

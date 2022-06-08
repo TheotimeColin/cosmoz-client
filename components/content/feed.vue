@@ -106,7 +106,6 @@ export default {
             async handler (v) {
                 this.isLoading = true
                 
-
                 if (v) {
                     if (this.statusesData.length !== v.length) this.statusesData = []
 

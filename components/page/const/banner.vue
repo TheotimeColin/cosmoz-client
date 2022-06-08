@@ -4,7 +4,7 @@
 
         <div class="ConstBanner_sub" v-show="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
-                <!-- <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" /> -->
+                <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
         
                 <!-- <div class="ml-10">
                     <h1 class="ConstBanner_title ellipsis-1" v-show="subtitle">

@@ -1,6 +1,6 @@
 <template>
     <div class="Gatherings page">
-        <div class="Wrapper pv-30">
+        <div class="Page_wrapper Wrapper">
             <h1 class="ft-title-l">
                 Envie de sortir ?
             </h1>

@@ -1,5 +1,5 @@
 <template>
-    <div class="Wrapper Wrapper--s pv-40">
+    <div class="Page_wrapper Wrapper Wrapper--s">
         <div class="Section">
             <div class="p-40 bg-bg-strong br-s">
                 <div class="text-center">

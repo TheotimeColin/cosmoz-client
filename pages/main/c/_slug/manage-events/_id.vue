@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="onSubmit" class="Wrapper pv-40">
+    <form @submit.prevent="onSubmit" class="Page_wrapper Wrapper">
         <div class="d-flex d-block@s">
             <div class="fx-grow">
                 <div class="block">

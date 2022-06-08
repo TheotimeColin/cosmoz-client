@@ -1,8 +1,8 @@
 const BREAKPOINTS = [
     { id: 'xs', size: 0 },
     { id: 's', size: 600 },
-    { id: 'm', size: 900 },
-    { id: 'l', size: 1200 },
+    { id: 'm', size: 1000 },
+    { id: 'l', size: 1400 },
 ]
 
 export default {
