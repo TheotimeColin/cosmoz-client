@@ -8,9 +8,7 @@
                 v-bind="{ ...constellation, ...page }" class="d-none@s" v-if="$biggerThan('s')"
             />
 
-            <transition name="page">
-                <nuxt-child :constellation="constellation" @page="(v) => page = v" />
-            </transition>
+            <nuxt-child :constellation="constellation" @page="(v) => page = v" />
         </div>
     </div>
 </template>
