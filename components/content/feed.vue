@@ -177,9 +177,17 @@ export default {
 @include breakpoint-xs {
 
     .Feed_editor {
-        margin: 0 -20px 20px;
+        margin: 0 -20px 10px;
         border-radius: 0;
         padding: 20px;
+        background-color: var(--color-bg-weak);
+    }
+
+    .Feed_item {
+
+        & + & {
+            margin-top: 10px;
+        }
     }
 }
 </style>

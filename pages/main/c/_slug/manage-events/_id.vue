@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="onSubmit" class="Wrapper pv-40">
-        <div class="d-flex">
+        <div class="d-flex d-block@s">
             <div class="fx-grow">
                 <div class="block">
                     <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
@@ -28,10 +28,15 @@
                         :no-link="true"
                         :status-only="true"
                         :const-only="true"
-                        class="mb-20"
-                    />
+                    >
+                        <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
+                    </block-gathering>
 
-                    <input-pexels @select="(v) => formData.coverSelect = v" />
+                    <transition name="fade">
+                        <div class="mt-20 b p-15 br-s" v-if="options.cover">
+                            <input-pexels @select="(v) => formData.coverSelect = v" />
+                        </div>
+                    </transition>
                 </div>
 
                 <div class="block mt-20 mt-40@xs" v-if="!isLink">
@@ -67,7 +72,7 @@
                     </transition>
                 </div>
             </div>
-            <div class="width-s fx-no-shrink ml-20">
+            <div class="width-s fx-no-shrink ml-20 ml-0@s mt-15@s">
                 <div class="p-sticky" style="--offset: 20px;">
                     <div class="p-15 bg-bg-weak br-s text-right">
                         <input-select label="Statut" :options="$const.status" v-model="formData.status" class="mb-10" />
@@ -96,7 +101,6 @@
 
 <script>
 import EntityEditor from '@/mixins/entity-editor'
-import { faHouseReturn } from '@fortawesome/pro-regular-svg-icons'
 
 export default {
     mixins: [ EntityEditor ],
@@ -113,7 +117,8 @@ export default {
         options: {
             max: false,
             plus: false,
-            danger: false
+            danger: false,
+            cover: false
         },
         defaultFormData: {
             status: 'draft',
@@ -167,6 +172,9 @@ export default {
             return {
                 constellation: this.constellation._id
             }
+        },
+        postCreated () {
+            if (!this.formData.cover) this.options.cover = true
         },
         postDelete () {
             this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.constellation.slug } }) })

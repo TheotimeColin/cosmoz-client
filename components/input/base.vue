@@ -210,12 +210,12 @@ export default {
 
 
 .InputBase--light {
-    border-color: var(--color-bg-light);
+    border-color: var(--color-border);
 
     .InputBase_element {
     
         &::placeholder {
-            color: var(--color-ft-light);
+            color: var(--color-ft-xweak);
             opacity: 1;
         }
     }

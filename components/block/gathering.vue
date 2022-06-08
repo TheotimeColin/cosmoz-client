@@ -54,7 +54,12 @@
                     </h3>
                 </div>
             </div>
+
+            <div class="BlockGathering_actions">
+                <slot></slot>
+            </div>
         </div>
+
 
         <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="(!noLink && !link) || replaceLink"></nuxt-link>
         <a class="BlockGathering_link" :href="link" target="_blank" v-else-if="link && !noLink"></a>
@@ -154,6 +159,14 @@ export default {
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
+}
+
+.BlockGathering_actions {
+    position: absolute;
+    z-index: 7;
+    top: 0;
+    right: 0;
+    padding: 15px;
 }
 
 .BlockGathering_favs {

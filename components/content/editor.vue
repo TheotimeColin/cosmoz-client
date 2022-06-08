@@ -1,7 +1,7 @@
 <template>
     <div class="Editor" :class="{ 'is-tiny': tiny }">
         <div class="Editor_first">
-            <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" :display-name="$smallerThan('xs')" v-bind="user" />
+            <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['m'] : ['m']" :no-link="true" v-bind="user" />
 
             <form @submit.prevent="onSubmit" class="Editor_main">
                 <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
@@ -14,7 +14,7 @@
             </div>
 
             <transition name="fade">
-                <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && isFocused">
+                <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && (isFocused || images.length > 0)">
                     <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
                 </div>
             </transition>
@@ -146,15 +146,11 @@ export default {
             .Editor_main {
                 margin: 0;
             }
-
-            .Editor_input {
-                background-color: var(--color-bg-xstrong);
-            }
         }
     }
 
     .Editor_main {
-        margin: 15px 0 0 0;
+        margin: 0 0 0 15px;
     }
 
     .Editor_secondary {

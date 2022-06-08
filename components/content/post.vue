@@ -77,7 +77,7 @@
                     :tiny="true"
                     placeholder="Ajouter un commentaire..."
                     @blur="() => children.length == 0 ? isAdd = false : ''"
-                    v-show="isAdd || children.length > 0"
+                    v-show="isAdd || (children.length > 0 && $biggerThan('s'))"
                     ref="commentInput"
                 />
             </div>
@@ -294,28 +294,18 @@ export default {
 
         .Post {
             margin: 0 -20px;
-            padding: 20px 20px 0;
+            padding: 15px 15px 0;
             border-radius: 0;
-            background: transparent;
-        }
-
-        .Post_block {
-            
-            &:only-child:not(.Post_gallery) {
-                margin-bottom: 20px;
-            }
         }
 
         .Post_comments {
             margin: 0 -20px;
             padding: 0 20px 20px;
             border: none;
-            background-color: var(--color-bg-strong);
         }
 
         .Post_footer {
             padding: 15px 20px;
-            background: var(--color-bg-strong);
             margin: 0 -20px 0;
         }
 

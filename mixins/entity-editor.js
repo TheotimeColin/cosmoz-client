@@ -49,8 +49,9 @@ export default {
             ...this.serverEntity
         })
 
-
         this.isLoading = false
+
+        if (this.postCreated) this.postCreated()
     },
     methods: {
         async fetchEntity (id) {
