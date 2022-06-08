@@ -16,33 +16,31 @@
                 <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" @click.native="selected = constellation._id" />
             </div>
             <div class="AppNav_sub">
-                <transition-group name="fade">
-                    <div v-if="!selected" key="selected">
-                        <div class="AppNav_header bg-cover bg-night" v-if="user">
-                            <user-icon v-bind="user" :display-name="true" />
-                        </div>
-                        
-                        <div class="AppNav_menu">
-                            <div class="AppNav_menuItem" v-for="(cat, i) in nav" :key="i">
-                                <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+                <div v-if="!selected" key="selected">
+                    <div class="AppNav_header bg-cover bg-night" v-if="user">
+                        <user-icon v-bind="user" :display-name="true" />
+                    </div>
+                    
+                    <div class="AppNav_menu">
+                        <div class="AppNav_menuItem" v-for="(cat, i) in nav" :key="i">
+                            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                                <div class="AppNav_menuChildren">
-                                    <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
-                                        <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
-                                    </nuxt-link>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="AppNav_footer">
-                            <div class="mt-10 p-20 b text-center br-xs">
-                                Une question ? Besoin d'aide ?
-                                <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                            <div class="AppNav_menuChildren">
+                                <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
+                                    <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
+                                </nuxt-link>
                             </div>
                         </div>
                     </div>
-                    <page-const-nav v-bind="selectConst" v-else key="selectConst" />
-                </transition-group>
+
+                    <div class="AppNav_footer">
+                        <div class="mt-10 p-20 b text-center br-xs">
+                            Une question ? Besoin d'aide ?
+                            <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                        </div>
+                    </div>
+                </div>
+                <page-const-nav v-bind="selectConst" v-else key="selectConst" />
             </div>
         </div>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }" v-show="true">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }">
         <div class="Post_head">
             <div class="d-flex fxa-center fx-grow">
                 <div class="Post_icon">
