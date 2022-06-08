@@ -51,10 +51,10 @@ export default {
             subtitle: `Visible par mes amis uniquement`,
             error: `Uniquement visible par ses amis.`
         },
-        constellation: {
+        ['g-member']: {
             icon: 'far fa-sparkles',
             title: 'Constellation uniquement',
-            subtitle: `Visible par les autres membres`,
+            subtitle: `Visible uniquement par les autres membres`,
             error: `Uniquement visible par les membres.`
         },
         extended: {

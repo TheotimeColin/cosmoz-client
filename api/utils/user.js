@@ -165,17 +165,24 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         requiredRole = result['read'] ? result['read'] : 'public'
                     }
                     
-                    if (requiredRole == 'g-admin') {
-                        if (user && user.role == 'admin') granted = true
-                        if (requested.constellation && requested.constellation.admins.includes(user._id)) granted = true
-                    } else if (requiredRole == 'g-organizer') {
-                        if (user && user.role == 'admin') granted = true
+                    if (requiredRole.slice(0, 2) == 'g-') {
+                        if (!requested.constellation || !user) granted = false
 
-                        if (requested.constellation && requested.constellation.organizers.includes(user._id) || requested.constellation && requested.constellation.admins.includes(user._id)) granted = true
-                    } else if (requiredRole == 'g-member') {
-                        if (user && user.role == 'admin') granted = true
+                        if (user.role == 'adminq') {
+                            granted = true
+                        } else {
+                            let conste = await Entities.constellation.model.findOne({ _id: requested.constellation })
+                            
+                            let allowed = conste.admins
 
-                        if (requested.constellation && (requested.constellation.members && requested.constellation.members.includes(user._id)) || (requested.constellation && requested.constellation.organizers.includes(user._id)) || (requested.constellation && requested.constellation.admins.includes(user._id))) granted = true
+                            if (requiredRole == 'g-organizer' || requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.organizers]
+
+                            if (requiredRole == 'g-member' || requiredRole == 'g-follower') allowed = [...allowed, ...conste.members]
+
+                            if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
+
+                            granted = allowed.find(u => user._id.equals(u))
+                        }
                     } else if (requiredRole == 'self') {
                         if (isSelf || (user && user.role == 'admin')) granted = true
                     } else if (requiredRole == '$user') {

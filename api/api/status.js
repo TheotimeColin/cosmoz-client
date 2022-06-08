@@ -69,14 +69,24 @@ exports.postStatus = async function (req, res) {
             owner: user._id
         })
 
+        let parentData = null
         if (parent && parent[0]) {
             let result = [ ...parent[0].children, data ]
             parent[0].children = result.map(c => c._id)
 
             await parent[0].save()
+
+            parentData = {
+                ...parent[0]._doc,
+                children: result
+            }
         }
 
         data = await Entities.status.model.findOne({ _id: data._id })
+
+        if (parentData) {
+            data = { ...data._doc, parent: parentData }
+        }
     } catch (e) {
         console.error(e)
         errors.push(e.message)

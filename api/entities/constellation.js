@@ -14,6 +14,7 @@ let Constellation = {
         logo: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
 
+        followers: { type: Array, default: [], write: 'g-organizer' },
         members: { type: Array, default: [], write: 'g-organizer' },
         organizers: { type: Array, default: [], write: 'g-admin' },
         admins: { type: Array, default: [], write: 'g-admin' },
