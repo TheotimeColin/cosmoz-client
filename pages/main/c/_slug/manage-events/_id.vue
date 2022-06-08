@@ -28,6 +28,7 @@
                         :no-link="true"
                         :status-only="true"
                         :const-only="true"
+                        :constellation="false"
                     >
                         <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
                     </block-gathering>
@@ -72,12 +73,12 @@
                     </transition>
                 </div>
             </div>
-            <div class="width-s fx-no-shrink ml-20 ml-0@s mt-15@s">
+            <div class="width-s fx-no-shrink ml-20 ml-0@s mt-15@s width-100@s">
                 <div class="p-sticky" style="--offset: 20px;">
                     <div class="p-15 bg-bg-weak br-s text-right">
                         <input-select label="Statut" :options="$const.status" v-model="formData.status" class="mb-10" />
 
-                        <button-base type="submit" :modifiers="['light']">
+                        <button-base type="submit" :modifiers="['light']" :loading="isLoading">
                             Sauvegarder
                         </button-base>
 

@@ -73,6 +73,8 @@ export default {
             }
         },
         async onSubmit () {
+            this.isLoading = true
+
             try {
                 this.errors = []
                 let data = await this.parseForm(this.formData)
@@ -100,6 +102,8 @@ export default {
             } catch (e) {
                 console.error(e)
             }
+
+            this.isLoading = false
 
             if (this.postSubmit) this.postSubmit()
         }
