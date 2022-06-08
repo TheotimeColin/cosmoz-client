@@ -1,9 +1,9 @@
 <template>
     <div class="page">
-        <div class="Wrapper pv-30">
+        <div class="Page_wrapper Wrapper">
             <div class="d-flex d-block@s">
                 <div class="fx-grow">
-                    <div class="pt-20 br-s bg-bg-weak p-0@xs bg-bg@xs" v-if="attending.length > 0 || upcoming.length > 0">
+                    <div class="pt-20 br-s bg-bg-weak p-0@xs bg-bg@xs mb-40 mb-20@xs" v-if="attending.length > 0 || upcoming.length > 0">
                         <p class="ft-title-xs mb-20 ph-20 p-0@xs">
                             {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir ?` }}
                         </p>
@@ -28,7 +28,7 @@
                     </div>
 
                     <div>
-                        <p class="ft-title-s mt-40 mb-20 ft-title-xs@xs mt-20@xs">Mes actualités</p>
+                        <p class="ft-title-s mb-20 ft-title-xs@xs">Mes actualités</p>
                         <content-feed
                             class="mb-60"
                             placeholder="Publier quelque chose..."

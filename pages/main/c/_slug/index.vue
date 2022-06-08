@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex Wrapper pv-40">
+    <div class="Page_wrapper d-flex Wrapper">
         <div class="fx-grow">
             <div v-if="upcomingEvents.length > 0">
                 <div class="fx-center mb-20">
