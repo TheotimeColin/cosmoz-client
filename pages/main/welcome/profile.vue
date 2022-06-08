@@ -18,7 +18,7 @@
                     Ce pseudonyme remplace ton prénom pour les personnes que tu n'as encore pas rencontrées en vrai. 
                 </div>
 
-                <input-date class="mt-15" label="Ta date de naissance" v-model="formData.birthdate" :attrs="{ required: true, max: $moment().subtract(17, 'years').format('YYYY-MM-DD'), min: $moment().subtract(99, 'years').format('YYYY-MM-DD') }" />
+                <input-date class="mt-15" label="Ta date de naissance" v-model="formData.birthdate" :attrs="{ required: true }" />
                 <p class="ft-s color-ft-weak mt-10">
                     <fa icon="fas fa-lock" class="mr-3" /> Ta date de naissance reste privée.</p>
             </div>

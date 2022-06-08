@@ -4,7 +4,8 @@ const createBrowserless = require('browserless')
 const getHTML = require('html-get')
 const metascraper = require('metascraper')([
     require('metascraper-image')(),
-    require('metascraper-title')()
+    require('metascraper-title')(),
+    require('metascraper-date')()
 ])
 
 exports.scrape = async function (req, res) {

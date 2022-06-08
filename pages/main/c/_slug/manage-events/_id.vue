@@ -148,7 +148,7 @@ export default {
             if (response?.title && !this.formData.title) {
                 this.formData.title = response.title
             }
-
+            
             if (response?.image && !this.formData.coverSelect) {
                 this.formData.coverSelect = {
                     photographer: '',
