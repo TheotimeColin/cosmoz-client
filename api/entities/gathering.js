@@ -12,6 +12,7 @@ let Gathering = {
         location: { type: String, write: 'g-organizer' },
         address: { type: String, write: 'g-organizer' },
         date: { type: Date, write: 'g-organizer' },
+        link: { type: String, write: 'g-organizer' },
 
         description: { type: String, write: 'g-organizer' },
         venue: { type: String, write: 'g-organizer' },

@@ -26,6 +26,7 @@ const { logUser, logOut, getUser, requestResetPassword, resetPassword, subscribe
 const { updateBookingStatus } = require('./api/gathering');
 const { sendMentions, unmatch } = require('./api/affinities');
 const { getFeed, postStatus, reactStatus } = require('./api/status');
+const { scrape } = require('./api/scraper');
 
 app.use(morgan('combined'))
 app.use('/webhooks', express.raw({ type: "*/*" }))
@@ -75,6 +76,8 @@ mongoose.connection.once('open', async () => {
 
     app.post('/affinities/send-mentions', sendMentions)
     app.post('/affinities/remove-match', unmatch)
+
+    app.get('/scraper', scrape)
 
     cronHourly(app)
 })

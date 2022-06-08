@@ -52,13 +52,12 @@
                     <h3 class="BlockGathering_title ellipsis-2">
                         {{ title|specials }}
                     </h3>
-
-                    <!-- <p class="ft-l mt-10 ellipsis-2" v-if="displayIntro">{{ intro|specials }}</p> -->
                 </div>
             </div>
         </div>
 
-        <nuxt-link class="BlockGathering_link" :to="link ? link : defaultLink"></nuxt-link>
+        <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="(!noLink && !link) || replaceLink"></nuxt-link>
+        <a class="BlockGathering_link" :href="link" target="_blank" v-else-if="link && !noLink"></a>
     </div>
 </template>
 
@@ -78,8 +77,10 @@ export default {
         location: { type: String },
         date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
+        replaceLink: { type: [Object, Boolean, String], default: false },
         link: { type: [Object, Boolean, String], default: false },
         statusOnly: { type: Boolean, default: false },
+        noLink: { type: Boolean, default: false },
         isPast: { type: Boolean, default: false },
         constOnly: { type: Boolean, default: false },
         constShort: { type: Boolean, default: false },

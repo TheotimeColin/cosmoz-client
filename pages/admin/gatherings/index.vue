@@ -8,7 +8,7 @@
                             v-bind="gathering"
                             :modifiers="['square']"
                             :const-only="true"
-                            :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                            :replace-link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                             v-bind="gathering"
                             :modifiers="['square']"
                             :const-only="true"
-                            :link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                            :replace-link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
                 </div>

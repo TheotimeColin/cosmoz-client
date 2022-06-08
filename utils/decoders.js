@@ -7,7 +7,7 @@ export default {
             
             return {
                 ...form,
-                status: status ? status.value : 0,
+                status: status ? status.value : 'draft',
                 constellation: form && form.constellation ? form.constellation._id  : ''
             }
         },

@@ -32,11 +32,16 @@
                 @focus="state.isFocused = true"
                 @blur="state.isFocused = false"
                 @input="(e) => onInput(e.target.value)"
+                @paste="(e) => onInput(e.target.value)"
             >
         </template>
 
-        <div class="Inputbase_helpers" v-if="helpers.length > 0 || suffix || $slots.default">
+        <div class="Inputbase_helpers" v-if="helpers.length > 0 || suffix || $slots.default || isLoading">
             <slot></slot>
+
+            <div class="Inputbase_helper" v-if="isLoading">
+                <fa icon="far fa-spinner-third" class="spin" />
+            </div>
 
             <input-helper-number
                 class="Inputbase_helper"
@@ -63,7 +68,7 @@
                 {{ suffix }}
             </div>
 
-            <helper-errors
+            <input-helper-errors
                 class="Inputbase_helper"
                 :errors="errors"
                 :is-valid="state.isValid"
@@ -85,6 +90,7 @@ export default {
         type: { type: String, default: 'text' },
         suffix: { type: String, default: '' },
         required: { type: Boolean, default: false },
+        isLoading: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
         value: { type: [String, Number, Boolean, Object, Array] },
         helpers: { type: Array, default: () => [] },

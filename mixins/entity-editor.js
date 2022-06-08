@@ -43,11 +43,12 @@ export default {
 
         this.currentId = this.$route.params.id
 
-        this.formData = {
+        this.formData = this.decodeForm({
             ...(this.defaultFormData ? this.defaultFormData : {}),
-            ...this.decodeForm(this.formData),
-            ...this.decodeForm(this.serverEntity)
-        }
+            ...this.formData,
+            ...this.serverEntity
+        })
+
 
         this.isLoading = false
     },

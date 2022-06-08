@@ -1,19 +1,37 @@
 <template>
-    <div class="Wrapper pv-40">
+    <div class="Wrapper Wrapper--s pv-40">
         <div class="Section">
+            <div class="p-40 bg-bg-strong br-s">
+                <div class="text-center">
+                    <div class="ft-title-2xs tape tape-s mb-15">En bêta</div>
+
+                    <p class="ft-title-s mb-5">Organiser avec Cosmoz</p>
+                    
+                    <p class="mb-20">Permet aux membres de s'inscrire via la plateforme.</p>
+
+                    <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Créer une rencontre</button-base>
+                </div>
+
+                <hr class="Separator mv-40">
+
+                <div class="text-center">
+                    <p class="ft-title-s mb-5">Rediriger vers une autre plateforme</p>
+                    <p class="mb-20">Si tu l'as déjà créée via Meetup, EventBrite, Frimake...</p>
+
+                    <button-base :modifiers="['s', 'weak']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug }, query: { link: 'true' } }" icon-before="plus">Ajouter une rencontre</button-base>
+                </div>
+            </div>
+        </div>
+
+        <div class="Section" v-if="gatherings.filter(g => g.status == 'active' && !g.isPast).length > 0">    
             <h1 class="ft-title-m">Rencontres à venir</h1>
 
-            <div class="row-s">
-                <div class="col-3 col-12@xs pt-20">
-                    <div class="d-flex fxj-center fxa-center height-100 p-20 bg-bg-strong text-center br-s">
-                        <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Organiser</button-base>
-                    </div>
-                </div>
+            <div class="row-xs">
                 <div class="col-3 col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'active' && !g.isPast)" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -24,12 +42,12 @@
         <div class="Section" v-if="gatherings.filter(g => g.status == 'draft' && !g.isPast).length > 0">
             <h1 class="ft-title-m">Brouillons</h1>
 
-            <div class="row-s">
+            <div class="row-xs">
                 <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.status == 'draft')" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -40,12 +58,12 @@
         <div class="Section" v-if="gatherings.filter(g => g.isPast && g.status == 'active').length > 0">
             <h1 class="ft-title-m">Passées</h1>
 
-            <div class="row-s">
+            <div class="row-xs">
                 <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.isPast && g.status == 'active')" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -56,12 +74,12 @@
         <div class="Section" v-if="gatherings.filter(g => g.isPast && g.status == 'disabled').length > 0">
             <h1 class="ft-title-m">Désactivés</h1>
 
-            <div class="row-s">
+            <div class="row-xs">
                 <div class="col-3 col-6@s col-12@xs" v-for="gathering in gatherings.filter(g => g.isPast && g.status == 'disabled')" :key="gathering._id">
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />

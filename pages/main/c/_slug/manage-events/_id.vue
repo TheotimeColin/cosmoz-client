@@ -5,16 +5,20 @@
                 <div class="block">
                     <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
 
-                    <input-base class="mv-15" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
-                    <input-base class="mv-15" label="Qu'allez-vous faire ? *" v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
-                    <input-date-time class="mt-15" label="Date *" :required="true" v-model="formData.date" />
+                    <input-base class="Form_input" label="Lien de l'événement *" v-model="formData.link" :required="true" :is-loading="metaLoading" />
+
+                    <input-base class="Form_input" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
+                    
+                    <input-base class="Form_input" label="Qu'allez-vous faire ? *" v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" v-if="!isLink" />
+
+                    <input-date-time class="Form_input" label="Date *" :required="true" v-model="formData.date" />
                 </div>
 
                 <div class="block mt-20 mt-40@xs">
                     <p class="ft-title-s mb-30">Où cela va-t-il se passer ?</p>
-                    <input-base class="mv-15" label="Nom du lieu *" :required="true" v-model="formData.location"/>
-                    <input-base class="mv-15" label="Adresse précise" v-model="formData.address"/>
-                    <input-paper class="mt-15" label="Description du lieu" v-model="formData.venue" :base="true" />
+                    <input-base class="Form_input" label="Nom du lieu *" :required="true" v-model="formData.location"/>
+                    <input-base class="Form_input" label="Adresse précise" v-model="formData.address" v-if="!isLink" />
+                    <input-paper class="Form_input" label="Description du lieu" v-model="formData.venue" :base="true" v-if="!isLink" />
                 </div>
 
                 <div class="block mt-20 mt-40@xs">
@@ -30,13 +34,13 @@
                     <input-pexels @select="(v) => formData.coverSelect = v" />
                 </div>
 
-                <div class="block mt-20 mt-40@xs">
+                <div class="block mt-20 mt-40@xs" v-if="!isLink">
                     <p class="ft-title-s mb-30">Quel est le programme ?</p>
-                    <input-paper class="mv-15" label="Description générale *" v-model="formData.description" :base="true" />
-                    <input-paper class="mt-15" label="Informations importantes" v-model="formData.important" :base="true" />
+                    <input-paper class="Form_input" label="Description générale *" v-model="formData.description" :base="true" />
+                    <input-paper class="Form_input" label="Informations importantes" v-model="formData.important" :base="true" />
                 </div>
 
-                <div class="block-r mt-20">
+                <div class="block-r mt-20" v-if="!isLink">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Limiter le nombre de places</p>
                         <input-toggle v-model="options.max" />
@@ -49,7 +53,7 @@
                     </transition>
                 </div>
 
-                <div class="block-r mt-10">
+                <div class="block-r mt-10" v-if="!isLink">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Autoriser les invités</p>
                         <input-toggle v-model="options.plus" />
@@ -67,7 +71,7 @@
                 <div class="p-sticky" style="--offset: 20px;">
                     <div class="p-15 bg-bg-weak br-s text-right">
                         <input-select label="Statut" :options="$const.status" v-model="formData.status" class="mb-10" />
-                        
+
                         <button-base type="submit" :modifiers="['light']">
                             Sauvegarder
                         </button-base>
@@ -92,6 +96,7 @@
 
 <script>
 import EntityEditor from '@/mixins/entity-editor'
+import { faHouseReturn } from '@fortawesome/pro-regular-svg-icons'
 
 export default {
     mixins: [ EntityEditor ],
@@ -103,18 +108,21 @@ export default {
     },
     data: () => ({
         entityType: 'gathering',
-        inputs: ['cover', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
+        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
+        metaLoading: false,
         options: {
             max: false,
             plus: false,
             danger: false
         },
         defaultFormData: {
+            status: 'draft',
             coverSelect: ''
         }
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        isLink () { return this.$route.query.link == 'true' || this.formData.link },
         coverPreview () {
             let preview = {}
 
@@ -127,6 +135,31 @@ export default {
             }
             
             return preview
+        }
+    },
+    watch: {
+        async ['formData.link'] (v) {
+            if (!v || v == this.serverEntity?.link || !v.includes('http')) return
+
+            this.metaLoading = true
+
+            const response = await this.$store.dispatch('scraper/scrape', v)
+
+            if (response?.title && !this.formData.title) {
+                this.formData.title = response.title
+            }
+
+            if (response?.image && !this.formData.coverSelect) {
+                this.formData.coverSelect = {
+                    photographer: '',
+                    src: {
+                        small: response.image,
+                        medium: response.image,
+                    }
+                }
+            }
+            
+            this.metaLoading = false
         }
     },
     methods: {
@@ -146,6 +179,9 @@ export default {
                 path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.constellation.slug, id: this.currentId } })
             })
         }
+    },
+    async mounted () {
+        
     },
     head () {
         this.$emit('page', {            
