@@ -2,11 +2,11 @@
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }">
         <div class="Constellation_content fx-grow" v-if="constellation">
-            <page-const-banner
+            <!-- <page-const-banner
                 :min="isMin"
                 :is-event="isEventPage"
                 v-bind="{ ...constellation, ...page }" class="d-none@s" v-if="$biggerThan('s')"
-            />
+            /> -->
 
             <nuxt-child :constellation="constellation" @page="(v) => page = v" />
         </div>
