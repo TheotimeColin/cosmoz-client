@@ -16,7 +16,7 @@ export default {
         user () { return this.$store.getters['user/self'] }
     },
     head () {
-        this.$store.commit('page/set', {
+        this.$emit('page', {
             subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
         })
 

@@ -2,10 +2,14 @@
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }" v-if="constellation">
         <div class="Constellation_content fx-grow">
-            <page-const-banner :min="isMin" :is-event="isEventPage" v-bind="constellation" class="d-none@s" v-if="$biggerThan('s')" />
+            <page-const-banner
+                :min="isMin"
+                :is-event="isEventPage"
+                v-bind="{ ...constellation, ...page }" class="d-none@s" v-if="$biggerThan('s')"
+            />
 
             <transition name="page">
-                <nuxt-child :constellation="constellation" />
+                <nuxt-child :constellation="constellation" @page="(v) => page = v" />
             </transition>
         </div>
     </div>
@@ -26,6 +30,7 @@ export default {
     },
     data: () => ({
         isLoading: false,
+        page: { subtitle: '', fa: '' }
     }),
     computed: {
         isMin () { return !this.$route.name.includes('c-slug_') },

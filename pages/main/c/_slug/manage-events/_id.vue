@@ -148,7 +148,7 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', {
+        this.$emit('page', {            
             subtitle: `Organiser une rencontre`, fa: 'calendar-plus'
         })
 

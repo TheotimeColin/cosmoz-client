@@ -7,7 +7,7 @@ const Entities = require('../entities')
 
 module.exports = function (app) {
     console.log(app.locals.hourly)
-    if (app.locals.hourly) return
+    if (app.locals.hourly || true) return
 
     console.log('=== create CRON ====')
     app.locals.hourly = new CronJob('* 30 * * * *', () => {

@@ -93,10 +93,10 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', {
+        this.$emit('page', {            
             subtitle: `Gestion des rencontres`, fa: 'calendar-pen'
         })
-
+        
         let meta = {
             title: `Gestion des rencontres ${this.$t('meta.append')}`,
         }

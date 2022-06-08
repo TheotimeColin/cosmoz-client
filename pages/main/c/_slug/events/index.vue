@@ -15,7 +15,7 @@
 <script>
 export default {
     async fetch () {
-        this.$store.commit('page/set', {
+        this.$emit('page', {
             subtitle: `Rencontres prévues`, fa: 'calendar'
         })
 

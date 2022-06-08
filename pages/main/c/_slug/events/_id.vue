@@ -101,7 +101,9 @@ export default {
     mounted () {
         if (!this.gathering) return
 
-        this.$store.commit('page/set', { subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: '' })
+        this.$emit('page', {
+            subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: ''
+        })
 
         this.$store.commit('page/setCurrent', 'event')
     },

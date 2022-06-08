@@ -37,13 +37,13 @@ export default {
         name: { type: String },
         intro: { type: String },
         logo: { type: Object },
+        subtitle: { type: String },
+        fa: { type: String },
         isEvent: { type: Boolean, default: false },
         min: { type: Boolean, default: false }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        subtitle () { return this.$store.state.page.subtitle },
-        fa () { return this.$store.state.page.fa }
+        user () { return this.$store.getters['user/self'] }
     }
 }
 </script>
