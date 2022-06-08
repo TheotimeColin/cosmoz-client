@@ -76,16 +76,13 @@ exports.postStatus = async function (req, res) {
 
             await parent[0].save()
 
-            parentData = {
-                ...parent[0]._doc,
-                children: result
-            }
+            parentData = await Entities.status.model.findOne({ _id: parent[0]._id })
         }
 
         data = await Entities.status.model.findOne({ _id: data._id })
 
         if (parentData) {
-            data = { ...data._doc, parent: parentData }
+            data = { ...data._doc, parent: parentData._doc }
             data = await fieldsCheck('read', data, Entities.status, data, user)
         } else {
             data = await fieldsCheck('read', data._doc, Entities.status, data, user)

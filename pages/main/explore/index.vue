@@ -6,9 +6,8 @@
             </h1>
 
             <div class="row-s mt-20">
-                <div class="col-4 col-6@s" v-for="constel in constellations" :key="constel._id">
+                <div class="col-4 col-6@s col-12@xs mb-10" v-for="constel in constellations" :key="constel._id">
                     <block-const
-                        class="mb-10"
                         style="height: 100%"
                         v-bind="constel"
                     />

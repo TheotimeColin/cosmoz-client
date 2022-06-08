@@ -1,31 +1,33 @@
 <template>
     <div class="Comment" :class="{ 'is-reacted': isReacted }" v-if="!isDeleted">
-        <div class="Comment_head">
-            <user-icon class="fx-no-shrink" :modifiers="['s']" v-bind="owner" />
-        </div>
         <div class="Comment_main">
-            <div class="fx-grow">
-                <div class="ft-s line-1">
-                    <user-icon class="Comment_icon" :modifiers="['xs']" v-bind="owner" />
+            <div class="fx-center">
+                <div class="d-flex fxa-center ft-s line-1 fx-grow">
+                    <user-icon class="fx-no-shrink" :modifiers="['s']" v-bind="owner" />
                     
-                    <span class="ft-title-3xs line-1">{{ owner.name }}</span>
-                    <span class="ft-xs line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
+                    <span class="ft-title-2xs line-1 ml-10">{{ owner.name }}</span>
+                    <span class="ft-s line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
                 </div>
 
-                <div class="Comment_text" v-html="content"></div>
+                <div class="Comment_actions">
+                    <button-base :modifiers="['xs', 'xweak']" @mouseenter.native="onReactionTooltip" @mouseleave.native="$tClose" @click="addReaction">
+                        <fa :icon="`${isReacted ? 'fas' : 'far'} fa-heart`"  />
+
+                        <span class="ml-3" v-if="reactions.length > 0">{{ reactions.length }}</span>
+                    </button-base>
+
+                    <quick-menu
+                        :items="actions"
+                    />
+                </div>
             </div>
             
-            <div class="Comment_actions">
-                <button-base :modifiers="['xs', 'xweak']" @mouseenter.native="onReactionTooltip" @mouseleave.native="$tClose" @click="addReaction">
-                    <fa :icon="`${isReacted ? 'fas' : 'far'} fa-heart`"  />
+            <div>
+                <div class="Comment_text" v-html="content"></div>
 
-                    <span class="ml-3" v-if="reactions.length > 0">{{ reactions.length }}</span>
-                </button-base>
-
-                <quick-menu
-                    :items="actions"
-                />
+                <content-type-images class="Post_block Post_gallery" :modifiers="['s']" :images="images" v-if="images && images.length > 0" />
             </div>
+            
         </div>
         <div class="Comment_delete" v-show="pendingDelete">
             <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
@@ -55,6 +57,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         owner: { type: Object },
+        images: { type: Array, default: () => [] },
         reactions: { type: Array, default: () => [] },
         createdAt: { type: [String, Date] },
         isLoading: { type: Boolean }
@@ -79,7 +82,6 @@ export default {
     }
 
     .Comment_main {
-        display: flex;
         padding: 10px;
         background: var(--color-bg-xweak);
         border-radius: 5px;
@@ -94,17 +96,13 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 5;
         background-color: rgba(0, 0, 0, 0.75);
     }
 
     .Comment_text {
         font: var(--ft-m);
         margin-top: 10px;
-    }
-
-    .Comment_head {
-        flex-shrink: 0;
-        margin-right: 10px;
     }
 
     .Comment_actions {
@@ -125,11 +123,7 @@ export default {
         display: none !important;
     }
 
-    @include breakpoint-xs {
-
-        .Comment_head {
-            display: none;
-        }
+    @include breakpoint-s {
 
         .Comment_icon {
             display: inline-flex !important;

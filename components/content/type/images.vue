@@ -1,5 +1,5 @@
 <template>
-    <div class="Images" :class="[ `is-${images.length}`, { 'is-editor': isEditor } ]">
+    <div class="Images" :class="[ `is-${images.length}`, { 'is-editor': isEditor }, ...$modifiers ]">
         <div class="Images_image" v-for="(image, i) in thumbnails" :key="image" :style="{ '--image': `url(${image})` }">
             <img :src="image">
 
@@ -11,8 +11,11 @@
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
-    name: 'ContentTypeImages',
+    name: 'Images',
+    mixins: [ ModifiersMixin ],
     props: {
         images: { type: Array, default: () => [] },
         isEditor: { type: Boolean, default: false }
@@ -20,7 +23,7 @@ export default {
     computed: {
         thumbnails () {
             return this.isEditor ? this.images : this.images.map(i => {
-                let thumb = i.medias.find(m => m.size == 'm')
+                let thumb = i.medias?.find(m => m.size == 'm')
                 return thumb ? thumb.src : null
             }).filter(i => i)
         }
@@ -151,6 +154,28 @@ export default {
 
         &::before {
             @include ratio(100);
+        }
+    }
+}
+
+.Images--s {
+    display: flex;
+
+    .Images_image {
+        width: 50%;
+        max-height: 200px;
+        border-radius: 5px;
+        
+        &::before {
+            content: "";
+            @include ratio(25);
+        }
+    }
+
+    &.is-3 {
+        
+        .Images_image {
+            width: 33.33%;
         }
     }
 }

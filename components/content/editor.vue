@@ -25,7 +25,7 @@
                 <div class="d-flex fx-grow pr-10 fxj-end">
                     <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" :disabled="images.length > 0" />
 
-                    <input-file icon="image" :multiple="true" @input="addImages" />
+                    <input-file icon="image" :id="id" :multiple="true" @input="addImages" />
                 </div>
                 <div class="fx-no-shrink">
                     <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import shortId from 'shortid'
+
 export default {
     name: 'Editor',
     props: {
@@ -54,12 +56,16 @@ export default {
         }
     },
     data: () => ({
+        id: '',
         isFocused: false,
         formData: {
             content: '',
             images: []
         }
     }),
+    created () {
+        if (process.client) this.id = shortId.generate()
+    },
     methods: {
         focus () {
             this.$refs.input.focus()
