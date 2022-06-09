@@ -31,6 +31,7 @@ export default {
         async logOut ({ state }) {
             try {
                 await this.$auth.logout()
+                
                 return null
             } catch (e) {
                 console.error(e)

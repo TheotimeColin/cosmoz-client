@@ -7,8 +7,7 @@ const fs = require('fs')
 const AWS = require('aws-sdk')
 const mime = require('mime')
 const Entities = require('../entities')
-const resolvePath = require("path");
-const FastAverageColor = require('fast-average-color')
+const resolvePath = require("path")
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ID,

@@ -27,7 +27,8 @@ const { updateBookingStatus } = require('./api/gathering');
 const { sendMentions, unmatch } = require('./api/affinities')
 const { getFeed, postStatus, reactStatus } = require('./api/status')
 const { scrape } = require('./api/scraper')
-const { consteApply, consteLeave, consteEnter } = require('./api/constellation')
+const { consteApply, consteLeave, consteEnter, consteInviteLink } = require('./api/constellation')
+const { getToken } = require('./api/token')
 
 app.use(morgan('combined'))
 app.use('/webhooks', express.raw({ type: "*/*" }))
@@ -81,6 +82,9 @@ mongoose.connection.once('open', async () => {
     app.post('/constellation/apply', consteApply)
     app.post('/constellation/leave', consteLeave)
     app.post('/constellation/enter', consteEnter)
+    app.post('/constellation/invite-link', consteInviteLink)
+    
+    app.post('/token/get', getToken)
 
     app.get('/scraper', scrape)
 

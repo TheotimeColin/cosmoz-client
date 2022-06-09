@@ -19,11 +19,11 @@
         <div class="Nav_footer">
             <div class="p-10">
                 <div class="Nav_cat">
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })" v-if="isMember">
                         <fa icon="far fa-cog" /> Paramètres
                     </nuxt-link>
 
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })" v-if="isAdmin">
                         <fa icon="far fa-crown" /> Administration
                     </nuxt-link>
                 </div>
@@ -65,6 +65,8 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
+        isMember () { return this.user && this.members.includes(this.user._id) }
     },
     created () {
         this.items = [

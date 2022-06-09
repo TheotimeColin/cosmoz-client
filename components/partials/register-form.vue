@@ -49,7 +49,7 @@
             <form-errors :items="errors" class="mt-20" />
 
             <div class="fx-center mt-20">
-                <div class="mr-20">
+                <div class="mr-20 text-left">
                     <link-base @click="formType = 'login'" v-if="formType == 'register'">Me connecter</link-base>
 
                     <link-base @click="formType = 'register'" v-if="formType == 'login'">Créer un compte</link-base>
@@ -160,11 +160,13 @@ export default {
         },
         async onSubmit (googleCred = null) {
             try {
-
                 this.errors = []
                 this.isLoading = true
 
                 const token = await this.$recaptcha.execute('login')
+
+                console.log(token)
+
                 const response = await this.$auth.loginWith('local', { 
                     data: {
                         ...(googleCred ? googleCred : this.formData),
@@ -180,6 +182,8 @@ export default {
                     this.isLoading = false
                 } else {
                     if (this.redirect) window.location = this.localePath({ name: 'feed' })
+
+                    this.$emit('success')
                 }
             } catch (e) {
                 console.log(e)

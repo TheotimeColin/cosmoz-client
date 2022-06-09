@@ -48,6 +48,17 @@ export default {
                 return null
             }
         },
+        async createInvite ({ commit }, id) {
+            try {
+                const response = await this.$axios.$post('/constellation/invite-link', { id })
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                return response.data
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async apply ({ commit }, id) {
             try {
                 const response = await this.$axios.$post('/constellation/apply', { id })

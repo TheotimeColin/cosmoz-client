@@ -46,6 +46,8 @@ export default {
         },
         displayedUsers () {
             return this.users.filter(u => {
+                if (!u) return false
+                
                 let include = true
 
                 if (this.search) {
