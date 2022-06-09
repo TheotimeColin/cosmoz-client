@@ -14,15 +14,22 @@
 </template>
 
 <script>
+import shortId from 'shortid'
+
 export default {
     name: 'InputFile',
     props: {
-        id: { type: [String, Number], default: 'input-file' },
         multiple: { type: Boolean, default: false },
         accept: { type: Array, default: () => ['image/png', 'image/jpeg'] },
         max: { type: Number, default: 4 },
         label: { type: String, default: 'Sélectionner un fichier' },
         icon: { type: String, default: '' },
+    },
+    data: () => ({
+        id: ''
+    }),
+    created () {
+        this.id = this.id ? this.id : shortId.generate()
     },
     methods: {
         onChange (e) {

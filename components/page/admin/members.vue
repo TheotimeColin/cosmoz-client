@@ -23,6 +23,28 @@
             <input-user @input="addUser" :items="formData.members.map(m => getUser(m))" />
         </div>
 
+        <div class="block mt-20">
+            <div class="fx-center mb-15">
+                <p class="ft-title-xs">
+                    Liens d'invitation
+                </p>
+
+                <button-base :modifiers="['xs']">
+                    Créer un nouveau lien
+                </button-base>
+            </div>
+
+            <div class="bg-bg p-10 pl-15 br-xs fx-center">
+                <p style="user-select: all">{{ inviteLink }}</p>
+
+                <div>
+                    <button-base :modifiers="['2xs', 'round', 'weak']" icon-before="copy" @click="() => $copy(inviteLink)" />
+                    
+                    <button-base :modifiers="['2xs', 'round', 'weak']" icon-before="times" @click="() => acceptUser(user)" />
+                </div>
+            </div>
+        </div>
+
         <!-- <form-errors class="mt-20" :items="errors" />
 
         <div class="text-right mt-20">
@@ -53,6 +75,9 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        inviteLink () {
+            return this.$config.baseUrl + this.localePath({ name: 't-token', params: { token: this.constellation.slug }})
+        }
     },
     methods: {
         getUser (_id) {

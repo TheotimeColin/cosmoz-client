@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 const TokenEntity = {
-    read: 'public',
-    write: 'public',
+    read: 'admin',
+    write: 'admin',
     fields: new mongoose.Schema({
         id: { type: String },
         value: { type: String },

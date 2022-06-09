@@ -167,12 +167,14 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     }
                     
                     if (requiredRole.slice(0, 2) == 'g-') {
-                        if (!requested.constellation || !user) granted = false
+                        let constellation = requested.organizers ? requested._id : requested.constellation
+
+                        if (!constellation || !user) granted = false
 
                         if (user.role == 'adminq') {
                             granted = true
                         } else {
-                            let conste = await Entities.constellation.model.findOne({ _id: requested.constellation })
+                            let conste = await Entities.constellation.model.findOne({ _id: constellation })
                             
                             if (conste) {
                                 let allowed = conste.admins

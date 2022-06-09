@@ -8,6 +8,7 @@ const AWS = require('aws-sdk')
 const mime = require('mime')
 const Entities = require('../entities')
 const resolvePath = require("path");
+const FastAverageColor = require('fast-average-color')
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ID,
@@ -50,16 +51,21 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
                 file = { path }
             }
 
+            let color = ''
+
             let medias = await Promise.all(SIZES[params.size].map(async size => {
                 let data = {}
             
                 let original = await sharp(file.path).metadata()
                 let buffer = await sharp(file.path).resize(Math.min(original.width, size.width)).toBuffer()
                 let metadata = await sharp(buffer).metadata()
+                const { dominant } = await sharp(file.path).stats()
+                
+                if (dominant) color = `rgb(${dominant.r}, ${dominant.g}, ${dominant.b})`
 
                 data.width = metadata.width
                 data.height = metadata.height
-                
+
                 let prepend = params.path
                 if (params.path == '$user') prepend = `users/${user._id}`
 
@@ -71,7 +77,7 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
 
                 data.id = fileDirectory
                 data.src = `https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${data.id}`
-                
+
                 if (file.path) fs.unlink(file.path, () => {})
                 
                 return  {
@@ -81,7 +87,7 @@ exports.createMediaCollection = async function (file, params = {}, user = null) 
             }))
 
             let mediaCollection = await Entities.mediaCollection.model.create({
-                medias
+                medias, color
             }) 
 
             resolve(mediaCollection._id)

@@ -92,6 +92,7 @@ export default {
 .LayoutDefault_content {
     min-height: calc(100vh - var(--header-height));
     touch-action: pan-y !important;
+    user-select: auto !important;
 }
 
 .page-enter-active,
@@ -120,7 +121,10 @@ export default {
 }
 
 @include breakpoint-s {
-
+    .LayoutDefault_content {
+        user-select: none !important;
+    }
+    
     .Footer {
         display: none;
     }

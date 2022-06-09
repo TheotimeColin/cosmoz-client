@@ -1,6 +1,6 @@
 <template>
     <div class="Images" :class="[ `is-${images.length}`, { 'is-editor': isEditor }, ...$modifiers ]">
-        <div class="Images_image" v-for="(image, i) in thumbnails" :key="image" :style="{ '--image': `url(${image})` }">
+        <div class="Images_image" v-for="(image, i) in thumbnails" :key="image" :style="{ '--image': `url(${image})`, '--color': color }">
             <img :src="image">
 
             <div class="Images_actions" v-if="isEditor">
@@ -21,6 +21,9 @@ export default {
         isEditor: { type: Boolean, default: false }
     },
     computed: {
+        color () {
+            return this.images[0]?.color
+        },
         thumbnails () {
             return this.isEditor ? this.images : this.images.map(i => {
                 let thumb = i.medias?.find(m => m.size == 'm')
@@ -38,7 +41,7 @@ export default {
 }
 
 .Images_image {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color, var(--color-bg-strong));
     position: relative;
     overflow: hidden;
 
@@ -48,8 +51,9 @@ export default {
         background-image: var(--image);
         background-size: cover;
         background-position: center;
-        opacity: 0.1;
-        @include absolute-fill;
+        opacity: 0.25;
+        filter: blur(5px);
+        @include absolute-fill(120);
     }
 
     &::before {

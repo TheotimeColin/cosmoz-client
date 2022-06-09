@@ -6,6 +6,7 @@ let MediaCollection = {
     read: 'public',
     fields: new mongoose.Schema({
         title: { type: String, write: 'editor' },
+        color: { type: String },
         medias: { type: Array, default: [] },
     }, { timestamps: true })
 }
