@@ -8,7 +8,8 @@
         
                 <div class="ml-10">
                     <div class="ConstBanner_title ellipsis-1">
-                        <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> {{ subtitle ? subtitle : '' }}
+                        <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> 
+                        <!-- {{ subtitle ? subtitle : '' }} -->
                     </div>
                     
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>

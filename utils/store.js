@@ -53,37 +53,53 @@ export default {
         let sort = search.sort
         delete search.sort
 
-        Object.keys(search).forEach(key => {
-            if (typeof search[key] === 'object') {
-                let entries = Object.entries(search[key])[0]
-                
-                if (entries[0] == '$id') {
-                    items = items.filter(item => item[key] && item[key]._id == entries[1])
-                } else if (entries[0] == '$in') {
-                    let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
-                    
-                    items = items.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
-                } else if (entries[0] == '$contains') {
-                    items = items.filter(item => {
-                        return item[key].find(u => u == entries[1])
-                    })
-                }
-            } else if (key == '$in') {
-                items = items.filter(item => search[key].includes(item._id))
-            } else if (search[key] == '$notNull') {
-                items = items.filter(item => item[key])
-            } else if (search[key] == '$notSelf') {
-                items = items.filter(item => user && item[key] != user._id)
-            } else {
-                let keyValue = Object.keys(search[key])[0]
+        const searchField = function (search, items) {
+            let result = [ ...items ]
 
-                if (keyValue == '$isBefore' || keyValue == '$isAfter') {
-                    items = items.filter(item => moment(item[key])[keyValue == '$isBefore' ? 'isBefore' : 'isAfter'](Object.values(search[key])[0]))
+            Object.keys(search).forEach(key => {
+                if (typeof search[key] === 'object') {
+                    let entries = Object.entries(search[key])[0]
+                    
+                    if (entries[0] == '$id') {
+                        result = result.filter(item => item[key] && item[key]._id == entries[1])
+                    } else if (entries[0] == '$in') {
+                        let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
+                        
+                        result = result.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
+                    } else if (entries[0] == '$contains') {
+                        result = result.filter(item => {
+                            return item[key].find(u => u == entries[1])
+                        })
+                    }
+                } else if (key == '$in') {
+                    result = result.filter(item => search[key].includes(item._id))
+                } else if (search[key] == '$notNull') {
+                    result = result.filter(item => item[key])
+                } else if (search[key] == '$notSelf') {
+                    result = result.filter(item => user && item[key] != user._id)
                 } else {
-                    items = items.filter(item => item[key] == search[key])
+                    let keyValue = Object.keys(search[key])[0]
+    
+                    if (keyValue == '$isBefore' || keyValue == '$isAfter') {
+                        result = result.filter(item => moment(item[key])[keyValue == '$isBefore' ? 'isBefore' : 'isAfter'](Object.values(search[key])[0]))
+                    } else {
+                        result = result.filter(item => item[key] == search[key])
+                    }
                 }
-            }
-        })
+            })
+
+            return result
+        }
+
+        if (search.$or) {
+            let results = Object.keys(search.$or).map(key => {
+                return searchField({ [key]: search.$or[key] }, items)
+            })
+            
+            items = [...new Set(results.reduce((total, current) => [...total, ...current], []))]
+        } else {
+            items = searchField(search, items)
+        }
 
         if (sort) {
             let key = Object.keys(sort)[0]

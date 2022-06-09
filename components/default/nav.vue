@@ -11,11 +11,11 @@
     >
         <div class="AppNav_content">
             <div class="AppNav_primary">
-                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': selected == '' && !isExplore }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" @click="selected = ''" />
+                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" />
 
-                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == constellation._id }" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+                <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
 
-                <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': selected == selectConst._id }" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
 
                 <hr class="Separator mv-10 bg-bg">
                 
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-else-if="isExplore" key="explore">
+                <div v-else-if="!selected && isExplore" key="explore">
                     <div class="AppNav_menu">
                         <div class="AppNav_menuItem" v-for="(cat, i) in exploreNav" :key="i">
                             <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <page-const-nav v-bind="selectConst" v-else key="selectConst" />
+                <page-const-nav v-bind="selectConst" v-else-if="selected" key="selectConst._id" />
             </div>
         </div>
 
@@ -84,8 +84,7 @@ export default {
         nav: [],
         exploreNav: [],
         isClosePanning: false,
-        closePan: 0,
-        selected: ''
+        closePan: 0
     }),
     watch: {
         $route () {
@@ -97,15 +96,7 @@ export default {
         isClosePanning (v) {
             if (!v && this.closePan < -25) this.isActive = false
         },
-        currentConst: {
-            immediate: true,
-            handler (v) {
-                this.selected = v
-            }
-        },
         isActive (v) {
-            if (!v) setTimeout(() => this.selected = this.currentConst, 200)
-
             this.$store.commit('page/toggleOverflow', !v)
         }
     },
@@ -113,13 +104,21 @@ export default {
         user () { return this.$store.getters['user/self'] },
         constellations () {
             return this.user ? this.$store.getters['constellation/find']({
-                members: { $contains: this.user._id }
+                $or: {
+                    members: { $contains: this.user._id },
+                    followers: { $contains: this.user._id },
+                    organizers: { $contains: this.user._id },
+                    admins: { $contains: this.user._id },
+                }
             }) : []
         },
+        selected () {
+            return this.$route.params.slug ? this.$route.params.slug : false
+        },
         selectConst () {
-            return this.$store.getters['constellation/findOne']({
-                slug: this.selected
-            })
+            return this.selected ? this.$store.getters['constellation/findOne']({
+                slug: this.$route.params.slug
+            }) : null
         },
         currentConst () { return this.$store.state.page.currentConst },
         isOpenNav () { return this.$store.state.page.isOpenNav },

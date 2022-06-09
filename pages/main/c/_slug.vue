@@ -18,7 +18,6 @@ export default {
     name: 'ConstellationPage',
     async fetch () {
         this.$store.commit('page/set', { isOpenNav: true })
-        this.$store.commit('page/set', { currentConst: this.$route.params.slug })
 
         const response = await this.$store.dispatch('constellation/get', {
             query: { slug: this.$route.params.slug }
@@ -26,7 +25,7 @@ export default {
     },
     beforeDestroy () {
         this.$store.commit('page/set', { isOpenNav: false })
-        this.$store.commit('page/set', { isDisableFooter: false, subtitle: '', currentConst: '' })
+        this.$store.commit('page/set', { subtitle: '' })
     },
     data: () => ({
         isLoading: false,
