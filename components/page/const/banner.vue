@@ -2,13 +2,13 @@
     <div class="ConstBanner" :class="{ 'ConstBanner--min': min, 'ConstBanner--event': isEvent }">
         <div class="ConstBanner_cover" :style="{ backgroundImage: `url(${hero})` }"></div>
 
-        <div class="ConstBanner_sub" v-show="!isEvent || isEvent && !user">
+        <div class="ConstBanner_sub">
             <div class="d-flex fxa-center">
-                <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :logo="logo" v-show="!min || isEvent" />
+                <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :logo="logo" v-show="!min" />
         
                 <div class="ml-15">
                     <div class="ConstBanner_title ellipsis-1">
-                        <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
+                        <fa :icon="`far fa-${fa ? fa : ''}`" class="mr-5" v-show="fa" />
                         {{ subtitle ? subtitle : '' }}
                     </div>
                     
@@ -29,13 +29,13 @@ export default {
         name: { type: String },
         intro: { type: String },
         logo: { type: Object },
-        subtitle: { type: String, default: '' },
-        fa: { type: String },
         isEvent: { type: Boolean, default: false },
         min: { type: Boolean, default: false }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] }
+        user () { return this.$store.getters['user/self'] },
+        subtitle () { return this.$store.state.page.subtitle },
+        fa () { return this.$store.state.page.fa },
     }
 }
 </script>

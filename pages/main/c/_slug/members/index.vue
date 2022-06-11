@@ -56,8 +56,6 @@ export default {
     },
     head () {
         this.$store.commit('page/set', { subtitle: 'Membres', fa: 'user' })
-        
-        this.$emit('page', { subtitle: 'Membres', fa: 'user' })
 
         let meta = {
             title: `Membres de ${this.constellation.name} ${this.$t('meta.append')}`,

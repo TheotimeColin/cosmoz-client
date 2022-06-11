@@ -5,10 +5,10 @@
             <page-const-banner
                 :min="isMin"
                 :is-event="isEventPage"
-                v-bind="{ ...constellation, ...page }" class="d-none@s"
+                v-bind="constellation" class="d-none@s"
             />
 
-            <nuxt-child :constellation="constellation" @page="(v) => page = v" />
+            <nuxt-child :constellation="constellation" />
         </div>
     </div>
 </template>
@@ -24,12 +24,10 @@ export default {
         })
     },
     beforeDestroy () {
-        this.$store.commit('page/set', { isOpenNav: false })
-        this.$store.commit('page/set', { subtitle: '' })
+        this.$store.commit('page/set', { isOpenNav: false, subtitle: '' })
     },
     data: () => ({
         isLoading: false,
-        page: { subtitle: '', fa: '' }
     }),
     computed: {
         isMin () { return !this.$route.name.includes('c-slug_') },

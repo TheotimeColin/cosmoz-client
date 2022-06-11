@@ -4,14 +4,20 @@
             <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
                 <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
             </div>
-
             <div class="Nav_content">
                 <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
                     <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                    <nuxt-link v-for="item in cat.children.filter(c => !c.disabled)" class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" :key="item.label">
-                        <fa :icon="`far fa-${item.fa}`" /> {{ item.label }}
-                    </nuxt-link>
+                    <div v-for="item in cat.children.filter(c => !c.disabled)" class="ellipsis-1 ellipsis-break" :key="item.label">
+                        <nuxt-link class="Nav_item" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
+                            <fa :icon="`far fa-${item.fa}`" fixed-width /> {{ item.label }}
+                        </nuxt-link>
+
+                        <div class="Nav_sub" v-for="sub in (item.children ? item.children : []).filter(c => !c.disabled)" :key="sub.label">
+                            <fa icon="far fa-corner" flip="both" />
+                            <nuxt-link class="Nav_item Nav_item--sub ellipsis-1 ellipsis-break" :to="sub.to">{{ sub.label }}</nuxt-link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,41 +66,46 @@ export default {
         isHome: { type: Boolean, default: false },
         isAbsolute: { type: Boolean, default: false }
     },
-    data: () => ({
-        items: []
-    }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        currentGathering () { return this.$route.params.eventId ? this.$store.getters['gathering/findOne']({ id: this.$route.params.eventId }) : null },
         isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
-        isMember () { return this.user && this.members.includes(this.user._id) }
-    },
-    created () {
-        this.items = [
-            {
-                children: [
-                    { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } }
-                ]
-            }, {
-                label: `Événements`,
-                children: [
-                    { label: `Événements prévus`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } },
-                    { label: `Gestion des événements`, isParent: true, fa: 'calendar-pen', disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id), to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
-                ]
-            },
-            // {
-            //     label: `Sorties`,
-            //     children: [
-            //         { label: `Rejoindre une sortie`, fa: 'party-horn', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } },
-            //         { label: `Idées de sorties`, fa: 'lightbulb', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } }
-            //     ]
-            // },
-            {
-                label: `Discussions`,
-                children: [
-                    { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
-                ]
-            }
-        ]
+        isMember () { return this.user && this.members.includes(this.user._id) },
+        events () {
+            if (!this.currentGathering) return []
+
+            return [
+                { label: this.currentGathering.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: this.currentGathering.id } } }
+            ]
+        },
+        items () {
+            return [
+                {
+                    children: [
+                        { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } }
+                    ]
+                }, {
+                    label: `Événements`,
+                    children: [
+                        { label: `Événements prévus`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } }, children: this.events, isParent: true },
+                        { label: `Gestion des événements`, isParent: true, fa: 'calendar-pen', disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id), to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
+                    ]
+                },
+                // {
+                //     label: `Sorties`,
+                //     children: [
+                //         { label: `Rejoindre une sortie`, fa: 'party-horn', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } },
+                //         { label: `Idées de sorties`, fa: 'lightbulb', to: { name: 'c-slug-hangouts', params: { slug: this.slug } } }
+                //     ]
+                // },
+                {
+                    label: `Discussions`,
+                    children: [
+                        { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
+                    ]
+                }
+            ]
+        }
     }
 }
 </script>
@@ -151,9 +162,8 @@ export default {
     }
 
     .Nav_item {
-        font: var(--ft-title-2xs);
-        font-size: 15px;
-        line-height: 1;
+        font: var(--ft-m);
+        line-height: 0.6;
         cursor: pointer;
         color: var(--color-ft-light);
         text-decoration-color: var(--color-ft-xweak);
@@ -163,10 +173,11 @@ export default {
         white-space: nowrap;
 
         display: block;
-        padding: 10px 10px;
+        padding: 14px 10px 10px 8px;
 
         svg {
-            margin-right: 8px;
+            margin-right: 3px;
+            margin-top: -4px;
         }
 
         &:hover {
@@ -177,5 +188,18 @@ export default {
         &.is-active-exact.is-parent {
             background-color: var(--color-bg-weak);
         }
+    }
+
+    .Nav_sub {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+        color: var(--color-ft-xweak);
+    }
+
+    .Nav_item--sub {
+        padding: 10px;
+        margin-left: 5px;
+        line-height: 1;
     }
 </style>

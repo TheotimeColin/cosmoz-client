@@ -15,13 +15,13 @@
                     <template v-if="gatheringData && !isCurrent">
                         <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
                         <link-base :modifiers="['l']" :to="gatheringLink">
-                                {{ gatheringData.title }}
+                            {{ gatheringData.title }}
                         </link-base>
                     </template>
-                    <template v-else-if="constellationData && !isCurrent">
+                    <template v-else-if="consteData && !isCurrent">
                         <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
                         <link-base :modifiers="['l']" :to="gatheringLink">
-                                {{ constellationData.name }}
+                            {{ consteData.name }}
                         </link-base>
                     </template>
 
@@ -139,8 +139,8 @@ export default {
         gatheringData () {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
         },
-        constellationData () {
-            return this.constellation ? this.$store.getters['constellation/findOne']({ _id: this.constellation }) : null
+        consteData () {
+            return this.constellation || this.gatheringData?.constellation ? this.$store.getters['constellation/findOne']({ _id: (this.gatheringData?.constellation || this.constellation) }) : null
         },
         title () {
             return this.owner.name
@@ -155,10 +155,10 @@ export default {
         gatheringLink () {
             let link = null
 
-            if (this.gatheringData) {
-                link = this.localePath({ name: 'c-slug-events-id', params: { id: this.gatheringData.id, slug: this.gatheringData.constellation ? this.gatheringData.constellation.slug : 'event' } })
-            } else if (this.constellationData) {
-                link = this.localePath({ name: 'c-slug-channel-id', params: { slug: this.constellationData.slug } })
+            if (this.gatheringData && this.consteData) {
+                link = this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.gatheringData.id, slug: this.consteData.slug } })
+            } else if (this.consteData) {
+                link = this.localePath({ name: 'c-slug-channel-id', params: { slug: this.consteData.slug } })
             }
 
             return link

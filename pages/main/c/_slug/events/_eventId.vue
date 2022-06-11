@@ -1,16 +1,19 @@
 <template>
     <div>
         <template v-if="!isLoading && gathering">
-            <app-banner :background="gathering.hero">
-                <div>
-                    {{ gathering.title }}
-                </div>
-            </app-banner>
-            <div class="Wrapper o-hidden@s">
+            <div class="Page_wrapper Wrapper o-hidden@s">
                 <div class="d-flex fx-reverse@xs">
-                    <nav-body class="fx-grow pt-20 pb-60" :items="navItems" :default="hasBooked ? 'after' : ''" />
+                    <div class="fx-grow">
+                        <content-feed
+                            placeholder="Une question ? Une information à donner ?"
+                            read="user"
+                            :max="3"
+                            :gathering="gathering._id"
+                            v-if="user"
+                        />
+                    </div>
 
-                    <div class="width-s fx-no-shrink n-mt-60 ml-30 mb-60 p-relative" v-if="$biggerThan('s')">
+                    <div class="width-s fx-no-shrink ml-30 p-relative d-none@xs">
                         <page-gathering-manage :gathering="gathering" />
                     </div>
                 </div>
@@ -44,12 +47,12 @@ export default {
         this.isLoading = true 
 
         let result = this.$store.getters['gathering/findOne']({
-            id: this.$route.params.id,
+            id: this.$route.params.eventId,
             status: 'active'
         })
 
         if (!result) {
-            await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.id, status: 'active' }})
+            await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.eventId, status: 'active' }})
         }
 
         this.isLoading = false 
@@ -61,7 +64,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gathering () {
             return this.$store.getters['gathering/findOne']({
-                id: this.$route.params.id,
+                id: this.$route.params.eventId,
                 status: 'active'
             })
         },
@@ -70,59 +73,22 @@ export default {
         },
         hasBooked () {
             return this.gathering.users.find(s => s.status == 'confirmed' && s._id == this.user._id)
-        },
-        navItems () {
-            return [
-                {
-                    id: 'index',
-                    component: 'page-gathering',
-                    label: 'Détails',
-                    props: { gathering: this.gathering }
-                }, {
-                    id: 'feed',
-                    component: 'page-gathering-feed',
-                    label: 'Discussion',
-                    props: { gathering: this.gathering }
-                }, {
-                    id: 'orga',
-                    component: 'page-gathering-orga',
-                    label: 'Organisation',
-                    disabled: !this.isOrga,
-                    props: { gathering: this.gathering }
-                }, {
-                    id: 'after',
-                    component: 'page-gathering-after',
-                    label: 'Afterspace',
-                    props: { gathering: this.gathering }
-                }
-            ]
         }
     },
-    mounted () {
-        if (!this.gathering) return
-
-        this.$emit('page', {
-            subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: ''
-        })
-
-        this.$store.commit('page/set', {
-            subtitle: `Organisé par ${this.gathering.constellation.name}`, fa: ''
-        })
-
-        this.$store.commit('page/setCurrent', 'event')
-    },
     beforeDestroy () {  
-        this.$store.commit('page/setCurrent', '')
+        this.$store.commit('page/set', { subtitle: '', current: '' })
     },
     head () {
         if (!this.gathering) return {}
+
+        this.$store.commit('page/set', { fa: 'calendar', subtitle: this.gathering.title, current: 'event' })
 
         let meta = {
             title: `${this.gathering.title} organisé par ${this.gathering.constellation ? this.gathering.constellation.name : ''} ${this.$t('meta.append')}`,
             meta: [
                 { hid: 'description', name: 'description', content: this.gathering.intro },
                 { property: 'og:title', content: `${this.gathering.title} organisé par ${this.gathering.constellation ? this.gathering.constellation.name : ''} ${this.$t('meta.append')}` },
-                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.gathering.constellation ? this.gathering.constellation.slug : 'event') + '/events/' + this.gathering.id },
+                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.gathering.constellation ? this.gathering.constellation.slug : 'event') + '/events/' + this.gathering.eventId },
                 { property: 'og:image', content: this.gathering.hero },
                 { property: 'og:description', content: this.gathering.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
