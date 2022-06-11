@@ -5,7 +5,7 @@
                 <div class="block">
                     <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
 
-                    <input-base class="Form_input" label="Lien de l'événement *" v-model="formData.link" :required="true" :is-loading="metaLoading" />
+                    <input-base class="Form_input" label="Lien de l'événement *" v-model="formData.link" :required="true" :is-loading="metaLoading" v-if="isLink" />
 
                     <input-base class="Form_input" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
                     

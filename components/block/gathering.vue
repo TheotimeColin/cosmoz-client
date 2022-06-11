@@ -6,8 +6,8 @@
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellation">
-                        <const-icon class="mr-10" v-bind="constellation" /> {{ constShort ? '' : 'Organisé par'}} {{ constellation.name }}
+                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellationData">
+                        <const-icon class="mr-10" v-bind="constellationData" /> {{ constShort ? '' : 'Organisé par'}} {{ constellationData.name }}
                     </div>
                     <div class="BlockGathering_status d-none@xs" v-if="!constOnly">
                         <div>
@@ -94,18 +94,19 @@ export default {
         constOnly: { type: Boolean, default: false },
         constShort: { type: Boolean, default: false },
         displayIntro: { type: Boolean, default: false },
-        constellation: { type: [Object, Boolean], default: false },
+        constellation: { type: String, default: false },
     },
     data: () => ({
 
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'c-slug-events-id', params: { id: this.id, slug: this.constellation ? this.constellation.slug : 'event' } })
+            return this.localePath({ name: 'c-slug-events-id', params: { id: this.id, slug: this.constellationData ? this.constellationData.slug : 'event' } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')

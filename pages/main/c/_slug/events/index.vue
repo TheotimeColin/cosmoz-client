@@ -37,7 +37,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                constellation: { '$id': this.constellation._id },
+                constellation: this.constellation._id,
                 status: 'active',
                 isPast: false
             })

@@ -72,15 +72,13 @@ export default {
         this.items = [
             {
                 children: [
-                    { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } },
-                    { label: `Rencontres prévues`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } },
-                    { label: `Membres`, fa: 'user', to: { name: 'c-slug-members', params: { slug: this.slug } } }
+                    { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } }
                 ]
             }, {
-                label: `Organisateurs`,
-                disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id),
+                label: `Événements`,
                 children: [
-                    { label: `Gestion des rencontres`, isParent: true,fa: 'calendar-pen', to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
+                    { label: `Événements prévus`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } },
+                    { label: `Gestion des événements`, isParent: true, fa: 'calendar-pen', disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id), to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
                 ]
             },
             // {

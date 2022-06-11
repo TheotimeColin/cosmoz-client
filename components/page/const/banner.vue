@@ -6,13 +6,13 @@
             <div class="d-flex fxa-center">
                 <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :logo="logo" v-show="!min || isEvent" />
         
-                <div class="ml-10">
+                <div class="ml-15">
                     <div class="ConstBanner_title ellipsis-1">
                         <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
                         {{ subtitle ? subtitle : '' }}
                     </div>
                     
-                    <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>
+                    <h2 class="ft-m ft-s@s n-mt-3" v-if="!min">{{ intro }}</h2>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@ export default {
     }
 
     .ConstBanner_title {
-        font: var(--ft-title-xs);
+        font: var(--ft-title-m);
     }
 
     .ConstBanner--min {

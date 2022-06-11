@@ -46,12 +46,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <form-errors class="mt-20" :items="errors" />
-
-        <div class="text-right mt-20">
-            <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
-        </div> -->
     </div>
 </template>
 

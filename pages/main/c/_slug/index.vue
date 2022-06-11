@@ -1,15 +1,21 @@
 <template>
     <div class="Page_wrapper d-flex Wrapper d-block@s">
         <div class="fx-grow">
-            <div class="pb-20">
-                {{ constellation.intro }}
+            <div class="block mb-40 o-hidden">
+                <h1 class="ft-title-xs mb-15">
+                    À propos du groupe
+                </h1>
+
+                <div class="TextBody ellipsis-3" style="max-height: 300px;" v-html="constellation.description"></div>
+
+                <link-base>En savoir plus</link-base>
             </div>
 
             <div v-if="upcomingEvents.length > 0">
                 <div class="fx-center mb-20">
-                    <h1 class="ft-title-s">
+                    <h2 class="ft-title-s">
                         <span class="round bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Prochaines rencontres
-                    </h1>
+                    </h2>
 
                     <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: constellation.slug } }">Voir tout</button-base>
                 </div>
@@ -96,7 +102,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 status: 'active',
-                constellation: { '$id': this.constellation._id }
+                constellation: this.constellation._id
             })
         },
         isFollowed () {

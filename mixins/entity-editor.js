@@ -5,6 +5,7 @@ export default {
     data: () => ({
         currentId: '',
         isLoading: false,
+        isInit: false,
         errors: [],
         prevFormData: {},
         formData: {}
@@ -35,6 +36,8 @@ export default {
                 }
 
                 this.prevFormData = { ...this.formData }
+
+                if (v) setTimeout(() => this.isInit = true, 50)
             }
         }
     },

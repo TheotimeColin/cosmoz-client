@@ -60,9 +60,7 @@ export default {
                 if (typeof search[key] === 'object') {
                     let entries = Object.entries(search[key])[0]
                     
-                    if (entries[0] == '$id') {
-                        result = result.filter(item => item[key] && item[key]._id == entries[1])
-                    } else if (entries[0] == '$in') {
+                    if (entries[0] == '$in') {
                         let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
                         
                         result = result.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))

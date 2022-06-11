@@ -73,15 +73,15 @@ exports.accessCheck = async function (type = 'write', entity, requested = null, 
             let owner = null
             let userRole = null
             let requiredRole = entity[type]
-
+            
             if (requiredRole.slice(0, 2) == 'g-') {
-                if (!requested._id || !user) granted = false
+                if ((!requested && !fields.constellation) || !user) granted = false
 
                 if (user.role == 'admin') {
                     granted = true
                 } else {
-                    let conste = await Entities.constellation.model.findOne({ _id: requested._id })
-                    
+                    let conste = await Entities.constellation.model.findOne({ _id: requested ? requested.constellation : fields.constellation })
+
                     if (conste) {
                         let allowed = conste.admins
 

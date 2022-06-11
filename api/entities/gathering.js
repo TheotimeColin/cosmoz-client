@@ -49,12 +49,12 @@ Gathering.fields.pre('findOneAndUpdate', async function(next) {
 
 Gathering.fields.pre('findOne', function () {
     this.populate('cover')
-    this.populate('constellation')
+    // this.populate('constellation')
 })
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
-    this.populate('constellation')
+    // this.populate('constellation')
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

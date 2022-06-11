@@ -1,34 +1,40 @@
 <template>
-    <form @submit.prevent="onSubmit">
-        <div class="block d-flex fxa-start">
-            <div class="Logo mr-20" :style="{ backgroundImage: `url(${logoPreview})` }">
-                <label class="Logo_edit">
-                    <input-file class="hide" v-model="formData.logoSelect" />
-                    <fa icon="far fa-pen" />
-                </label>
+    <div>
+        <form @submit.prevent="onSubmit">
+            <div class="block d-flex fxa-start">
+                <div class="Logo mr-20" :style="{ backgroundImage: `url(${logoPreview})` }">
+                    <label class="Logo_edit">
+                        <input-file class="hide" v-model="formData.logoSelect" />
+                        <fa icon="far fa-pen" />
+                    </label>
+                </div>
+
+                <div class="fx-grow">
+                    <input-base class="mb-15" label="Nom de la constellation" v-model="formData.name" :required="true" />
+                    <input-base class="mv-15" label="En une phrase..." v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
+                    <input-base class="mt-15" label="Localisation" v-model="formData.location" placeholder="Région, ville..." :required="true" />
+                </div>
+            </div>
+            
+            <div class="block mt-20">
+                <div class="Image" :style="{ backgroundImage: `url(${coverPreview})` }">
+                    <button-base type="button" :modifiers="['round', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
+                </div>
+
+                <input-pexels class="mt-15" @select="(v) => formData.coverSelect = v" v-if="options.cover"/>
             </div>
 
-            <div class="fx-grow">
-                <input-base class="mb-15" label="Nom de la constellation" v-model="formData.name" :required="true" />
-                <input-base class="mv-15" label="En une phrase..." v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
-                <input-base class="mt-15" label="Localisation" v-model="formData.location" placeholder="Région, ville..." :required="true" />
-            </div>
-        </div>
-        
-        <div class="block mt-20">
-            <div class="Image" :style="{ backgroundImage: `url(${coverPreview})` }">
-                <button-base type="button" :modifiers="['round', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
+            <div class="block mt-20">
+                <input-paper label="Description" :base="true" v-model="formData.description" v-if="isInit" />
             </div>
 
-            <input-pexels class="mt-15" @select="(v) => formData.coverSelect = v" v-if="options.cover"/>
-        </div>
+            <form-errors class="mt-20" :items="errors" />
 
-        <form-errors class="mt-20" :items="errors" />
-
-        <div class="text-right mt-20">
-            <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
-        </div>
-    </form>
+            <div class="text-right mt-20">
+                <button-base type="submit" :modifiers="['light']">Sauvegarder</button-base>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -44,7 +50,7 @@ export default {
     },
     data: () => ({
         entityType: 'constellation',
-        inputs: ['name', 'location', 'intro', 'cover', 'logo'],
+        inputs: ['name', 'location', 'intro', 'cover', 'logo', 'description'],
         options: {
             cover: false
         },
