@@ -32,7 +32,7 @@ export default {
         slots: { type: Array, default: () => [] },
         itemClass: { type: String, default: '' },
         offset: { type: Number, default: 0 },
-        offsetV: { type: Number, default: 0 },
+        offsetV: { type: Number, default: 20 },
         ratio: { type: Number, default: 0 },
         isLoading: { type: Boolean, default: false }
     },

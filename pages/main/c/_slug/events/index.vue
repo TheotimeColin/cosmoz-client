@@ -1,5 +1,5 @@
 <template>
-    <div class="Page_wrapper Wrapper">
+    <div class="Page_wrapper Wrapper Wrapper--xs">
         <div v-if="gatherings.length > 0">
             <block-gathering
                 v-for="gathering in gatherings"

@@ -198,7 +198,7 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
         },
-        async softFetch ({ state, dispatch }, params) {
+        async softFetch ({ state, dispatch, commit }, params) {
             return new Promise(async (resolve, reject) => {
                 try {
                     let result = []
@@ -218,6 +218,8 @@ export default {
 
                         if (users[item]) result = [ ...result, parseUser(users[item]) ]
                     }
+                    
+                    commit('refresh', result)
 
                     resolve(result)
                 } catch (e) {

@@ -73,7 +73,8 @@ export default {
             {
                 children: [
                     { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } },
-                    { label: `Rencontres prévues`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } }
+                    { label: `Rencontres prévues`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } } },
+                    { label: `Membres`, fa: 'user', to: { name: 'c-slug-members', params: { slug: this.slug } } }
                 ]
             }, {
                 label: `Organisateurs`,

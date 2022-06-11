@@ -1,9 +1,15 @@
 <template>
-    <div class="Page_wrapper d-flex Wrapper">
+    <div class="Page_wrapper d-flex Wrapper d-block@s">
         <div class="fx-grow">
+            <div class="pb-20">
+                {{ constellation.intro }}
+            </div>
+
             <div v-if="upcomingEvents.length > 0">
                 <div class="fx-center mb-20">
-                    <h1 class="ft-title-s">Prochaine rencontre</h1>
+                    <h1 class="ft-title-s">
+                        <span class="round bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Prochaines rencontres
+                    </h1>
 
                     <button-base :modifiers="['s']" :to="{ name: 'c-slug-events', params: { slug: constellation.slug } }">Voir tout</button-base>
                 </div>
@@ -37,8 +43,23 @@
                 </slider-block>
             </div>
         </div>
-        <div class="width-xs ml-40 fx-no-shrink d-none@s">
 
+        <div class="width-s ml-30 fx-no-shrink ml-0@s width-100@s">
+            <div class="block-r p-15" v-if="users.length > 5">
+                <div class="fx-center">
+                    <h2 class="ft-title-2xs">
+                        <span class="round-s bg-bg-strong mr-10">{{ users.filter(u => !admins.includes(u)).length }}</span>Membres
+                    </h2>
+
+                    <link-base :to="{ name: 'c-slug-members', params: { slug: constellation.slug }}">Voir tout</link-base>
+                </div>
+
+                <div class="n-mh-3 mt-10">
+                    <div class="p-3 d-inline-block" v-for="user in users.filter(u => !admins.includes(u))" :key="user._id">
+                        <user-icon v-bind="user" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -49,6 +70,10 @@ export default {
         await this.$store.dispatch('gathering/fetch', {
             query: { constellation: this.constellation._id, status: 'active' }
         })
+
+        await this.$store.dispatch('user/softFetch', {
+            items: this.constellation.members
+        })
     },
     props: {
         constellation: { type: Object }
@@ -58,6 +83,16 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        admins () {
+            return this.$store.getters['user/find']({
+                _id: { $in: [ ...this.constellation.admins, ...this.constellation.organizers ] }
+            })
+        },
+        users () {
+            return this.$store.getters['user/find']({
+                _id: { $in: this.constellation.members }
+            })
+        },
         gatherings () {
             return this.$store.getters['gathering/find']({
                 status: 'active',

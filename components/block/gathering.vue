@@ -44,8 +44,12 @@
                     </div>
 
                     <div class="BlockGathering_location fx-center">
-                        <p class="">
-                            {{ $moment(date).fromNow() }} <span class="loc">· {{ location }}</span>
+                        <p v-if="date || location">
+                            <template v-if="date">
+                                {{ $moment(date).fromNow() }} <span class="loc">·</span>
+                            </template>
+                            
+                            {{ location ? location : '' }}
                         </p>
                     </div>
 
@@ -122,6 +126,8 @@ export default {
                 return tagline
             } else if (this.attending.length == 0 && this.max > 0) {
                 tagline = `${this.max} places restantes`
+            } else if (!this.max) {
+                tagline = ''
             } else if (this.max <= this.attending.length) {
                 tagline = `Événement complet`
             } else if (this.max - this.attending.length <= 5) {

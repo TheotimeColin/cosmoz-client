@@ -4,12 +4,12 @@
 
         <div class="ConstBanner_sub" v-show="!isEvent || isEvent && !user">
             <div class="d-flex fxa-center">
-                <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :name="name" :logo="logo" v-show="!min || isEvent" />
+                <const-icon :modifiers="min ? ['s'] : ($smallerThan('s') ? ['l'] : ['xl'])" :slug="slug" :logo="logo" v-show="!min || isEvent" />
         
                 <div class="ml-10">
                     <div class="ConstBanner_title ellipsis-1">
-                        <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" /> 
-                        <!-- {{ subtitle ? subtitle : '' }} -->
+                        <!-- <fa :icon="`far fa-${fa}`" class="mr-5" v-if="fa" />  -->
+                        {{ subtitle ? subtitle : '' }}
                     </div>
                     
                     <h2 class="ft-m ft-s@s" v-if="!min">{{ intro }}</h2>

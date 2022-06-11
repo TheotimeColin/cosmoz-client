@@ -167,6 +167,7 @@
         .n-mb-#{$spacing}#{$name} { margin-bottom: -#{$spacing}px; }
         .n-ml-#{$spacing}#{$name} { margin-left: -#{$spacing}px; }
         .n-mr-#{$spacing}#{$name} { margin-right: -#{$spacing}px; }
+        .n-mh-#{$spacing}#{$name} { margin-right: -#{$spacing}px; margin-left: -#{$spacing}px; }
     }
     
     /* LAYOUT */

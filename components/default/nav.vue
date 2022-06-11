@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <page-const-nav v-bind="selectConst" v-else-if="selected" key="selectConst._id" />
+                <page-const-nav v-bind="selectConst" v-else-if="selected" :key="selectConst._id" />
             </div>
         </div>
 

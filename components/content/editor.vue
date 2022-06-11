@@ -23,8 +23,6 @@
 
             <div class="Editor_secondary">
                 <div class="d-flex fx-grow pr-10 fxj-end">
-                    <button-base :modifiers="['round', 'xs', 'xweak']" type="button" icon-before="gif" :disabled="images.length > 0" />
-
                     <input-file icon="image" :multiple="true" @input="addImages" />
                 </div>
                 <div class="fx-no-shrink">

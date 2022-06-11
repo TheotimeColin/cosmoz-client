@@ -8,6 +8,7 @@ let Constellation = {
         slug: { type: String, write: 'g-admin' },
         name: { type: String, write: 'g-admin' },
         intro: { type: String, write: 'g-admin' },
+        description: { type: String, write: 'g-admin' },
         
         location: { type: String, write: 'g-admin' },
         
