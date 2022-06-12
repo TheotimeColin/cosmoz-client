@@ -8,7 +8,7 @@
             </div>
             <div class="Wrapper Wrapper--xs n-mt-20 p-relative n-mt-0@xs">
                 <page-gathering-manage :gathering="gathering" />
-
+            
                 <content-feed
                     class="mt-20 mt-10@xs"
                     read="user"
@@ -67,6 +67,11 @@ export default {
                 status: 'active'
             })
         },
+        constellation () {
+            return this.$store.getters['constellation/findOne']({
+                _id: this.gathering.constellation
+            })
+        },
         isOrga () {
             return this.user && this.user.role == 'admin'
         },
@@ -78,16 +83,16 @@ export default {
         this.$store.commit('page/set', { subtitle: '', current: '' })
     },
     head () {
-        if (!this.gathering) return {}
+        if (!this.gathering || !this.constellation) return {}
 
         this.$store.commit('page/set', { fa: 'calendar', subtitle: this.gathering.title, current: 'event' })
 
         let meta = {
-            title: `${this.gathering.title} organisé par ${this.gathering.constellation ? this.gathering.constellation.name : ''} ${this.$t('meta.append')}`,
+            title: `${this.gathering.title} organisé par ${this.constellation ? this.constellation.name : ''} ${this.$t('meta.append')}`,
             meta: [
                 { hid: 'description', name: 'description', content: this.gathering.intro },
-                { property: 'og:title', content: `${this.gathering.title} organisé par ${this.gathering.constellation ? this.gathering.constellation.name : ''} ${this.$t('meta.append')}` },
-                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.gathering.constellation ? this.gathering.constellation.slug : 'event') + '/events/' + this.gathering.eventId },
+                { property: 'og:title', content: `${this.gathering.title} organisé par ${this.constellation ? this.constellation.name : ''} ${this.$t('meta.append')}` },
+                { property: 'og:url', content: this.$config.baseUrl + '/c/' + (this.constellation.slug) + '/events/' + this.gathering.id },
                 { property: 'og:image', content: this.gathering.hero },
                 { property: 'og:description', content: this.gathering.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },

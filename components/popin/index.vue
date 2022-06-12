@@ -40,11 +40,15 @@ export default {
                 if (!this.autoClose) return 
                 
                 if (v && this.listeners.close) {
+                    this.$store.commit('page/toggleOverflow',  false)
+
                     setTimeout(() => {
                         document.addEventListener('click', this.listeners.close)
                     }, 100)
                 } else if (this.listeners.close) {
                     document.removeEventListener('click', this.listeners.close)
+
+                    this.$store.commit('page/toggleOverflow', true)
                 }
 
                 if (v && this.listeners.echap) {
@@ -57,6 +61,7 @@ export default {
     },
     beforeDestroy () {
         document.removeEventListener('click', this.listeners.close)
+        this.$store.commit('page/toggleOverflow', true)
     },
     mounted () {
         this.listeners.close = (e) => {
@@ -87,7 +92,7 @@ export default {
 }
 
 .PopinBase_body {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg);
     border-radius: 0px;
     width: 80%;
     max-width: 700px;
@@ -110,7 +115,7 @@ export default {
     padding: 0px;
     min-height: 0;
     border: none;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-strong);
 }
 
 .PopinBase_content {
@@ -126,16 +131,16 @@ export default {
     color: var(--color-ft-light);
     position: absolute;
     z-index: 5;
-    top: 10px;
-    right: 15px;
-    padding: 0;
+    top: 0px;
+    right: 0px;
+    padding: 15px 20px;
 }
 
 /* STATES */
 
 .PopinBase.is-active {
     pointer-events: all;
-    background-color: rgba(39, 39, 43, 0.8);
+    background-color: #08080cd9;
 
     & > .PopinBase_body {
         transform: translateY(0);
@@ -209,6 +214,13 @@ export default {
         width: auto;
         max-width: 100%;
         max-height: 100%;
+    }
+
+    .PopinBase--panel {
+
+        .PopinBase_body {
+            width: 90%;
+        }
     }
 }
 

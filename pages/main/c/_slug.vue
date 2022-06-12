@@ -54,7 +54,7 @@ export default {
             meta: [
                 { hid: 'description', name: 'description', content: this.constellation.intro },
                 { property: 'og:title', content: this.constellation.name  + ' organise ses événements sur Cosmoz' },
-                { property: 'og:url', content: this.$config.baseUrl + '/o/' + this.constellation.slug },
+                { property: 'og:url', content: this.$config.baseUrl + '/c/' + this.constellation.slug },
                 { property: 'og:image', content: this.constellation.logo },
                 { property: 'og:description', content: this.constellation.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
@@ -70,7 +70,7 @@ export default {
 <style lang="scss" scoped>  
     .Constellation {
         position: relative;
-        margin-left: 320px;
+        margin-left: 360px;
     }
 
     .page-enter-active,

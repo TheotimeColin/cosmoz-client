@@ -11,6 +11,8 @@
                     <p class="mt-3">
                         <fa icon="far fa-map-marker-alt" class="mr-5" fixed-width /> {{ user ? gathering.location : `Information réservée aux membres` }}
                     </p>
+                    
+                    <link-base class="mr-10" @click="isFull = true">Plus d'infos</link-base>
                 </div>
 
                 <div class="col-6 col-12@xs mt-20@xs d-flex@xs fxa-center@xs" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
@@ -32,26 +34,15 @@
             <hr class="Separator mv-20" v-if="!gathering.isPast">
 
             <div class="text-center" v-if="!gathering.isPast">
-                <link-base class="mr-10">Plus d'infos</link-base>
+                <link-base class="mr-10" @click="isFull = true">Plus d'infos</link-base>
 
-                <template v-if="user">
-                    <button-base class="fx-grow is-disabled" :modifiers="['light', 's']" v-if="hasWaitingList">
-                        événement complet
-                    </button-base>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
-                        {{ hasBooked ? `Tu participes` : `En liste d'attente` }}
-                    </button-base>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" icon-before="arrow-right" @click="isManage = true" v-else>
-                        {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je participe!`) }}
-                    </button-base>
-                </template>
-                <template v-else>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" icon-before="arrow-right" @click="$store.commit('page/register', `sub-${gathering._id}`)">
-                        Je participe !
-                    </button-base>
-                </template>
+                <page-gathering-action-button
+                    :gathering="gathering"
+                />
             </div>
         </div>
+
+        <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" />
 
         <popin :is-active="isList" :modifiers="['s']" @close="isList = false">
             <template slot="content">
@@ -66,107 +57,24 @@
                 </div>
             </template>
         </popin>
-
-        <popin :is-active="isManage" :modifiers="['s']" @close="isManage = false">
-            <template slot="content">
-                <div class="text-center">
-                    <div class="bg-cover p-60" :style="{ '--background': `url(${gathering.hero})` }">
-                        <p class="ft-title-m ">{{ gathering.title }}</p>
-                    </div>
-
-                    <div class="p-30">
-                        <template v-if="hasBooked">
-                            <p>Ton inscription est confirmée. Rendez-vous {{ $moment(gathering.date).format('dddd DD MMMM YYYY à HH:mm') }} !</p>
-
-                            <link-base class="mv-20" :href="googleCal" target="_blank">Ajouter à Google Calendar</link-base>
-                            
-                            <p class="p-10 bg-bg-weak  br-s">Tu as dû recevoir un email de confirmation. Vérifie tes spam !</p>
-                        </template>
-                        <template v-else>
-                            Attention, pour conserver ton accès aux futures rencontres <span class="text-underline">n'oublie pas de te désincrire</span> si tu as un empêchement !
-                        </template>
-                        
-                        <div>
-                            <button-base class="mt-20" :class="{ 'is-loading': isLoading }" :modifiers="['light']" @click="onBookUpdate('attending')"
-                            v-if="!hasBooked && !hasWaitingList">
-                                Confirmer mon inscription
-                            </button-base>
-                            <div class="fx-center mt-20" v-else>
-                                <button-base :class="{ 'is-loading': isLoading }" :modifiers="['s']" @click="() => { onBookUpdate('cancelled'); isManage = false }">
-                                    Me désincrire
-                                </button-base>
-
-                                <button-base :modifiers="['light']" @click="isManage = false">
-                                    Fermer
-                                </button-base>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </popin>
     </div>
 </template>
 
 <script>
+import GatheringMixin from '@/mixins/gathering'
+
 export default {
     name: 'PageGatheringManage',
+    mixins: [ GatheringMixin ],
     props: {
         gathering: { type: Object, default: () => {} }
     },
     data: () => ({
-        isLoading: false,
-        isManage: false,
+        isFull: false,
         isList: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        attending () {
-            return this.$shuffle(this.usersByStatus(['attending', 'confirmed'])).slice(0, 2).map(u => u.name).join(', ')
-        },
-        hasBooked () {
-            return this.user && this.usersByStatus(['attending']).find(u => u._id == this.user._id)
-        },
-        isWaiting () {
-            return this.user && this.usersByStatus(['waiting']).find(u => u._id == this.user._id)
-        },
-        hasWaitingList () {
-            return this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
-        },
-        hasConfirmed () {
-            return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
-        },
-        canonical () {
-            return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-eventId', params: { id: this.gathering.id, slug: this.gathering.constellation ? this.gathering.constellation.id : 'event' }})
-        },
-        googleCal () {
-            return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
-        }
-    },
-    methods: {
-        usersByStatus (statuses) {
-            let users = Object.values(this.gathering.users.reduce((all, current) => ({
-                ...all, [current._id]: current 
-            }), {}))
-
-            return users.filter(u => statuses.includes(u.status))
-        },
-        async onBookUpdate (status) {
-            this.isLoading = true
-
-            try {
-                await this.$store.dispatch('gathering/updateBookStatus', {
-                    _id: this.gathering._id,
-                    users: [
-                        { _id: this.user._id, status: status }
-                    ]
-                })
-            } catch (e) {
-                console.error(e)
-            }
-
-            this.isLoading = false
-        }
+        user () { return this.$store.getters['user/self'] }
     }
 }
 </script>

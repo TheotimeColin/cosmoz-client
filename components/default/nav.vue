@@ -234,7 +234,7 @@ export default {
 
 .AppNav_content {
     display: flex;
-    width: 320px;
+    width: 360px;
     height: calc(100vh - var(--header-height));
     background-color: var(--color-bg-strong);
 }
@@ -292,7 +292,7 @@ export default {
 .AppNav_hider {
     position: fixed;
     top: 0;
-    left: 320px;
+    left: 360px;
     width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -445,6 +445,21 @@ export default {
             font-size: 18px;
             margin: 0 auto 5px;
         }
+    }
+}
+
+@include breakpoint-xs {
+
+    .AppNav {
+        width: 100vw;
+    }
+    
+    .AppNav_content {
+        width: calc(100% - 40px);
+    }
+
+    .AppNav_hider {
+        left: calc(100% - 40px);
     }
 }
 </style>
