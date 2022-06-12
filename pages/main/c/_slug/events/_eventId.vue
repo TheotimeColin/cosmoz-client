@@ -1,22 +1,21 @@
 <template>
     <div>
         <template v-if="!isLoading && gathering">
-            <div class="Page_wrapper Wrapper o-hidden@s">
-                <div class="d-flex fx-reverse@xs">
-                    <div class="fx-grow">
-                        <content-feed
-                            placeholder="Une question ? Une information à donner ?"
-                            read="user"
-                            :max="3"
-                            :gathering="gathering._id"
-                            v-if="user"
-                        />
-                    </div>
-
-                    <div class="width-s fx-no-shrink ml-30 p-relative d-none@xs">
-                        <page-gathering-manage :gathering="gathering" />
-                    </div>
+            <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${gathering.hero})` }">
+                <div class="Wrapper Wrapper--xs text-center pv-60">
+                    <h1 class="ft-title-m d-none@xs">{{ gathering.title }}</h1>
                 </div>
+            </div>
+            <div class="Wrapper Wrapper--xs n-mt-20 p-relative n-mt-0@xs">
+                <page-gathering-manage :gathering="gathering" />
+
+                <content-feed
+                    class="mt-20 mt-10@xs"
+                    read="user"
+                    :max="3"
+                    :gathering="gathering._id"
+                    v-if="user"
+                />
             </div>
         </template>
         <template v-else-if="isLoading">

@@ -40,7 +40,7 @@ export default {
         },
         async fetchOne ({ commit }, id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     id, type: 'user'
                 }))
 
@@ -59,7 +59,7 @@ export default {
         },
         async fetch ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'user',
                 }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 

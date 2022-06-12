@@ -169,6 +169,8 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     if (requiredRole.slice(0, 2) == 'g-') {
                         let constellation = requested.organizers ? requested._id : requested.constellation
 
+                        console.log(constellation)
+
                         if (!constellation || !user) granted = false
 
                         if (user.role == 'adminq') {

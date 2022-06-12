@@ -19,7 +19,7 @@ exports.getEntities = async function (req, res) {
         let idQuery = req.query._id && typeof req.query._id !== 'object' && !req.query._id.includes('$in') || req.query.id
         let queryType = req.query.type
 
-        console.log(`\n -- ${queryType} --\n`)
+        console.log(`\n -- QUERY ${queryType} --\n`)
         
         let Entity = queryType ? Entities[queryType] : null
         let result = null
@@ -74,6 +74,8 @@ exports.createEntity = async function (req, res) {
 
         let Entity = req.body.type ? Entities[req.body.type] : null
         if (!Entity) throw Error('no-entity-type')
+
+        console.log(`\n -- UPDATE ${req.body.type} --\n`)
 
         let result = req.body._id ? await Entity.model.findById(req.body._id) : null
 

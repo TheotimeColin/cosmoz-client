@@ -93,7 +93,7 @@ export default {
         constOnly: { type: Boolean, default: false },
         constShort: { type: Boolean, default: false },
         displayIntro: { type: Boolean, default: false },
-        constellation: { type: String, default: false },
+        constellation: { type: String, default: '' },
     },
     data: () => ({
 

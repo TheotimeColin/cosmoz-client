@@ -42,7 +42,7 @@ export default {
 <style lang="scss" scoped>
 .LinkBase {
     font: var(--ft-title-3xs);
-    line-height: 1;
+    line-height: 1.6;
     display: inline-block;
     cursor: pointer;
     padding: 0;

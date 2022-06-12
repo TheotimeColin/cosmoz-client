@@ -1,53 +1,58 @@
 <template>
     <div>
-        <div class="block bg-bg-weak p-20@xs br-none@xs">
-            <h1 class="ft-title-xs d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
+        <div class="p-20 bg-bg-weak br-s">
+            <p>
+                <fa icon="far fa-calendar" class="mr-5" /> {{ $moment(gathering.date).format('D MMMM YYYY à HH:mm') }}
+            </p>
+            <p class="mt-5">
+                <fa icon="far fa-map-marker-alt" class="mr-5" /> {{ user ? gathering.location : `Information réservée aux membres` }}
+            </p>
 
-            <div class="row-s">
-                <div class="col-6 col-12@xs">
-                    <p>
-                        <fa icon="far fa-calendar" class="mr-5" fixed-width /> {{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}
-                    </p>
-                    <p class="mt-3">
-                        <fa icon="far fa-map-marker-alt" class="mr-5" fixed-width /> {{ user ? gathering.location : `Information réservée aux membres` }}
-                    </p>
+            <!-- <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: gathering.constellation.slug }})" class="mt-20 d-flex c-pointer" v-if="gathering.constellation">
+                <const-icon
+                    v-bind="gathering.constellation"
+                    :no-link="true"
+                    :modifiers="['m']"
+                />
+
+                <div class="ml-15">
+                    <p class="ft-s color-ft-weak">Organisé par</p>
+                    <p class="ft-title-2xs">{{ gathering.constellation.name }}</p>
                 </div>
+            </nuxt-link> -->
+        </div>
 
-                <div class="col-6 col-12@xs mt-20@xs d-flex@xs fxa-center@xs" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
-                    <div class="d-flex@xs mr-5@xs">
-                        <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).slice(0, 4)" :key="participant._id" v-bind="participant" />
-                    </div>
-
-                    <link-base @click="isList = true">
-                        <template v-if="usersByStatus(['attending', 'confirmed']).length > 3 && !hasBooked">
-                            {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 2 }} {{ gathering.isPast ? 'autres ont participé' : 'autres participent' }}
-                        </template>
-                        <template v-else>
-                            {{ usersByStatus(['attending', 'confirmed']).length }} {{ gathering.isPast ? 'ont participé' : 'participent' }}
-                        </template>
-                    </link-base>
-                </div>
+        <div class="p-20 bg-bg-weak mt-10 br-s p-sticky p-relative@s" style="--offset: 40px" v-if="!gathering.isPast">
+            <div class="mb-5" v-if="usersByStatus(['attending', 'confirmed']).length > 0">
+                <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).slice(0, 7)" :key="participant._id" v-bind="participant" />
             </div>
+            
+            <link-base @click="isList = true">
+                <template v-if="usersByStatus(['attending', 'confirmed']).length > 3 && !hasBooked">
+                    {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 2 }} autres participent
+                </template>
+                <template v-else>
+                    {{ usersByStatus(['attending', 'confirmed']).length }} inscrits
+                </template>
+            </link-base>
 
-            <hr class="Separator mv-20" v-if="!gathering.isPast">
+            <div class="color-ft-weak ft-italic" v-if="usersByStatus('waiting').length > 0">{{ usersByStatus('waiting').length }} en liste d'attente</div>
 
-            <div class="text-center" v-if="!gathering.isPast">
-                <link-base class="mr-10">Plus d'infos</link-base>
-
+            <div class="d-flex fxa-center mt-20" v-if="!hasConfirmed">
                 <template v-if="user">
-                    <button-base class="fx-grow is-disabled" :modifiers="['light', 's']" v-if="hasWaitingList">
+                    <button-base class="fx-grow is-disabled" :modifiers="['light']" v-if="hasWaitingList">
                         événement complet
                     </button-base>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
-                        {{ hasBooked ? `Tu participes` : `En liste d'attente` }}
+                    <button-base class="fx-grow" :modifiers="['light']" :icon-before="hasBooked ? 'check' : 'clock'" @click="isManage = true" v-else-if="hasBooked || isWaiting">
+                        {{ hasBooked ? `Inscription confirmée` : `En liste d'attente` }}
                     </button-base>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" icon-before="arrow-right" @click="isManage = true" v-else>
-                        {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je participe!`) }}
+                    <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="isManage = true" v-else>
+                        {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je m'inscris !`) }}
                     </button-base>
                 </template>
                 <template v-else>
-                    <button-base class="fx-grow" :modifiers="['light', 's']" icon-before="arrow-right" @click="$store.commit('page/register', `sub-${gathering._id}`)">
-                        Je participe !
+                    <button-base class="fx-grow" :modifiers="['light']" icon-before="arrow-right" @click="$store.commit('page/register', `sub-${gathering._id}`)">
+                        Je m'inscris !
                     </button-base>
                 </template>
             </div>

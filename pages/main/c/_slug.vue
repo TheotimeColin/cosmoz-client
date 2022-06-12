@@ -19,8 +19,12 @@ export default {
     async fetch () {
         this.$store.commit('page/set', { isOpenNav: true })
 
-        const response = await this.$store.dispatch('constellation/get', {
+        await this.$store.dispatch('constellation/get', {
             query: { slug: this.$route.params.slug }
+        })
+
+        await this.$store.dispatch('gathering/fetch', {
+            query: { constellation: this.constellation._id, status: 'active' }
         })
     },
     beforeDestroy () {

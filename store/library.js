@@ -21,7 +21,7 @@ export default {
     actions: { 
         async fetch ({ commit }, params) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query,
                     type: 'mediaCollection'
                 }))
@@ -36,7 +36,7 @@ export default {
         },
         async get ({ commit }, _id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     _id, type: 'mediaCollection'
                 }))
                 

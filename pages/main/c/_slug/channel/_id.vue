@@ -1,5 +1,5 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--xs">
+    <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <content-feed :constellation="constellation._id" read="g-member" />
     </div>
 </template>

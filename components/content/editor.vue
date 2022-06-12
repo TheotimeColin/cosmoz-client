@@ -14,23 +14,25 @@
             </div>
 
             <transition name="fade">
-                <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read && (isFocused || images.length > 0)">
-                    <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
+                <div v-show="isFocused || images.length > 0">
+                    <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read">
+                        <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
+                    </div>
+
+                    <form-errors class="mt-15" :items="errors" />
+
+                    <div class="Editor_secondary">
+                        <div class="d-flex fx-grow pr-10 fxj-end">
+                            <input-file icon="image" :multiple="true" @input="addImages" />
+                        </div>
+                        <div class="fx-no-shrink">
+                            <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
+                                Envoyer
+                            </button-base>
+                        </div>
+                    </div>
                 </div>
             </transition>
-
-            <form-errors class="mt-15" :items="errors" />
-
-            <div class="Editor_secondary">
-                <div class="d-flex fx-grow pr-10 fxj-end">
-                    <input-file icon="image" :multiple="true" @input="addImages" />
-                </div>
-                <div class="fx-no-shrink">
-                    <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
-                        Envoyer
-                    </button-base>
-                </div>
-            </div>
         </div>
     </div>
 </template>

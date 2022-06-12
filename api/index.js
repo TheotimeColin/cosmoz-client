@@ -59,8 +59,8 @@ app.locals.sendinBlue = SibApiV3Sdk
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'))
 
 mongoose.connection.once('open', async () => {
-    app.get('/entities', getEntities)
-    app.post('/entities', getEntities)
+    app.get('/entities/get', getEntities)
+    app.post('/entities/get', getEntities)
     app.post('/entities', upload.single('file'), createEntity)
     app.delete('/entities', deleteEntity)
 

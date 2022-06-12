@@ -38,7 +38,7 @@ export default {
         },
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'mention',
                 }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 

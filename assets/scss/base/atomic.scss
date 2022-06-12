@@ -75,6 +75,8 @@
     .clear-after#{$name} { &::after { content: ""; display: block; clear: both; }}
     .clear-before#{$name} { &::before { content: ""; display: block; clear: both; }}
 
+    .br-none#{$name} { border-radius: 0px; }
+
     /* FONTS */
     @each $fontName, $font in $fonts {
         .#{$fontName}{ font-family: #{map-get($font, name)}; }

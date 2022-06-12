@@ -28,7 +28,6 @@
                         :no-link="true"
                         :status-only="true"
                         :const-only="true"
-                        :constellation="false"
                     >
                         <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
                     </block-gathering>
@@ -159,8 +158,8 @@ export default {
                 this.formData.coverSelect = {
                     photographer: '',
                     src: {
-                        small: response.image,
                         medium: response.image,
+                        large: response.image,
                     }
                 }
             }
