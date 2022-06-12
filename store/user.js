@@ -19,6 +19,9 @@ export default {
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
         },
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
+        },
         update (state, user) {
             if (user && user.role == 'guest') state.guestId = user._id
         },

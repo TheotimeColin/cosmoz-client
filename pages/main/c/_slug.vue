@@ -55,7 +55,7 @@ export default {
                 { hid: 'description', name: 'description', content: this.constellation.intro },
                 { property: 'og:title', content: this.constellation.name  + ' organise ses événements sur Cosmoz' },
                 { property: 'og:url', content: this.$config.baseUrl + '/c/' + this.constellation.slug },
-                { property: 'og:image', content: this.constellation.logo },
+                { property: 'og:image', content: this.constellation.logoLarge },
                 { property: 'og:description', content: this.constellation.intro },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
                 { property: 'twitter:card', content: 'summary_large_image' },

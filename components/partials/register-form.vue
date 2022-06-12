@@ -68,7 +68,7 @@
 
         <popin :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false" v-show="isReset">
             <template slot="content">
-                <form @submit.prevent="resetPassword" class="strong p-30">
+                <form @submit.prevent="resetPassword" class="p-30">
                     <p class="ft-title-2xs">Réinitialiser mon mot de passe</p>
                     
                     <input-base label="Ton adresse e-mail" class="mv-20" type="email" v-model="formData.email" :attrs="{ required: true }" v-show="!resetSuccess" />

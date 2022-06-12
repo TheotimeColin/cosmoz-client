@@ -64,7 +64,6 @@
             </div>
         </div>
 
-
         <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link>
     </div>
 </template>
@@ -95,9 +94,6 @@ export default {
         displayIntro: { type: Boolean, default: false },
         constellation: { type: String, default: '' },
     },
-    data: () => ({
-
-    }),
     computed: {
         user () { return this.$store.getters['user/self'] },
         constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
@@ -105,7 +101,7 @@ export default {
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.id, slug: this.constellationData.slug } })
+            return this.constellationData ? this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.id, slug: this.constellationData.slug } }) : ''
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')

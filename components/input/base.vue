@@ -204,7 +204,7 @@ export default {
 
     .InputBase_label,
     .SelectBase_label {
-        background-color: var(--color-bg-strong) !important;
+        background-color: var(--color-bg) !important;
     }
 }
 

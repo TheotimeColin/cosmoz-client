@@ -38,6 +38,7 @@
 
                 <page-gathering-action-button
                     :gathering="gathering"
+                    @manage="isFull = true"
                 />
             </div>
         </div>

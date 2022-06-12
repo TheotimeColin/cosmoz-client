@@ -16,7 +16,7 @@
         <popin-register />
         <tooltip-manager />
         
-        <default-footer class="Footer" v-if="!isDisableFooter && !user" />
+        <!-- <default-footer class="Footer" v-if="!isDisableFooter && !user" /> -->
     </div>
 </template>
 

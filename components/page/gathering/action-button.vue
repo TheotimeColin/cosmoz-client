@@ -8,7 +8,7 @@
                 {{ hasBooked ? `Tu participes` : `En liste d'attente` }}
             </button-base>
             <button-base class="fx-grow" :modifiers="['light', size]" icon-before="arrow-right" @click="$emit('manage')" v-else>
-                {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je participe!`) }}
+                {{ (hasWaitingList ? `Entrer en liste d'attente` : `Je participe !`) }}
             </button-base>
         </template>
         <template v-else>

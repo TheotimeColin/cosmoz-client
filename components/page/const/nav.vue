@@ -35,8 +35,14 @@
                     </nuxt-link>
                 </div>
             </div>
+            
+            <div class="p-15 bg-cosmoz" v-if="!user">
+                <p class="ft-title-2xs mb-5">Devenir membre</p>
+                <p class="ft-s mb-15">Rejoins la communauté et débloque toutes les sections !</p>
 
-            <div class="p-15 bg-cosmoz" v-if="followers.includes(user._id)">
+                <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" @click="$store.commit('page/register', 'g-join')">Rejoindre le groupe</button-base>
+            </div>
+            <div class="p-15 bg-cosmoz" v-else-if="followers.includes(user._id)">
                 <p class="ft-title-2xs mb-5">Demande en cours</p>
                 <p class="ft-s mb-15">Ta demande a été envoyée et elle est en attente. Un peu de patience !</p>
 
@@ -76,10 +82,10 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
-            return this.user ? this.$store.getters['gathering/find']({
+            return this.$store.getters['gathering/find']({
                 constellation: this._id,
                 sort: { date: 'desc' }
-            }) : []
+            })
         },
         isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
         isMember () { return this.user && this.members.includes(this.user._id) },
@@ -122,6 +128,7 @@ export default {
                 // },
                 {
                     label: `Discussions`,
+                    disabled: !this.user,
                     children: [
                         { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
                     ]
