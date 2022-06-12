@@ -21,12 +21,49 @@ export default {
 
         return items
     },
+    softRefresh (state, values) {
+        let items = [...Object.values(state.items), ...values].reduce((acc, value) => {
+            return { ...acc, [value._id]: value }
+        }, {})
+
+        return items
+    },
     refresh (values) {
         let items = values.reduce((acc, value) => {
             return { ...acc, [value._id]: value }
         }, {})
 
         return items
+    },
+    softFetch (queried, $store) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let result = []
+                let existing = JSON.parse(JSON.stringify($store.state.items))
+
+                for (let item of queried) {
+                    if (!existing[item]) {
+                        let newItems = await $store.dispatch('fetch', {
+                            query: { _id: '$in' + queried.join(',') },
+                            refresh: false
+                        })
+
+                        if (newItems) {
+                            existing = newItems.reduce((acc, value) => ({ ...acc, [value._id]: value }), {})
+                        }
+                    }
+
+                    if (existing[item]) result = [ ...result, existing[item] ]
+                }
+                
+                $store.commit('softRefresh', result)
+
+                resolve(result)
+            } catch (e) {
+                console.error(e)
+                reject([])
+            }
+        })
     },
     handleErrors: (e, commit, text, parent) => {
         let message = e.message

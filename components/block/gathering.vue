@@ -65,8 +65,7 @@
         </div>
 
 
-        <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="(!noLink && !link) || replaceLink"></nuxt-link>
-        <a class="BlockGathering_link" :href="link" target="_blank" v-else-if="link && !noLink"></a>
+        <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link>
     </div>
 </template>
 

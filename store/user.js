@@ -198,35 +198,8 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
         },
-        async softFetch ({ state, dispatch, commit }, params) {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    let result = []
-                    let users = JSON.parse(JSON.stringify(state.items))
-
-                    for (let item of params.items) {
-                        if (!users[item]) {
-                            console.log('====== FETCH USERS =======')
-
-                            let newUsers = await dispatch('fetch', {
-                                query: { _id: '$in' + params.items.join(',') },
-                                refresh: false
-                            })
-
-                            if (newUsers) users = storeUtils.refresh(newUsers)
-                        }
-
-                        if (users[item]) result = [ ...result, parseUser(users[item]) ]
-                    }
-                    
-                    commit('refresh', result)
-
-                    resolve(result)
-                } catch (e) {
-                    console.error(e)
-                    reject([])
-                }
-            })
+        async softFetch ({ state, dispatch, commit }, items) {
+            return parseUser(await storeUtils.softFetch(items, { state, dispatch, commit }))
         },
         async mapUsers ({ state, dispatch }, params) {
             return new Promise(async (resolve, reject) => {

@@ -58,7 +58,7 @@ export default {
         this.isLoading = false 
     },
     data: () => ({
-        isLoading: true,
+        isLoading: false,
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },

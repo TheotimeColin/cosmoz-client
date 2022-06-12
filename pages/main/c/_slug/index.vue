@@ -77,9 +77,7 @@ export default {
             query: { constellation: this.constellation._id, status: 'active' }
         })
 
-        await this.$store.dispatch('user/softFetch', {
-            items: this.constellation.members
-        })
+        await this.$store.dispatch('user/softFetch', this.constellation.members)
     },
     props: {
         constellation: { type: Object }

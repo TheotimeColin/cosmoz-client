@@ -64,9 +64,7 @@ export default {
             type: 'invite'
         })
 
-        await this.$store.dispatch('user/softFetch', {
-            items: this.constellation.members
-        })
+        await this.$store.dispatch('user/softFetch', this.constellation.members)
     },
     data: () => ({
         entityType: 'constellation',

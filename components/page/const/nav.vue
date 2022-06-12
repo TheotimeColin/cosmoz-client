@@ -4,6 +4,7 @@
             <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
                 <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
             </div>
+
             <div class="Nav_content">
                 <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
                     <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
@@ -15,7 +16,7 @@
 
                         <div class="Nav_sub" v-for="sub in (item.children ? item.children : []).filter(c => !c.disabled)" :key="sub.label">
                             <fa icon="far fa-corner" flip="both" />
-                            <nuxt-link class="Nav_item Nav_item--sub ellipsis-1 ellipsis-break" :to="sub.to">{{ sub.label }}</nuxt-link>
+                            <nuxt-link class="Nav_item Nav_item--sub ellipsis-1 ellipsis-break" :to="localePath(sub.to)">{{ sub.label }}</nuxt-link>
                         </div>
                     </div>
                 </div>
@@ -54,7 +55,13 @@
 <script>
 export default {
     name: 'PageConstNav',
+    async fetch () {
+        if (this.user) {
+            await this.$store.dispatch('gathering/softFetch', this.user.gatherings.map(g => g._id))
+        }
+    },
     props: {
+        _id: { type: String },
         slug: { type: String },
         hero: { type: String },
         name: { type: String },
@@ -68,15 +75,24 @@ export default {
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
-        currentGathering () { return this.$route.params.eventId ? this.$store.getters['gathering/findOne']({ id: this.$route.params.eventId }) : null },
+        gatherings () {
+            let query = this.user ? this.user.gatherings.map(g => g._id) : []
+            let current = this.$route.params.eventId
+
+            if (current && !query.includes(current)) query = [ current, ...query]
+
+            return this.user ? this.$store.getters['gathering/find']({
+                constellation: this._id,
+                $or: { id: { $in: query }, _id: { $in: query } },
+                sort: { date: 'desc' }
+            }) : []
+        },
         isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
         isMember () { return this.user && this.members.includes(this.user._id) },
         events () {
-            if (!this.currentGathering) return []
-
-            return [
-                { label: this.currentGathering.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: this.currentGathering.id } } }
-            ]
+            return this.gatherings.map(g => ({
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }
+            }))
         },
         items () {
             return [

@@ -31,9 +31,7 @@
 export default {
     name: 'ConsteMembers',
     async fetch () {
-        await this.$store.dispatch('user/softFetch', {
-            items: this.constellation.members
-        })
+        await this.$store.dispatch('user/softFetch', this.constellation.members)
     },
     props: {
         constellation: { type: Object }
