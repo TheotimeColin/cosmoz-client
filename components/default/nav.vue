@@ -22,21 +22,13 @@
                 <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
             </div>
             <div class="AppNav_sub">
-                <div v-if="!selected && !isExplore" key="selected">
+                <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
                     <div class="AppNav_header bg-cover bg-night" v-if="user">
                         <user-icon v-bind="user" :display-name="true" />
                     </div>
                     
                     <div class="AppNav_menu">
-                        <div class="AppNav_menuItem" v-for="(cat, i) in nav" :key="i">
-                            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
-
-                            <div class="AppNav_menuChildren">
-                                <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
-                                    <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
-                                </nuxt-link>
-                            </div>
-                        </div>
+                        <nav-list :items="nav" />
                     </div>
 
                     <div class="AppNav_footer">
@@ -46,17 +38,9 @@
                         </div>
                     </div>
                 </div>
-                <div v-else-if="!selected && isExplore" key="explore">
+                <div class="AppNav_subContent" v-else-if="!selected && isExplore" key="explore">
                     <div class="AppNav_menu">
-                        <div class="AppNav_menuItem" v-for="(cat, i) in exploreNav" :key="i">
-                            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
-
-                            <div class="AppNav_menuChildren">
-                                <nuxt-link class="AppNav_menuSubitem" :to="localePath(child.to)" v-for="(child, j) in cat.children" :key="j">
-                                    <fa :icon="`far fa-${child.fa}`" /> {{ child.label }}
-                                </nuxt-link>
-                            </div>
-                        </div>
+                        <nav-list :items="exploreNav" />
                     </div>
                 </div>
                 <page-const-nav v-bind="selectConst" v-else-if="selected" :key="selectConst._id" />
@@ -129,13 +113,12 @@ export default {
             {
                 children: [
                     { label: `Actualité`, fa: 'home', to: { name: 'feed' } },
-                    { label: `Constellation`, fa: 'sparkles', to: { name: 'constellation' } },
+                    { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
                 ]
             }, {
                 label: `On sort ?`,
                 children: [
-                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'g' } },
-                    { label: `Passées`, fa: 'home', to: { name: 'g-past' } },
+                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'g' }, isParent: true }
                 ]
             }
         ]
@@ -283,10 +266,14 @@ export default {
 }
 
 .AppNav_sub {
-    display: flex;
-    flex-direction: column;
     overflow: auto;
     touch-action: pan-y !important;
+}
+
+.AppNav_subContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .AppNav_hider {
