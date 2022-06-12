@@ -1,11 +1,15 @@
 <template>
     <div>
         <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
-            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
+            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">
+                {{ cat.label }}
+            </p>
 
             <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
                 <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
-                    <fa :icon="`far fa-${item.fa}`" fixed-width /> {{ item.label }}
+                    <fa :icon="`far fa-${item.fa}`" fixed-width /> 
+                    <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
+                    {{ item.label }}
                 </nuxt-link>
 
                 <div class="Nav_sub" v-for="sub in (item.children ? item.children : []).filter(c => !c.disabled)" :key="sub.label">

@@ -99,7 +99,12 @@ export default {
                 {
                     label: `Événements à venir`,
                     disabled: this.events.length <= 0,
-                    children: this.events
+                    children: [ ...this.events.slice(0, 3), {
+                        label: 'Voir tout',
+                        number: this.events.length,
+                        isParent: true,
+                        to: { name: 'c-slug-events', params: { slug: this.slug } }
+                    }]
                 },
                 {
                     label: `Événements passés`,
