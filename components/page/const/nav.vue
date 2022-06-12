@@ -9,8 +9,8 @@
                 <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
                     <p class="ft-s color-ft-weak mb-5" v-if="cat.label">{{ cat.label }}</p>
 
-                    <div v-for="item in cat.children.filter(c => !c.disabled)" class="ellipsis-1 ellipsis-break" :key="item.label">
-                        <nuxt-link class="Nav_item" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
+                    <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
+                        <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
                             <fa :icon="`far fa-${item.fa}`" fixed-width /> {{ item.label }}
                         </nuxt-link>
 
@@ -76,22 +76,24 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
-            let query = this.user ? this.user.gatherings.map(g => g._id) : []
-            let current = this.$route.params.eventId
-
-            if (current && !query.includes(current)) query = [ current, ...query]
-
             return this.user ? this.$store.getters['gathering/find']({
                 constellation: this._id,
-                $or: { id: { $in: query }, _id: { $in: query } },
                 sort: { date: 'desc' }
             }) : []
         },
         isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
         isMember () { return this.user && this.members.includes(this.user._id) },
+        attended () {
+            return this.user ? this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) : []
+        },
         events () {
-            return this.gatherings.map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }
+            return this.gatherings.filter(g => !g.isPast).map(g => ({
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: this.attended.includes(g._id) ? 'calendar-check' : 'calendar'
+            }))
+        },
+        pastEvents () {
+            return this.gatherings.filter(g => g.isPast && this.attended.includes(g._id)).map(g => ({
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag'
             }))
         },
         items () {
@@ -100,12 +102,16 @@ export default {
                     children: [
                         { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } }
                     ]
-                }, {
-                    label: `Événements`,
-                    children: [
-                        { label: `Événements prévus`, fa: 'calendar', to: { name: 'c-slug-events', params: { slug: this.slug } }, children: this.events, isParent: true },
-                        { label: `Gestion des événements`, isParent: true, fa: 'calendar-pen', disabled: (this.user && this.user.role != 'admin') && !this.organizers.includes(this.user._id) && !this.admins.includes(this.user._id), to: { name: 'c-slug-manage-events', params: { slug: this.slug } } }
-                    ]
+                }, 
+                {
+                    label: `Événements à venir`,
+                    disabled: this.events.length <= 0,
+                    children: this.events
+                },
+                {
+                    label: `Événements passés`,
+                    disabled: this.pastEvents.length <= 0,
+                    children: this.pastEvents
                 },
                 // {
                 //     label: `Sorties`,
@@ -181,7 +187,7 @@ export default {
         font: var(--ft-m);
         line-height: 0.6;
         cursor: pointer;
-        color: var(--color-ft-light);
+        color: var(--color-ft-weak);
         text-decoration-color: var(--color-ft-xweak);
         border-radius: 5px;
         transition: all 100ms ease;
@@ -202,6 +208,7 @@ export default {
 
         &.is-active:not(.is-parent),
         &.is-active-exact.is-parent {
+            color: var(--color-ft-light);
             background-color: var(--color-bg-weak);
         }
     }
@@ -214,6 +221,7 @@ export default {
     }
 
     .Nav_item--sub {
+        flex-grow: 1;
         padding: 10px;
         margin-left: 5px;
         line-height: 1;
