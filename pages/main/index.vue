@@ -113,6 +113,10 @@ export default {
             limit: 3,
             query: { status: 'active' }
         })
+
+        await this.$store.dispatch('constellation/fetch', {
+            query: { _id: { $in: this.gatherings.map(g => g.constellation) } }
+        })
     },
     data: () => ({
         countdown: '0j 00h 00m 00s',

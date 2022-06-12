@@ -1,14 +1,14 @@
 <template>
     <div class="Page_wrapper d-flex Wrapper d-block@s">
         <div class="fx-grow">
-            <div class="block mb-40 o-hidden">
+            <div class="block mb-40 o-hidden" v-if="constellation.description">
                 <h1 class="ft-title-xs mb-15">
                     À propos du groupe
                 </h1>
 
-                <div class="TextBody ellipsis-3" style="max-height: 300px;" v-html="constellation.description"></div>
+                <div class="TextBody" :class="{ 'ellipsis-2': !showFull }"  v-html="constellation.description"></div>
 
-                <link-base>En savoir plus</link-base>
+                <link-base class="mt-20" @click="showFull = true" v-show="!showFull">En savoir plus</link-base>
             </div>
 
             <div v-if="upcomingEvents.length > 0">
@@ -85,7 +85,8 @@ export default {
         constellation: { type: Object }
     },
     data: () => ({
-        isLoading: false
+        isLoading: false,
+        showFull: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },

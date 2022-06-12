@@ -11,10 +11,12 @@ exports.getEntities = async function (req, res) {
     let errors = []
     let data = []
 
+    req.query = Object.keys(req.query)[0] ? req.query : req.body
+
     try {
         let user = await authenticate(req.headers)
         let cancel = false
-        let idQuery = req.query._id && !req.query._id.includes('$in') || req.query.id
+        let idQuery = req.query._id && typeof req.query._id !== 'object' && !req.query._id.includes('$in') || req.query.id
         let queryType = req.query.type
 
         console.log(`\n -- ${queryType} --\n`)
@@ -346,19 +348,22 @@ const parseQuery = function (query, user) {
                 cancel = true
             }
         }
-        
+
         if (value && (typeof value === 'object' && !Array.isArray(value))) {
             let entries = Object.entries(value)
 
+
             if (entries[0]) {
                 entries = entries[0]
-
+                
                 if (entries[0] == '$addToSet') {    
                     parsedQuery['$addToSet'] = { [key]: entries[1] }
                     delete parsedQuery[key]
                 } else if (entries[0] == '$pull') {
                     parsedQuery['$pull'] = { [key]: entries[1] }
                     delete parsedQuery[key]
+                } else if (entries[0] == '$in') {
+                    parsedQuery[key] = { '$in': entries[1] }
                 }
             }
         }
