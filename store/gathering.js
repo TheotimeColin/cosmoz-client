@@ -102,7 +102,7 @@ export default {
         }
     },
     getters: {
-        items: (state) => {
+        items: (state, getters, root) => {
             return Object.values(state.items).map(item => {
                 let thumbnail = ''
                 let hero = ''
@@ -112,11 +112,12 @@ export default {
                     
                     if (item.cover.medias.find(m => m.size == 'm')) hero = item.cover.medias.find(m => m.size == 'm').src
                 }
-
+                
                 return {
                     ...item,
                     thumbnail,
-                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status.status == 'confirmed').length >= item.max,
+                    isAttending: root.auth.user && item.users.find(u => u._id == root.auth.user._id && (u.status == 'attending' || u.status == 'confirmed')) ? true : false,
+                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
                     isPast: moment(item.date).isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
                     hero,
@@ -136,22 +137,27 @@ export default {
             let items = raw ? Object.values(state.items) : getters.items
             return search ? storeUtils.searchItems(items, search, root.auth.user) : items
         },
-        groupBy: (state, getters) => (property) => {
-            let items = getters.items
+        groupBy: (state, getters) => (property, search, params) => {
+            let items = search ? getters.find(search) : getters.items
 
-            items = items.reduce((obj, item) => {
-                let newObj = { ...obj }
+            let result = []
+            items = items.forEach(item => {
+                let value = params.asDays ? moment(item[property]).format('YYYYMMDD') : item[property]
 
-                if (!newObj[item[property]]) {
-                    newObj[item[property]] = [ item ]
+                if (result.find(i => i.value == value)) {
+                    result = result.map(v => ({
+                        ...v,
+                        items: v.value == value ? [ ...v.items, item ] : v.items
+                    }))
                 } else {
-                    newObj[item[property]].push(item)
+                    result = [ ...result, { value, items: [ item ]} ]
                 }
 
-                return newObj
-            }, {})
+                // newObj[value] = { value: item[property], items: [ ...(newObj[value] ? newObj[value].items : []), item ] }
 
-            return items
+            })
+
+            return result
         },
         findOne: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values({ ...state.items }) : getters.items

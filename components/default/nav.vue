@@ -114,11 +114,7 @@ export default {
                 children: [
                     { label: `Actualité`, fa: 'home', to: { name: 'feed' } },
                     { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
-                ]
-            }, {
-                label: `On sort ?`,
-                children: [
-                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'g' }, isParent: true }
+                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true }
                 ]
             }
         ]

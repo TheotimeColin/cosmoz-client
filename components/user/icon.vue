@@ -6,7 +6,7 @@
             </template>
         </div>
 
-        <div class="ml-10" v-if="displayName">
+        <div class="UserIcon_nameContainer" v-if="displayName">
             <div class="d-flex fxa-center">
                 <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
                     {{ name ? name : '' }}
@@ -60,6 +60,10 @@ export default {
     vertical-align: top;
 }
 
+.UserIcon_nameContainer {
+    margin-left: 10px;
+}
+
 .UserIcon_image {
     width: 35px;
     height: 35px;
@@ -109,6 +113,27 @@ export default {
 
     .UserIcon_badge {
         display: none;
+    }
+}
+
+.UserIcon--s {
+
+    .UserIcon_image {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .UserIcon_name {
+        font-size: 14px;
+    }
+
+    .UserIcon_badge {
+        display: none;
+    }
+
+    .UserIcon_nameContainer {
+        margin-left: 8px;
     }
 }
 

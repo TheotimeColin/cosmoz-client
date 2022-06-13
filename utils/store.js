@@ -145,6 +145,8 @@ export default {
 
                 return value == 'desc' ? moment(a[key]).valueOf() - moment(b[key]).valueOf() : moment(b[key]).valueOf() - moment(a[key]).valueOf()
             })
+
+            if (sort.reverse) items = items.reverse()
         } else {
             items = items.sort((a, b) => a.createdAt && b.createdAt ? b.createdAt.valueOf() - a.createdAt.valueOf() : false)
         }

@@ -62,24 +62,19 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        gatherings () {
-            return this.$store.getters['gathering/find']({
-                '$in': this.user.booked,
-                status: 'active'
-            })
-        },
         upcoming () {
             return this.$store.getters['gathering/find']({
                 isPast: false,
                 isFull: false,
+                isAttending: false,
                 status: 'active'
             }).slice(0, 6)
         },
         attending () {
             return this.$store.getters['gathering/find']({
                 isPast: false,
+                isAttending: true,
                 status: 'active',
-                _id: { $in: this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed') }
             })
         }
     },

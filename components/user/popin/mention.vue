@@ -1,7 +1,7 @@
 <template>
-    <popin :is-active="selectedUser ? true : false" :modifiers="['m']" @close="onClose" >
+    <popin :is-active="selectedUser ? true : false" @close="onClose" >
         <template slot="content" v-if="selectedUser">
-            <div class="bg-cover bg-night text-center p-30" v-if="isFriend && isSent">
+            <div class="bg-cover bg-night text-center p-30 height-100" v-if="isFriend && isSent">
                 <div class="d-flex fxa-center fxj-center">
                     <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
 

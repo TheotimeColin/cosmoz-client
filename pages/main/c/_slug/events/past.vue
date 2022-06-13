@@ -1,13 +1,19 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
-        <div v-if="gatherings.length > 0">
-            <block-gathering
-                v-for="gathering in gatherings"
-                class="mb-20"
-                :status-only="true"
-                v-bind="gathering"
-                :key="gathering._id"
-            />
+        <div v-if="Object.keys(gatheringsByDate).length > 0">
+            <div class="Date" v-for="date in gatheringsByDate" :key="date.value">
+                <p class="ft-title-xs">
+                    {{ $moment(date.value).format('dddd D MMMM YYYY') }}
+                </p>
+
+                <block-gathering
+                    v-for="gathering in date.items"
+                    class="mt-20"
+                    :status-only="true"
+                    v-bind="gathering"
+                    :key="gathering._id"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -31,12 +37,13 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        gatherings () {
-            return this.$store.getters['gathering/find']({
+        gatheringsByDate () {
+            return this.$store.getters['gathering/groupBy']('date', {
                 constellation: this.constellation._id,
                 status: 'active',
-                isPast: true
-            })
+                isPast: true,
+                sort: { date: 'asc' }
+            }, { asDays: true })
         }
     },
     head () {
@@ -48,3 +55,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.Date {
+
+    & + & {
+        margin-top: 60px;
+    }
+}
+</style>

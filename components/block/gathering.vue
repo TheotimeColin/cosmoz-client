@@ -7,7 +7,7 @@
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
                     <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellationData">
-                        <const-icon class="mr-10" v-bind="constellationData" /> {{ constShort ? '' : 'Organisé par'}} {{ constellationData.name }}
+                        <const-icon class="mr-10" :display-name="true" v-bind="constellationData" />
                     </div>
                     <div class="BlockGathering_status d-none@xs" v-if="!constOnly">
                         <div>

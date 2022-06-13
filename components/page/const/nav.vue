@@ -76,17 +76,14 @@ export default {
         },
         isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
         isMember () { return this.user && this.members.includes(this.user._id) },
-        attended () {
-            return this.user ? this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) : []
-        },
         events () {
             return this.gatherings.filter(g => !g.isPast).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: this.attended.includes(g._id) ? 'calendar-check' : 'calendar'
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: g.isAttending ? 'calendar-check' : 'calendar'
             }))
         },
         pastEvents () {
             return this.gatherings.filter(g => g.isPast).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag', hasAttended: this.attended.includes(g._id)
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag', hasAttended: g.isAttending
             }))
         },
         items () {

@@ -3,10 +3,9 @@
         <div class="Comment_main">
             <div class="fx-center">
                 <div class="d-flex fxa-center ft-s line-1 fx-grow">
-                    <user-icon class="fx-no-shrink" :modifiers="['s']" v-bind="owner" />
-                    
-                    <span class="ft-title-2xs line-1 ml-10">{{ owner.name }}</span>
-                    <span class="ft-s line-1 ft-italic color-ft-weak ml-5">{{ $moment(createdAt).fromNow() }}</span>
+                    <user-icon class="fx-no-shrink" :display-name="true" :modifiers="['s']" v-bind="owner">
+                        <span class="ft-xs color-ft-weak ml-5" slot="name">{{ $moment(createdAt).fromNow() }}</span>
+                    </user-icon>
                 </div>
 
                 <div class="Comment_actions">
@@ -102,7 +101,7 @@ export default {
 
     .Comment_text {
         font: var(--ft-m);
-        margin-top: 10px;
+        margin-top: 5px;
     }
 
     .Comment_actions {
