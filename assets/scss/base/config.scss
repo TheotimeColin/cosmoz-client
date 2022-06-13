@@ -85,23 +85,23 @@ $main-colors: ();
 
 $fonts: (
     "ft": (
-        "name": "Roboto Condensed, sans-serif",
+        "name": "'Rubik', sans-serif",
         "sizes": (
-            "2xs": "11px/1.5",
-            "xs": "14px/1.5",
-            "s": "15px/1.5",
-            "m": "17px/1.5",
-            "l": "18px/1.5",
-            "xl": "20px/1.4",
-            "2xl": "24px/1.4",
+            "2xs": "11px/1.45",
+            "xs": "14px/1.45",
+            "s": "15px/1.45",
+            "m": "16px/1.45",
+            "l": "17px/1.45",
+            "xl": "20px/1.45",
+            "2xl": "24px/1.45",
             "3xl": "34px/1.25",
             "4xl": "40px/0.75",
             "5xl": "70px/0.75",
         ),
         "weights": (
             "regular": 400,
-            "medium": 600,
-            "bold": 700
+            "medium": 440,
+            "bold": 500
         )
     ),
     "ft-title": (

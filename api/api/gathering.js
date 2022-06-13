@@ -59,6 +59,7 @@ exports.updateBookingStatus = async function (req, res) {
                 userUpdate = await Entities.user.model.findById(userUpdate._id)
                 
                 userUpdate.gatherings = userUpdate.gatherings.filter(g => !gathering._id.equals(g._id))
+                
                 userUpdate.gatherings = [
                     ...userUpdate.gatherings,
                     { _id: gathering._id, status }

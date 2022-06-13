@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
-            <p class="ft-s color-ft-weak mb-5" v-if="cat.label">
+            <p class="ft-xs color-ft-weak mb-5" v-if="cat.label">
                 {{ cat.label }}
             </p>
 
@@ -39,7 +39,7 @@ export default {
     }
 
     .Nav_item {
-        font: var(--ft-m);
+        font: var(--ft-s-medium);
         line-height: 0.6;
         cursor: pointer;
         color: var(--color-ft-weak);
