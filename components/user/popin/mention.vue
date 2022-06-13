@@ -1,7 +1,7 @@
 <template>
     <popin :is-active="selectedUser ? true : false" :modifiers="['m']" @close="onClose" >
         <template slot="content" v-if="selectedUser">
-            <div class="bg-cover bg-night text-center p-40" v-if="isFriend && isSent">
+            <div class="bg-cover bg-night text-center p-30" v-if="isFriend && isSent">
                 <div class="d-flex fxa-center fxj-center">
                     <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
 
@@ -25,12 +25,15 @@
                     <template v-if="sent.length > 0">
                         <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
-                        <div class="ft-title-xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
+                        <div class="ft-title-2xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
                             {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
                         </div>
                     </template>
-                    <div class="mt-30 bg-bg p-20 br-s" v-if="isRequested && !isFriend">
-                        <p class="ft-title-2xs"><fa icon="far fa-check" class="mr-5" /> Demandé en ami</p>
+                    <div class="mt-30 bg-bg-strong p-15 br-s d-flex fxa-center" v-if="isRequested && !isFriend">
+                        <fa icon="far fa-spinner-third" class="spin mr-15" />
+                        <div>
+                            <p class="ft-title-2xs">Demande d'ami en attente</p>
+                        </div>
                     </div>
                 </div>
                 <div v-else>
@@ -42,7 +45,7 @@
                         </button-base>
                     </div>
 
-                    <div class="mt-30 bg-bg p-20 br-s">
+                    <div class="mt-30 bg-bg-strong p-20 br-s">
                         <p class="ft-title-xs">Ajouter en ami ?</p>
                         <p class="mt-10">{{ selectedUser.name }} ne verra pas ta demande. Vous deviendriez amis seulement si c'est réciproque. </p>
 

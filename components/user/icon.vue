@@ -4,11 +4,6 @@
             <template v-if="hidePicture || !src">
                 {{ name ? name.slice(0, 1) : 'a' }}
             </template>
-
-
-            <!-- <div class="UserIcon_badge" v-if="isFriend">
-                <fa icon="far fa-sparkles" />
-            </div> -->
         </div>
 
         <div class="ml-10" v-if="displayName">
@@ -22,6 +17,8 @@
             
             <slot></slot>
         </div>
+
+        <slot name="overlay"></slot>
     </component>
 </template>
 

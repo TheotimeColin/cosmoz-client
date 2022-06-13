@@ -96,6 +96,7 @@ export default {
     &:active {
         background-color: transparent;
         color: var(--color-ft-light);
+        transform: scale(0.98);
     }
 
     &:active {

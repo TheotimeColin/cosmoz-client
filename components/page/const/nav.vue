@@ -85,8 +85,8 @@ export default {
             }))
         },
         pastEvents () {
-            return this.gatherings.filter(g => g.isPast && this.attended.includes(g._id)).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag'
+            return this.gatherings.filter(g => g.isPast).map(g => ({
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag', hasAttended: this.attended.includes(g._id)
             }))
         },
         items () {
@@ -107,9 +107,14 @@ export default {
                     }]
                 },
                 {
-                    label: `Sorties passés`,
+                    label: `Sorties passées`,
                     disabled: this.pastEvents.length <= 0,
-                    children: this.pastEvents
+                    children: [ ...this.pastEvents.filter(g => g.hasAttended).slice(0, 3), {
+                        label: 'Voir tout',
+                        number: this.pastEvents.length,
+                        isParent: true,
+                        to: { name: 'c-slug-events-past', params: { slug: this.slug } }
+                    }]
                 },
                 {
                     label: `Discussions`,

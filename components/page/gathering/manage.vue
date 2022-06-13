@@ -1,65 +1,77 @@
 <template>
     <div>
-        <div class="block bg-bg-weak p-20@xs br-none@xs">
-            <h1 class="ft-title-xs d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
+        <div class="block bg-bg-weak p-0 br-none@xs">
+            <div class="p-20">
+                <h1 class="ft-title-xs d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
 
-            <div class="row">
-                <div class="col-6 col-12@xs mt-20@xs">
-                    <p class="ellipsis-3">
-                        {{ gathering.description|striptags }}
-                    </p>
+                <div class="row">
+                    <div class="col-6 col-12@xs mt-20@xs">
+                        <p class="ellipsis-3">
+                            {{ gathering.description|striptags }}
+                        </p>
 
-                    <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
-
-                    <!-- <div class="d-flex@xs mr-5@xs">
-                        <user-icon class="mr-5 mb-5" v-for="participant in usersByStatus(['attending', 'confirmed']).slice(0, 4)" :key="participant._id" v-bind="participant" />
+                        <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
                     </div>
+                    <div class="col-6 col-12@xs">
+                        <div class="d-flex" v-if="user">
+                            <user-icon v-bind="user" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
+                            
+                            <p>Organisé par {{ user.name }}</p>
+                        </div>
 
-                    <link-base @click="isList = true">
-                        <template v-if="usersByStatus(['attending', 'confirmed']).length > 3 && !hasBooked">
-                            {{ attending }} et {{ usersByStatus(['attending', 'confirmed']).length - 2 }} {{ gathering.isPast ? 'autres ont participé' : 'autres participent' }}
-                        </template>
-                        <template v-else>
-                            {{ usersByStatus(['attending', 'confirmed']).length }} {{ gathering.isPast ? 'ont participé' : 'participent' }}
-                        </template>
-                    </link-base> -->
-                </div>
-                <div class="col-6 col-12@xs">
-                    <div class="d-flex">
-                        <user-icon v-bind="user" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
-                        
-                        <p>Organisé par {{ user.name }}</p>
-                    </div>
+                        <div class="mt-10 d-flex">
+                            <fa icon="far fa-calendar" class="mt-5 mr-10 fx-no-shrink" fixed-width /> 
+                            
+                            <p>{{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}</p>
+                        </div>
+                        <div class="mt-10 d-flex">
+                            <fa icon="far fa-map-marker-alt" class="mt-5 mr-10 fx-no-shrink" fixed-width /> 
 
-                    <div class="mt-10 d-flex">
-                        <fa icon="far fa-calendar" class="mt-5 mr-10 fx-no-shrink" fixed-width /> 
-                        
-                        <p>{{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}</p>
-                    </div>
-                    <div class="mt-10 d-flex">
-                        <fa icon="far fa-map-marker-alt" class="mt-5 mr-10 fx-no-shrink" fixed-width /> 
-
-                        <div>
-                            <p class="ft-bold">{{ gathering.location }}</p>
-                            <p class="color-ft-weak">{{ gathering.address }}</p>
+                            <div>
+                                <p class="ft-bold">{{ gathering.location }}</p>
+                                <p class="color-ft-weak">{{ gathering.address }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <hr class="Separator mt-20">
             </div>
-
-            <hr class="Separator mv-20" v-if="!gathering.isPast">
-
-            <div class="fx-center" v-if="!gathering.isPast">
-                <user-list class="fx-grow" :items="users" :itemsz="usersByStatus(['attending', 'confirmed'])" />
+            <div class="fx-center ph-20 pb-20" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
+                <user-list class="fx-grow" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true"  />
 
                 <div class="fx-no-shrink ml-20">
-                    <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">Modifier</link-base>
+                    <template v-if="gathering.isPast">
+                        <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
+                    </template>
+                    <template v-else>
+                        <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">Modifier</link-base>
 
-                    <page-gathering-action-button
-                        :gathering="gathering"
-                        @manage="isFull = true"
-                    />
+                        <page-gathering-action-button
+                            :gathering="gathering"
+                            @manage="isFull = true"
+                        />
+                    </template>
                 </div>
+            </div>
+            <div v-else-if="hasConfirmed">
+                <p class="ft-title-xs mb-20 ph-20">
+                    Tu les as rencontrés
+                </p>
+
+                <slider-block
+                    :slots="usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id).map(u => u._id)"
+                    :ratio="150"
+                    item-class="width-2xss"
+                    :offset="$smallerThan('xs') ? 15 : 20"
+                    :offset-v="20"
+                >
+                    <div v-for="user in usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id)" :slot="user._id" :key="user._id">
+                        <user-profile v-bind="user" :no-link="true"  :gathering="gathering._id" @click.native="() => selectedUser = user" />
+                    </div>
+                </slider-block>
+
+                <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
             </div>
         </div>
 
@@ -92,7 +104,8 @@ export default {
     },
     data: () => ({
         isFull: false,
-        isList: false
+        isList: false,
+        selectedUser: null,
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },

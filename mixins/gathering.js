@@ -22,7 +22,7 @@ export default {
             return this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
         },
         hasConfirmed () {
-            return this.user && this.usersByStatus(['confirmed']).find(u => u._id == this.user._id) ? true : false
+            return this.user && this.usersByStatus(['confirmed', 'attending']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
             return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-eventId', params: { id: this.gathering.id, slug: this.constellation.slug }})
