@@ -12,7 +12,6 @@
             class="NavContent"
             :class="{ 'is-reset': panReset }"
             :style="pan != 0 ? { transform: `translateX(${pan}px` } : {}"
-            
             ref="container"
         >
             <transition :name="`fade-${panAnimation}`" mode="out-in">

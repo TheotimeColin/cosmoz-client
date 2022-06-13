@@ -1,6 +1,6 @@
 <template>
     <div>
-        <popin :is-active="isActive" :modifiers="['panel']" @close="$emit('close')">
+        <popin :is-active="isActive" :modifiers="['panel']" query="full" @close="$emit('close')" @open="$emit('open')">
             <div class="p-30" slot="content">
                 <div class="mb-20">
                     <p class="ft-title-m">{{ gathering.title }}</p>

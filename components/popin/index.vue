@@ -26,7 +26,8 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         isActive: { type: Boolean, default: false },
-        autoClose: { type: Boolean, default: true }
+        autoClose: { type: Boolean, default: true },
+        query: { type: [String, Boolean], default: false }
     },
     data: () => ({
         listeners: {
@@ -37,6 +38,14 @@ export default {
     watch: {
         isActive: {
             handler (v) {
+                let query = this.$route.query
+
+                if (v && this.query) {
+                    this.$router.push({ query: { ...query, [this.query]: 'true' } })
+                } else if (!v && this.query) {
+                    this.$router.push({ query: { ...query, [this.query]: undefined } })
+                }
+
                 if (!this.autoClose) return 
                 
                 if (v && this.listeners.close) {
@@ -55,6 +64,16 @@ export default {
                     document.addEventListener('keydown', this.listeners.echap)
                 } else if (this.listeners.echap) {
                     document.removeEventListener('keydown', this.listeners.echap)
+                }
+            }
+        },
+        [`$route.query`]: {
+            immediate: true,
+            handler (v) {
+                if (this.query && v[this.query] !== 'true') {
+                    this.$emit('close')
+                } else if (this.query && v[this.query] == 'true') {
+                    this.$emit('open')
                 }
             }
         }
@@ -227,6 +246,10 @@ export default {
 
 @include breakpoint-xs {
 
+    .PopinBase {
+        align-items: flex-end;
+    }
+
     .PopinBase_close {
         font-size: 26px;
     }
@@ -238,8 +261,20 @@ export default {
     .PopinBase_body {
         width: 100%;
         max-width: 100% !important;
-        height: 100vh;
+        height: 95vh;
         border-radius: 0;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        transform: translateY(100%);
+        opacity: 1;
+        transition: all 250ms ease;
+    }
+
+    .PopinBase--panel {
+
+        .PopinBase_body {
+            border-radius: 0;
+        }
     }
 }
 </style>

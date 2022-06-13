@@ -5,7 +5,7 @@
                 <h1 class="ft-title-xs d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
 
                 <div class="row">
-                    <div class="col-6 col-12@xs mt-20@xs">
+                    <div class="col-6 col-12@xs mb-20@xs">
                         <p class="ellipsis-3">
                             {{ gathering.description|striptags }}
                         </p>
@@ -37,10 +37,10 @@
 
                 <hr class="Separator mt-20">
             </div>
-            <div class="fx-center ph-20 pb-20" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
+            <div class="fx-center ph-20 pb-20 d-block@xs" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
                 <user-list class="fx-grow" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true"  />
 
-                <div class="fx-no-shrink ml-20">
+                <div class="fx-no-shrink ml-20 ml-0@xs mt-20@xs text-center@xs">
                     <template v-if="gathering.isPast">
                         <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
                     </template>
@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" />
+        <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" @open="isFull = true" />
 
         <popin :is-active="isList" :modifiers="['s']" @close="isList = false">
             <template slot="content">

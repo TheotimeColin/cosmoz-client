@@ -9,18 +9,18 @@
                     </nuxt-link> -->
                 </div>
 
-                <div class="ml-10 ft-s line-1">
+                <div class="ml-10 ft-xs line-1">
                     <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
 
                     <template v-if="gatheringData && !isCurrent">
-                        <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
-                        <link-base :modifiers="['l']" :to="gatheringLink">
+                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                        <link-base :to="gatheringLink">
                             {{ gatheringData.title }}
                         </link-base>
                     </template>
                     <template v-else-if="consteData && !isCurrent">
-                        <span class="ft-title-2xs color-ft-weak mh-3">dans</span>
-                        <link-base :modifiers="['l']" :to="gatheringLink">
+                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                        <link-base :to="gatheringLink">
                             {{ consteData.name }}
                         </link-base>
                     </template>
@@ -37,7 +37,7 @@
             />
         </div>
         <div class="Post_main">
-            <div class="ft-l color-ft-xweak pb-20 ph-20" v-if="forbidden">
+            <div class="ft-m color-ft-xweak pb-20 ph-20" v-if="forbidden">
                 <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
             </div>
             <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-else-if="content"></div>
@@ -234,7 +234,7 @@ export default {
 
     .Post_delete {
         @include absolute-fill;
-        font: var(--ft-l);
+        font: var(--ft-m);
         text-align: center;
         padding: 20px;
         display: flex;
@@ -245,7 +245,7 @@ export default {
     }
 
     .Post_text {
-        font: var(--ft-l);
+        font: var(--ft-m);
         padding: 0 20px;
     }
 
