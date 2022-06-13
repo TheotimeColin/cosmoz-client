@@ -8,8 +8,6 @@
                     <input-base class="Form_input" label="Lien de l'événement *" v-model="formData.link" :required="true" :is-loading="metaLoading" v-if="isLink" />
 
                     <input-base class="Form_input" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
-                    
-                    <input-base class="Form_input" label="Qu'allez-vous faire ? *" v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" v-if="!isLink" />
 
                     <input-date-time class="Form_input" label="Date *" :required="true" v-model="formData.date" />
                 </div>
@@ -17,8 +15,7 @@
                 <div class="block mt-20 mt-40@xs">
                     <p class="ft-title-s mb-30">Où cela va-t-il se passer ?</p>
                     <input-base class="Form_input" label="Nom du lieu *" :required="true" v-model="formData.location"/>
-                    <input-base class="Form_input" label="Adresse précise" v-model="formData.address" v-if="!isLink" />
-                    <input-paper class="Form_input" label="Description du lieu" v-model="formData.venue" :base="true" v-if="!isLink" />
+                    <input-base class="Form_input" label="Adresse précise" v-model="formData.address" />
                 </div>
 
                 <div class="block mt-20 mt-40@xs">

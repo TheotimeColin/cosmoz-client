@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pb-150">
         <template v-if="!isLoading && gathering">
             <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${gathering.hero})` }">
                 <div class="Wrapper Wrapper--xs text-center pv-60">

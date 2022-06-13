@@ -28,7 +28,7 @@ export default {
             return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-eventId', params: { id: this.gathering.id, slug: this.constellation.slug }})
         },
         googleCal () {
-            return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment.utc(this.gathering.date).format('YYYYMMDDTHHmmss[Z]')}%2F${this.$moment.utc(this.gathering.date).add(2, 'hours').format('YYYYMMDDTHHmmss[Z]')}`
+            return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.canonical}+${this.canonical}&dates=${this.$moment.utc(this.gathering.date).format('YYYYMMDDTHHmmss[Z]')}%2F${this.$moment.utc(this.gathering.date).add(2, 'hours').format('YYYYMMDDTHHmmss[Z]')}`
         }
     },
     methods: {

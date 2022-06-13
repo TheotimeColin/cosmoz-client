@@ -4,6 +4,7 @@ moment.tz.setDefault('Europe/Paris')
 import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
+import striptags from 'striptags'
 
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -32,7 +33,7 @@ Vue.mixin({
             return value
         },
         striptags: (value) => {
-            return value ? value.replace(/(<([^>]+)>)/gi, '') : ''
+            return value ? striptags(value) : ''
         },
         verticalize: (value) => {
             if (!value || process.server) return ''

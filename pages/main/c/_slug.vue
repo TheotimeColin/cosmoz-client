@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import striptags from 'striptags'
+
 export default {
     name: 'ConstellationPage',
     async fetch () {
@@ -52,11 +54,11 @@ export default {
         let meta = {
             title: this.constellation.name + ' organise ses événements sur Cosmoz',
             meta: [
-                { hid: 'description', name: 'description', content: this.constellation.intro },
+                { hid: 'description', name: 'description', content: striptags(this.constellation.description) },
                 { property: 'og:title', content: this.constellation.name  + ' organise ses événements sur Cosmoz' },
                 { property: 'og:url', content: this.$config.baseUrl + '/c/' + this.constellation.slug },
                 { property: 'og:image', content: this.constellation.logoLarge },
-                { property: 'og:description', content: this.constellation.intro },
+                { property: 'og:description', content: striptags(this.constellation.description) },
                 { property: 'og:site_name', content: 'Cosmoz, rencontres hors-ligne.' },
                 { property: 'twitter:card', content: 'summary_large_image' },
             ]
@@ -71,6 +73,7 @@ export default {
     .Constellation {
         position: relative;
         margin-left: 360px;
+        overflow: hidden;
     }
 
     .page-enter-active,

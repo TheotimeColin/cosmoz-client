@@ -8,16 +8,13 @@ let Gathering = {
         id: { type: String, write: 'private' },
         title: { type: String, write: 'g-organizer' },
 
-        intro: { type: String, write: 'g-organizer' },
         location: { type: String, write: 'g-organizer' },
         address: { type: String, write: 'g-organizer' },
         date: { type: Date, write: 'g-organizer' },
         link: { type: String, write: 'g-organizer' },
 
         description: { type: String, write: 'g-organizer' },
-        venue: { type: String, write: 'g-organizer' },
         important: { type: String, write: 'g-organizer' },
-        information: { type: String, write: 'g-organizer' },
        
         max: { type: Number, write: 'g-organizer' },
         guests: { type: Number, default: 0, write: 'g-organizer' },
@@ -34,6 +31,8 @@ let Gathering = {
         reminded: { type: Boolean, default: false, write: 'private', read: 'private' },
 
         constellation: { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'constellation' },
+
+        owner: { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' }
     }, { timestamps: true })
 }
 

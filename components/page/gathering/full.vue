@@ -4,19 +4,23 @@
             <div class="p-30" slot="content">
                 <div class="mb-20">
                     <p class="ft-title-m">{{ gathering.title }}</p>
-                    <div class="color-ft-weak" v-if="gathering.intro">
-                        {{ gathering.intro }}
-                    </div>
                 </div>
                 <transition name="fade">
                     <div v-show="!isManage">
                         <div class="Gathering_section block-r">
-                            <p>
-                                <fa icon="far fa-calendar" class="mr-5" fixed-width /> {{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}
-                            </p>
-                            <p class="mt-3">
-                                <fa icon="far fa-map-marker-alt" class="mr-5" fixed-width /> {{ user ? gathering.location : `Information réservée aux membres` }}
-                            </p>
+                            <div class="d-flex">
+                                <fa icon="far fa-calendar" class="mt-5 mr-5 fx-no-shrink" fixed-width /> 
+                                
+                                <p>{{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}</p>
+                            </div>
+                            <div class="mt-5 d-flex">
+                                <fa icon="far fa-map-marker-alt" class="mt-5 mr-5 fx-no-shrink" fixed-width /> 
+
+                                <div>
+                                    <p class="ft-bold">{{ gathering.location }}</p>
+                                    <p class="color-ft-weak">{{ gathering.address }}</p>
+                                </div>
+                            </div>
                         </div>
 
                         <template v-if="user">
@@ -25,19 +29,9 @@
                                 <text-body :modifiers="['gathering']" :value="gathering.description" />
                             </div>
                             
-                            <div class="Gathering_section" v-if="gathering.venue && gathering.venue != '<p></p>'">
-                                <h2 class="ft-title-xs mb-5">À propos du lieu</h2>
-                                <text-body :modifiers="['gathering']" :value="gathering.venue" />
-                            </div>
-
                             <div class="Gathering_section p-20 bg-bg-weak  br-s" v-if="gathering.important && gathering.important != '<p></p>'">
                                 <h2 class="ft-title-2xs mb-15 tape">Important</h2>
                                 <text-body :modifiers="['gathering']" :value="gathering.important" />
-                            </div>
-
-                            <div class="Gathering_section" v-if="gathering.information && gathering.information != '<p></p>'">
-                                <h2 class="ft-title-xs mb-5">Informations pratiques</h2>
-                                <text-body :modifiers="['gathering']" :value="gathering.information" />
                             </div>
                         </template>
                         <template v-else>

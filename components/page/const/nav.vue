@@ -97,7 +97,7 @@ export default {
                     ]
                 }, 
                 {
-                    label: `Événements à venir`,
+                    label: `Sorties à venir`,
                     disabled: this.events.length <= 0,
                     children: [ ...this.events.slice(0, 3), {
                         label: 'Voir tout',
@@ -107,7 +107,7 @@ export default {
                     }]
                 },
                 {
-                    label: `Événements passés`,
+                    label: `Sorties passés`,
                     disabled: this.pastEvents.length <= 0,
                     children: this.pastEvents
                 },

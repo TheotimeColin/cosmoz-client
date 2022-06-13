@@ -145,7 +145,7 @@ export default {
             return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-eventId', params: { id: this.gathering.id, slug: this.gathering.constellation ? this.gathering.constellation.id : 'event' }})
         },
         googleCal () {
-            return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.gathering.intro}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
+            return `http://www.google.com/calendar/event?action=TEMPLATE&sprop=name:${this.gathering.title}&sprop=website:${this.canonical}&text=${this.gathering.title}&details=${this.canonical}+${this.canonical}&dates=${this.$moment(this.gathering.date).format()}`
         }
     },
     methods: {
