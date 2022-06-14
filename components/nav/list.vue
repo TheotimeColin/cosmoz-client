@@ -93,10 +93,14 @@ export default {
         color: var(--color-ft-xweak);
         cursor: pointer;
 
-        &:hover,
-        &.is-active-exact {
+        &:hover {
             color: var(--color-ft-light);
             background-color: var(--color-bg);
+        }
+
+        &.is-active-exact {
+            color: var(--color-ft-light);
+            background-color: var(--color-bg-weak);
         }
     }
 

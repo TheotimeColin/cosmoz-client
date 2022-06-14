@@ -1,25 +1,8 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--s">
         <div class="Section">
-            <div class="p-40 bg-bg-strong br-s">
-                <div class="text-center">
-                    <div class="ft-title-2xs tape tape-s mb-15">En bêta</div>
-
-                    <p class="ft-title-s mb-5">Organiser avec Cosmoz</p>
-                    
-                    <p class="mb-20">Permet aux membres de s'inscrire via la plateforme.</p>
-
-                    <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Créer une rencontre</button-base>
-                </div>
-
-                <hr class="Separator mv-40">
-
-                <div class="text-center">
-                    <p class="ft-title-s mb-5">Rediriger vers une autre plateforme</p>
-                    <p class="mb-20">Si tu l'as déjà créée via Meetup, EventBrite...</p>
-
-                    <button-base :modifiers="['s', 'weak']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug }, query: { link: 'true' } }" icon-before="plus">Ajouter une rencontre</button-base>
-                </div>
+            <div class="p-30 text-center bg-bg-strong br-s">
+                <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Organiser une sortie</button-base>
             </div>
         </div>
 

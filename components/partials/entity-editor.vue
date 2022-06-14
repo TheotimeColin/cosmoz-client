@@ -56,7 +56,7 @@
                         </button-base>
                     </div>
 
-                    <div class="bg-bg-weak p-15 br-s mt-20">
+                    <div class="bg-bg-weak p-15 br-s mt-20" v-if="!isNew">
                         <div class="fx-center c-pointer" @click="isDangerZone = !isDangerZone"><p>Danger zone</p> <fa icon="far fa-angle-down" /></div>
 
                         <div class="mt-20" v-show="isDangerZone">
@@ -105,6 +105,9 @@ export default {
 
             return JSON.stringify(current) != JSON.stringify(prev)
         },
+        isNew () {
+            return this._id == 'new'
+        }
     },
     watch: {
         serverEntity: {

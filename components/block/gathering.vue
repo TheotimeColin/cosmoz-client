@@ -9,8 +9,8 @@
                     <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellationData">
                         <const-icon class="mr-10" :display-name="true" v-bind="constellationData" />
                     </div>
-                    <div class="BlockGathering_status d-none@xs" v-if="!constOnly">
-                        <div>
+                    <div class="BlockGathering_status fx-grow d-none@xs" v-if="!constOnly">
+                        <!-- <div>
                             <template v-if="hasBooked">
                                 <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
                             </template>
@@ -22,7 +22,10 @@
                             </template>
 
                             {{ tagline }}
-                        </div>
+                        </div> -->
+
+                        
+                        <!-- <user-list class="fx-grow" :modifiers="['transparent']" :items="attending" :max="4" :hide-text="true" /> -->
                     </div>
                 </div>
 
@@ -43,6 +46,8 @@
                         </div>
                     </div>
 
+                    <user-list class="fx-grow mb-10" :modifiers="['transparent']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
+                    
                     <div class="BlockGathering_location fx-center">
                         <p v-if="date || location">
                             <template v-if="date">

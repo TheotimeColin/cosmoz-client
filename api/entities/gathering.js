@@ -12,6 +12,7 @@ let Gathering = {
         address: { type: String, write: 'g-organizer' },
         date: { type: Date, write: 'g-organizer' },
         link: { type: String, write: 'g-organizer' },
+        linkRegister: { type: Boolean, default: false, write: 'g-organizer' },
 
         description: { type: String, write: 'g-organizer' },
         important: { type: String, write: 'g-organizer' },

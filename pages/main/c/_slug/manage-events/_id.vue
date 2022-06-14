@@ -3,9 +3,23 @@
         <div class="d-flex d-block@s">
             <div class="fx-grow">
                 <div class="block">
-                    <p class="ft-title-s mb-30">De quoi s'agit-il ?</p>
+                    <p class="ft-title-xs mb-10">Importer l'événement</p>
+                    <p class="ft-s color-ft-weak mb-20">Si tu as créé l'événement sur une autre plateforme (Meetup, EventBrite...), tu peux importer les informations grâce au lien.</p>
 
-                    <input-base class="Form_input" label="Lien de l'événement *" v-model="formData.link" :required="true" :is-loading="metaLoading" v-if="isLink" />
+                    <input-base class="Form_input" :label="`Lien de l'événement ${formData.linkRegister ? '*' : ''}`" v-model="formData.link" :is-loading="metaLoading" :required="formData.linkRegister ? true : false" />
+
+                    <div class="block-r d-flex fxa-center bg-bg-strong mt-10">
+                        <input-toggle v-model="formData.linkRegister" />
+
+                        <div class="ml-15">
+                            <p class="ft-m-bold">Inscription obligatoire via le lien</p>
+                            <p class="ft-s color-ft-weak">Les participants devront aussi s'inscrire sur le lien ci-dessus pour valider leur participation.</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="block mt-20 mt-40@xs">
+                    <p class="ft-title-xs mb-20">De quoi s'agit-il ?</p>
 
                     <input-base class="Form_input" label="Titre de la rencontre *" v-model="formData.title" :required="true" />
 
@@ -13,7 +27,7 @@
                 </div>
 
                 <div class="block mt-20 mt-40@xs">
-                    <p class="ft-title-s mb-30">Où cela va-t-il se passer ?</p>
+                    <p class="ft-title-xs mb-20">Où cela va-t-il se passer ?</p>
                     <input-base class="Form_input" label="Nom du lieu *" :required="true" v-model="formData.location"/>
                     <input-base class="Form_input" label="Adresse précise" v-model="formData.address" />
                 </div>
@@ -36,13 +50,13 @@
                     </transition>
                 </div>
 
-                <div class="block mt-20 mt-40@xs" v-if="!isLink">
-                    <p class="ft-title-s mb-30">Quel est le programme ?</p>
+                <div class="block mt-20 mt-40@xs">
+                    <p class="ft-title-xs mb-20">Quel est le programme ?</p>
                     <input-paper class="Form_input" label="Description générale *" v-model="formData.description" :base="true" />
                     <input-paper class="Form_input" label="Informations importantes" v-model="formData.important" :base="true" />
                 </div>
 
-                <div class="block-r mt-20" v-if="!isLink">
+                <div class="block-r mt-20">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Limiter le nombre de places</p>
                         <input-toggle v-model="options.max" />
@@ -81,7 +95,7 @@
                         <form-errors class="mt-20" :items="errors" />
                     </div>
 
-                    <div class="bg-bg-weak p-15 br-s mt-15">
+                    <div class="bg-bg-weak p-15 br-s mt-15" v-if="!isNew">
                         <div class="fx-center c-pointer" @click="options.danger = !options.danger">
                             <p>Danger zone</p> <fa icon="far fa-angle-down" />
                         </div>
@@ -109,7 +123,7 @@ export default {
     },
     data: () => ({
         entityType: 'gathering',
-        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation'],
+        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation', 'linkRegister'],
         metaLoading: false,
         options: {
             max: false,
@@ -124,7 +138,7 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        isLink () { return this.$route.query.link == 'true' || this.formData.link },
+        isNew () { return this.$route.params.id == 'new' },
         coverPreview () {
             let preview = {}
 
@@ -148,15 +162,18 @@ export default {
             const response = await this.$store.dispatch('scraper/scrape', v)
 
             if (response?.title && !this.formData.title) {
-                this.formData.title = response.title
+                this.formData = { ...this.formData, title: response.title }
             }
             
             if (response?.image && !this.formData.coverSelect) {
-                this.formData.coverSelect = {
-                    photographer: '',
-                    src: {
-                        medium: response.image,
-                        large: response.image,
+                this.formData = {
+                    ...this.formData,
+                    coverSelect: {
+                        photographer: '',
+                        src: {
+                            medium: response.image,
+                            large: response.image,
+                        }
                     }
                 }
             }

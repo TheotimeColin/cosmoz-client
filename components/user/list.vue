@@ -1,5 +1,5 @@
 <template>
-    <div class="UserList">
+    <div class="UserList" :class="[ ...$modifiers ]">
         <div class="UserList_icons" :style="{ maxWidth: (30 * items.slice(0, max).length) + 'px' }">
             <div class="UserList_iconContainer" v-for="(item, i) in items.slice(0, max)" :key="item._id">
                 <user-icon class="UserList_icon" v-bind="item" :no-link="true">
@@ -7,17 +7,22 @@
                 </user-icon>
             </div>
         </div>
-        <div class="ft-title-3xs ml-5 fx-no-shrink">
+        <div class="UserList_title ft-title-3xs fx-no-shrink" v-if="!hideText">
             {{ items.length }} {{ suffix }}
         </div>
     </div>
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
+    name: 'UserList',
+    mixins: [ ModifiersMixin ],
     props: {
         items: { type: Array, default: () => [] },
         max: { type: Number, default: 10 },
+        hideText: { type: Boolean, default: false },
         suffix: { type: String, default: 'participent' }
     }
 }
@@ -26,29 +31,39 @@ export default {
 <style lang="scss" scoped>
     .UserList {
         display: flex;
-        align-items: center;
-        padding: 5px;
-        background-color: var(--color-bg);
-        border-radius: 50px;
-        padding-right: 15px;
-        transition: all 150ms ease;
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-strong);
-            transform: scale(0.99);
+            .UserList_icons,
+            .UserList_title {
+                background-color: var(--color-bg-strong);
+            }
         }
+    }
 
-        &:active {
-            transform: scale(0.96);
-        }
+    .UserList_icons,
+    .UserList_title {
+        background-color: var(--color-bg);
+        padding: 5px;
+        transition: all 150ms ease;
+    }
+
+    .UserList_title {
+        padding-left: 10px;
+        padding-right: 15px;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        display: flex;
+        align-items: center;
     }
 
     .UserList_icons {
         display: flex;
-        flex-grow: 1;
         justify-content: space-between;
         padding-right: 35px;
+        flex-grow: 1;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
     }
 
     .UserList_iconContainer {
@@ -71,5 +86,27 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .UserList--transparent {
+        
+        .UserList {
+            cursor: default;
+        }
+        
+        .UserList_icons,
+        .UserList_title {
+            background-color: transparent !important;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .UserList_icons {
+            padding-left: 0;
+        }
+
+        .UserList_title {
+            padding-right: 0;
+        }
     }
 </style>

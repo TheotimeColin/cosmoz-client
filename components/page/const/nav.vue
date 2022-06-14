@@ -13,11 +13,15 @@
         <div class="Nav_footer">
             <div class="p-10">
                 <div class="Nav_cat">
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })" v-if="isMember">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })" v-if="$isConsteMember">
                         <fa icon="far fa-cog" /> Paramètres
                     </nuxt-link>
 
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })" v-if="isAdmin">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-manage-events', params: { slug } })" v-if="$isConsteAdmin">
+                        <fa icon="far fa-calendar" /> Gestions événements
+                    </nuxt-link>
+
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })" v-if="$isConsteAdmin">
                         <fa icon="far fa-crown" /> Administration
                     </nuxt-link>
                 </div>
@@ -29,13 +33,13 @@
 
                 <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" @click="$store.commit('page/register', 'g-join')">Rejoindre le groupe</button-base>
             </div>
-            <div class="p-15 bg-cosmoz" v-else-if="followers.includes(user._id)">
+            <div class="p-15 bg-cosmoz" v-else-if="$isConsteFollower">
                 <p class="ft-title-2xs mb-5">Demande en cours</p>
                 <p class="ft-s mb-15">Ta demande a été envoyée et elle est en attente. Un peu de patience !</p>
 
                 <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" :to="{ name: 'c-slug-rejoindre', params: { slug } }">Gérer ma demande</button-base>
             </div>
-            <div class="p-15 bg-cosmoz" v-else-if="!members.includes(user._id)">
+            <div class="p-15 bg-cosmoz" v-else-if="!$isConsteMember">
                 <p class="ft-title-2xs mb-5">Devenir membre</p>
                 <p class="ft-s mb-15">Rejoins la communauté et débloque toutes les sections !</p>
 
@@ -46,8 +50,11 @@
 </template>
 
 <script>
+import Permissions from '@/mixins/permissions'
+
 export default {
     name: 'PageConstNav',
+    mixins: [ Permissions ],
     async fetch () {
         if (this.user) {
             await this.$store.dispatch('gathering/softFetch', this.user.gatherings.map(g => g._id))
@@ -74,8 +81,6 @@ export default {
                 sort: { date: 'desc' }
             })
         },
-        isAdmin () { return this.user ? this.user.role == 'admin' || this.admins.includes(this.user._id) : false},
-        isMember () { return this.user && this.members.includes(this.user._id) },
         events () {
             return this.gatherings.filter(g => !g.isPast).map(g => ({
                 label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: g.isAttending ? 'calendar-check' : 'calendar'
