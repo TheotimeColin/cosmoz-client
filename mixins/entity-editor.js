@@ -12,6 +12,7 @@ export default {
     }),
     computed: {
         serverEntity () {
+            console.log('Entity : ' + this.currentId)
             return this.$store.getters[`${this.entityType}/findOne`]({
                 _id: this.currentId
             }, true)
@@ -29,11 +30,15 @@ export default {
             deep: true,
             handler (v) {
                 let form = this.decodeForm(v)
+            
+                console.log('SERVER CHANGE')
+                console.log(form)
 
                 this.formData = {
                     ...this.formData,
                     ...form
                 }
+
 
                 this.prevFormData = { ...this.formData }
 

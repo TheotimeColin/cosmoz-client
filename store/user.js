@@ -235,11 +235,42 @@ export default {
         },
         async unmatch ({ dispatch }, target) {
             try {
-                const response = await this.$axios.$post('/affinities/remove-match', { target: target._id })
+                const response = await this.$axios.$post('/affinities/remove-match', { _id: target._id })
                 
                 if (response.errors.length > 0) throw Error(response.errors[0])
 
                 await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
+                
+                return true
+            } catch (e) {
+                console.error(e)
+                return false
+            }
+        },
+        async createRequest ({ dispatch }, target) {
+            try {
+                const response = await this.$axios.$post('/affinities/create-request', { _id: target._id })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
+                
+                return response.data
+            } catch (e) {
+                console.error(e)
+                return false
+            }
+        },
+        async cancelRequest ({ dispatch }, target) {
+            try {
+                const response = await this.$axios.$post('/affinities/cancel-request', { _id: target._id })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
                 
                 return true
             } catch (e) {

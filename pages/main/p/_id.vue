@@ -1,5 +1,5 @@
 <template>
-    <div class="Profile">
+    <div class="page">
         <template v-if="profile && this.user">
             <app-banner :background="$bg.holo">
                 <div class="fx-center width-100 d-block@xs">
@@ -43,6 +43,15 @@
                             {{ $t('mentions.' + type) }} <span class="round round-s bg-bg-weak ml-5">{{ items.length }}</span>
                         </div>
                     </div> -->
+
+                    <div class="mt-10@xs">
+                        <button-base :modifiers="['ss']" icon-before="check" v-if="!profile.isFriend && user.affinities.includes(profile._id)" @click="cancelFriendRequest" :loading="isLoading">
+                            Demande envoyée
+                        </button-base>
+                        <button-base :modifiers="['light']" icon-before="plus" v-else-if="!profile.isFriend && !isSelf" :loading="isLoading" @click="createFriendRequest">
+                            Demander en ami
+                        </button-base>
+                    </div>
                 </div>
             </app-banner>
 
@@ -122,6 +131,7 @@ export default {
         TIDBITS,
         editSection: null,
         common: [],
+        isLoading: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -155,7 +165,39 @@ export default {
             return result ? result : {}
         },
         async unmatch () {
-            await this.$store.dispatch('user/unmatch', this.profile)
+            this.isLoading = true
+            
+            try {
+                await this.$store.dispatch('user/unmatch', this.profile)
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
+        },
+        async createFriendRequest () {
+            this.isLoading = true
+            
+            try {
+                const response = await this.$store.dispatch('user/createRequest', this.profile)
+
+                console.log(response)
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
+        },
+        async cancelFriendRequest () {
+            this.isLoading = true
+            
+            try {
+                await this.$store.dispatch('user/cancelRequest', this.profile)
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
         }
     }
 }

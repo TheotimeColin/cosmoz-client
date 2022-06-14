@@ -45,7 +45,7 @@
                         <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
                     </template>
                     <template v-else>
-                        <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">Modifier</link-base>
+                        <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }" v-if="$isConsteOrga">Modifier</link-base>
 
                         <page-gathering-action-button
                             :gathering="gathering"
@@ -95,10 +95,11 @@
 
 <script>
 import GatheringMixin from '@/mixins/gathering'
+import PermissionsMixin from '@/mixins/permissions'
 
 export default {
     name: 'PageGatheringManage',
-    mixins: [ GatheringMixin ],
+    mixins: [ GatheringMixin, PermissionsMixin ],
     props: {
         gathering: { type: Object, default: () => {} }
     },

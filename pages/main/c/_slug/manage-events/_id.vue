@@ -69,7 +69,7 @@
                     </transition>
                 </div>
 
-                <div class="block-r mt-10" v-if="!isLink">
+                <div class="block-r mt-10">
                     <div class="fx-center">
                         <p class="ft-title-2xs">Autoriser les invités</p>
                         <input-toggle v-model="options.plus" />
@@ -197,7 +197,7 @@ export default {
             this.formData.coverSelect = ''
         },
         postSubmitSuccess () {
-            this.$router.push({
+            this.$router.replace({
                 path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.constellation.slug, id: this.currentId } })
             })
         }

@@ -17,7 +17,7 @@
                         <fa icon="far fa-cog" /> Paramètres
                     </nuxt-link>
 
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-manage-events', params: { slug } })" v-if="$isConsteAdmin">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-manage-events', params: { slug } })" v-if="$isConsteOrga">
                         <fa icon="far fa-calendar" /> Gestions événements
                     </nuxt-link>
 
@@ -78,6 +78,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 constellation: this._id,
+                status: 'active',
                 sort: { date: 'desc' }
             })
         },
