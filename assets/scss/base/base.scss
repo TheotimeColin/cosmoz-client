@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;440;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;440;550&display=swap');
 
 @font-face {
     font-family: 'PP Right Grotesk';
@@ -53,6 +53,10 @@ body {
     font: var(--ft-m);
     color: var(--color-ft-light);
     background-color: var(--color-bg);
+}
+
+b, strong {
+    font-weight: 550;
 }
 
 b b {

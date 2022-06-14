@@ -344,5 +344,22 @@ export default {
             font-size: 14px;
         }
     }
+
+    &.ButtonBase--3xs {
+
+        .ButtonBase_content {
+            width: 20px;
+            height: 20px;
+            min-height: 0;
+            min-width: 0;
+            padding: 0;
+        }
+    
+        .ButtonBase_iconAfter,
+        .ButtonBase_iconBefore {
+            margin: 0;
+            font-size: 12px;
+        }
+    }
 }
 </style>

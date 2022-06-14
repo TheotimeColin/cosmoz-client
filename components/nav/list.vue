@@ -1,9 +1,13 @@
 <template>
     <div>
         <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
-            <p class="ft-xs-bold color-ft-xweak mb-5" v-if="cat.label">
-                {{ cat.label }}
-            </p>
+            <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item Nav_item--label fx-center" v-if="cat.label">
+                <p>
+                    {{ cat.label }}
+                </p>
+
+                <span class="round-xs bg-bg-xstrong ml-10" :style="{ opacity: cat.number ? 1 : 0 }">{{ cat.number ? cat.number : 0 }}</span>
+            </component>
 
             <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
                 <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
@@ -34,7 +38,7 @@ export default {
     .Nav_cat {
 
         & + & {
-            margin-top: 20px;
+            margin-top: 15px;
         }
     }
 
@@ -48,7 +52,6 @@ export default {
         transition: all 100ms ease;
         overflow: hidden;
         white-space: nowrap;
-
         display: block;
         padding: 14px 10px 10px 8px;
 
@@ -61,10 +64,39 @@ export default {
             background-color: var(--color-bg);
         }
 
-        &.is-active:not(.is-parent),
-        &.is-active-exact.is-parent {
+        // &.is-active:not(.is-parent),
+        // &.is-active-exact.is-parent {
+        //     color: var(--color-ft-light);
+        //     background-color: var(--color-bg-weak);
+        // }
+
+        &.is-active-exact {
             color: var(--color-ft-light);
             background-color: var(--color-bg-weak);
+        }
+    }
+
+    .Nav_item--label {
+        display: flex;
+        padding: 6px 10px;
+        color: var(--color-ft-xweak);
+        font: var(--ft-s-medium);
+        cursor: default;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    a.Nav_item--label {
+        transition: all 100ms ease;
+        color: var(--color-ft-xweak);
+        cursor: pointer;
+
+        &:hover,
+        &.is-active-exact {
+            color: var(--color-ft-light);
+            background-color: var(--color-bg);
         }
     }
 

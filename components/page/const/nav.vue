@@ -96,22 +96,16 @@ export default {
                 {
                     label: `Sorties à venir`,
                     disabled: this.events.length <= 0,
-                    children: [ ...this.events.slice(0, 3), {
-                        label: 'Voir tout',
-                        number: this.events.length,
-                        isParent: true,
-                        to: { name: 'c-slug-events', params: { slug: this.slug } }
-                    }]
+                    to: { name: 'c-slug-events', params: { slug: this.slug } },
+                    number: this.events.length,
+                    children: this.events.slice(0, 3)
                 },
                 {
                     label: `Sorties passées`,
                     disabled: this.pastEvents.length <= 0,
-                    children: [ ...this.pastEvents.filter(g => g.hasAttended).slice(0, 3), {
-                        label: 'Voir tout',
-                        number: this.pastEvents.length,
-                        isParent: true,
-                        to: { name: 'c-slug-events-past', params: { slug: this.slug } }
-                    }]
+                    number: this.pastEvents.length,
+                    to: { name: 'c-slug-events-past', params: { slug: this.slug } },
+                    children: this.pastEvents.filter(g => g.hasAttended).slice(0, 3)
                 },
                 {
                     label: `Discussions`,
