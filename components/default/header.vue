@@ -2,16 +2,12 @@
     <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left">
-                <div class="Header_bars" @click="$emit('navOpen')">
-                    <fa icon="far fa-bars" />
-                </div>
-                
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
 
                 <p class="ft-title-xs ellipsis-1 ellipsis-break hide show@s">
-                    {{ subtitle ? subtitle : '' }}
+                    <fa :icon="`far fa-${fa}`" class="mr-10" v-if="fa" /> {{ subtitle ? subtitle : '' }}
                 </p>
             </div>
 
@@ -286,7 +282,7 @@ export default {
     }
 
     .Header_left {
-        padding: 0;
+        padding-left: 15px;
     }
 }
 </style>

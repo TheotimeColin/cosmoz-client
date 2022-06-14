@@ -62,7 +62,7 @@
 
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-20" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
             
                 <content-comment
                     v-for="post in displayedComments"

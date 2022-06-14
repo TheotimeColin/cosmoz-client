@@ -1,54 +1,63 @@
 <template>
-    <nav
-        class="AppNav"
-        :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': isOpenNav && $biggerThan('s'), 'is-desktop': $biggerThan('s'), 'is-mounted': isMounted }"
-        :style="{
-            transform: isClosePanning ? `translateX(calc(0% + ${closePan}px))` : `translateX(calc(-100% + ${pan}px))`
-        }"
-        v-hammer:pan.horizontal="onPan"
-        v-hammer:panend="onPanEnd"
-        v-hammer:pancancel="onPanEnd"
-    >
-        <div class="AppNav_content">
-            <div class="AppNav_primary">
-                <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" />
+    <div>
+        <nav
+            class="AppNav"
+            :class="{ 'is-active': isActive, 'is-panning': isPanning, 'is-closing': isClosePanning, 'is-const': isOpenNav && $biggerThan('s'), 'is-desktop': $biggerThan('s'), 'is-mounted': isMounted }"
+            :style="{
+                transform: isClosePanning ? `translateX(calc(0% + ${closePan}px))` : `translateX(calc(-100% + ${pan}px))`
+            }"
+            v-hammer:pan.horizontal="onPan"
+            v-hammer:panend="onPanEnd"
+            v-hammer:pancancel="onPanEnd"
+        >
+            <div class="AppNav_content">
+                <div class="AppNav_primary">
+                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" />
 
-                <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+                    <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
 
-                <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                    <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
 
-                <hr class="Separator mv-10 bg-bg">
-                
-                <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
-            </div>
-            <div class="AppNav_sub">
-                <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
-                    <div class="AppNav_header bg-cover bg-night" v-if="user">
-                        <user-icon v-bind="user" :display-name="true" />
-                    </div>
+                    <hr class="Separator mv-10 bg-bg">
                     
-                    <div class="AppNav_menu">
-                        <nav-list :items="nav" />
-                    </div>
+                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
+                </div>
+                <div class="AppNav_sub">
+                    <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
+                        <div class="AppNav_header bg-cover bg-night" v-if="user">
+                            <user-icon v-bind="user" :display-name="true" />
+                        </div>
+                        
+                        <div class="AppNav_menu">
+                            <nav-list :items="nav" />
+                        </div>
 
-                    <div class="AppNav_footer">
-                        <div class="mt-10 p-20 b text-center br-xs">
-                            Une question ? Besoin d'aide ?
-                            <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                        <div class="AppNav_footer">
+                            <div class="mt-10 p-20 b text-center br-xs">
+                                Une question ? Besoin d'aide ?
+                                <link-base :to="{ name: 'faq' }">Centre d'aide</link-base>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="AppNav_subContent" v-else-if="!selected && isExplore" key="explore">
-                    <div class="AppNav_menu">
-                        <nav-list :items="exploreNav" />
+                    <div class="AppNav_subContent" v-else-if="!selected && isExplore" key="explore">
+                        <div class="AppNav_menu">
+                            <nav-list :items="exploreNav" />
+                        </div>
                     </div>
+                    <page-const-nav v-bind="selectConst" v-else-if="selected" :key="selectConst._id" />
                 </div>
-                <page-const-nav v-bind="selectConst" v-else-if="selected" :key="selectConst._id" />
             </div>
-        </div>
 
-        <div class="AppNav_hider" :style="{ opacity: isClosePanning ? 1 + (closePan / 300) : (pan / 300) }" @click="isActive = false"></div>
-    </nav>
+            <div class="AppNav_hider" :style="{ opacity: translate }" @click="isActive = false"></div>
+        </nav>
+
+        <default-sticky
+            :translate="translate"
+            :is-active="isActive"
+            :is-panning="isPanning || isClosePanning"
+            @open="isActive = true"
+        />
+    </div>
 </template>
 
 <script>
@@ -106,7 +115,10 @@ export default {
         },
         currentConst () { return this.$store.state.page.currentConst },
         isOpenNav () { return this.$store.state.page.isOpenNav },
-        isExplore () { return this.$route.name.includes('explore') }
+        isExplore () { return this.$route.name.includes('explore') },
+        translate () {
+            return Math.max(this.isClosePanning ? 1 + (this.closePan / 340) : (this.pan / 340), 0)
+        }
     },
     created () {
         this.nav = [
@@ -213,7 +225,7 @@ export default {
 
 .AppNav_content {
     display: flex;
-    width: 360px;
+    width: 340px;
     height: calc(100vh - var(--header-height));
     background-color: var(--color-bg-strong);
 }
@@ -275,7 +287,7 @@ export default {
 .AppNav_hider {
     position: fixed;
     top: 0;
-    left: 360px;
+    left: 340px;
     width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
