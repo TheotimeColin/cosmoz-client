@@ -114,7 +114,7 @@ export default {
             }) : null
         },
         currentConst () { return this.$store.state.page.currentConst },
-        isOpenNav () { return this.$store.state.page.isOpenNav },
+        isOpenNav () { return true; return this.$store.state.page.isOpenNav },
         isExplore () { return this.$route.name.includes('explore') },
         translate () {
             return Math.max(this.isClosePanning ? 1 + (this.closePan / 340) : (this.pan / 340), 0)
@@ -124,7 +124,7 @@ export default {
         this.nav = [
             {
                 children: [
-                    { label: `Mon actualité`, fa: 'home', to: { name: 'feed' } },
+                    { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
                     { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
                     { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true }
                 ]
@@ -155,6 +155,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+    :root {
+        --nav-width: 340px;
+    }
+</style>
 
 <style lang="scss" scoped>
 .AppNav {
@@ -225,7 +231,7 @@ export default {
 
 .AppNav_content {
     display: flex;
-    width: 340px;
+    width: var(--nav-width);
     height: calc(100vh - var(--header-height));
     background-color: var(--color-bg-strong);
 }
@@ -287,7 +293,7 @@ export default {
 .AppNav_hider {
     position: fixed;
     top: 0;
-    left: 340px;
+    left: var(--nav-width);
     width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);

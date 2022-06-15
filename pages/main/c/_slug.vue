@@ -2,11 +2,11 @@
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }">
         <div class="Constellation_content fx-grow" v-if="constellation">
-            <page-const-banner
+            <!-- <page-const-banner
                 :min="isMin"
                 :is-event="isEventPage"
                 v-bind="constellation" class="d-none@s"
-            />
+            /> -->
 
             <nuxt-child :constellation="constellation" />
         </div>
@@ -72,7 +72,7 @@ export default {
 <style lang="scss" scoped>  
     .Constellation {
         position: relative;
-        margin-left: 340px;
+        margin-left: var(--nav-width);
         overflow: hidden;
     }
 

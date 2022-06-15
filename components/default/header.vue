@@ -5,10 +5,6 @@
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
-
-                <p class="ft-title-xs ellipsis-1 ellipsis-break hide show@s">
-                    <fa :icon="`far fa-${fa}`" class="mr-10" v-if="fa" /> {{ subtitle ? subtitle : '' }}
-                </p>
             </div>
 
             <div class="Header_right" v-if="user">
@@ -18,8 +14,6 @@
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
                 
-                <button-base :modifiers="['round', 's', 'weak']" :to="{ name: 'g' }" class="Header_button d-none@xs" icon-before="calendar" />
-
                 <button-base :modifiers="['round', 's', 'weak']" class="Header_button" icon-before="paper-plane" />
 
                 <button-base :modifiers="['round', 's', 'weak']" class="Header_button" icon-before="bell" />
@@ -67,16 +61,14 @@ export default {
         nav: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        subtitle () { return this.$store.state.page.subtitle },
-        fa () { return this.$store.state.page.fa }
+        user () { return this.$store.getters['user/self'] }
     },
     mounted () {
         this.isLoading = false
 
         this.nav = [
             {
-                label: `Actualité`,
+                label: `Activité`,
                 fa: 'home',
                 to: this.localePath({ name: 'feed' }),
             },
@@ -103,6 +95,12 @@ export default {
     :root {
         --header-height: 58px;
     }
+
+    @include breakpoint-s {
+        :root {
+            --header-height: 0px;
+        }
+    }
 </style>
 
 <style lang="scss" scoped>
@@ -114,25 +112,15 @@ export default {
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
 
-    &.is-transparent {
-        background-color: rgba(0, 0, 0, 0);
-        border-color: rgba(0, 0, 0, 0);
+    // &.is-transparent {
+    //     background-color: rgba(0, 0, 0, 0);
+    //     border-color: rgba(0, 0, 0, 0);
 
-        .Header_button.QuickMenu ::v-deep .QuickMenu_button,
-        .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
-            background-color: var(--color-bg-strong);
-        }
-    }
-
-    &.is-scrolled {
-        background-color: var(--color-bg-strong);
-        border-color: rgba(0, 0, 0, 0);
-        
-        .Header_button.QuickMenu ::v-deep .QuickMenu_button,
-        .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
-            background-color: var(--color-bg);
-        }
-    }
+    //     .Header_button.QuickMenu ::v-deep .QuickMenu_button,
+    //     .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
+    //         background-color: var(--color-bg-strong);
+    //     }
+    // }
 
     &.is-open {
         background-color: var(--color-bg-strong);
@@ -161,6 +149,7 @@ export default {
     justify-content: space-between;
     position: relative;
     padding: 0 10px 0 5px;
+    border-bottom: 1px solid var(--color-border-weak);
 }
 
 .Header_nav {
@@ -195,6 +184,7 @@ export default {
 
 @include breakpoint-s {
     .Header {
+        display: none;
         box-shadow: 0 0 0 999px rgba(39, 39, 43, 0);
 
         &.is-open {

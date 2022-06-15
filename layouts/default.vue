@@ -1,6 +1,7 @@
 <template>
     <div class="Layout LayoutDefault" :class="[ classes, { 'is-open-nav': isOpenNav } ]">
         <default-header @navOpen="onNavOpen" />
+        <default-app-header />
 
         <div
             class="LayoutDefault_content"
@@ -29,7 +30,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         classes () { return this.$store.state.page.body.classes },
         isDisableFooter () { return this.$store.state.page.isDisableFooter },
-        isOpenNav () { return this.$store.state.page.isOpenNav }
+        isOpenNav () { return true; return this.$store.state.page.isOpenNav }
     },
     data: () => ({
         pan: 0,

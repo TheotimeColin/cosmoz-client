@@ -96,7 +96,7 @@ export default {
             return [
                 {
                     children: [
-                        { label: `Actualité`, isParent: true, fa: 'home', to: { name: 'c-slug-feed', params: { slug: this.slug } } }
+                        { label: `Activité`, isParent: true, fa: 'home', to: { name: 'c-slug-feed', params: { slug: this.slug } } }
                     ]
                 }, 
                 {

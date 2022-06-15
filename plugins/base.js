@@ -105,7 +105,7 @@ Vue.mixin({
         $shopUrl () { return this.$config.shopUrl },
         $bg () { return CONSTANTS.bg },
         $const () { return CONSTANTS },
-        $windowSize () { return this.$store.state.page.breakpoint },
+        $windowSize () { return this.$store.state.page.breakpoint }
     },
     methods: {
         $randomBetween: (min, max) => {
@@ -242,7 +242,7 @@ Vue.mixin({
                 node = node.parentNode;
             }
             return false
-        },
+        }
     }
 })
 

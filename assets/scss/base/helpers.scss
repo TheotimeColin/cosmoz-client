@@ -77,13 +77,13 @@
 }
 
 .page {
-    margin-top: var(--header-height);
+    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
 }
 
 .is-open-nav {
 
     .page {
-        margin-left: 340px;
+        margin-left: var(--nav-width);
     }
 }
 

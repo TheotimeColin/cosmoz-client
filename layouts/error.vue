@@ -16,7 +16,7 @@
 <script>
 export default {
     name: 'nuxtError',
-    layout: 'default',
+    layout: 'full',
     props: {
         error: { type: Object, default: () => {} }
     },
