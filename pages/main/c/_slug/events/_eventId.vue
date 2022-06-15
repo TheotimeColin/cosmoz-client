@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-150">
+    <div class="Page pb-150">
         <template v-if="!isLoading && gathering">
             <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${gathering.hero})` }">
                 <div class="Wrapper Wrapper--xs text-center pv-60">
@@ -42,6 +42,15 @@
 <script>
 export default {
     name: 'GatheringPage',
+    transition (to, from) {
+        console.log(to.name)
+
+        if (to.name.includes('eventId')) {
+            return { name: 'slide-in', mode: 'in-out' }
+        } else if (from) {
+            return { name: 'slide-out', mode: 'in-out' }
+        }
+    },
     async fetch () {
         this.isLoading = true 
 
@@ -79,13 +88,8 @@ export default {
             return this.gathering.users.find(s => s.status == 'confirmed' && s._id == this.user._id)
         }
     },
-    beforeDestroy () {  
-        this.$store.commit('page/set', { subtitle: '', current: '' })
-    },
     head () {
         if (!this.gathering || !this.constellation) return {}
-
-        this.$store.commit('page/set', { fa: 'calendar', subtitle: this.gathering.title, current: 'event' })
 
         let meta = {
             title: `${this.gathering.title} organisé par ${this.constellation ? this.constellation.name : ''} ${this.$t('meta.append')}`,
@@ -104,3 +108,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+    .Page {
+        background-color: var(--color-bg);
+    }
+</style>

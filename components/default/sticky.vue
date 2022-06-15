@@ -1,5 +1,5 @@
 <template>
-    <div class="Sticky" :class="{ 'is-active': isActive, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
+    <div class="Sticky" :class="{ 'is-active': isActive || $appMeta.isPanel, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="Sticky_wrapper">
             <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="$emit('open')" v-if="selectConst" />
             <div class="Sticky_current round ft-xs bg-cosmoz" @click="$emit('open')" v-else>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { getMeta } from '@/utils/meta'
+
 export default {
     props: {
         translate: { type: Number },
@@ -23,6 +25,7 @@ export default {
         isActive: { type: Boolean, default: false }
     },
     computed: {
+        $appMeta () { return getMeta(this.$route, this.$store) },
         selectConst () {
             return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
                 slug: this.$route.params.slug

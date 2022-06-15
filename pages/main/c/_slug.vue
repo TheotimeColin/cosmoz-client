@@ -7,7 +7,7 @@
                 :is-event="isEventPage"
                 v-bind="constellation" class="d-none@s"
             /> -->
-
+            
             <nuxt-child :constellation="constellation" />
         </div>
     </div>

@@ -59,7 +59,8 @@ export function getMeta ($route, $store) {
                     children: {
 
                         'eventId': {
-                            title: gathering?.title
+                            title: gathering?.title,
+                            isPanel: true
                         }
                     }
                 }
