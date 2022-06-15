@@ -1,26 +1,33 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--xs">
-        <div v-if="Object.keys(gatheringsByDate).length > 0">
-            <div class="Date" v-for="date in gatheringsByDate" :key="date.value">
-                <p class="ft-title-xs">
-                    {{ $moment(date.value).format('dddd D MMMM YYYY') }}
-                </p>
+    <div class="page">
+        <div class="Page_wrapper Wrapper Wrapper--xs">
+            <div v-if="Object.keys(gatheringsByDate).length > 0">
+                <div class="Date" v-for="date in gatheringsByDate" :key="date.value">
+                    <p class="ft-title-xs">
+                        {{ $moment(date.value).format('dddd D MMMM YYYY') }}
+                    </p>
 
-                <block-gathering
-                    v-for="gathering in date.items"
-                    class="mt-20"
-                    :status-only="true"
-                    v-bind="gathering"
-                    :key="gathering._id"
-                />
+                    <block-gathering
+                        v-for="gathering in date.items"
+                        class="mt-20"
+                        :status-only="true"
+                        v-bind="gathering"
+                        :key="gathering._id"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
+    mixins: [ ConstellationMixin ],
     async fetch () {
+        await this.$preFetch()
+
         this.$emit('page', {
             subtitle: `Rencontres prévues`, fa: 'calendar'
         })
@@ -30,7 +37,7 @@ export default {
         })
 
         await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.constellation._id, status: 'active' }
+            query: { constellation: this.$constellation._id, status: 'active' }
         })
     },
     props: {
@@ -43,7 +50,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatheringsByDate () {
             return this.$store.getters['gathering/groupBy']('date', {
-                constellation: this.constellation._id,
+                constellation: this.$constellation._id,
                 status: 'active',
                 isPast: false,
                 sort: { date: 'desc' }

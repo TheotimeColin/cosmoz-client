@@ -76,17 +76,6 @@
     }
 }
 
-.page {
-    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
-}
-
-.is-open-nav {
-
-    .page {
-        margin-left: var(--nav-width);
-    }
-}
-
 .logo-sparkle-a::before {
     top: 10px;
     left: -35px;

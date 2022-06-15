@@ -1,5 +1,5 @@
 <template>
-    <div class="Sticky" :class="{ 'is-active': isActive || $appMeta.isPanel, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
+    <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel), 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="Sticky_wrapper">
             <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="$emit('open')" v-if="selectConst" />
             <div class="Sticky_current round ft-xs bg-cosmoz" @click="$emit('open')" v-else>

@@ -1,13 +1,18 @@
 <template>
-    <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-        
+    <div class="page">
+        <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+            
+        </div>
     </div>
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
-    props: {
-        constellation: { type: Object }
+    mixins: [ ConstellationMixin ],
+    async fetch () {
+        await this.$preFetch()
     },
     data: () => ({
         isLoading: false
@@ -16,14 +21,6 @@ export default {
         user () { return this.$store.getters['user/self'] }
     },
     head () {
-        this.$emit('page', {
-            subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
-        })
-
-        this.$store.commit('page/set', {
-            subtitle: this.$route.params.id ? this.$route.params.id : 'général', fa: 'hashtag'
-        })
-
         let meta = {
             
         }

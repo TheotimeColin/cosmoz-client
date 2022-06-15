@@ -60,6 +60,7 @@ export function getMeta ($route, $store) {
 
                         'eventId': {
                             title: gathering?.title,
+                            back: { name: 'c-slug-events', params: { slug: constellation.slug } },
                             isPanel: true
                         }
                     }

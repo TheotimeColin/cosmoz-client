@@ -294,7 +294,7 @@ export default {
     position: fixed;
     top: 0;
     left: var(--nav-width);
-    width: 100vw;
+    width: 120vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     pointer-events: none;

@@ -2,9 +2,11 @@
     <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta }" v-if="$appMeta">
         <div class="AppHeader_wrapper">
             <div class="AppHeader_left">
-                <fa :icon="`far fa-${$appMeta.fa}`" class="mr-10" fixed-width />
+                <div class="AppHeader_icon" @click="onIconClick">
+                    <fa :icon="`far fa-${$appMeta.isPanel ? 'arrow-left' : $appMeta.fa}`" fixed-width />
+                </div>
 
-                <h1 class="ft-title-xs ellipsis-1 ellipsis-break">
+                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
                     {{ $appMeta.title }}
                 </h1>
             </div>
@@ -43,6 +45,13 @@ export default {
         this.nav = [
            
         ]
+    },
+    methods: {
+        onIconClick () {
+            if (this.$appMeta && this.$appMeta.back) {
+                this.$router.push(this.localePath(this.$appMeta.back))
+            }
+        }
     }
 }
 </script>
@@ -52,10 +61,10 @@ export default {
         --app-height: 50px;
     }
 
-    .AppHeader.is-hidden {
+    @include breakpoint-s {
 
         :root {
-            --app-height: 0px;
+            --app-height: 60px;
         }
     }
 </style>
@@ -71,6 +80,16 @@ export default {
     transition: all 100ms ease;
 }
 
+.AppHeader_icon {
+    padding: 0 10px 0 15px;
+    flex-shrink: 0;
+    height: var(--app-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 .AppHeader_button {
 
     & + & {
@@ -83,7 +102,6 @@ export default {
     align-items: center;
     position: relative;
     z-index: 30;
-    padding-left: 10px;
 }
 
 .AppHeader_wrapper {
@@ -92,7 +110,6 @@ export default {
     align-items: center;
     justify-content: space-between;
     position: relative;
-    padding: 0 10px 0 5px;
 }
 
 .AppHeader_right {

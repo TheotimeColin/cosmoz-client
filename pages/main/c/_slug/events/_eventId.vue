@@ -1,5 +1,5 @@
 <template>
-    <div class="Page pb-150">
+    <div class="Page page pb-150">
         <template v-if="!isLoading && gathering">
             <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${gathering.hero})` }">
                 <div class="Wrapper Wrapper--xs text-center pv-60">
@@ -43,8 +43,6 @@
 export default {
     name: 'GatheringPage',
     transition (to, from) {
-        console.log(to.name)
-
         if (to.name.includes('eventId')) {
             return { name: 'slide-in', mode: 'in-out' }
         } else if (from) {

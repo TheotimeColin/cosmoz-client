@@ -25,6 +25,8 @@ export default {
             return this.user && this.usersByStatus(['confirmed', 'attending']).find(u => u._id == this.user._id) ? true : false
         },
         canonical () {
+            if (!this.constellation) return ''
+
             return this.$config.baseUrl + this.localePath({ name: 'c-slug-events-eventId', params: { id: this.gathering.id, slug: this.constellation.slug }})
         },
         googleCal () {

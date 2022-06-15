@@ -1,14 +1,21 @@
 <template>
-    <div class="Wrapper pv-40">
-        Pas encore de sorties prévues
+    <div class="page">
+        <div class="Wrapper pv-40">
+            Pas encore de sorties prévues
+        </div>
     </div>
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
+    mixins: [ ConstellationMixin ],
     async fetch () {
+        await this.$preFetch()
+
         await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.constellation._id }
+            query: { constellation: this.$constellation._id }
         })
     },
     props: {
@@ -21,14 +28,6 @@ export default {
         user () { return this.$store.getters['user/self'] }
     },
     head () {
-        this.$store.commit('page/set', {
-            subtitle: `Sorties prévues`, fa: 'calendar'
-        })
-
-        this.$emit('page', {
-            subtitle: `Sorties prévues`, fa: 'calendar'
-        })
-
         let meta = {
             title: `Sorties prévues ${this.$t('meta.append')}`,
         }

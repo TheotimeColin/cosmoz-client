@@ -2,13 +2,6 @@
 <template>
     <div class="Constellation page" :class="{ 'is-event': isEventPage }">
         <div class="Constellation_content fx-grow" v-if="constellation">
-            <!-- <page-const-banner
-                :min="isMin"
-                :is-event="isEventPage"
-                v-bind="constellation" class="d-none@s"
-            /> -->
-            
-            <nuxt-child :constellation="constellation" />
         </div>
     </div>
 </template>

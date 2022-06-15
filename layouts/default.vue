@@ -94,6 +94,10 @@ export default {
     min-height: calc(100vh - var(--header-height));
     touch-action: pan-y !important;
     user-select: auto !important;
+    margin-left: var(--nav-width);
+    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
+    position: relative;
+    overflow: hidden;
 }
 
 .page-enter-active,
@@ -124,6 +128,7 @@ export default {
 @include breakpoint-s {
     .LayoutDefault_content {
         user-select: none !important;
+        margin-left: 0;
     }
     
     .Footer {
