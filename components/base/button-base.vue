@@ -6,6 +6,7 @@
         :to="localePath(to)"
         v-bind="computedAttrs"
         v-on="$listeners"
+        @click="onClick"
     >
         <div class="ButtonBase_content">
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
@@ -27,6 +28,13 @@
                 <fa :icon="`far fa-${iconAfter}`" />
             </span>
         </div>
+
+        <div
+            class="ButtonBase_ripple"
+            v-for="ripple in ripples"
+            :style="{ ...ripple }"
+            :key="ripple.id"
+        ></div>
 
         <div class="ButtonBase_iconLoading">
             <fa :icon="`far fa-${iconLoading}`" />
@@ -53,6 +61,9 @@ export default {
         iconLoading: { type: String, default: 'spinner-third' },
         attrs: { type: Object, default: () => ({}) }
     },
+    data: () => ({
+        ripples: []
+    }),
     computed: {
         componentTag () {
             if (this.tag) return this.tag
@@ -68,6 +79,21 @@ export default {
                 ...this.$props.attrs,
                 ...(this.$props.node ? this.$props.node.attrs : {})
             }
+        }
+    },
+    methods: {
+        onClick (e) {
+            this.$emit('click')
+
+            let id = Math.random()
+
+            this.ripples = [ ...this.ripples, {
+                id, left: e.offsetX + 'px', top: e.offsetY + 'px'
+            } ]
+
+            setTimeout(() => {
+                this.ripples = this.ripples.filter(r => r.id !== id)
+            }, 300)
         }
     }
 }
@@ -130,10 +156,12 @@ export default {
 
 .ButtonBase_iconBefore {
     margin-right: 8px;
+    pointer-events: none;
 }
 
 .ButtonBase_iconAfter {
     margin-left: 8px;
+    pointer-events: none;
 }
 
 @keyframes baseSpin {
@@ -198,6 +226,24 @@ export default {
 
         &.is-active {
             background-color: var(--color-bg-strong);
+        }
+    }
+}
+
+.ButtonBase--transparent {
+    background-color: transparent;
+    color: var(--color-ft-weak);
+    border-color: transparent;
+
+    &.is-active {
+    background-color: transparent;
+    }
+
+    &:hover {
+        background-color: transparent;
+
+        &.is-active {
+            background-color: transparent;
         }
     }
 }

@@ -55,7 +55,7 @@
                 </div>
             </app-banner>
 
-            <div class="Wrapper pv-60 pv-30@xs">
+            <!-- <div class="Wrapper pv-60 pv-30@xs">
                 <div class="row-s">
                     <div class="col-7 col-12@s">
                         <content-feed
@@ -87,6 +87,13 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="Page_wrapper Wrapper Wrapper--xs">
+                <content-feed
+                    :author="profile._id"
+                    :disable-create="true"
+                />
             </div>
 
             <popin :is-active="editSection" @close="editSection = null" v-if="isSelf">

@@ -6,11 +6,7 @@
                 <fa icon="far fa-home" />
             </div>
 
-            <component :is="item.to ? 'nuxt-link' : 'div'" class="Sticky_item" :to="localePath(item.to)" v-for="item in items" :key="item.fa">
-                <fa :icon="`far fa-${item.fa}`" />
-
-                <p class="Sticky_label">{{ item.label ? item.label : '' }}</p>
-            </component>
+            <default-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
         </div>
     </div>
 </template>
@@ -58,6 +54,7 @@ export default {
     transform: translate(0%);
     transition: all 200ms ease;
     display: none;
+    overflow: hidden;
 
     &.is-active {
         transform: translateY(100%) !important;
@@ -76,39 +73,8 @@ export default {
     justify-content: space-between;
 }
 
-.Sticky_item {
-    width: 45px;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-ft-weak);
-    position: relative;
-    transition: all 150ms ease;
-
-    &.is-active-exact {
-        height: 45px;
-        color: var(--color-ft-light);
-
-        .Sticky_label {
-            opacity: 1;
-        }
-    }
-}
-
 .Sticky_current {
     align-self: center;
-}
-
-.Sticky_label {
-    opacity: 0;
-    pointer-events: none;
-    font: var(--ft-2xs);
-    font-size: 10px;
-    position: absolute;
-    bottom: -5px;
-    white-space: nowrap;
 }
 
 @include breakpoint-s {

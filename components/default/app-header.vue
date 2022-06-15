@@ -1,9 +1,10 @@
 <template>
-    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta }" v-if="$appMeta">
+    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back }" v-if="$appMeta">
         <div class="AppHeader_wrapper">
             <div class="AppHeader_left">
-                <div class="AppHeader_icon" @click="onIconClick">
-                    <fa :icon="`far fa-${$appMeta.isPanel ? 'arrow-left' : $appMeta.fa}`" fixed-width />
+                <div class="AppHeader_iconContainer">
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" @click="onIconClick" v-if="$appMeta.isPanel" />
+                    <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else />
                 </div>
 
                 <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
@@ -78,16 +79,19 @@ export default {
     z-index: 90;
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
+    overflow: hidden;
 }
 
-.AppHeader_icon {
-    padding: 0 10px 0 15px;
+.AppHeader_iconContainer {
     flex-shrink: 0;
     height: var(--app-height);
+    width: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
+    position: relative;
+    font-size: 15px;
 }
 
 .AppHeader_button {
