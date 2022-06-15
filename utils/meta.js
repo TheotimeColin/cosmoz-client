@@ -2,6 +2,7 @@ export function getMeta ($route, $store) {
     let name = $route ? $route.name.split('_')[0] : ''
     let constellation = null
     let gathering = null
+    let user = null
     
     if ($route.params.slug) {
         try {
@@ -15,6 +16,14 @@ export function getMeta ($route, $store) {
         try {
             gathering = $store.getters['gathering/findOne']({
                 id: $route.params.eventId
+            })
+        } catch (e) { console.warn(e) }
+    }
+    
+    if ($route.params.userId) {
+        try {
+            user = $store.getters['user/findOne']({
+                id: $route.params.userId
             })
         } catch (e) { console.warn(e) }
     }
@@ -35,6 +44,10 @@ export function getMeta ($route, $store) {
         'constellation': {
             title: 'Ma constellation',
             fa: 'sparkles'
+        },
+        'p': {
+            title: user ? 'Profil de ' + user?.name : 'Profil',
+            isPanel: true
         },
         'c-slug': {
             title: constellation?.name,

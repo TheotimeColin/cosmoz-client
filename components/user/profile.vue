@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})" class="UserProfile bgi-holo" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" :style="src ? { backgroundImage: `url(${src})` } : {}">
         <div class="UserProfile_overlay" v-if="overlay">
             {{ overlay }}
         </div>

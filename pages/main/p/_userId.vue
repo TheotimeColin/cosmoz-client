@@ -126,7 +126,7 @@ const TIDBITS = ['socials', 'anything']
 export default {
     name: 'ProfilePage',
     async fetch () {
-        await this.$store.dispatch('user/fetchOne', this.$route.params.id)
+        await this.$store.dispatch('user/fetchOne', this.$route.params.userId)
 
         if (this.target) {
             await this.$store.dispatch('mention/fetch', { query: {
@@ -142,7 +142,7 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        target () { return this.$store.getters['user/findOne']({ id: this.$route.params.id }) },
+        target () { return this.$store.getters['user/findOne']({ id: this.$route.params.userId }) },
         profile () { return this.user && this.$route.params.id == this.user.id ? this.user : this.target },
         isSelf () { return this.user && this.profile && this.user.id == this.profile.id },
         tidbits () {

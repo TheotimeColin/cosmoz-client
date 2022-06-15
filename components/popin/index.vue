@@ -1,7 +1,17 @@
 <template>
     <div class="PopinBase" :class="[{ 'is-active': isActive }, ...$modifiers ]">
         <div class="PopinBase_body" ref="body">
-            <div class="PopinBase_close" @click="$emit('close')">
+            <div class="PopinBase_header" v-if="title">
+                <div class="PopinBase_headerLeft">
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" @click="$emit('close')" />
+                    <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                        {{ title }}
+                    </h1>
+                </div>
+                <div></div>
+            </div>
+
+            <div class="PopinBase_close" @click="$emit('close')" v-else>
                 <fa icon="far fa-times" />
             </div>
 
@@ -25,6 +35,7 @@ export default {
     name: 'PopinBase',
     mixins: [ ModifiersMixin ],
     props: {
+        title: { type: String, default: '' },
         isActive: { type: Boolean, default: false },
         autoClose: { type: Boolean, default: true },
         query: { type: [String, Boolean], default: false }
@@ -123,6 +134,21 @@ export default {
     border: none;
     transition: all 350ms ease;
     overflow: hidden;
+}
+
+.PopinBase_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 0 0;
+    border-color: var(--color-border-weak);
+    overflow: hidden;
+}
+
+.PopinBase_headerLeft {
+    display: flex;
+    align-items: center;
+    height: var(--app-height);
 }
 
 .PopinBase_footer {

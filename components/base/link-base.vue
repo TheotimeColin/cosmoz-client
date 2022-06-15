@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss" scoped>
 .LinkBase {
-    font: var(--ft-title-2xs);
+    font: var(--ft-title-3xs);
     line-height: 1.6;
     display: inline-block;
     cursor: pointer;
@@ -75,11 +75,11 @@ export default {
 }
 
 .LinkBase--s {
-    font: var(--ft-title-3xs);
+    font: var(--ft-title-4xs);
 }
 
 .LinkBase--l {
-    font: var(--ft-title-xs);
+    font: var(--ft-title-2xs);
 }
 
 .LinkBase--weak {

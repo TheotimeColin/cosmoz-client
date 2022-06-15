@@ -10,7 +10,7 @@
             <div class="Header_right" v-if="user">
                 <button-base :modifiers="['round', 'weak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
 
-                <button-base :modifiers="['weak', 's', 'user']" :to="{ name: 'p-id', params: { id: user.id } }" class="Header_button d-none@xs">
+                <button-base :modifiers="['weak', 's', 'user']" :to="{ name: 'p-userId', params: { id: user.userId } }" class="Header_button d-none@xs">
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
                 

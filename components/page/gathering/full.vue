@@ -1,10 +1,7 @@
 <template>
     <div>
-        <popin :is-active="isActive" :modifiers="['panel']" query="full" @close="$emit('close')" @open="$emit('open')">
+        <popin :is-active="isActive" :modifiers="['panel']" :title="'Détails de : ' + gathering.title" query="full" @close="$emit('close')" @open="$emit('open')">
             <div class="p-30" slot="content">
-                <div class="mb-20">
-                    <p class="ft-title-m">{{ gathering.title }}</p>
-                </div>
                 <transition name="fade">
                     <div v-show="!isManage">
                         <div class="Gathering_section block-r">

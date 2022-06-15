@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-id', params: { id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" >
         <div class="UserIcon_image" :style="{ backgroundImage: `url(${src ? src : $bg.holo})` }">
             <template v-if="hidePicture || !src">
                 {{ name ? name.slice(0, 1) : 'a' }}

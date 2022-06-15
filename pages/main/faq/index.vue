@@ -1,7 +1,7 @@
 <template>
-    <div class="">
-        <div class="Wrapper pv-100">
-            <h1 class="ft-title-l">
+    <div class="page">
+        <div class="Page_wrapper Wrapper">
+            <h1 class="ft-title-m">
                 Foire aux questions
             </h1>
 

@@ -150,7 +150,7 @@ export default {
             return subtitle
         },
         titleLink () {
-            return this.localePath({ name: 'p-id', params: { id: this.owner.id } })
+            return this.localePath({ name: 'p-userId', params: { userId: this.owner.id } })
         },
         gatheringLink () {
             let link = null

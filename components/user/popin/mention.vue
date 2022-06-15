@@ -13,7 +13,7 @@
                 <p class="mb-15">{{ selectedUser.name }} a également envie de rester en contact !</p>
 
                 <div class="mt-20">
-                    <button-base :modifiers="['light']" :to="{ name: 'p-id', params: { id: selectedUser.id }}">Voir son profil</button-base>
+                    <button-base :modifiers="['light']" :to="{ name: 'p-userId', params: { userId: selectedUser.id }}">Voir son profil</button-base>
                 </div>
             </div>
             <div class="p-30" v-else>
