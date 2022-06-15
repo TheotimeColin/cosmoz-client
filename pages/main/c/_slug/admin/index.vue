@@ -5,13 +5,13 @@
 </template>
 
 <script>
-export default {
-    props: {
-        constellation: { type: Object }
-    },
-    data: () => ({
+import ConstellationMixin from '@/mixins/constellation'
 
-    }),
+export default {
+    mixins: [ ConstellationMixin ],
+    async fetch () {
+        await this.$preFetch()
+    },
     computed: {
         navItems () {
             return [
@@ -19,17 +19,17 @@ export default {
                     id: 'index',
                     component: 'page-admin-members',
                     label: 'Membres',
-                    props: { constellation: this.constellation }
+                    props: { constellation: this.$constellation }
                 }, {
                     id: 'customization',
                     component: 'page-admin',
                     label: 'Personnalisation',
-                    props: { constellation: this.constellation }
+                    props: { constellation: this.$constellation }
                 }, {
                     id: 'roles',
                     component: 'page-admin-roles',
                     label: 'Rôles',
-                    props: { constellation: this.constellation }
+                    props: { constellation: this.$constellation }
                 }
             ]
         },

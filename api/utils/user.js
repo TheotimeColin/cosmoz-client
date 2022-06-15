@@ -109,13 +109,13 @@ exports.accessCheck = async function (type = 'write', entity, requested = null, 
             }
 
             if (!granted) {
-                console.warn(`access-${type}-denied`)
-                console.log(entity.model)
+                // console.warn(`access-${type}-denied`)
+                // console.log(entity.model)
                 
                 if (entity[type] == 'self') {
-                    console.log('requester : ' + requester + ' | owner : ' + owner)
+                    // console.log('requester : ' + requester + ' | owner : ' + owner)
                 } else {
-                    console.log('required : ' + entity[type] + ' | user : ' + (user ? user.role : 'none'))
+                    // console.log('required : ' + entity[type] + ' | user : ' + (user ? user.role : 'none'))
                 }
             }
 

@@ -58,7 +58,33 @@ exports.postStatus = async function (req, res) {
 
         if (fields.parent) {
             parent = await Entities.status.model.find({ _id: fields.parent })
+
             if (!parent[0]) throw Error('no-parent')
+            
+            if (!parent[0].owner.equals(user._id)) {
+                let existing = await Entities.notification.model.findOne({
+                    type: 'post-reply',
+                    status: parent[0]._id,
+                    owner: parent[0].owner,
+                    state: 'unread'
+                })
+
+                if (existing && !existing.origins.find(o => user._id.equals(o._id))) {
+                    existing.origins = [
+                        ...existing.origins,
+                        { _id: user._id, type: 'user' }
+                    ]
+
+                    await existing.save()
+                } else if (!existing) {
+                    await Entities.notification.model.create({
+                        type: 'post-reply',
+                        status: parent[0]._id,
+                        owner: parent[0].owner,
+                        origins: [ { _id: user._id, type: 'user' } ]
+                    })
+                }
+            }
         }
 
         fields.content = striptags(fields.content)
@@ -115,6 +141,7 @@ exports.reactStatus = async function (req, res) {
         let status = await Entities.status.model.findByIdAndUpdate(fields._id, {
             [req.body.action ? '$addToSet' : '$pull']: { reactions: reaction }
         })
+
         if (!status) throw Error('status-not-found')
 
         let updated = await Entities.status.model.find({ _id: { $in: [fields._id, status.parent] } })
@@ -122,6 +149,31 @@ exports.reactStatus = async function (req, res) {
         data = updated.find(d => d._id.equals(fields._id))
 
         if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
+
+        // if (!status.owner.equals(user._id)) {
+            let existing = await Entities.notification.model.findOne({
+                type: 'post-react',
+                status: status._id,
+                owner: status.owner,
+                state: 'unread'
+            })
+
+            if (existing && !existing.origins.find(o => user._id.equals(o._id))) {
+                existing.origins = [
+                    ...existing.origins,
+                    { _id: user._id, type: 'user' }
+                ]
+
+                await existing.save()
+            } else if (!existing) {
+                await Entities.notification.model.create({
+                    type: 'post-react',
+                    status: status._id,
+                    owner: status.owner,
+                    origins: [ { _id: user._id, type: 'user' } ]
+                })
+            }
+        // }
         
         data = await fieldsCheck('read', data._doc, Entities.status, data, user)
     } catch (e) {

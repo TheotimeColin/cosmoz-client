@@ -1,5 +1,7 @@
 <template>
     <div class="PopinBase" :class="[{ 'is-active': isActive }, ...$modifiers ]">
+        <div class="PopinBase_hider" @click="$emit('close')"></div>
+
         <div class="PopinBase_body" ref="body">
             <div class="PopinBase_header" v-if="title">
                 <div class="PopinBase_headerLeft">
@@ -95,7 +97,7 @@ export default {
     },
     mounted () {
         this.listeners.close = (e) => {
-            if (!this.$refs.body.contains(e.target)) this.$emit('close')
+            // if (!this.$refs.body.contains(e.target)) this.$emit('close')
         }
 
         this.listeners.echap = (e) => {
@@ -121,6 +123,19 @@ export default {
     transition: all 350ms ease;
 }
 
+.PopinBase_hider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.75);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 350ms ease;
+}
+
 .PopinBase_body {
     background-color: var(--color-bg);
     border-radius: 0px;
@@ -134,6 +149,8 @@ export default {
     border: none;
     transition: all 350ms ease;
     overflow: hidden;
+    position: relative;
+    z-index: 5;
 }
 
 .PopinBase_header {
@@ -185,10 +202,14 @@ export default {
 
 .PopinBase.is-active {
     pointer-events: all;
-    background-color: #08080cd9;
 
     & > .PopinBase_body {
         transform: translateY(0);
+        opacity: 1;
+    }
+
+    .PopinBase_hider {
+        pointer-events: all;
         opacity: 1;
     }
 }

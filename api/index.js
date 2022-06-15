@@ -27,11 +27,11 @@ const { updateBookingStatus } = require('./api/gathering');
 const { sendMentions, unmatch, createRequest, cancelRequest } = require('./api/affinities')
 const { getFeed, postStatus, reactStatus } = require('./api/status')
 const { scrape } = require('./api/scraper')
+const { readAll } = require('./api/notification')
 const { consteApply, consteLeave, consteEnter, consteInviteLink } = require('./api/constellation')
 const { getToken } = require('./api/token')
 
 app.use(morgan('combined'))
-app.use('/webhooks', express.raw({ type: "*/*" }))
 app.use(express.json({ limit: '10mb', extended: true }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
 app.use(cors())
@@ -88,7 +88,8 @@ mongoose.connection.once('open', async () => {
     app.post('/constellation/invite-link', consteInviteLink)
     
     app.post('/token/get', getToken)
-
+    
+    app.get('/notifications/read', readAll)
     app.get('/scraper', scrape)
 
     cronHourly(app)

@@ -30,10 +30,7 @@ export default {
             deep: true,
             handler (v) {
                 let form = this.decodeForm(v)
-            
-                console.log('SERVER CHANGE')
-                console.log(form)
-
+        
                 this.formData = {
                     ...this.formData,
                     ...form

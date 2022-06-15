@@ -2,6 +2,7 @@
     <div class="Layout LayoutDefault" :class="[ classes, { 'is-open-nav': isOpenNav } ]">
         <default-header @navOpen="onNavOpen" />
         <default-app-header />
+        <default-notifications v-if="user" />
 
         <div
             class="LayoutDefault_content"

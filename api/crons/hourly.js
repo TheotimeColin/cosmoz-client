@@ -6,15 +6,12 @@ const { sendBulkMail, sendMail } = require('../utils/mailing')
 const Entities = require('../entities')
 
 module.exports = function (app) {
-    if (app.locals.hourly || true) return
+    if (app.locals.hourly) return
 
-    console.log('=== create CRON ====')
-    app.locals.hourly = new CronJob('* 30 * * * *', () => {
-        console.log('=== hourly cron job')
-
-        sendPendingEmails()
-        sendGatheringReminders()
-    }, null, true)
+    // app.locals.hourly = new CronJob('* 30 * * * *', () => {
+    //     sendPendingEmails()
+    //     sendGatheringReminders()
+    // }, null, true)
 }
 
 const TEMPLATES = {
@@ -38,13 +35,15 @@ const sendPendingEmails = async function () {
             if (mail.gathering) {
                 let cover = mail.gathering.cover ? mail.gathering.cover.medias.find(m => m.size == 'm') : ''
 
+                const constellation = await Entities.constellation.model.findOne({ _id: mail.gathering.constellation })
+
                 params = {
                     ...params,
                     G_date: moment(mail.gathering.date).format('D MMMM YYYY à hh:mm'),
                     G_location: mail.gathering.location,
                     G_title: mail.gathering.title,
                     G_cover: cover ? cover.src : '',
-                    G_link: process.env.BASE_URL + '/c/' + mail.gathering.constellation.slug + '/events/' + mail.gathering.id
+                    G_link: process.env.BASE_URL + '/c/' + constellation.slug + '/events/' + mail.gathering.id
                 }
             }
 
@@ -97,6 +96,8 @@ const sendGatheringReminders = async function () {
         try {
             let cover = gathering.cover ? gathering.cover.medias.find(m => m.size == 'm') : ''
 
+            const constellation = await Entities.constellation.model.findOne({ _id: gathering.constellation })
+
             const response = await sendBulkMail(users, {
                 template: 3,
                 params: {
@@ -104,8 +105,8 @@ const sendGatheringReminders = async function () {
                     location: gathering.location,
                     name: gathering.title,
                     image: cover ? cover.src : '',
-                    link: process.env.BASE_URL + '/c/' + gathering.constellation.slug + '/events/' + gathering.id,
-                    cancel: process.env.BASE_URL + '/c' + gathering.constellation.slug + '/events/' + gathering.id + '?manage'
+                    link: process.env.BASE_URL + '/c/' + constellation.slug + '/events/' + gathering.id,
+                    cancel: process.env.BASE_URL + '/c' + constellation.slug + '/events/' + gathering.id + '?manage'
                 }
             })
 

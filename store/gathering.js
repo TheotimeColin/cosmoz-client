@@ -164,8 +164,6 @@ export default {
 
             let result = storeUtils.searchItems(items, search, root.auth.user)
             return result[0] ? result[0] : null
-            
-            return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
         }
     }
 }

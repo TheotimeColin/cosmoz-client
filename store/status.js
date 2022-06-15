@@ -16,6 +16,9 @@ export default {
         deleteOne (state, id) {
             state.items = storeUtils.deleteOne(state, id)
         },
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
+        },
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
         }
@@ -46,6 +49,9 @@ export default {
                 console.error(e)
                 return null
             }
+        },
+        async softFetch ({ state, dispatch, commit }, items) {
+            return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
         async create ({ commit }, params = {}) {
             try {
@@ -154,9 +160,11 @@ export default {
 
             return items
         },
-        findOne: (state, getters) => (search, raw = false) => {
-            let items = raw ? Object.values(state.items) : getters.items
-            return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
+        findOne: (state, getters, root) => (search, raw = false) => {
+            let items = raw ? Object.values({ ...state.items }) : getters.items
+
+            let result = storeUtils.searchItems(items, search, root.auth.user)
+            return result[0] ? result[0] : null
         }
     }
 }

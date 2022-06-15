@@ -56,9 +56,10 @@ export default {
     name: 'PageConstNav',
     mixins: [ Permissions ],
     async fetch () {
-        if (this.user) {
-            await this.$store.dispatch('gathering/softFetch', this.user.gatherings.map(g => g._id))
-        }
+        await this.$store.dispatch('gathering/fetch', {
+            constellation: this._id,
+            status: 'active'
+        })
     },
     props: {
         _id: { type: String },

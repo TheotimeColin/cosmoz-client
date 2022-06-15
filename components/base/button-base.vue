@@ -26,13 +26,15 @@
             <span class="ButtonBase_iconAfter" v-if="iconAfter">
                 <fa :icon="`far fa-${iconAfter}`" />
             </span>
-        </div>
 
-        <ripples />
+            <ripples />
+        </div>
 
         <div class="ButtonBase_iconLoading">
             <fa :icon="`far fa-${iconLoading}`" />
         </div>
+
+        <div class="ButtonBase_notification" v-if="notification"></div>
     </component>
 </template>
 
@@ -47,6 +49,7 @@ export default {
         href: { type: String },
         link: { type: String },
         text: { type: String },
+        notification: { type: Boolean },
         to: { type: [Object, Boolean], default: false },
         node: { type: Object, default: () => {} },
         iconBefore: { type: String, default: '' },
@@ -81,7 +84,7 @@ export default {
     font: var(--ft-title-2xs);
     line-height: 1;
     color: var(--color-ft-light);
-    border: 2px solid var(--color-bg-xstrong);
+    // border: 2px solid var(--color-bg-xstrong);
     background-color: var(--color-bg-xstrong);
     padding: 12px 15px;
     border-radius: 40px;
@@ -96,7 +99,7 @@ export default {
 
     &:hover,
     &:active {
-        background-color: transparent;
+        background-color: var(--color-bg);
         color: var(--color-ft-light);
         transform: scale(0.98);
     }
@@ -104,6 +107,17 @@ export default {
     &:active {
         transform: scale(0.96);
     }
+}
+
+.ButtonBase_notification {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-cosmoz);
+    position: absolute;
+    z-index: 5;
+    right: 4px;
+    bottom: 4px;
+    border-radius: 50%;
 }
 
 .ButtonBase_text {
@@ -116,6 +130,7 @@ export default {
     justify-content: center;
     user-select: none;
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .ButtonBase_iconLoading {
@@ -210,6 +225,7 @@ export default {
     background-color: transparent;
     color: var(--color-ft-weak);
     border-color: transparent;
+    overflow: visible;
 
     &.is-active {
     background-color: transparent;

@@ -5,9 +5,9 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         constellation () {
-            return this.$store.getters['constellation/findOne']({
-                _id: this.gathering.constellation
-            })
+            return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
+                slug: this.$route.params.slug
+            }) : null
         },
         attending () {
             return this.$shuffle(this.usersByStatus(['attending', 'confirmed'])).slice(0, 2).map(u => u.name).join(', ')

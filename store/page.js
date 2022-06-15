@@ -16,6 +16,7 @@ export default {
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,
+        isNotifications: false,
         isPWA: false,
         isScrolled: false,
         isDisableFooter: false,
@@ -76,8 +77,8 @@ export default {
             state.isNavCompact = params.force !== undefined ? params.force : !state.isNavCompact
             if (params.save) this.$cookies.set('nav-compact', JSON.stringify(state.isNavCompact))
         },
-        toggleCart (state) {
-            state.isCartActive = !state.isCartActive
+        toggleNotifs (state, v) {
+            state.isNotifications = v
         },
         setBanner (state, banner ) {
             state.banner = { ...state.banner, ...banner  }

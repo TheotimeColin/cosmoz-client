@@ -2,7 +2,7 @@
     <div class="Page_wrapper Wrapper Wrapper--s">
         <div class="Section">
             <div class="p-30 text-center bg-bg-strong br-s">
-                <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: constellation.slug } }" icon-before="plus">Organiser une sortie</button-base>
+                <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: $constellation.slug } }" icon-before="plus">Organiser une sortie</button-base>
             </div>
         </div>
 
@@ -14,7 +14,7 @@
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: $constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -30,7 +30,7 @@
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: $constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -46,7 +46,7 @@
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: $constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -62,7 +62,7 @@
                     <block-gathering
                         class="mt-20"
                         :modifiers="['square']"
-                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: constellation.slug, id: gathering._id } })"
+                        :replace-link="localePath({ name: `c-slug-manage-events-id`, params: { slug: $constellation.slug, id: gathering._id } })"
                         :status-only="true"
                         v-bind="gathering"
                     />
@@ -73,14 +73,16 @@
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
+    mixins: [ ConstellationMixin ],
     async fetch () {
+        await this.$preFetch()
+
         await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.constellation._id }
+            query: { constellation: this.$constellation._id }
         })
-    },
-    props: {
-        constellation: { type: Object }
     },
     data: () => ({
         isLoading: false
@@ -89,7 +91,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
-                constellation: this.constellation._id
+                constellation: this.$constellation._id
             })
         }
     },

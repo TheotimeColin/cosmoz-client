@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="Page page">
         <template v-if="profile && this.user">
             <app-banner :background="$bg.holo">
                 <div class="fx-center width-100 d-block@xs">
@@ -125,6 +125,13 @@ const TIDBITS = ['socials', 'anything']
 
 export default {
     name: 'ProfilePage',
+    transition (to, from) {
+        if (to.name.includes('userId')) {
+            return { name: 'slide-in', mode: 'in-out' }
+        } else if (from) {
+            return { name: 'slide-out', mode: 'in-out' }
+        }
+    },
     async fetch () {
         await this.$store.dispatch('user/fetchOne', this.$route.params.userId)
 
@@ -211,6 +218,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .Page {
+        background-color: var(--color-bg);
+    }
+    
     .Profile_tidbit {
 
         & + & {

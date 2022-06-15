@@ -8,15 +8,15 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-base :modifiers="['round', 'weak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
-
-                <button-base :modifiers="['weak', 's', 'user']" :to="{ name: 'p-userId', params: { id: user.userId } }" class="Header_button d-none@xs">
+                <button-base :modifiers="['', 's', 'user']" :to="{ name: 'p-userId', params: { userId: user.id } }" class="Header_button d-none@xs">
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
-                
-                <button-base :modifiers="['round', 's', 'weak']" class="Header_button" icon-before="paper-plane" />
 
-                <button-base :modifiers="['round', 's', 'weak']" class="Header_button" icon-before="bell" />
+                <button-base :modifiers="['round', 'xweak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
+                
+                <button-base :modifiers="['round', 's', 'xweak']" class="Header_button" icon-before="paper-plane" />
+
+                <button-base :modifiers="['round', 's', 'xweak']" class="Header_button" icon-before="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
 
                 <quick-menu
                     :large="true"
@@ -61,7 +61,13 @@ export default {
         nav: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] }
+        user () { return this.$store.getters['user/self'] },
+        notifications () {
+            return this.$store.getters['notification/find']({
+                owner: this.user._id,
+                state: 'unread'
+            })
+        },
     },
     mounted () {
         this.isLoading = false
@@ -108,7 +114,7 @@ export default {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 90;
+    z-index: 110;
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
 

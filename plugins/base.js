@@ -84,7 +84,7 @@ Vue.mixin({
         },
         fixed: (value) => {
             return ('0' + value).slice(-2)
-        }
+        },
     },
     data: () => ({
         isMounted: false,
@@ -242,6 +242,11 @@ Vue.mixin({
                 node = node.parentNode;
             }
             return false
+        },
+        $pluralize (users) {
+            return this.$tc(`utils.users`, users.length == 1 ? 0 : users.length - 1, {
+                users: users.slice(0, 2).join(' et '), others: users.length - 2
+            })
         }
     }
 })

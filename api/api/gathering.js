@@ -109,32 +109,34 @@ exports.updateBookingStatus = async function (req, res) {
 const sendConfirmationMail = async function (gathering, user) {
     return new Promise(async (resolve, reject) => {
         let cover = gathering.cover ? gathering.cover.medias.find(m => m.size == 'm') : ''
-        let qr = `gatherings/${gathering.id}/${user.id}.png`
+        // let qr = `gatherings/${gathering.id}/${user.id}.png`
+
+        // try {
+        //     await req.app.locals.s3.headObject({
+        //         Bucket: process.env.S3_BUCKET, Key: qr
+        //     }).promise()
+
+        //     qr = `https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${qr}`
+        // } catch (e) {
+        //     qr = await uploadQR(process.env.APP_URL + '/v/' + gathering.id + '?user=' + user.id, qr)
+        // }
 
         try {
-            await req.app.locals.s3.headObject({
-                Bucket: process.env.S3_BUCKET, Key: qr
-            }).promise()
+            const constellation = await Entities.constellation.model.findOne({ _id: gathering.constellation })
 
-            qr = `https://${process.env.S3_BUCKET}.s3.eu-west-3.amazonaws.com/${qr}`
-        } catch (e) {
-            qr = await uploadQR(process.env.APP_URL + '/v/' + gathering.id + '?user=' + user.id, qr)
-        }
-
-        try {
             await sendMail(user, {
                 template: 1,
-                attachment: [
-                    { name: `qr_code.png`, url: qr }
-                ],
+                // attachment: [
+                //     { name: `qr_code.png`, url: qr }
+                // ],
                 params: {
                     date: moment(gathering.date).format('D MMMM YYYY à hh:mm'),
                     location: gathering.location,
+                    address: gathering.address,
                     name: gathering.title,
-                    qr: qr,
                     image: cover ? cover.src : '',
-                    link: process.env.BASE_URL + '/c/' + gathering.constellation.slug + '/events/' + gathering.id,
-                    cancel: process.env.BASE_URL + '/c/' + gathering.constellation.slug + '/events/' + gathering.id + '?manage'
+                    link: process.env.BASE_URL + '/c/' + constellation.slug + '/events/' + gathering.id,
+                    cancel: process.env.BASE_URL + '/c/' + constellation.slug + '/events/' + gathering.id + '?manage'
                 }
             })
 

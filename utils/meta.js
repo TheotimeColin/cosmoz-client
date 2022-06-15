@@ -51,11 +51,16 @@ export function getMeta ($route, $store) {
         },
         'c-slug': {
             title: constellation?.name,
+            fa: 'home',
 
             children: {
                 'feed': {
                     title: 'Activité de ' + constellation?.name,
                     fa: 'message-lines'
+                },
+                'members': {
+                    title: 'Membres de ' + constellation?.name,
+                    fa: 'user-astronaut'
                 },
                 'hangouts': {
                     title: 'Sorties',

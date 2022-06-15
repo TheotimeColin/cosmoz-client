@@ -12,6 +12,9 @@ export default {
             article: `Article`
         }
     },
+    utils: {
+        users: `{users} | {users} | {users} et {others} autre(s)`
+    },
     mentions: {
         welcome: `Merci pour l'accueil`,
         nice: `Super sympa !`,
@@ -25,6 +28,14 @@ export default {
         socials: {
             title: `Mes réseaux sociaux`
         },
+    },
+    notifications: {
+        'post-reply': {
+            content: '<b>{users}</b> a répondu à ton statut : <i>{status}</i> | <b>{users}</b> a répondu à ton statut : <i>{status}</i> | <b>{users}</b> ont répondu à ton statut : <i>{status}</i>'
+        },
+        'post-react': {
+            content: '<b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> ont réagi à ton statut : <i>{status}</i>'
+        } 
     },
     permissions: {
         public: {

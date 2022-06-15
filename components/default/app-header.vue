@@ -73,6 +73,8 @@ export default {
         onIconClick () {
             if (this.$appMeta && this.$appMeta.back) {
                 this.$router.push(this.localePath(this.$appMeta.back))
+            } else {
+                this.$router.back()
             }
         }
     }
@@ -99,7 +101,7 @@ export default {
     left: var(--nav-width);
     width: 100%;
     z-index: 90;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-strong);
     transition: all 100ms ease;
     overflow: hidden;
 

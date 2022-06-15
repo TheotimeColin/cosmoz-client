@@ -28,10 +28,15 @@
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
     name: 'ConsteMembers',
+    mixins: [ ConstellationMixin ],
     async fetch () {
-        await this.$store.dispatch('user/softFetch', this.constellation.members)
+        await this.$preFetch()
+
+        await this.$store.dispatch('user/softFetch', this.$constellation.members)
     },
     props: {
         constellation: { type: Object }
@@ -43,12 +48,12 @@ export default {
         user () { return this.$store.getters['user/self'] },
         admins () {
             return this.$store.getters['user/find']({
-                _id: { $in: [ ...this.constellation.admins, ...this.constellation.organizers ] }
+                _id: { $in: [ ...this.$constellation.admins, ...this.$constellation.organizers ] }
             })
         },
         users () {
             return this.$store.getters['user/find']({
-                _id: { $in: this.constellation.members }
+                _id: { $in: this.$constellation.members }
             })
         },
     },
@@ -56,7 +61,7 @@ export default {
         this.$store.commit('page/set', { subtitle: 'Membres', fa: 'user' })
 
         let meta = {
-            title: `Membres de ${this.constellation.name} ${this.$t('meta.append')}`,
+            title: `Membres de ${this.$constellation.name} ${this.$t('meta.append')}`,
         }
 
         return meta

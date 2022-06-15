@@ -45,7 +45,9 @@
                         <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
                     </template>
                     <template v-else>
-                        <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }" v-if="$isConsteOrga">Modifier</link-base>
+                        <span v-if="$isConsteOrga">
+                            <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">Modifier</link-base>
+                        </span>
 
                         <page-gathering-action-button
                             :gathering="gathering"
@@ -109,8 +111,7 @@ export default {
         selectedUser: null,
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        users () { return this.$store.getters['user/find']() },
+        user () { return this.$store.getters['user/self'] }
     }
 }
 </script>

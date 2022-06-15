@@ -35,6 +35,9 @@
                 Retour à Cosmoz
             </button-base>
         </div>
+        <div v-else>
+            <fa icon="far fa-spinner-third" class="spin" />
+        </div>
     </div>
 </template>
 
@@ -54,16 +57,22 @@ export default {
         }
     },
     async mounted () {
-        const token = await this.$recaptcha.execute('login')
+        try {
+            const token = await this.$recaptcha.execute('login')
 
-        const response = await this.$store.dispatch('token/get', {
-            id: this.$route.params.token, token, type: 'invite'
-        })
-
-        if (response && response.constellation) {
-            this.constellation = await this.$store.dispatch('constellation/get', {
-                _id: response.constellation
+            const response = await this.$store.dispatch('token/get', {
+                id: this.$route.params.token, token, type: 'invite'
             })
+
+            if (response && response.constellation) {
+                this.constellation = await this.$store.dispatch('constellation/get', {
+                    _id: response.constellation
+                })
+            } else {
+                throw new Error('not-found')
+            }
+        } catch (e) {
+            console.error(e)
         }
 
         setTimeout(() => this.isLoading = false, 100)
