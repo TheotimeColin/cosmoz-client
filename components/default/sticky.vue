@@ -30,12 +30,12 @@ export default {
         },
         items () {
             return this.selectConst ? [
-                { label: 'Accueil', fa: 'home', to: { name: 'c-slug', params: { slug: this.selectConst.slug }} },
+                { label: 'Actualité', fa: 'message-lines', to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }} },
                 { label: 'Événements',  fa: 'calendar-star', to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }} },
                 { label: 'Sorties',  fa: 'hand-wave', to: { name: 'c-slug-hangouts', params: { slug: this.selectConst.slug }} },
-                { label: 'Discussions',  fa: 'messages', to: { name: 'c-slug-channel-id', params: { slug: this.selectConst.slug, id: 'general' }} }
+                { label: 'Discussions',  fa: 'comments', to: { name: 'c-slug-discussions', params: { slug: this.selectConst.slug }} }
             ] : [
-                { label: 'Actualité', fa: 'home', to: { name: 'feed' } },
+                { label: 'Mon actualité', fa: 'home', to: { name: 'feed' } },
                 { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
                 { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
                 { label: 'Envies', fa: 'star', to: { name: 'constellation' } }
@@ -69,7 +69,7 @@ export default {
     font-size: 18px;
     display: flex;
     height: 60px;
-    padding: 0 10px;
+    padding: 0 15px 0 10px;
     justify-content: space-between;
 }
 

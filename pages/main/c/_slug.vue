@@ -72,7 +72,7 @@ export default {
 <style lang="scss" scoped>  
     .Constellation {
         position: relative;
-        margin-left: 360px;
+        margin-left: 340px;
         overflow: hidden;
     }
 

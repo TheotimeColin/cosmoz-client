@@ -9,19 +9,21 @@
                 <span class="round-xs bg-bg-xstrong ml-10" :style="{ opacity: cat.number ? 1 : 0 }">{{ cat.number ? cat.number : 0 }}</span>
             </component>
 
-            <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
-                <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
-                    <fa :icon="`far fa-${item.fa}`" fixed-width v-if="item.fa" />
-                     
-                    <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
-                    {{ item.label }}
-                </nuxt-link>
+            <template v-if="cat.children && cat.children.length > 0">
+                <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
+                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
+                        <fa :icon="`far fa-${item.fa}`" fixed-width v-if="item.fa" />
+                        
+                        <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
+                        {{ item.label }}
+                    </nuxt-link>
 
-                <div class="Nav_sub" v-for="sub in (item.children ? item.children : []).filter(c => !c.disabled)" :key="sub.label">
-                    <fa icon="far fa-corner" flip="both" />
-                    <nuxt-link class="Nav_item Nav_item--sub ellipsis-1 ellipsis-break" :to="localePath(sub.to)">{{ sub.label }}</nuxt-link>
+                    <div class="Nav_sub" v-for="sub in (item.children ? item.children : []).filter(c => !c.disabled)" :key="sub.label">
+                        <fa icon="far fa-corner" flip="both" />
+                        <nuxt-link class="Nav_item Nav_item--sub ellipsis-1 ellipsis-break" :to="localePath(sub.to)">{{ sub.label }}</nuxt-link>
+                    </div>
                 </div>
-            </div>
+            </template>
         </div>
     </div>
 </template>
@@ -34,7 +36,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .Nav_cat {
 
         & + & {

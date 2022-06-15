@@ -88,36 +88,34 @@ export default {
             }))
         },
         pastEvents () {
-            return this.gatherings.filter(g => g.isPast).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'hashtag', hasAttended: g.isAttending
+            return this.gatherings.filter(g => g.isPast && g.isAttending).map(g => ({
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'calendar-heart', hasAttended: g.isAttending
             }))
         },
         items () {
             return [
                 {
                     children: [
-                        { label: `Page d'accueil`, isParent: true, fa: 'home', to: { name: 'c-slug', params: { slug: this.slug } } }
+                        { label: `Actualité`, isParent: true, fa: 'home', to: { name: 'c-slug-feed', params: { slug: this.slug } } }
                     ]
                 }, 
                 {
-                    label: `Sorties à venir`,
-                    disabled: this.events.length <= 0,
+                    label: `Événements`,
+                    disabled: [...this.events, ...this.pastEvents].length <= 0,
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
                     number: this.events.length,
-                    children: this.events.slice(0, 3)
+                    children: [ ...this.events.slice(0, 3), ...this.pastEvents ]
                 },
                 {
-                    label: `Sorties passées`,
-                    disabled: this.pastEvents.length <= 0,
-                    number: this.pastEvents.length,
-                    to: { name: 'c-slug-events-past', params: { slug: this.slug } },
-                    children: this.pastEvents.filter(g => g.hasAttended).slice(0, 3)
+                    label: `Sorties`,
+                    to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
                 },
                 {
                     label: `Discussions`,
                     disabled: !this.user,
+                    to: { name: 'c-slug-discussions', params: { slug: this.slug } },
                     children: [
-                        { label: `général`, fa: 'hashtag', to: { name: 'c-slug-channel-id', params: { slug: this.slug, id: 'general' } } },
+                        { label: `général`, fa: 'hashtag', to: { name: 'c-slug-discussions-id', params: { slug: this.slug, id: 'general' } } },
                     ]
                 }
             ]

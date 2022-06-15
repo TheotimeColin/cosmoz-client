@@ -38,9 +38,9 @@
                 <hr class="Separator mt-20">
             </div>
             <div class="fx-center ph-20 pb-20 d-block@xs" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
-                <user-list class="fx-grow" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true"  />
+                <user-list class="fx-grow fxj-center@xs" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true"  />
 
-                <div class="fx-no-shrink ml-20 ml-0@xs mt-20@xs text-center@xs">
+                <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
                     <template v-if="gathering.isPast">
                         <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
                     </template>

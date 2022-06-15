@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
         <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
             <p v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</p>
         </div>
@@ -19,7 +19,8 @@ export default {
         name: { type: String },
         displayName: { type: Boolean, default: false },
         logo: { type: Object },
-        noLink: { type: Boolean, default: false }
+        noLink: { type: Boolean, default: false },
+        link: { type: [String, Boolean], default: false },
     },
     data: () => ({
 

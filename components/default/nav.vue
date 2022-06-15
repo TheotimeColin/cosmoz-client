@@ -124,7 +124,7 @@ export default {
         this.nav = [
             {
                 children: [
-                    { label: `Actualité`, fa: 'home', to: { name: 'feed' } },
+                    { label: `Mon actualité`, fa: 'home', to: { name: 'feed' } },
                     { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
                     { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true }
                 ]
@@ -450,11 +450,11 @@ export default {
     }
     
     .AppNav_content {
-        width: calc(100% - 40px);
+        width: calc(100% - 50px);
     }
 
     .AppNav_hider {
-        left: calc(100% - 40px);
+        left: calc(100% - 50px);
     }
 }
 </style>
