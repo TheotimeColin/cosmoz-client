@@ -1,16 +1,14 @@
 <template>
-    <div class="Post"
-        :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }">
-        <div class="Post_head">
-            <div class="d-flex fxa-center fx-grow">
-                <div class="Post_icon">
-                    <user-icon class="Post_user" :modifiers="['']" v-bind="owner" />
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink }" ref="container" v-if="ownerData">
+        <ripples :auto="false" :size="300" :modifiers="['weak']" ref="ripples" v-if="!noLink" />
 
-                    <!-- <nuxt-link :to="gatheringLink" class="Post_gathering" :style="{ backgroundImage: `url(${gatheringData.thumbnail})` }" v-if="gatheringData && !isCurrent">
-                    </nuxt-link> -->
+        <div class="Post_head" @click="onClick">
+            <div class="d-flex fxa-center fx-grow">
+                <div class="Post_icon" @click.stop>
+                    <user-icon class="Post_user" :modifiers="['']" v-bind="ownerData" />
                 </div>
 
-                <div class="ml-10 ft-xs line-1">
+                <div class="ml-10 ft-xs line-1" @click.stop>
                     <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
 
                     <template v-if="gatheringData && !isCurrent">
@@ -34,32 +32,26 @@
 
             <quick-menu class="Post_menu fx-no-shrink ml-10" :items="actions" />
         </div>
-        <div class="Post_main">
-            <div class="ft-m color-ft-xweak pb-20 ph-20" v-if="forbidden">
-                <i>{{ this.$t(`permissions.${this.read}.error`) }}</i>
-            </div>
-            <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-else-if="content"></div>
+        <div class="Post_main" @click="onClick">
+            <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-if="content"></div>
 
             <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
         </div>
-        <div class="Post_footer" v-if="!forbidden">
+        <div class="Post_footer" @click="onClick">
             <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{
+                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click.stop="addReaction" /> {{
                 reactions.length ? reactions.length : '' }}
             </div>
-            <div class="Post_action" @click="onAddComment">
+            <div class="Post_action" @click.stop="onAddComment">
                 <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
             </div>
         </div>
 
-        <content-reaction-popin :is-active="isSeeReactions" :reactions="reactionsOwners" @close="isSeeReactions = false"
-            v-if="!forbidden" />
+        <content-reaction-popin :is-active="isSeeReactions" :reactions="reactionsOwners" @close="isSeeReactions = false" />
 
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10"
-                    @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents
-                </link-base>
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
 
                 <content-comment v-for="post in displayedComments" class="Post_comment" v-bind="post" :key="post._id" />
 
@@ -74,17 +66,20 @@
                 Veux-tu vraiment supprimer ce message et tout ses commentaires ?
 
                 <div class="mt-20">
-                    <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
+                    <button-base :modifiers="['s']" class="mr-5" @click.stop="pendingDelete = false">
                         Annuler
                     </button-base>
 
                     <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading"
-                        @click="deletePost">
+                        @click.stop="deletePost">
                         Oui, supprimer
                     </button-base>
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <placeholder :ratio="40" />
     </div>
 </template>
 
@@ -93,6 +88,9 @@ import PostMixin from '@/mixins/post'
 
 export default {
     name: 'Post',
+    async fetch () {
+        await this.$store.dispatch('user/softFetch', [ this.owner, ...this.children.map(c => c.owner) ])
+    },
     mixins: [ PostMixin ],
     props: {
         _id: { type: String },
@@ -100,7 +98,7 @@ export default {
         read: { type: String },
         images: { type: Array, default: () => [] },
         isLoading: { type: Boolean, default: false },
-        owner: { type: Object },
+        owner: { type: String },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
         disableCreate: { type: Boolean, default: false },
@@ -108,7 +106,8 @@ export default {
         gathering: { type: String },
         constellation: { type: String },
         activeGathering: { type: String },
-        activeConstellation: { type: String }
+        activeConstellation: { type: String },
+        noLink: { type: Boolean, default: false }
     },
     data: () => ({
         max: 2,
@@ -117,9 +116,6 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        forbidden () {
-            return (this.read == 'friends' && !this.owner.isFriend) && this.owner._id != this.user._id
-        },
         displayedComments () {
             return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []
         },
@@ -130,14 +126,14 @@ export default {
             return this.constellation || this.gatheringData?.constellation ? this.$store.getters['constellation/findOne']({ _id: (this.gatheringData?.constellation || this.constellation) }) : null
         },
         title () {
-            return this.owner.name
+            return this.ownerData.name
         },
         subtitle () {
             let subtitle = this.$moment(this.createdAt).fromNow()
             return subtitle
         },
         titleLink () {
-            return this.localePath({ name: 'p-userId', params: { userId: this.owner.id } })
+            return this.localePath({ name: 'p-userId', params: { userId: this.ownerData.id } })
         },
         gatheringLink () {
             let link = null
@@ -145,7 +141,7 @@ export default {
             if (this.gatheringData && this.consteData) {
                 link = this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.gatheringData.id, slug: this.consteData.slug } })
             } else if (this.consteData) {
-                link = this.localePath({ name: 'c-slug-channel-id', params: { slug: this.consteData.slug } })
+                link = this.localePath({ name: 'c-slug-feed', params: { slug: this.consteData.slug } })
             }
 
             return link
@@ -169,6 +165,30 @@ export default {
                 read: this.read,
                 parent: this._id
             })
+        },
+        onClick (e) {
+            if (this.noLink) return
+
+            if (this.$refs.ripples && this.$refs.container) {
+                let bounds = this.$refs.container.getBoundingClientRect()
+
+                this.$refs.ripples.ripple({
+                    offsetX: e.clientX - bounds.left,
+                    offsetY: e.clientY - bounds.top
+                })
+            }
+
+            if (this.consteData) {
+                this.$router.push(this.localePath({
+                    name: 'c-slug-post-postId',
+                    params: { slug: this.consteData.slug, postId: this._id }
+                }))
+            } else {
+                this.$router.push(this.localePath({
+                    name: 'post-postId',
+                    params: { postId: this._id }
+                }))
+            }
         }
     }
 }
@@ -179,6 +199,7 @@ export default {
         border-radius: 10px;
         background-color: var(--color-bg-weak);
         position: relative;
+        cursor: pointer;
 
         &.is-reacted {
 
@@ -188,6 +209,10 @@ export default {
                     color: var(--color-love);
                 }
             }
+        }
+
+        &.is-no-link {
+            cursor: default;
         }
     }
 

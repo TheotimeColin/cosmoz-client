@@ -1,6 +1,5 @@
 <template>
-    <div class="Ripple" @click="ripple">
-        
+    <div class="Ripple" :class="[ { 'is-auto': auto }, $modifiers ]" :style="{ '--size': size + 'px', '--duration': duration + 'ms' }" @click="ripple">
         <div
             class="Ripple_item"
             v-for="ripple in ripples"
@@ -11,10 +10,23 @@
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
+    name: 'Ripples',
+    mixins: [ ModifiersMixin ],
+    props: {
+        auto: { type: Boolean, default: true },
+        size: { type: Number, default: 100 }
+    },
     data: () => ({
         ripples: []
     }),
+    computed: {
+        duration () {
+            return 300
+        }
+    },
     methods: {
         ripple (e) {
             let id = Math.random()
@@ -25,7 +37,7 @@ export default {
 
             setTimeout(() => {
                 this.ripples = this.ripples.filter(r => r.id !== id)
-            }, 300)
+            }, this.duration)
         }
     }
 }
@@ -35,18 +47,32 @@ export default {
 
 .Ripple {
     @include absolute-fill;
+    pointer-events: none;
+    overflow: hidden;
+
+    &.is-auto {
+        pointer-events: all;
+        overflow: visible;
+    }
 }
 
 .Ripple_item {
-    width: 100px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.25);
+    width: var(--size);
+    height: var(--size);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     position: absolute;
-    margin: -50px 0 0 -50px;
+    margin: calc(var(--size) / 2 * -1) 0 0 calc(var(--size) / 2 * -1);
     opacity: 1;
     pointer-events: none;
-    transform: scale(0);
-    animation: ripple 300ms linear;
+    transform: scale(0.25);
+    animation: ripple var(--duration, 300ms) linear;
+}
+
+.Ripples--weak {
+
+    .Ripple_item {
+        background: rgba(255, 255, 255, 0.025);
+    }
 }
 </style>

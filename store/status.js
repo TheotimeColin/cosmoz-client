@@ -38,13 +38,29 @@ export default {
         },
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$post('/entities/get', {
                     ...params.query, type: 'status',
-                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
 
                 return response.data
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
+        async get ({ commit }, _id) {
+            try {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                    _id, type: 'status'
+                }))
+
+                let result = Array.isArray(response.data) ? response.data[0] : response.data
+   
+                if (result) commit('updateOne', result)
+
+                return result
             } catch (e) {
                 console.error(e)
                 return null

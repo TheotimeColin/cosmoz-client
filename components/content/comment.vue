@@ -3,7 +3,7 @@
         <div class="Comment_main">
             <div class="fx-center">
                 <div class="d-flex fxa-center ft-s line-1 fx-grow">
-                    <user-icon class="fx-no-shrink" :display-name="true" :modifiers="['s']" v-bind="owner">
+                    <user-icon class="fx-no-shrink" :display-name="true" :modifiers="['s']" v-bind="ownerData">
                         <span class="ft-xs color-ft-weak ml-5" slot="name">{{ $moment(createdAt).fromNow() }}</span>
                     </user-icon>
                 </div>
@@ -55,7 +55,7 @@ export default {
     props: {
         _id: { type: String },
         content: { type: String },
-        owner: { type: Object },
+        owner: { type: String },
         images: { type: Array, default: () => [] },
         reactions: { type: Array, default: () => [] },
         createdAt: { type: [String, Date] },

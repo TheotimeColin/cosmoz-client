@@ -37,7 +37,7 @@ export default {
             content: '<b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> ont réagi à ton statut : <i>{status}</i>'
         },
         'gathering-new': {
-            content: `{gathering} a été annoncé dans {constellation} | {gathering} a été annoncé dans {constellation} | {n} nouveaux événements ont été annoncés dans {constellation}`
+            content: `<b>{gathering}</b> a été annoncé dans {constellation} | <b>{gathering}</b> a été annoncé dans <b>{constellation}</b> | {n} nouveaux événements ont été annoncés dans <b>{constellation}</b>`
         } 
     },
     permissions: {

@@ -107,7 +107,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .Page {
         background-color: var(--color-bg);
     }

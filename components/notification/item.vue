@@ -1,11 +1,11 @@
 <template>
-    <div class="NotifItem" :class="{ 'is-read': state == 'read' }">
+    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read' }">
         <div class="NotifItem_image" :style="{ backgroundImage: `url(${cover})` }"></div>
         <div>
             <div class="ellipsis-2" v-html="content"></div>
             <div class="ft-xs color-ft-xweak">{{ $moment(updatedAt).fromNow() }}</div>
         </div>
-    </div>
+    </component>
 </template>
 
 <script>
@@ -64,6 +64,26 @@ export default {
             return this.$store.getters['user/find']({
                 _id: { $in: this.origins.filter(o => o.type == 'user').map(o => o._id) }
             })
+        },
+        link () {
+            if (this.statusData && this.constellationData) {
+                return {
+                    name: 'c-slug-post-postId',
+                    params: { slug: this.constellationData.slug, postId: this.statusData._id }
+                }
+            } else if (this.statusData) {
+                return {
+                    name: 'post-postId',
+                    params: { postId: this.statusData._id }
+                }
+            } else if (this.constellationData && this.gatheringData) {
+                return {
+                    name: 'c-slug-events-eventId',
+                    params: { slug: this.constellationData.slug, eventId: this.gatheringData.id }
+                }
+            }
+
+            return null
         },
         content() {
             let count = this.users.length

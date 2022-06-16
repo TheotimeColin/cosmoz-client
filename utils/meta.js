@@ -3,6 +3,7 @@ export function getMeta ($route, $store) {
     let constellation = { name: '' }
     let gathering = { title: '' }
     let user = { name: '' }
+    let post = { content: '' }
     
     if ($route.params.slug) {
         try {
@@ -28,10 +29,30 @@ export function getMeta ($route, $store) {
         } catch (e) { console.warn(e) }
     }
 
+    if ($route.params.postId) {
+        try {
+            post = $store.getters['status/findOne']({
+                _id: $route.params.postId
+            })
+        } catch (e) { console.warn(e) }
+    }
+
     const router = {
         'p': {
             title: user ? 'Profil de ' + user?.name : 'Profil',
             isPanel: true
+        },
+        'post': {
+            title: 'Post',
+            fa: 'message-lines',
+
+            children: {
+
+                'postId': {
+                    title: post?.content,
+                    isPanel: true
+                }
+            }
         },
         'feed': {
             title: 'Mon activité',
@@ -58,6 +79,18 @@ export function getMeta ($route, $store) {
             fa: 'home',
 
             children: {
+                'post': {
+                    title: 'Post',
+                    fa: 'message-lines',
+
+                    children: {
+
+                        'postId': {
+                            title: post?.content,
+                            isPanel: true
+                        }
+                    }
+                },
                 'feed': {
                     title: 'Activité de ' + constellation?.name,
                     fa: 'message-lines'

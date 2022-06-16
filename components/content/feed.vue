@@ -82,6 +82,8 @@ export default {
         } else {
             await this.$store.dispatch('status/fetchFeed')
         }
+
+        this.isLoading = false
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -96,6 +98,7 @@ export default {
             })
         },
         displayedStatuses () {
+            return this.statuses.slice(0, this.max * (this.page + 1))
             return this.statusesData.slice(0, this.max * (this.page + 1))
         }
     },
@@ -104,24 +107,24 @@ export default {
             immediate: true,
             deep: true,
             async handler (v) {
-                this.isLoading = true
+                // this.isLoading = true
                 
-                if (v) {
-                    if (this.statusesData.length !== v.length) this.statusesData = []
+                // if (v) {
+                //     if (this.statusesData.length !== v.length) this.statusesData = []
 
-                    let statuses = await this.$store.dispatch('user/mapUsers', {
-                        items: v, property: 'owner'
-                    })
+                //     let statuses = await this.$store.dispatch('user/mapUsers', {
+                //         items: v, property: 'owner'
+                //     })
 
-                    this.statusesData = await Promise.all(statuses.map(async s => {
-                        let children = s.children ? await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' }) : []
+                //     this.statusesData = await Promise.all(statuses.map(async s => {
+                //         let children = s.children ? await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' }) : []
 
-                        return { ...s, children }
-                    }))
+                //         return { ...s, children }
+                //     }))
 
-                }
+                // }
 
-                this.isLoading = false
+                // this.isLoading = false
             }
         }
     },
