@@ -92,7 +92,7 @@ export function getMeta ($route, $store) {
     }
 
     const checkRoute = (current) => {
-        let result = null
+        let result = {}
 
         Object.keys(current).forEach(currentName => {
             if (name.includes(currentName)) {

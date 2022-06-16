@@ -7,7 +7,7 @@
                 <div class="AppHeader_iconContainer">
                     <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
                         v-if="prev.isPanel" />
-                    <fa class="AppHeader_icon" :icon="`far fa-${prev.fa}`" fixed-width v-else />
+                    <fa class="AppHeader_icon" :icon="`far fa-${prev.fa}`" fixed-width v-else-if="prev.fa" />
                 </div>
 
                 <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
@@ -19,7 +19,7 @@
                 <div class="AppHeader_iconContainer">
                     <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
                         @click="onIconClick" v-if="$appMeta.isPanel" />
-                    <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else />
+                    <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else-if="$appMeta.fa" />
                 </div>
 
                 <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">

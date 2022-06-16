@@ -121,10 +121,6 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', { subtitle: this.$constellation.name, fa: '' })
-        
-        this.$emit('page', { subtitle: this.$constellation.name, fa: '' })
-
         let meta = {
             title: `${this.$constellation.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
         }

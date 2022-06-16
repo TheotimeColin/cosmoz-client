@@ -37,7 +37,6 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                console.log(response.data)
                 commit('refresh', response.data)
                 
                 return response

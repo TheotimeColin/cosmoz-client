@@ -52,7 +52,7 @@ export default {
                             existing = newItems.reduce((acc, value) => ({ ...acc, [value._id]: value }), {})
                         }
                     }
-
+                    
                     if (existing[item]) result = [ ...result, existing[item] ]
                 }
                 

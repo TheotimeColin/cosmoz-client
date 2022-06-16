@@ -1,8 +1,8 @@
 <template>
     <div class="ButtonIcon" @click="() => $store.commit('page/toggleNotifs', true)"
         :class="{ 'is-notif': notification }">
-        <fa class="ButtonIcon_reg" :icon="`far fa-${fa}`" fixed-width />
-        <fa class="ButtonIcon_solid" :icon="`fa-solid fa-${fa}`" fixed-width />
+        <fa class="ButtonIcon_reg" :icon="`far fa-${fa}`" fixed-width v-if="fa" />
+        <fa class="ButtonIcon_solid" :icon="`fa-solid fa-${fa}`" fixed-width v-if="fa" />
     </div>
 </template>
 

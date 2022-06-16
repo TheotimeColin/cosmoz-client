@@ -8,9 +8,6 @@ exports.requestFriend = async function (requester, target) {
     return new Promise(async (resolve, reject) => {
         let match = false
 
-        console.log(requester)
-        console.log(target)
-        
         try {
             if (!requester.affinities.find(u => target._id.equals(u))) {
                 requester.affinities = [

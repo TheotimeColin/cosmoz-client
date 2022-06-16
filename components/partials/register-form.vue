@@ -165,8 +165,6 @@ export default {
 
                 const token = await this.$recaptcha.execute('login')
 
-                console.log(token)
-
                 const response = await this.$auth.loginWith('local', { 
                     data: {
                         ...(googleCred ? googleCred : this.formData),
@@ -174,8 +172,6 @@ export default {
                         token, type: this.formType
                     }
                 })
-
-                console.log(response)
 
                 if (response.data.status != 1) {
                     this.errors = response.data.errors

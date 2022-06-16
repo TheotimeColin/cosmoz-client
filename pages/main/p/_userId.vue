@@ -194,8 +194,6 @@ export default {
             
             try {
                 const response = await this.$store.dispatch('user/createRequest', this.profile)
-
-                console.log(response)
             } catch (e) {
                 console.error(e)
             }

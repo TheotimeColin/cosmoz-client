@@ -37,7 +37,6 @@ export default {
             }
         },
         async softFetch({ state, dispatch, commit }, items) {
-            console.log(items)
             return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
         async get ({ commit }, params = {}) {
@@ -59,8 +58,6 @@ export default {
                 const response = await this.$axios.$post('/entities', {
                     ...params, type: 'gathering'
                 })
-
-                console.log('UPDATE')
                 
                 if (response.status == 0) throw Error(response.errors[0])
 
