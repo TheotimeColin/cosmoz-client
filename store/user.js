@@ -25,10 +25,7 @@ export default {
         async logOut ({ state }) {
             try {
                 await this.$auth.logout()
-                this.$auth.strategy.token.reset()
-                this.$auth.setToken('local', false)
-                this.$auth.setRefreshToken('local', false)
-                this.$axios.setHeader('Authorization', false)
+                this.$auth.strategies.local.reset()
                 
                 return null
             } catch (e) {
