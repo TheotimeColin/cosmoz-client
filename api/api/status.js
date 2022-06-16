@@ -5,6 +5,7 @@ const striptags  = require('striptags')
 
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { createMediaCollection } = require('../utils/files')
+const { createNotification } = require('../utils/notifications')
 
 exports.postStatus = async function (req, res) {
     let data = {}
@@ -62,27 +63,16 @@ exports.postStatus = async function (req, res) {
             if (!parent[0]) throw Error('no-parent')
             
             if (!parent[0].owner.equals(user._id)) {
-                let existing = await Entities.notification.model.findOne({
-                    type: 'post-reply',
-                    status: parent[0]._id,
-                    owner: parent[0].owner,
-                    state: 'unread'
-                })
-
-                if (existing && !existing.origins.find(o => user._id.equals(o._id))) {
-                    existing.origins = [
-                        ...existing.origins,
-                        { _id: user._id, type: 'user' }
-                    ]
-
-                    await existing.save()
-                } else if (!existing) {
-                    await Entities.notification.model.create({
+                try {
+                    let notification = await createNotification({
                         type: 'post-reply',
                         status: parent[0]._id,
-                        owner: parent[0].owner,
-                        origins: [ { _id: user._id, type: 'user' } ]
-                    })
+                        owner: parent[0].owner
+                    }, user)
+
+                    if (!notification) throw Error('failed-to-notify')
+                } catch (e) {
+                    console.error(e)
                 }
             }
         }
@@ -150,30 +140,20 @@ exports.reactStatus = async function (req, res) {
 
         if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
 
-        // if (!status.owner.equals(user._id)) {
-            let existing = await Entities.notification.model.findOne({
-                type: 'post-react',
-                status: status._id,
-                owner: status.owner,
-                state: 'unread'
-            })
-
-            if (existing && !existing.origins.find(o => user._id.equals(o._id))) {
-                existing.origins = [
-                    ...existing.origins,
-                    { _id: user._id, type: 'user' }
-                ]
-
-                await existing.save()
-            } else if (!existing) {
-                await Entities.notification.model.create({
+        if (!user.equals(status.owner)) {
+            try {
+                let notification = await createNotification({
                     type: 'post-react',
+                    action: req.body.action,
                     status: status._id,
-                    owner: status.owner,
-                    origins: [ { _id: user._id, type: 'user' } ]
-                })
+                    owner: status.owner
+                }, user)
+
+                if (!notification) throw Error('failed-to-notify')
+            } catch (e) {
+                console.error(e)
             }
-        // }
+        }
         
         data = await fieldsCheck('read', data._doc, Entities.status, data, user)
     } catch (e) {

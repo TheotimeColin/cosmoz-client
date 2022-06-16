@@ -14,6 +14,9 @@ export default {
         deleteOne (state, id) {
             state.items = storeUtils.deleteOne(state, id)
         },
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
+        },
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
         }
@@ -32,6 +35,9 @@ export default {
                 console.error(e)
                 return null
             }
+        },
+        async softFetch ({ state, dispatch, commit }, items) {
+            return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
         async get ({ commit }, params = {}) {
             try {

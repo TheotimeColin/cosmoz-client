@@ -4,6 +4,7 @@ const sharp = require('sharp')
 const fs = require('fs')
 const mime = require('mime')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
+const { createNotification } = require('../utils/notifications')
 
 const Entities = require('../entities')
 
@@ -303,6 +304,31 @@ const typeCallbacks = {
                 resolve(data)
             }
         })
+    },
+    gathering: async (data, query, user) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const constellation = await Entities.constellation.model.findById(data.constellation)   
+                
+                if (data.status == 'active') {
+                    await Promise.all(constellation.members.map(async member => {
+                        
+                        return await createNotification({
+                            type: 'gathering-new',
+                            gathering: data._id,
+                            constellation: constellation._id,
+                            originator: { _id: data._id, type: 'gathering' },
+                            owner: member
+                        }, user)
+                    }))
+                }
+
+                resolve(data)
+            } catch (e) {
+                console.warn(e)
+                resolve(data)
+            }
+        })
     }
 }
 
@@ -310,8 +336,18 @@ const typeDeleters = {
     status: async (data) => {
         return new Promise(async (resolve, reject) => {
             try {
+                let toDelete = [ data._id ]
+
+                if (data.children) toDelete = [...toDelete, ...data.children]
+                    
                 if (data.children && data.children.length > 0) {
                     await Entities.status.model.deleteMany({ _id: { $in: data.children }})
+                }
+
+                if (toDelete.length > 0) {
+                    await Entities.notification.model.deleteMany({
+                        status: { $in: toDelete }
+                    })
                 }
 
                 resolve(data)

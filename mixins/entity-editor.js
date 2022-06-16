@@ -12,7 +12,6 @@ export default {
     }),
     computed: {
         serverEntity () {
-            console.log('Entity : ' + this.currentId)
             return this.$store.getters[`${this.entityType}/findOne`]({
                 _id: this.currentId
             }, true)

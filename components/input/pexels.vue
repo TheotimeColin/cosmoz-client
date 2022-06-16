@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="() => search(query)" class="PexelsGallery">
-        <div class="PexelsGallery_search" :style="{ '--background': `url(${random.src ? random.src.large : ''})` }">
+        <div class="PexelsGallery_search">
             <div class="p-20">
                 <input-base type="text" class="mr-15" :modifiers="['light']" v-model="query" placeholder="Restaurant, groupe, atelier..." />
 

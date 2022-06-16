@@ -77,14 +77,16 @@ import ConstellationMixin from '@/mixins/constellation'
 
 export default {
     mixins: [ ConstellationMixin ],
-    async fetch () {
+    async fetch() {
         await this.$preFetch()
 
-        await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.$constellation._id, status: 'active' }
-        })
+        if (this.$constellation) {
+            await this.$store.dispatch('gathering/fetch', {
+                query: { constellation: this.$constellation._id, status: 'active' }
+            })
 
-        await this.$store.dispatch('user/softFetch', this.$constellation.members)
+            await this.$store.dispatch('user/softFetch', this.$constellation.members)
+        }
     },
     data: () => ({
         isLoading: false,

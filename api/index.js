@@ -61,7 +61,9 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
 mongoose.connection.once('open', async () => {
     app.get('/entities/get', getEntities)
     app.post('/entities/get', getEntities)
+
     app.post('/entities', upload.single('file'), createEntity)
+    
     app.delete('/entities', deleteEntity)
 
     app.post('/user', logUser)

@@ -15,17 +15,24 @@ export default {
         await this.$store.dispatch('user/softFetch', this.origins.filter(o => o.type == 'user').map(o => o._id))
 
         if (this.status) await this.$store.dispatch('status/softFetch', [ this.status ])
+
+        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [ this.gathering ])
+
+        if (this.constellation) await this.$store.dispatch('constellation/softFetch', [ this.constellation ])
     },
     props: {
         state: { type: String },
         type: { type: String },
         status: { type: String },
+        gathering: { type: String },
+        constellation: { type: String },
         updatedAt: { type: String },
         origins: { type: Array, default: () => [] },
     },
     computed: {
-        cover () {
+        cover() {
             if (this.users[0]) return this.users[0].profileLarge
+            if (this.gatherings[0]) return this.gatherings[0].hero
         },
         statusData () {
             if (!this.status) return null
@@ -34,15 +41,40 @@ export default {
                 _id: this.status
             })
         },
+        gatheringData() {
+            if (!this.gathering) return null
+
+            return this.$store.getters['gathering/findOne']({
+                _id: this.gathering
+            })
+        },
+        constellationData() {
+            if (!this.constellation) return null
+
+            return this.$store.getters['constellation/findOne']({
+                _id: this.constellation
+            })
+        },
+        gatherings () {
+            return this.$store.getters['gathering/find']({
+                _id: { $in: this.origins.filter(o => o.type == 'gathering').map(o => o._id) }
+            })
+        },
         users () {
             return this.$store.getters['user/find']({
                 _id: { $in: this.origins.filter(o => o.type == 'user').map(o => o._id) }
             })
         },
-        content () {
-            return this.$tc(`notifications.${this.type}.content`, this.users.length, {
+        content() {
+            let count = this.users.length
+
+            if (this.type.includes('event')) count = this.gatherings.length
+            
+            return this.$tc(`notifications.${this.type}.content`, count, {
                 users: this.$pluralize(this.users.map(u => u.name)),
-                status: this.statusData?.content
+                status: this.statusData?.content,
+                gathering: this.gatheringData?.title,
+                constellation: this.constellationData?.name
             })
         }
     }

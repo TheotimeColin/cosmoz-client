@@ -111,13 +111,11 @@
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
 import EntityEditor from '@/mixins/entity-editor'
 
 export default {
-    mixins: [ EntityEditor ],
-    props: {
-        constellation: { type: Object }
-    },
+    mixins: [ ConstellationMixin, EntityEditor ],
     async fetch () {
         await this.fetchEntity(this.$route.params.id)
     },
@@ -184,21 +182,21 @@ export default {
     methods: {
         dataMerge () {
             return {
-                constellation: this.constellation._id
+                constellation: this.$constellation._id
             }
         },
         postCreated () {
             if (!this.formData.cover) this.options.cover = true
         },
         postDelete () {
-            this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.constellation.slug } }) })
+            this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.$constellation.slug } }) })
         },
         postSubmit () {
             this.formData.coverSelect = ''
         },
         postSubmitSuccess () {
             this.$router.replace({
-                path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.constellation.slug, id: this.currentId } })
+                path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.$constellation.slug, id: this.currentId } })
             })
         }
     },

@@ -58,6 +58,8 @@ export default {
                 const response = await this.$axios.$post('/entities', {
                     ...params, type: 'gathering'
                 })
+
+                console.log('UPDATE')
                 
                 if (response.status == 0) throw Error(response.errors[0])
 
