@@ -25,7 +25,14 @@
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
                         <div class="AppNav_header bg-cover bg-night" v-if="user">
-                            <user-icon v-bind="user" :display-name="true" />
+                            <user-icon v-bind="user" :modifiers="['m']" :display-name="true" />
+
+                            <quick-menu
+                                :items="[
+                                    { fa: 'gear', to: { name: 'compte' }, label: `Mon compte` },
+                                    { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
+                                ]"
+                            />
                         </div>
                         
                         <div class="AppNav_menu">
@@ -315,12 +322,9 @@ export default {
     background-color: var(--color-bg-xstrong);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px 15px;
-
-    &::after {
-        content: "";
-        @include ratio(33);
-    }
+    min-height: 100px;
 }
 
 .AppNav_sub {

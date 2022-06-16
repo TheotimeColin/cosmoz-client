@@ -84,7 +84,6 @@ export default {
     font: var(--ft-title-2xs);
     line-height: 1;
     color: var(--color-ft-light);
-    // border: 2px solid var(--color-bg-xstrong);
     background-color: var(--color-bg-xstrong);
     padding: 12px 15px;
     border-radius: 40px;
@@ -131,6 +130,7 @@ export default {
     user-select: none;
     white-space: nowrap;
     overflow: hidden;
+    position: relative;
 }
 
 .ButtonBase_iconLoading {
@@ -206,7 +206,6 @@ export default {
 .ButtonBase--xweak {
     background-color: transparent;
     color: var(--color-ft-weak);
-    border-color: transparent;
 
     &.is-active {
         background-color: var(--color-bg-strong);
@@ -224,11 +223,9 @@ export default {
 .ButtonBase--transparent {
     background-color: transparent;
     color: var(--color-ft-weak);
-    border-color: transparent;
-    overflow: visible;
 
     &.is-active {
-    background-color: transparent;
+        background-color: transparent;
     }
 
     &:hover {
@@ -241,7 +238,6 @@ export default {
 }
 
 .ButtonBase--current {
-    border-color: var(--color-current-strong);
     color: var(--color-current-strong);
     background-color: transparent;
 
@@ -252,14 +248,12 @@ export default {
     }
 
     &:active {
-        border-color: var(--color-current-xstrong);
         background-color: var(--color-current-xstrong);
     }
 }
 
 .ButtonBase--light {
     background-color: var(--color-ft-light);
-    border-color: var(--color-ft-light);
     color: var(--color-ft);
 
     &:hover,
@@ -323,6 +317,7 @@ export default {
     .ButtonBase_content {
         width: 45px;
         height: 45px;
+        border-radius: 50%;
     }
 
     &.ButtonBase--l {

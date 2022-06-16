@@ -1,5 +1,6 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }">
+    <div class="Post"
+        :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData }">
         <div class="Post_head">
             <div class="d-flex fxa-center fx-grow">
                 <div class="Post_icon">
@@ -14,13 +15,13 @@
 
                     <template v-if="gatheringData && !isCurrent">
                         <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                        <link-base :to="gatheringLink">
+                        <link-base :to="gatheringLink" :modifiers="['l']">
                             {{ gatheringData.title }}
                         </link-base>
                     </template>
                     <template v-else-if="consteData && !isCurrent">
                         <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                        <link-base :to="gatheringLink">
+                        <link-base :to="gatheringLink" :modifiers="['l']">
                             {{ consteData.name }}
                         </link-base>
                     </template>
@@ -31,10 +32,7 @@
                 </div>
             </div>
 
-            <quick-menu
-                class="Post_menu fx-no-shrink ml-10"
-                :items="actions"
-            />
+            <quick-menu class="Post_menu fx-no-shrink ml-10" :items="actions" />
         </div>
         <div class="Post_main">
             <div class="ft-m color-ft-xweak pb-20 ph-20" v-if="forbidden">
@@ -46,40 +44,28 @@
         </div>
         <div class="Post_footer" v-if="!forbidden">
             <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{ reactions.length ? reactions.length : '' }}
+                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click="addReaction" /> {{
+                reactions.length ? reactions.length : '' }}
             </div>
             <div class="Post_action" @click="onAddComment">
                 <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
             </div>
         </div>
 
-        <content-reaction-popin
-            :is-active="isSeeReactions"
-            :reactions="reactionsOwners"
-            @close="isSeeReactions = false"
-            v-if="!forbidden"
-        />
+        <content-reaction-popin :is-active="isSeeReactions" :reactions="reactionsOwners" @close="isSeeReactions = false"
+            v-if="!forbidden" />
 
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
-            
-                <content-comment
-                    v-for="post in displayedComments"
-                    class="Post_comment"
-                    v-bind="post"
-                    :key="post._id"
-                />
+                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10"
+                    @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents
+                </link-base>
 
-                <content-editor
-                    @submit="onSubmit"
-                    class="Post_comment"
-                    :tiny="true"
-                    placeholder="Ajouter un commentaire..."
-                    @blur="() => children.length == 0 ? isAdd = false : ''"
-                    v-show="isAdd || (children.length > 0 && $biggerThan('s'))"
-                    ref="commentInput"
-                />
+                <content-comment v-for="post in displayedComments" class="Post_comment" v-bind="post" :key="post._id" />
+
+                <content-editor @submit="onSubmit" class="Post_comment" :tiny="true"
+                    placeholder="Ajouter un commentaire..." @blur="() => children.length == 0 ? isAdd = false : ''"
+                    v-show="isAdd || (children.length > 0 && $biggerThan('s'))" ref="commentInput" />
             </div>
         </transition>
 
@@ -92,7 +78,8 @@
                         Annuler
                     </button-base>
 
-                    <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading" @click="deletePost">
+                    <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading"
+                        @click="deletePost">
                         Oui, supprimer
                     </button-base>
                 </div>

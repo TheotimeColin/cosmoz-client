@@ -1,7 +1,10 @@
 <template>
     <component :is="to ? 'nuxt-link' : 'div'" class="Sticky_item" :to="localePath(to)">
         <ripples />
-        <fa :icon="`far fa-${fa}`" />
+
+        <fa class="Sticky_reg" :icon="`far fa-${fa}`" />
+        <fa class="Sticky_solid" :icon="`fa-solid fa-${fa}`" />
+
         <p class="Sticky_label">{{ label ? label : '' }}</p>
     </component>
 </template>
@@ -17,6 +20,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+
+
+
 .Sticky_item {
     width: 60px;
     height: 60px;
@@ -34,7 +42,7 @@ export default {
     }
     
     .Sticky_label, svg {
-        transition: all 150ms ease;
+        transition: transform 150ms ease;
         pointer-events: none;
     }
 
@@ -49,7 +57,22 @@ export default {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .Sticky_solid {
+            position: relative;
+            opacity: 1;
+        }
+
+        .Sticky_reg {
+            position: absolute;
+            opacity: 0;
+        }
     }
+}
+
+.Sticky_solid {
+    position: absolute;
+    opacity: 0;
 }
 
 .Sticky_label {

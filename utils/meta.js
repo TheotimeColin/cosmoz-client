@@ -29,6 +29,10 @@ export function getMeta ($route, $store) {
     }
 
     const router = {
+        'p': {
+            title: user ? 'Profil de ' + user?.name : 'Profil',
+            isPanel: true
+        },
         'feed': {
             title: 'Mon activité',
             fa: 'home'
@@ -41,13 +45,13 @@ export function getMeta ($route, $store) {
             title: 'Explorer',
             fa: 'compass'
         },
+        'compte': {
+            title: 'Mon compte',
+            fa: 'cog'
+        },
         'constellation': {
             title: 'Ma constellation',
             fa: 'sparkles'
-        },
-        'p': {
-            title: user ? 'Profil de ' + user?.name : 'Profil',
-            isPanel: true
         },
         'c-slug': {
             title: constellation?.name,

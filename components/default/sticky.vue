@@ -1,8 +1,8 @@
 <template>
     <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel), 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="Sticky_wrapper">
-            <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="$emit('open')" v-if="selectConst" />
-            <div class="Sticky_current round ft-xs bg-cosmoz" @click="$emit('open')" v-else>
+            <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
+            <div class="Sticky_current round ft-xs bg-cosmoz" @click="onOpen" v-else>
                 <fa icon="far fa-home" />
             </div>
 
@@ -40,9 +40,22 @@ export default {
                 { label: 'Envies', fa: 'star', to: { name: 'constellation' } }
             ]
         }
+    },
+    methods: {
+        onOpen() {
+            this.$emit('open')
+
+            this.$store.commit('page/toggleNotifs', false)
+        }
     }
 }
 </script>
+
+<style>
+    :root {
+        --sticky-height: 60px;
+    }
+</style>
 
 <style lang="scss" scoped>
 .Sticky {
@@ -68,7 +81,7 @@ export default {
 .Sticky_wrapper {
     font-size: 18px;
     display: flex;
-    height: 60px;
+    height: var(--sticky-height);
     padding: 0 15px 0 10px;
     justify-content: space-between;
 }

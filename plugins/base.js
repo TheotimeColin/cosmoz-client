@@ -9,11 +9,12 @@ import striptags from 'striptags'
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
-import { faHeart, faLock } from '@fortawesome/pro-solid-svg-icons'
+
+import { faHeart, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines } from '@fortawesome/pro-solid-svg-icons'
 import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 config.autoAddCss = false
-library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock)
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines)
 
 Vue.component('fa', FontAwesomeIcon)
 

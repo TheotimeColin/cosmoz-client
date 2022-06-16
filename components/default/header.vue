@@ -1,5 +1,6 @@
 <template>
-    <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
+    <div class="Header"
+        :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left">
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
@@ -8,33 +9,24 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-base :modifiers="['', 's', 'user']" :to="{ name: 'p-userId', params: { userId: user.id } }" class="Header_button d-none@xs">
+                <button-base :modifiers="['round', 'xweak']" :href="$config.adminUrl" class="Header_button"
+                    icon-before="crown" v-if="user.role == 'admin'" />
+
+                <button-icon class="Header_button" fa="paper-plane" />
+                <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
+        
+                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20"
+                    :to="{ name: 'p-userId', params: { userId: user.id } }">
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
-
-                <button-base :modifiers="['round', 'xweak']" :href="$config.adminUrl" class="Header_button" icon-before="crown" v-if="user.role == 'admin'"/>
-                
-                <button-base :modifiers="['round', 's', 'xweak']" class="Header_button" icon-before="paper-plane" />
-
-                <button-base :modifiers="['round', 's', 'xweak']" class="Header_button" icon-before="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
-
-                <quick-menu
-                    :large="true"
-                    :modifiers="['s']"
-                    icon="caret-down"
-                    class="Header_button d-none@xs"
-                    :items="[
-                        { fa: 'sparkles', to: { name: 'constellation' }, label: `Ma constellation` },
-                        { fa: 'question-circle', to: { name: 'faq' }, label: `Une question ?` },
-                        { fa: 'gear', to: { name: 'compte' }, label: `Mon compte` },
-                        { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }
-                    ]"
-                />
             </div>
             <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres</link-base>
+                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
+                </link-base>
 
-                <link-base class="Header_navItem" :modifiers="['current']"  @click="$store.commit('page/register', 'login')">Se connecter</link-base>
+                <link-base class="Header_navItem" :modifiers="['current']"
+                    @click="$store.commit('page/register', 'login')">
+                    Se connecter</link-base>
 
                 <div class="Header_navItem Header_navItem--button">
                     <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">
@@ -43,7 +35,8 @@
                 </div>
             </div>
 
-            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user && !isLoading" />
+            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'"
+                @click="isOpen = !isOpen" v-if="!user && !isLoading" />
         </div>
     </div>
 </template>
@@ -118,16 +111,6 @@ export default {
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
 
-    // &.is-transparent {
-    //     background-color: rgba(0, 0, 0, 0);
-    //     border-color: rgba(0, 0, 0, 0);
-
-    //     .Header_button.QuickMenu ::v-deep .QuickMenu_button,
-    //     .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
-    //         background-color: var(--color-bg-strong);
-    //     }
-    // }
-
     &.is-open {
         background-color: var(--color-bg-strong);
     }
@@ -136,7 +119,7 @@ export default {
 .Header_button {
 
     & + & {
-        margin-left: 3px;
+        margin-left: 20px;
     }
 }
 
@@ -151,7 +134,6 @@ export default {
 .Header_wrapper {
     height: var(--header-height);
     display: flex;
-    align-items: center;
     justify-content: space-between;
     position: relative;
     padding: 0 10px 0 5px;
@@ -167,7 +149,6 @@ export default {
 
 .Header_right {
     display: flex;
-    align-items: center;
     margin-left: 20px;
 }
 
@@ -186,6 +167,10 @@ export default {
     & + & {
         margin-left: 20px;
     }
+}
+
+.Header_profile {
+    align-self: center;
 }
 
 @include breakpoint-s {

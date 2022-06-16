@@ -108,6 +108,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+
 .PopinBase {
     position: fixed;
     top: 0;
@@ -124,7 +127,7 @@ export default {
 }
 
 .PopinBase_hider {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -272,9 +275,19 @@ export default {
     }
 }
 
+.PopinBase--panel-bottom {
+    top: var(--header-height);
+    height: calc(100% - var(--header-height));
+}
+
 /* RESPONSIVE */
 
 @include breakpoint-s {
+
+    .PopinBase--panel-bottom {
+        top: 0;
+        height: calc(100% - var(--sticky-height));
+    }
     
     .PopinBase_body {
         width: auto;

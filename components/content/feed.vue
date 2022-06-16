@@ -86,7 +86,7 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         statuses () {
-            let query = {}
+            let query = { parent: null }
         
             if (this.gathering) query.gathering = this.gathering
             if (this.author) query.owner = this.author

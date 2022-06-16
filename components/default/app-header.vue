@@ -1,9 +1,12 @@
 <template>
-    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }" v-if="$appMeta">
+    <div class="AppHeader"
+        :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }"
+        v-if="$appMeta">
         <div class="AppHeader_wrapper">
             <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
                 <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" v-if="prev.isPanel" />
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
+                        v-if="prev.isPanel" />
                     <fa class="AppHeader_icon" :icon="`far fa-${prev.fa}`" fixed-width v-else />
                 </div>
 
@@ -14,7 +17,8 @@
 
             <div class="AppHeader_left">
                 <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" @click="onIconClick" v-if="$appMeta.isPanel" />
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
+                        @click="onIconClick" v-if="$appMeta.isPanel" />
                     <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else />
                 </div>
 
@@ -24,9 +28,10 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <!-- <button-base :modifiers="['round', 's', 'weak']" class="AppHeader_button" icon-before="paper-plane" />
+                <button-icon class="AppHeader_button" fa="paper-plane" />
 
-                <button-base :modifiers="['round', 's', 'weak']" class="AppHeader_button" icon-before="bell" /> -->
+                <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)"
+                    :notification="notifications.length > 0" />
             </div>
         </div>
     </div>
@@ -43,7 +48,13 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        $appMeta () { return getMeta(this.$route, this.$store) }
+        $appMeta() { return getMeta(this.$route, this.$store) },
+        notifications() {
+            return this.$store.getters['notification/find']({
+                owner: this.user._id,
+                state: 'unread'
+            })
+        }
     },
     watch: {
         $appMeta (v) {
@@ -95,6 +106,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+
 .AppHeader {
     position: fixed;
     top: var(--header-height);
@@ -134,10 +146,7 @@ export default {
 
 
 .AppHeader_button {
-
-    & + & {
-        margin-left: 3px;
-    }
+    padding: 0 10px;
 }
 
 .AppHeader_left {
@@ -159,15 +168,14 @@ export default {
 .AppHeader_wrapper {
     height: var(--app-height);
     display: flex;
-    align-items: center;
     justify-content: space-between;
     position: relative;
 }
 
 .AppHeader_right {
     display: flex;
-    align-items: center;
     margin-left: 20px;
+    padding-right: 10px;
 }
 
 @include breakpoint-s {
