@@ -1,12 +1,10 @@
 <template>
-    <component
-        :is="componentTag"
-        class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading } ]"
-        :to="localePath(to)"
+    <component :is="componentTag" class="ButtonBase"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading } ]" :to="localePath(to)"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
+
         <div class="ButtonBase_content">
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
                 <fa :icon="`far fa-${iconBefore}`" />
@@ -26,15 +24,14 @@
             <span class="ButtonBase_iconAfter" v-if="iconAfter">
                 <fa :icon="`far fa-${iconAfter}`" />
             </span>
-
-            <ripples />
         </div>
+
+        <ripples />
 
         <div class="ButtonBase_iconLoading">
             <fa :icon="`far fa-${iconLoading}`" />
         </div>
 
-        <div class="ButtonBase_notification" v-if="notification"></div>
     </component>
 </template>
 
@@ -93,6 +90,7 @@ export default {
     transform-origin: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
 
     cursor: pointer;
 
@@ -108,17 +106,6 @@ export default {
     }
 }
 
-.ButtonBase_notification {
-    width: 8px;
-    height: 8px;
-    background-color: var(--color-cosmoz);
-    position: absolute;
-    z-index: 5;
-    right: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-}
-
 .ButtonBase_text {
     line-height: 1;
 }
@@ -129,8 +116,6 @@ export default {
     justify-content: center;
     user-select: none;
     white-space: nowrap;
-    overflow: hidden;
-    position: relative;
 }
 
 .ButtonBase_iconLoading {
@@ -259,7 +244,7 @@ export default {
     &:hover,
     &:active {
         color: var(--color-ft-light);
-        background-color: transparent;
+        background-color: rgba(255, 255, 255, 0.5);
     }
     
     .ButtonBase_iconLoading {

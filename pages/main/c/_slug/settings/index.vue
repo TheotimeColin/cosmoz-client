@@ -9,11 +9,13 @@
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
+
 export default {
-    props: {
-        constellation: { type: Object }
+    mixins: [ConstellationMixin],
+    async fetch() {
+        await this.$preFetch()
     },
-  
     data: () => ({
         isLoading: false
     }),
@@ -24,22 +26,14 @@ export default {
         async leaveConste () {
             this.isLoading = true
 
-            await this.$store.dispatch('constellation/leave', this.constellation._id)
+            await this.$store.dispatch('constellation/leave', this.$constellation._id)
             
             this.isLoading = false
 
-            this.$router.push(this.localePath({ name: 'c-slug', params: { slug: this.constellation.slug } }))
+            this.$router.push(this.localePath({ name: 'c-slug', params: { slug: this.$constellation.slug } }))
         }
     },
     head () {
-        this.$store.commit('page/set', {
-            subtitle: `Paramètres`
-        })
-
-        this.$emit('page', {            
-            subtitle: `Paramètres`, fa: 'cog'
-        })
-
         let meta = {
             title: `Paramètres ${this.$t('meta.append')}`,
         }

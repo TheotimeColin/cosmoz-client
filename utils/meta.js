@@ -1,8 +1,8 @@
 export function getMeta ($route, $store) {
     let name = $route ? $route.name.split('_')[0] : ''
-    let constellation = null
-    let gathering = null
-    let user = null
+    let constellation = { name: '' }
+    let gathering = { title: '' }
+    let user = { name: '' }
     
     if ($route.params.slug) {
         try {
@@ -86,13 +86,32 @@ export function getMeta ($route, $store) {
                             isPanel: true
                         }
                     }
+                },
+                'settings': {
+                    title: `Mes paramètres dans ` + constellation?.name,
+                    fa: 'cog'
+                },
+                'rejoindre': {
+                    title: `Rejoindre ` + constellation?.name,
+                    fa: 'envelope-open-text'
+                },
+                'manage-events': {
+                    title: 'Événements',
+                    fa: 'calendar',
+
+                    children: {
+
+                        'id': {
+                            title: 'Modifier'
+                        }
+                    }
                 }
             }
         },
     }
 
     const checkRoute = (current) => {
-        let result = {}
+        let result = null
 
         Object.keys(current).forEach(currentName => {
             if (name.includes(currentName)) {

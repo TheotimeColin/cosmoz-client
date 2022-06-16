@@ -1,9 +1,12 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})"
+        class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]">
         <div class="UserIcon_image" :style="{ backgroundImage: `url(${src ? src : $bg.holo})` }">
-            <template v-if="hidePicture || !src">
-                {{ name ? name.slice(0, 1) : 'a' }}
-            </template>
+            <client-only>
+                <template v-if="hidePicture || !src">
+                    {{ name ? name.slice(0, 1) : 'a' }}
+                </template>
+            </client-only>
         </div>
 
         <div class="UserIcon_nameContainer" v-if="displayName">
@@ -11,10 +14,10 @@
                 <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
                     {{ name ? name : '' }}
                 </component>
-                
+
                 <slot name="name"></slot>
             </div>
-            
+
             <slot></slot>
         </div>
 
