@@ -44,7 +44,7 @@ export default {
                 for (let item of queried) {
                     if (!existing[item]) {
                         let newItems = await $store.dispatch('fetch', {
-                            query: { _id: '$in' + queried.join(',') },
+                            query: { _id: { $in: queried } },
                             refresh: false
                         })
 

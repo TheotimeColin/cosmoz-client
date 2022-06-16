@@ -127,7 +127,7 @@ export default {
         }
     },
     mounted () {
-        if (process.server && !window.google) return
+        if (process.server || !window.google) return
 
         window.google.accounts.id.initialize({
             client_id: "322716061919-7io9tjlk3pbfqrl9akdrq03q5rqk3kdc.apps.googleusercontent.com",

@@ -25,7 +25,7 @@ export default {
         async fetch ({ state, commit }, params = {}) {
             try {
                 const response = await this.$axios.$post('/entities/get', {
-                    ...params.query, type: 'constellation',
+                    ...params.query, type: 'constellation'
                 }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)

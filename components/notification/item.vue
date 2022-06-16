@@ -16,7 +16,7 @@ export default {
 
         if (this.status) await this.$store.dispatch('status/softFetch', [ this.status ])
 
-        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [ this.gathering ])
+        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [this.gathering])
 
         if (this.constellation) await this.$store.dispatch('constellation/softFetch', [ this.constellation ])
     },

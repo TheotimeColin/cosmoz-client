@@ -24,9 +24,9 @@ export default {
     actions: { 
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$post('/entities/get', {
                     ...params.query, type: 'gathering',
-                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
 
@@ -36,7 +36,8 @@ export default {
                 return null
             }
         },
-        async softFetch ({ state, dispatch, commit }, items) {
+        async softFetch({ state, dispatch, commit }, items) {
+            console.log(items)
             return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
         async get ({ commit }, params = {}) {
