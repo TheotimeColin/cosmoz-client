@@ -1,8 +1,8 @@
 <template>
     <div class="UserList" :class="[ ...$modifiers ]">
-        <div class="UserList_icons" :style="{ maxWidth: (30 * items.slice(0, max).length) + 'px' }">
+        <div class="UserList_icons" :style="{ maxWidth: (spacing * items.slice(0, max).length) + 'px' }">
             <div class="UserList_iconContainer" v-for="(item, i) in items.slice(0, max)" :key="item._id">
-                <user-icon class="UserList_icon" v-bind="item" :no-link="true">
+                <user-icon class="UserList_icon" :modifiers="modifiers.includes('s') ? ['s'] : []" v-bind="item" :no-link="true">
                     <div class="UserList_overlay" slot="overlay" v-if="i == items.slice(0, max).length - 1 && items.length > max">+{{ items.length - max }}</div>
                 </user-icon>
             </div>
@@ -24,6 +24,11 @@ export default {
         max: { type: Number, default: 10 },
         hideText: { type: Boolean, default: false },
         suffix: { type: String, default: 'participent' }
+    },
+    computed: {
+        spacing () {
+            return this.modifiers.includes('s') ? 25 : 30
+        }
     }
 }
 </script>

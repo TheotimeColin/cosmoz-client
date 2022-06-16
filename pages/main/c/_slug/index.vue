@@ -36,7 +36,7 @@
                         <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Événements passés
                     </p>
 
-                    <slider-block :slots="pastEvents.map(g => g._id)" :ratio="100" item-class="width-2xs"
+                    <slider-block :slots="pastEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
                         :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20">
                         <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
                             <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />

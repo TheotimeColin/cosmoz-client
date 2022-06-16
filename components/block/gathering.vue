@@ -6,55 +6,21 @@
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && constellationData">
-                        <const-icon class="mr-10" :display-name="true" v-bind="constellationData" />
-                    </div>
-                    <div class="BlockGathering_status fx-grow d-none@xs" v-if="!constOnly">
-                        <!-- <div>
-                            <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
-                            </template>
-                            <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> 
-                            </template>
-                            <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
-                            </template>
-
-                            {{ tagline }}
-                        </div> -->
-
-                        
-                        <!-- <user-list class="fx-grow" :modifiers="['transparent']" :items="attending" :max="4" :hide-text="true" /> -->
-                    </div>
+                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" />
                 </div>
 
                 <div>
-                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!constOnly">
-                        <div>
-                            <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
-                            </template>
-                            <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
-                            </template>
-                            <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
-                            </template>
-
-                            {{ tagline }}
-                        </div>
-                    </div>
-
-                    <user-list class="fx-grow mb-10" :modifiers="['transparent']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
+                    <user-list class="fx-grow mb-5" :modifiers="['transparent', 's']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
                     
-                    <div class="BlockGathering_location fx-center">
+                    <div class="BlockGathering_details fx-center">
                         <p v-if="date || location">
                             <template v-if="date">
-                                {{ $moment(date).fromNow() }} <span class="loc">·</span>
+                                {{ $moment(date).fromNow() }}
                             </template>
                             
-                            {{ location ? location : '' }}
+                            <span class="BlockGathering_location">
+                                <span class="loc">·</span> {{ location ? location : '' }}
+                            </span>
                         </p>
                     </div>
 
@@ -215,15 +181,13 @@ export default {
 }
 
 .BlockGathering_title {
-    font: var(--ft-title-s);
+    font: var(--ft-title-xs);
     transition: all 150ms ease; 
 }
 
-.BlockGathering_location {
+.BlockGathering_details {
     margin-bottom: 5px;
-    font: var(--ft-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font: var(--ft-s-medium);
 }
 
 .BlockGathering_header {
@@ -239,20 +203,20 @@ export default {
     .BlockGathering_content {
         padding: 15px;
     }
-
+    
     .BlockGathering_cover {
 
         &::before {
-            @include ratio(100);
+            @include ratio(130);
         }
     }
 
-    .loc {
+    .BlockGathering_location {
         display: none;
     }
 
-    .BlockGathering_location {
-        font: var(--ft-2xs);
+    .BlockGathering_details {
+        font: var(--ft-xs-medium);
     }
 
     .BlockGathering_title {
@@ -261,12 +225,20 @@ export default {
 }
 
 @include breakpoint-xs {
+
+    .BlockGathering_content {
+        padding: 15px;
+    }
         
     .BlockGathering_cover {
         
         &::before {
-            @include ratio(100);
+            @include ratio(70);
         }
+    }
+
+    .BlockGathering_location {
+        display: none;
     }
 
     .BlockGathering_header {

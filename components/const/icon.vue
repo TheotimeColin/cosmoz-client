@@ -74,6 +74,15 @@ export default {
     }
 }
 
+.ConstIcon--s {
+
+    .ConstIcon_image {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
 .ConstIcon--m {
 
     .ConstIcon_image {

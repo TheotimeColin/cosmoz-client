@@ -1,10 +1,6 @@
 <template>
     <div class="Gatherings page">
         <div class="Page_wrapper Wrapper Wrapper--xs">
-            <h1 class="ft-title-m mb-30">
-                Mon agenda
-            </h1>
-
             <template v-if="gatheringsByDate.length > 0">
                 <div class="Date" v-for="date in gatheringsByDate" :key="date.value">
                     <p class="ft-title-xs mb-20">{{ $date(date.value) }}</p>

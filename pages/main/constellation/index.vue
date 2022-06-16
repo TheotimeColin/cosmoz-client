@@ -2,8 +2,6 @@
     <div class="page">
         <div class="Page_wrapper Wrapper Wrapper--xs">
             <div class="Section">
-                <p class="ft-title-m mb-20">Ma constellation</p>
-
                 <div class="row-xs" v-if="constellation.length > 0">
                     <div class="col-3 col-4@xs mt-10" v-for="user in constellation" :key="user._id">
                         <user-profile v-bind="user" />
@@ -101,7 +99,7 @@ export default {
 .Section {
 
     & + & {
-        margin-top: 20px;
+        margin-top: 30px;
     }
 }
 

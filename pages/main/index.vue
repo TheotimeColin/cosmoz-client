@@ -80,7 +80,7 @@
 
                     <slider-block
                         :slots="gatherings.map(g => g._id)"
-                        :ratio="100"
+                        :ratio="130"
                         item-class="width-2xs"
                         :offset="$smallerThan('xs') ? 15 : 20"
                         :offset-v="20"

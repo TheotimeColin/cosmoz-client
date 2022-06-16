@@ -1,8 +1,6 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
-        <p class="ft-title-s">Hey {{ user.name }} !</p>
-
-        <form @submit.prevent="onSubmit" class="mt-40 block">
+        <form @submit.prevent="onSubmit" class="block">
             <div class="d-flex mt-5 d-block@xs">
                 <input-base label="Ton vrai prénom" v-model="formData.name" :attrs="{ required: true }" />
 
