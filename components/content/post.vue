@@ -167,27 +167,28 @@ export default {
             })
         },
         onClick (e) {
-            if (this.noLink) return
+            if (!this.noLink) {
 
-            if (this.$refs.ripples && this.$refs.container) {
-                let bounds = this.$refs.container.getBoundingClientRect()
+                if (this.$refs.ripples && this.$refs.container) {
+                    let bounds = this.$refs.container.getBoundingClientRect()
 
-                this.$refs.ripples.ripple({
-                    offsetX: e.clientX - bounds.left,
-                    offsetY: e.clientY - bounds.top
-                })
-            }
+                    this.$refs.ripples.ripple({
+                        offsetX: e.clientX - bounds.left,
+                        offsetY: e.clientY - bounds.top
+                    })
+                }
 
-            if (this.consteData) {
-                this.$router.push(this.localePath({
-                    name: 'c-slug-post-postId',
-                    params: { slug: this.consteData.slug, postId: this._id }
-                }))
-            } else {
-                this.$router.push(this.localePath({
-                    name: 'post-postId',
-                    params: { postId: this._id }
-                }))
+                if (this.consteData) {
+                    this.$router.push(this.localePath({
+                        name: 'c-slug-post-postId',
+                        params: { slug: this.consteData.slug, postId: this._id }
+                    }))
+                } else {
+                    this.$router.push(this.localePath({
+                        name: 'post-postId',
+                        params: { postId: this._id }
+                    }))
+                }
             }
         }
     }

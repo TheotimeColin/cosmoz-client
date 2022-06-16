@@ -11,6 +11,7 @@ const createNotification = function (params = {}, user) {
         action: true,
         originator: { _id: user._id, type: 'user'},
         owner: user._id,
+        query: ['status', 'constellation', 'gathering'],
         ...params
     }
 
@@ -20,15 +21,21 @@ const createNotification = function (params = {}, user) {
                 type: params.type,
                 owner: params.owner
             }
+            
+            if (params.query.includes('status') && params.status) query.status = params.status
+            if (params.query.includes('constellation') && params.constellation) query.constellation = params.constellation
+            if (params.query.includes('gathering') && params.gathering) query.gathering = params.gathering
 
-            if (params.status) query.status = params.status
-            if (params.constellation) query.constellation = params.constellation
-            if (params.gathering) query.gathering = params.gathering
+            console.log(query)
 
             let existing = await Entities.notification.model.findOne({
                 ...query,
                 state: 'unread'
             })
+
+            if (params.status) query.status = params.status
+            if (params.constellation) query.constellation = params.constellation
+            if (params.gathering) query.gathering = params.gathering
 
             if (params.action) {
                 if (existing && !existing.origins.find(o => params.originator._id.equals(o._id))) {

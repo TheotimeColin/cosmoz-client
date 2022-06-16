@@ -317,7 +317,10 @@ const typeCallbacks = {
                             type: 'gathering-new',
                             gathering: data._id,
                             constellation: constellation._id,
-                            originator: { _id: data._id, type: 'gathering' },
+                            query: ['constellation'],
+                            originator: {
+                                _id: data._id, type: 'gathering'
+                            },
                             owner: member
                         }, user)
                     }))

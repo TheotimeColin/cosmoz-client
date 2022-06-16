@@ -67,6 +67,7 @@ exports.postStatus = async function (req, res) {
                     let notification = await createNotification({
                         type: 'post-reply',
                         status: parent[0]._id,
+                        constellation: parent[0].constellation,
                         owner: parent[0].owner
                     }, user)
 
@@ -146,6 +147,7 @@ exports.reactStatus = async function (req, res) {
                     type: 'post-react',
                     action: req.body.action,
                     status: status._id,
+                    constellation: status.constellation,
                     owner: status.owner
                 }, user)
 

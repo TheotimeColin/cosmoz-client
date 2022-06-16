@@ -82,7 +82,7 @@ export default {
     line-height: 1;
     color: var(--color-ft-light);
     background-color: var(--color-bg-xstrong);
-    padding: 12px 15px;
+    padding: 12px 20px;
     border-radius: 40px;
     transition: all 150ms ease;
     text-align: center;

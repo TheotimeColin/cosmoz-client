@@ -1,6 +1,8 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read' }">
-        <div class="NotifItem_image" :style="{ backgroundImage: `url(${cover})` }"></div>
+    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read', 'is-gathering': gatherings[0] }">
+        <div class="NotifItem_image" :style="{ backgroundImage: `url(${cover})` }">
+            <div class="NotifItem_imageSecondary" :style="{ backgroundImage: `url(${constellationCover})` }" v-if="constellationCover"></div>
+        </div>
         <div>
             <div class="ellipsis-2" v-html="content"></div>
             <div class="ft-xs color-ft-xweak">{{ $moment(updatedAt).fromNow() }}</div>
@@ -14,11 +16,11 @@ export default {
     async fetch () {
         await this.$store.dispatch('user/softFetch', this.origins.filter(o => o.type == 'user').map(o => o._id))
 
-        if (this.status) await this.$store.dispatch('status/softFetch', [ this.status ])
+        if (this.status) await this.$store.dispatch('status/softFetch', [ this.status, ...this.origins.filter(o => o.type == 'status').map(o => o._id) ])
 
-        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [this.gathering])
+        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [ this.gathering, ...this.origins.filter(o => o.type == 'gathering').map(o => o._id) ])
 
-        if (this.constellation) await this.$store.dispatch('constellation/softFetch', [ this.constellation ])
+        if (this.constellation) await this.$store.dispatch('constellation/softFetch', [ this.constellation, ...this.origins.filter(o => o.type == 'constellation').map(o => o._id) ])
     },
     props: {
         state: { type: String },
@@ -30,9 +32,12 @@ export default {
         origins: { type: Array, default: () => [] },
     },
     computed: {
-        cover() {
+        cover () {
             if (this.users[0]) return this.users[0].profileLarge
             if (this.gatherings[0]) return this.gatherings[0].hero
+        },
+        constellationCover () {
+            if (this.constellationData) return this.constellationData.hero
         },
         statusData () {
             if (!this.status) return null
@@ -76,6 +81,11 @@ export default {
                     name: 'post-postId',
                     params: { postId: this.statusData._id }
                 }
+            } else if (this.constellationData && this.gatherings.length > 1) {
+                return {
+                    name: 'c-slug-events',
+                    params: { slug: this.constellationData.slug }
+                }
             } else if (this.constellationData && this.gatheringData) {
                 return {
                     name: 'c-slug-events-eventId',
@@ -88,6 +98,7 @@ export default {
         content() {
             let count = this.users.length
 
+            if (this.type.includes('gathering')) count = this.gatherings.length
             if (this.type.includes('event')) count = this.gatherings.length
             
             return this.$tc(`notifications.${this.type}.content`, count, {
@@ -105,10 +116,12 @@ export default {
     .NotifItem {
         display: flex;
         align-items: center;
-        padding: 15px;
+        padding: 12px 15px;
         border-radius: 5px;
         cursor: pointer;
         transition: all 100ms ease;
+        font: var(--ft-m);
+        line-height: 1.3;
 
         &.is-read {
             color: var(--color-ft-xweak);
@@ -125,17 +138,40 @@ export default {
             .NotifItem_image {
                 opacity: 1;
             }
+
+            .NotifItem_imageSecondary {
+                border-color: var(--color-bg-weak);
+            }
+        }
+
+        &.is-gathering {
+            
+            .NotifItem_image {
+                border-radius: 5px;
+            }
         }
     }
 
     .NotifItem_image {
-        width: 45px;
-        height: 45px;
+        width: 55px;
+        height: 55px;
         flex-shrink: 0;
         border-radius: 50%;
         background-size: cover;
-        margin-right: 15px;
+        margin-right: 20px;
         transition: all 100ms ease;
         opacity: 1;
+        position: relative;
+    }
+
+    .NotifItem_imageSecondary {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+        position: absolute;
+        bottom: -8px;
+        right: -8px;
+        border: 2px solid var(--color-bg);
     }
 </style>

@@ -99,33 +99,6 @@ export default {
         },
         displayedStatuses () {
             return this.statuses.slice(0, this.max * (this.page + 1))
-            return this.statusesData.slice(0, this.max * (this.page + 1))
-        }
-    },
-    watch: {
-        statuses: {
-            immediate: true,
-            deep: true,
-            async handler (v) {
-                // this.isLoading = true
-                
-                // if (v) {
-                //     if (this.statusesData.length !== v.length) this.statusesData = []
-
-                //     let statuses = await this.$store.dispatch('user/mapUsers', {
-                //         items: v, property: 'owner'
-                //     })
-
-                //     this.statusesData = await Promise.all(statuses.map(async s => {
-                //         let children = s.children ? await this.$store.dispatch('user/mapUsers', { items: s.children, property: 'owner' }) : []
-
-                //         return { ...s, children }
-                //     }))
-
-                // }
-
-                // this.isLoading = false
-            }
         }
     },
     methods: {
