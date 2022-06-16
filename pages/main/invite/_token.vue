@@ -94,7 +94,7 @@ export default {
         },
         async logOut () {
             this.join = true
-            await this.$auth.logout()
+            await this.$store.dispatch('user/logOut')
         }
     }
 }

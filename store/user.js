@@ -5,8 +5,6 @@ export default {
     namespaced: true,
     state: () => ({
         guestId: null,
-        hasSubscription: false,
-        subscription: null,
         items: {}
     }),
     mutations: {
@@ -21,19 +19,16 @@ export default {
         },
         softRefresh (state, values) {
             state.items = storeUtils.softRefresh(state, values)
-        },
-        update (state, user) {
-            if (user && user.role == 'guest') state.guestId = user._id
-        },
-        setSubscription (state, data) {
-            state.subscription = data
-            state.hasSubscription = state.subscription ? true : false
         }
     },
     actions: {
         async logOut ({ state }) {
             try {
                 await this.$auth.logout()
+                this.$auth.strategy.token.reset()
+                this.$auth.setToken('local', false)
+                this.$auth.setRefreshToken('local', false)
+                this.$axios.setHeader('Authorization', false)
                 
                 return null
             } catch (e) {

@@ -5,8 +5,7 @@
 <script>
 export default {
     async mounted () {
-        await this.$auth.logout()
-
+        await this.$store.dispatch('user/logOut')
         window.location = this.$config.baseUrl
     }
 }
