@@ -61,7 +61,7 @@ export default {
         '@nuxtjs/gtm',
         'cookie-universal-nuxt',
         'nuxt-i18n',
-        '@nuxtjs/auth',
+        '@nuxtjs/auth-next',
         '@nuxtjs/moment',
         '@nuxtjs/style-resources',
         '@nuxtjs/sitemap',
@@ -86,7 +86,7 @@ export default {
             name: 'Cosmoz',
             short_name: 'Cosmoz',
             background_color: '#1d1b27',
-            theme_color: '#1d1b27',
+            theme_color: '#471ffe',
             lang: 'fr',
             display: 'standalone',
             start_url: '/feed'

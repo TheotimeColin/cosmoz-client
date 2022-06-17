@@ -25,6 +25,7 @@ export default {
         async logOut ({ state }) {
             try {
                 await this.$auth.logout()
+                
                 this.$auth.strategies.local.reset()
                 this.$cookies.remove('auth._token.local')
                 
