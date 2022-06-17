@@ -76,6 +76,11 @@ export default {
     ],
 
     sitemap: sitemap,
+
+    loading: {
+        color: '#471ffe',
+        height: '3px'
+    },
     
     pwa: {
         meta: {
@@ -86,7 +91,7 @@ export default {
             name: 'Cosmoz',
             short_name: 'Cosmoz',
             background_color: '#1d1b27',
-            theme_color: '#471ffe',
+            theme_color: '#1d1b27',
             lang: 'fr',
             display: 'standalone',
             start_url: '/feed'

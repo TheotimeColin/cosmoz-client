@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { nanoid }  = require('nanoid')
+// const { nanoid }  = require('nanoid')
 const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
@@ -119,9 +119,9 @@ exports.consteInviteLink = async function (req, res) {
 
         if (user.role !== 'admin' && !constellation.admins.find(u => user._id.equals(u))) throw Error('not-authorized')
 
-        let id = nanoid()
+        // let id = nanoid()
         let token = await Entities.token.model.create({
-            id, read: 'g-admin',
+            id: Math.random(), read: 'g-admin',
             type: 'invite',
             constellation: constellation._id
         })
