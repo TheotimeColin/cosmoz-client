@@ -246,7 +246,8 @@ Vue.mixin({
         },
         $pluralize (users) {
             return this.$tc(`utils.users`, users.length == 1 ? 0 : users.length - 1, {
-                users: users.slice(0, 2).join(' et '), others: users.length - 2
+                users: users.slice(0, 2).join(' et '),
+                others: users.length - 2
             })
         }
     }

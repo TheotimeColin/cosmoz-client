@@ -319,6 +319,10 @@ $value in $breakpoints {
         margin-top: #{$spacing}px;
       }
 
+      .\+mt-#{$spacing}#{$name} {
+        & + & { margin-top: #{$spacing}px; }
+      }
+
       .mb-#{$spacing}#{$name} {
         margin-bottom: #{$spacing}px;
       }

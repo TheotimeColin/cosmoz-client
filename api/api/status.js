@@ -71,7 +71,7 @@ exports.postStatus = async function (req, res) {
                         owner: parent[0].owner
                     }, user)
 
-                    if (!notification) throw Error('failed-to-notify')
+                    if (!notification) throw Error('notif-failed')
                 } catch (e) {
                     console.error(e)
                 }
@@ -151,7 +151,7 @@ exports.reactStatus = async function (req, res) {
                     owner: status.owner
                 }, user)
 
-                if (!notification) throw Error('failed-to-notify')
+                if (!notification) throw Error('notif-failed')
             } catch (e) {
                 console.error(e)
             }

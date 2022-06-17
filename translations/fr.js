@@ -38,7 +38,13 @@ export default {
         },
         'gathering-new': {
             content: `<b>{gathering}</b> a été annoncé dans {constellation} | <b>{gathering}</b> a été annoncé dans <b>{constellation}</b> | {n} nouveaux événements ont été annoncés dans <b>{constellation}</b>`
-        } 
+        },
+        'conste-application': {
+            content: `<b>{users}</b> a demandé à rejoindre {constellation} | <b>{users}</b> a demandé à rejoindre <b>{constellation}</b> | {users} ont demandé à rejoindre <b>{constellation}</b>`
+        },
+        'conste-enter': {
+            content: `Ta demande a été approuvée : bienvenue chez <b>{constellation}</b> !`
+        }
     },
     permissions: {
         public: {

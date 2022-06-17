@@ -91,6 +91,7 @@ export default {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
 
     cursor: pointer;
 

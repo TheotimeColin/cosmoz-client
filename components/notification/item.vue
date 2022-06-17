@@ -32,12 +32,19 @@ export default {
         origins: { type: Array, default: () => [] },
     },
     computed: {
+        user () { return this.$store.getters['user/self'] },
         cover () {
-            if (this.users[0]) return this.users[0].profileLarge
-            if (this.gatherings[0]) return this.gatherings[0].hero
+            if (this.users[0]?.profileLarge) return this.users[0].profileLarge
+            if (this.gatherings[0]?.hero) return this.gatherings[0].hero
+            if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
+
+            return this.$bg.plasticBlack
         },
         constellationCover () {
-            if (this.constellationData) return this.constellationData.hero
+            if (this.type == 'conste-enter') return this.user.profileSmall
+            if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
+
+            return null
         },
         statusData () {
             if (!this.status) return null
@@ -90,6 +97,16 @@ export default {
                 return {
                     name: 'c-slug-events-eventId',
                     params: { slug: this.constellationData.slug, eventId: this.gatheringData.id }
+                }
+            } else if (this.constellationData && this.type == 'conste-application') {
+                return {
+                    name: 'c-slug-admin',
+                    params: { slug: this.constellationData.slug }
+                }
+            } else if (this.constellationData && this.type == 'conste-enter') {
+                return {
+                    name: 'c-slug-feed',
+                    params: { slug: this.constellationData.slug }
                 }
             }
 

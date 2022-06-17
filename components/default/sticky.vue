@@ -1,11 +1,16 @@
 <template>
     <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel), 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="fx-center p-15 bg-cosmoz" v-if="selectConst && !selectConst.isMember">
-            <div class="mr-10">
-                <p class="ft-title-2xs ellipsis-1">Rejoins {{ selectConst.name }}</p>
-                <p class="ft-s mt-3">Découvre les membres et le contenu publié par la communauté.</p>
+            <div class="mr-10" v-if="selectConst.isFollower">
+                <p class="ft-title-2xs ellipsis-1">Demande envoyée</p>
             </div>
-            <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" :modifiers="['round', 'light']" icon-before="arrow-right" />
+            <div class="mr-10" v-else>
+                <p class="ft-title-2xs ellipsis-1">Rejoins {{ selectConst.name }}</p>
+                <p class="ft-s mt-3" v-if="!selectConst.isFollower">Découvre les membres et le contenu publié par la communauté.</p>
+            </div>
+            
+            <link-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" v-if="selectConst.isFollower">Voir la demande</link-base>
+            <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" :modifiers="['round', 'light']" icon-before="arrow-right" v-else />
         </div>
         <div >
             <div class="Sticky_wrapper">

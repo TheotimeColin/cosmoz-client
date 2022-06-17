@@ -158,7 +158,8 @@ export default {
 
                 return {
                     ...item, thumbnail, hero, logoSmall, logoLarge,
-                    isMember: root.auth.user && item.members.includes(root.auth.user._id)
+                    isMember: root.auth.user && item.members.includes(root.auth.user._id),
+                    isFollower: root.auth.user && item.followers.includes(root.auth.user._id)
                 }
             })
         },

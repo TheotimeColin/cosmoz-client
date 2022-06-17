@@ -4,7 +4,7 @@ const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 
-
+const { createNotification } = require('../utils/notifications')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 
 exports.consteApply = async function (req, res) {
@@ -20,6 +20,21 @@ exports.consteApply = async function (req, res) {
         if (!constellation) throw Error('no-constellation')
 
         data = await Entities.constellation.model.findOne({ _id: req.body.id })
+
+        try {
+            await Promise.all(data.admins.map(async admin => {
+                let notification = await createNotification({
+                    type: 'conste-application',
+                    constellation: data._id,
+                    originator: { _id: user._id, type: 'user' },
+                    owner: admin
+                }, user)
+
+                if (!notification) throw Error('notif-failed')
+            }))
+        } catch (e) {
+            console.error(e)
+        }
     } catch (e) {
         console.error(e)
         errors.push(e.message)
@@ -65,6 +80,21 @@ exports.consteEnter = async function (req, res) {
         await target.save()
 
         data = await Entities.constellation.model.findOne({ _id: req.body.conste })
+
+        if (!req.body.token) {
+            try {
+                let notification = await createNotification({
+                    type: 'conste-enter',
+                    constellation: data._id,
+                    originator: { _id: data._id, type: 'constellation' },
+                    owner: target._id
+                }, user)
+
+                if (!notification) throw Error('notif-failed')
+            } catch (e) {
+                console.error(e)
+            }
+        }
 
         data = await fieldsCheck('read', data._doc, Entities.constellation, data, user)
     } catch (e) {
