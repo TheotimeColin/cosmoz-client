@@ -9,9 +9,7 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-base :modifiers="['round', 'xweak']" :href="$config.adminUrl" class="Header_button"
-                    icon-before="crown" v-if="user.role == 'admin'" />
-
+                <button-icon :href="$config.adminUrl" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
                 <button-icon class="Header_button" fa="paper-plane" />
                 <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
         

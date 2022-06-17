@@ -49,10 +49,20 @@ exports.consteEnter = async function (req, res) {
             req.body.user = user._id
         }
 
-        await Entities.constellation.model.updateOne({ _id: req.body.conste }, {
-            $addToSet: { members: mongoose.Types.ObjectId(req.body.user) },
-            $pull: { followers: mongoose.Types.ObjectId(req.body.user) }
+        let target = await Entities.user.model.findById(req.body.user)
+
+        if (!target) throw Error('target-not-found')
+
+        await Entities.constellation.model.updateOne({ _id: conste._id }, {
+            $addToSet: { members: target._id },
+            $pull: { followers: target._id }
         })
+
+        target.constellations = [
+            ...target.constellations, conste._id
+        ]
+
+        await target.save()
 
         data = await Entities.constellation.model.findOne({ _id: req.body.conste })
 
@@ -106,6 +116,10 @@ exports.consteLeave = async function (req, res) {
         let constellation = await Entities.constellation.model.updateOne({ _id: req.body.id }, { $pull: { followers: user._id, members: user._id, organizers: user._id }})
 
         if (!constellation) throw Error('no-constellation')
+
+        user.constellations = user.constellations.filter(c => !c.equals(req.body.id))
+
+        await user.save()
 
         data = await Entities.constellation.model.findOne({ _id: req.body.id })
     } catch (e) {

@@ -1,6 +1,6 @@
 <template>
     <nav class="NavAdmin" :class="[]">
-        <a :href="$config.baseUrl" class="NavAdmin_logo bg-cover bg-night">
+        <a :href="$config.baseUrl + '/feed'" class="NavAdmin_logo bg-cover bg-night">
             <span class="ft-title-m logo-sparkle-p">cosmoz</span>
         </a>
 

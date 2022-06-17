@@ -5,7 +5,8 @@ moment.tz.setDefault('Europe/Paris')
 export default {
     namespaced: true,
     state: () => ({
-        items: {}
+        items: {},
+        queries: []
     }),
     mutations: {
         updateOne (state, value) {
@@ -19,16 +20,35 @@ export default {
         },
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
+        },
+        addQuery (state, query) {
+            state.queries = [
+                ...state.queries,
+                { query, fetchedAt: new Date() }
+            ]
+        },
+        removeQuery (state, query) {
+            state.queries = state.queries.filter(q => JSON.stringify(q.query) != JSON.stringify(query))
         }
     },
     actions: { 
-        async fetch ({ state, commit }, params = {}) {
+        async fetch ({ state, commit, getters }, params = {}) {
             try {
+                let prevQuery = state.queries.find(q => JSON.stringify(q.query) == JSON.stringify(params.query))
+
+                if (prevQuery && moment(prevQuery.fetchedAt).add(40, 'seconds') > moment()) {
+                    return getters.items
+                } else {
+                    commit('removeQuery', params.query)
+                }
+                
                 const response = await this.$axios.$post('/entities/get', {
                     ...params.query, type: 'gathering',
                 }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
+                
+                commit('addQuery', params.query)
 
                 return response.data
             } catch (e) {

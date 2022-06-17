@@ -174,9 +174,9 @@ exports.getFeed = async function (req, res) {
         let user = await authenticate(req.headers)
         if (!user) throw Error('no-user')
 
-        let gatherings = await Entities.gathering.model.find({
-            status: 'active'
-        })
+        // let gatherings = await Entities.gathering.model.find({
+        //     status: 'active'
+        // })
 
         data = await Entities.status.model.find({
             $and: [
@@ -185,22 +185,24 @@ exports.getFeed = async function (req, res) {
                         { gathering: {
                             $in: user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) 
                         }},
+
                         { owner: user._id },
-                        { owner: { $in: user.friends } }
+                        
+                        { constellation: { $in: user.constellations } }
                     ],
                 },
                 { parent: null }
             ]
         })
 
-        data = data.filter(status => {
-            if (status.gathering && !gatherings.find(g => g._id.equals(status.gathering))) {
-                // If gathering is not found (= deleted or hidden)
-                return false
-            }
+        // data = data.filter(status => {
+        //     if (status.gathering && !gatherings.find(g => g._id.equals(status.gathering))) {
+        //         // If gathering is not found (= deleted or hidden)
+        //         return false
+        //     }
 
-            return true
-        })
+        //     return true
+        // })
 
     } catch (e) {
         console.error(e)

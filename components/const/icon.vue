@@ -1,8 +1,10 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
-        <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
-            <p v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</p>
-        </div>
+        <client-only>
+            <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
+                <div v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</div>
+            </div>
+        </client-only>
 
         <link-base :invert="true" class="ConstIcon_name ellipsis-1" v-if="displayName">{{ name ? name : '' }}</link-base>
     </component>

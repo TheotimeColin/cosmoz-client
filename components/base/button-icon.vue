@@ -1,9 +1,8 @@
 <template>
-    <div class="ButtonIcon" @click="() => $store.commit('page/toggleNotifs', true)"
-        :class="{ 'is-notif': notification }">
+    <component :is="href ? 'a' : 'div'" :href="href" class="ButtonIcon" :class="{ 'is-notif': notification }"  v-on="$listeners">
         <fa class="ButtonIcon_reg" :icon="`far fa-${fa}`" fixed-width v-if="fa" />
         <fa class="ButtonIcon_solid" :icon="`fa-solid fa-${fa}`" fixed-width v-if="fa" />
-    </div>
+    </component>
 </template>
 
 <script>
@@ -11,6 +10,7 @@ export default {
     name: 'ButtonIcon',
     props: {
         fa: { type: String },
+        href: { type: String },
         notification: { type: Boolean, default: false }
     }
 }
