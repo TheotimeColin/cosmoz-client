@@ -108,13 +108,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-
 .PopinBase {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -9999px;
+    left: -9999px;
     width: 100%;
     height: 100%;
     background-color: transparent;
@@ -123,7 +120,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 350ms ease;
+    transition: none;
 }
 
 .PopinBase_hider {
@@ -204,6 +201,8 @@ export default {
 /* STATES */
 
 .PopinBase.is-active {
+    top: 0;
+    left: 0;
     pointer-events: all;
 
     & > .PopinBase_body {

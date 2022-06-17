@@ -26,8 +26,6 @@ const createNotification = function (params = {}, user) {
             if (params.query.includes('constellation') && params.constellation) query.constellation = params.constellation
             if (params.query.includes('gathering') && params.gathering) query.gathering = params.gathering
 
-            console.log(query)
-
             let existing = await Entities.notification.model.findOne({
                 ...query,
                 state: 'unread'

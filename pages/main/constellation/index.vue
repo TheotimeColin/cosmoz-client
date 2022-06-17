@@ -50,7 +50,6 @@
 <script>
 export default {
     name: 'GatheringsPast',
-    middleware: 'onboarded',
     async fetch () {
         await this.$store.dispatch('user/fetch', {
             query: {}

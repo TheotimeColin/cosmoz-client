@@ -61,6 +61,12 @@
                             :base="true" />
                     </div>
 
+                    <div class="block mt-20 mt-40@xs">
+                        <p class="ft-title-xs mb-20">Qui organise ?</p>
+                        
+                        <input-user :items="members" v-model="formData.organizers" />
+                    </div>
+
                     <div class="block-r mt-20">
                         <div class="fx-center">
                             <p class="ft-title-2xs">Limiter le nombre de places</p>
@@ -129,25 +135,44 @@ export default {
     mixins: [ ConstellationMixin, EntityEditor ],
     async fetch () {
         await this.fetchEntity(this.$route.params.id)
+        
+        if (this.$constellation) {
+            await this.$store.dispatch('user/softFetch', this.$constellation.members)
+        }
+    },
+    transition (to, from) {
+        if (to.name.includes('manage-events')) {
+            return { name: 'slide-in', mode: 'in-out' }
+        } else if (from) {
+            return { name: 'slide-out', mode: 'in-out' }
+        }
     },
     data: () => ({
         entityType: 'gathering',
-        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation', 'linkRegister'],
+        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation', 'linkRegister', 'organizers'],
         metaLoading: false,
         options: {
             max: false,
             plus: false,
             danger: false,
             cover: false
-        },
-        defaultFormData: {
-            status: 'draft',
-            coverSelect: ''
         }
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
         isNew () { return this.$route.params.id == 'new' },
+        defaultFormData () {
+            return {
+                status: 'draft',
+                coverSelect: '',
+                organizers: [ this.user._id ]
+            }
+        },
+        members () {
+            return this.$store.getters['user/find']({
+                _id: { $in: this.$constellation?.members }
+            })
+        },
         coverPreview () {
             let preview = {}
 
@@ -211,18 +236,7 @@ export default {
             })
         }
     },
-    async mounted () {
-        
-    },
     head () {
-        this.$store.commit('page/set', {
-            subtitle: `Organiser une rencontre`, fa: 'calendar-plus'
-        })
-
-        this.$emit('page', {            
-            subtitle: `Organiser une rencontre`, fa: 'calendar-plus'
-        })
-
         let meta = {
             title: `Organiser une rencontre ${this.$t('meta.append')}`,
         }

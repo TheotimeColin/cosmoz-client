@@ -136,7 +136,8 @@ export function getMeta ($route, $store) {
                     children: {
 
                         'id': {
-                            title: 'Modifier'
+                            title: 'Modifier',
+                            isPanel: true
                         }
                     }
                 }

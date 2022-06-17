@@ -54,14 +54,16 @@ export default {
     },
     data: () => ({
         entityType: 'constellation',
-        inputs: ['admins', 'organizers'],
-        defaultFormData: {
-            organizers: [],
-            admins: [],
-        }
+        inputs: ['admins', 'organizers']
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        defaultFormData () {
+            return {
+                organizers: [],
+                admins: [],
+            }
+        },
     },
     methods: {
         addAdmin (_id) {

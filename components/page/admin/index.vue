@@ -53,14 +53,16 @@ export default {
         inputs: ['name', 'location', 'intro', 'cover', 'logo', 'description'],
         options: {
             cover: false
-        },
-        defaultFormData: {
-            coverSelect: '',
-            logoSelect: ''
         }
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
+        defaultFormData () {
+            return {
+                coverSelect: '',
+                logoSelect: ''
+            }
+        },
         coverPreview () {
             let preview = ''
 

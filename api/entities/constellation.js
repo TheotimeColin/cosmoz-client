@@ -15,10 +15,21 @@ let Constellation = {
         logo: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
         cover: { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'mediaCollection' },
 
-        followers: { type: Array, default: [], write: 'g-organizer' },
-        members: { type: Array, default: [], write: 'g-organizer' },
-        organizers: { type: Array, default: [], write: 'g-admin' },
-        admins: { type: Array, default: [], write: 'g-admin' },
+        followers: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' },
+        ],
+
+        members: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' },
+        ],
+
+        organizers: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'user' },
+        ],
+
+        admins: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-admin', ref: 'user' },
+        ],
 
         gatherings: [
             { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'gathering' }

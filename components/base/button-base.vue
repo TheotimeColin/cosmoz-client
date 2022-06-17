@@ -360,7 +360,7 @@ export default {
         .ButtonBase_iconAfter,
         .ButtonBase_iconBefore {
             margin: 0;
-            font-size: 14px;
+            font-size: 12px;
         }
     }
 

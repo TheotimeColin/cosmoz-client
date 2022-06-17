@@ -13,18 +13,17 @@
                         <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
                     </div>
                     <div class="col-6 col-12@xs">
-                        <div class="d-flex" v-if="user">
+                        <div class="+mt-10 d-flex" v-if="organizers && organizers.length > 0">
                             <user-icon v-bind="user" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
 
-                            <p>Organisé par {{ user.name }}</p>
+                            <p>Organisé par {{ $pluralize(organizers.map(o => o.name)) }}</p>
                         </div>
-
-                        <div class="mt-10 d-flex">
+                        <div class="+mt-10 d-flex">
                             <fa icon="far fa-calendar" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
                             <p>{{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}</p>
                         </div>
-                        <div class="mt-10 d-flex">
+                        <div class="+mt-10 d-flex">
                             <fa icon="far fa-map-marker-alt" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
                             <div>
@@ -114,7 +113,12 @@ export default {
         selectedUser: null,
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] }
+        user () { return this.$store.getters['user/self'] },
+        organizers () {
+            return this.$store.getters['user/find']({
+                _id: { $in: this.gathering.organizers }
+            })
+        }
     }
 }
 </script>

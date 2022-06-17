@@ -75,12 +75,17 @@ export default {
         inviteTokens: [],
         isLoading: false,
         defaultFormData: {
-            members: [],
-            followers: [],
+            
         }
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] }
+        user () { return this.$store.getters['user/self'] },
+        defaultFormData () {
+            return {
+                members: [],
+                followers: [],
+            }
+        },
     },
     methods: {
         getInviteLink (token) {

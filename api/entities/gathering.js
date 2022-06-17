@@ -33,6 +33,11 @@ let Gathering = {
 
         constellation: { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'constellation' },
 
+        
+        organizers: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' }
+        ],
+
         owner: { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' }
     }, { timestamps: true })
 }

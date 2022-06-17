@@ -312,7 +312,6 @@ const typeCallbacks = {
                 
                 if (data.status == 'active') {
                     await Promise.all(constellation.members.map(async member => {
-                        
                         return await createNotification({
                             type: 'gathering-new',
                             gathering: data._id,

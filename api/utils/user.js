@@ -91,7 +91,7 @@ exports.accessCheck = async function (type = 'write', entity, requested = null, 
 
                         if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
 
-                        granted = allowed.find(u => user._id.equals(u))
+                        granted = allowed.find(u => user._id.equals(u)) ? true : false
                     } else {
                         granted = false
                     }
@@ -140,7 +140,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
             }})
         }
         
-        let promise = await Promise.all(Object.keys(fields).map(async key => {
+        await Promise.all(Object.keys(fields).map(async key => {
             try {
                 if (Array.isArray(fields[key]) ? fields[key][0][type] : fields[key][type]) {
                     let granted = false
@@ -168,7 +168,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     }
                     
                     if (requiredRole.slice(0, 2) == 'g-') {
-                        let constellation = requested.organizers ? requested._id : requested.constellation
+                        let constellation = requested.admins ? requested._id : requested.constellation
 
                         if (!constellation || !user) granted = false
 
@@ -250,6 +250,8 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
         }))
 
         result.forbidden = forbidden
+
+        console.log(forbidden)
 
         resolve(result)
     })

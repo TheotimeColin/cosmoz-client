@@ -22,7 +22,6 @@
 <script>
 export default {
     name: 'DashboardIndex',
-    middleware: 'onboarded',
     async fetch () {
         this.isLoading = true
 
