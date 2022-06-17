@@ -26,8 +26,8 @@ export default {
             try {
                 await this.$auth.logout()
                 
-                this.$auth.strategies.local.reset()
-                this.$cookies.remove('auth._token.local')
+                // this.$auth.strategies.local.reset()
+                // this.$cookies.remove('auth._token.local')
                 
                 return null
             } catch (e) {
