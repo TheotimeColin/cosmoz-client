@@ -1,10 +1,4 @@
 export default {
-    data: () => ({
-
-    }),
-    watch: {
-
-    },
     computed: {
         $user () { return this.$store.getters['user/self'] },
         $isUser () { return this.$user ? true : false },

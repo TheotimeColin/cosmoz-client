@@ -132,6 +132,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
         let result = { ...data }
         let fields = entity.fields.obj
         let users = null
+        let forbidden = []
 
         if (requested && requested.owner && user) {
             users = await Entities.user.model.find({ _id: {
@@ -171,7 +172,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
 
                         if (!constellation || !user) granted = false
 
-                        if (user.role == 'adminq') {
+                        if (user.role == 'admin') {
                             granted = true
                         } else {
                             let conste = await Entities.constellation.model.findOne({ _id: constellation })
@@ -202,9 +203,9 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                         if (isEncountered || isSelf) granted = true
                     } else if (requiredRole == '$readEach') {
                         result[key] = result[key].map(r => {
-                            if (r.read == 'friend') {
+                            if (r.read && r.read == 'friend') {
                                 return isFriend ? r : { ...r, value: 'REDACTED' }
-                            } else if (r.read == 'encountered') {
+                            } else if (r.read && r.read == 'encountered') {
                                 return isEncountered ? r : { ...r, value: 'REDACTED' }
                             } else {
                                 return r
@@ -234,6 +235,8 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     }
                     
                     if (!granted) {
+                        forbidden = [ ...forbidden, key ]
+
                         // console.warn(key + ' not granted')
                         delete result[key]
                     }
@@ -245,6 +248,8 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                 return false
             }
         }))
+
+        result.forbidden = forbidden
 
         resolve(result)
     })

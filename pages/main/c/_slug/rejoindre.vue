@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="Page">
         <div class="bg-cover-100 ratio-15 ratio-25@xs" :style="{ '--background': `url(${$constellation.hero}` }"
             v-if="$constellation.hero"></div>
 
@@ -99,10 +99,17 @@
 import ConstellationMixin from '@/mixins/constellation'
 
 export default {
+    mixins: [ ConstellationMixin ],
     async fetch() {
         await this.$preFetch()
     },
-    mixins: [ ConstellationMixin ],
+    transition (to, from) {
+        if (to.name.includes('rejoindre')) {
+            return { name: 'slide-in', mode: 'in-out' }
+        } else if (from) {
+            return { name: 'slide-out', mode: 'in-out' }
+        }
+    },
     data: () => ({
         isLoading: false
     }),
@@ -138,3 +145,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.Page {
+    background-color: var(--color-bg);
+}
+</style>

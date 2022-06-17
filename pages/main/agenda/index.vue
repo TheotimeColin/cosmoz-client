@@ -1,20 +1,15 @@
 <template>
     <div class="Gatherings page">
         <div class="Page_wrapper Wrapper Wrapper--xs">
-            <template v-if="gatheringsByDate.length > 0">
-                <div class="Date" v-for="date in gatheringsByDate" :key="date.value">
-                    <p class="ft-title-xs mb-20">{{ $date(date.value) }}</p>
+            <template v-if="gatherings.length > 0">
+                <div class="Date" v-for="gathering in gatherings" :key="gathering._id">
+                    <placeholder class="Gatherings_item" :ratio="40" v-if="isLoading" />
 
-                    <template v-if="isLoading">
-                        <placeholder class="Gatherings_item" :ratio="40" v-for="i in 2" :key="i" />
-                    </template>
-
-                    <div class="Gatherings_item" v-for="gathering in date.items" :key="gathering._id" v-show="!isLoading">
-                        <block-gathering
-                            v-bind="gathering"
-                            :display-intro="true"
-                        />
-                    </div>
+                    <block-gathering
+                        class="Gatherings_item" v-show="!isLoading"
+                        v-bind="gathering"
+                        :display-intro="true"
+                    />
                 </div>
             </template>
             <div class="bg-bg-strong p-30 text-center br-s" v-else>
@@ -27,7 +22,7 @@
                 </button-base>
             </div>
         
-            <div class="block-r mt-30" v-if="pastGatherings.length > 0">
+            <div class="block-r mt-15" v-if="pastGatherings.length > 0">
                 <h2 class="ft-title-xs mb-20">
                     Mes sorties passées
                 </h2>
@@ -78,14 +73,6 @@ export default {
             return this.$store.getters['constellation/find']({
             })
         },
-        gatheringsByDate () {
-            return this.$store.getters['gathering/groupBy']('date', {
-                status: 'active',
-                sort: { date: 'desc' },
-                isPast: false,
-                isAttending: true,
-            }, { asDays: true })
-        },
         pastGatherings () {
             return this.$store.getters['gathering/find']({
                 status: 'active',
@@ -117,7 +104,7 @@ export default {
 .Date {
 
     & + & {
-        margin-top: 30px;
+        margin-top: 15px;
     }
 }
 </style>

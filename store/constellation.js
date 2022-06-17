@@ -140,7 +140,7 @@ export default {
         }
     },
     getters: {
-        items: (state) => {
+        items: (state, getters, root) => {
             return Object.values(state.items).map(item => {
                 let thumbnail, hero, logoSmall, logoLarge = ''
 
@@ -157,7 +157,8 @@ export default {
                 }
 
                 return {
-                    ...item, thumbnail, hero, logoSmall, logoLarge
+                    ...item, thumbnail, hero, logoSmall, logoLarge,
+                    isMember: root.auth.user && item.members.includes(root.auth.user._id)
                 }
             })
         },

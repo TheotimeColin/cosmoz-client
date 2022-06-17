@@ -241,6 +241,7 @@ export default {
     width: var(--nav-width);
     height: calc(100vh - var(--header-height));
     background-color: var(--color-bg-strong);
+    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 }
 
 .AppNav_primary {

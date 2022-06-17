@@ -116,6 +116,7 @@ export default {
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
     overflow: hidden;
+    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 
     &.is-init {
 

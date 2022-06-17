@@ -126,7 +126,8 @@ export function getMeta ($route, $store) {
                 },
                 'rejoindre': {
                     title: `Rejoindre ` + constellation?.name,
-                    fa: 'envelope-open-text'
+                    fa: 'envelope-open-text',
+                    isPanel: true
                 },
                 'manage-events': {
                     title: 'Événements',

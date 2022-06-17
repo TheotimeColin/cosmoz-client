@@ -1,6 +1,6 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink }" ref="container" v-if="ownerData">
-        <ripples :auto="false" :size="300" :modifiers="['weak']" ref="ripples" v-if="!noLink" />
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="ownerData">
+        <ripples :auto="false" :size="300" :modifiers="['weak']" ref="ripples" v-if="!noLink && !forbidden" />
 
         <div class="Post_head" @click="onClick">
             <div class="d-flex fxa-center fx-grow">
@@ -25,7 +25,7 @@
                             </link-base>
                         </template>
 
-                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break">
+                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break" v-if="!isForbidden">
                             {{ subtitle }}
                         </div>
                     </div>
@@ -36,6 +36,10 @@
         </div>
         <div class="Post_main" @click="onClick">
             <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-if="content"></div>
+
+            <div class="Post_text Post_block" v-if="forbidden">
+                {{ placeholderText }}
+            </div>
 
             <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
         </div>
@@ -49,7 +53,20 @@
             </div>
         </div>
 
-        <content-reaction-popin :is-active="isSeeReactions" :reactions="reactionsOwners" @close="isSeeReactions = false" />
+        <div class="Post_forbidden" v-if="isForbidden && consteData">
+            <div class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
+                <p class="mr-10">Ce contenu n'est visible que par les membres de {{ consteData.name }}.</p>
+
+                <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: consteData.slug } }" :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
+            </div>
+        </div>
+
+        <content-reaction-popin
+            :is-active="isSeeReactions"
+            :reactions="reactionsOwners"
+            @close="isSeeReactions = false"
+            v-if="!isForbidden"
+        />
 
         <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
@@ -103,6 +120,7 @@ export default {
         owner: { type: String },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
+        forbidden: { type: Array, default: () => [] },
         disableCreate: { type: Boolean, default: false },
         createdAt: { type: [String, Date] },
         gathering: { type: String },
@@ -147,6 +165,12 @@ export default {
             }
 
             return link
+        },
+        isForbidden () {
+            return this.forbidden.includes('content')
+        },
+        placeholderText () {
+            return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
         }
     },
     methods: {
@@ -169,7 +193,7 @@ export default {
             })
         },
         onClick (e) {
-            if (!this.noLink) {
+            if (!this.noLink && !this.forbidden) {
 
                 if (this.$refs.ripples && this.$refs.container) {
                     let bounds = this.$refs.container.getBoundingClientRect()
@@ -225,6 +249,27 @@ export default {
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .Post_forbidden {
+        padding: 25px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: color-opacity('bg-2xstrong', -50%);;
+        backdrop-filter: blur(5px);
+        border-radius: 10px;
+    }
+
+    .Post_forbiddenMessage {
+        max-width: 400px;
+        background-color: var(--color-bg-xweak);
+        box-shadow: 0 3px 6px 0 color-opacity('bg-xstrong', -25%);
     }
 
     .Post_icon {

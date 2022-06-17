@@ -30,7 +30,7 @@
             />
         </transition-group>
 
-        <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="statusesData.length <= 0 && !isLoading">
+        <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoading">
             Aucun message sur ce fil.
         </div>
 
@@ -91,6 +91,7 @@ export default {
             let query = { parent: null }
         
             if (this.gathering) query.gathering = this.gathering
+            if (this.constellation) query.constellation = this.constellation
             if (this.author) query.owner = this.author
 
             return this.$store.getters['status/find']({

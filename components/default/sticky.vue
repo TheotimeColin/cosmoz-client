@@ -1,12 +1,21 @@
 <template>
     <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel), 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
-        <div class="Sticky_wrapper">
-            <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
-            <div class="Sticky_current round ft-xs bg-cosmoz" @click="onOpen" v-else>
-                <fa icon="far fa-home" />
+        <div class="fx-center p-15 bg-cosmoz" v-if="selectConst && !selectConst.isMember">
+            <div class="mr-10">
+                <p class="ft-title-2xs ellipsis-1">Rejoins {{ selectConst.name }}</p>
+                <p class="ft-s mt-3">Découvre les membres et le contenu publié par la communauté.</p>
             </div>
+            <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" :modifiers="['round', 'light']" icon-before="arrow-right" />
+        </div>
+        <div >
+            <div class="Sticky_wrapper">
+                <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
+                <div class="Sticky_current round ft-xs bg-cosmoz" @click="onOpen" v-else>
+                    <fa icon="far fa-home" />
+                </div>
 
-            <default-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
+                <default-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
+            </div>
         </div>
     </div>
 </template>
@@ -68,6 +77,7 @@ export default {
     transition: all 200ms ease;
     display: none;
     overflow: hidden;
+    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 
     &.is-active {
         transform: translateY(100%) !important;

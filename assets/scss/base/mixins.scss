@@ -51,3 +51,8 @@
     user-select: none;
     -webkit-user-drag: none;
 }
+
+@function color-opacity($color: 'bg-xstrong', $amount: -50%) {
+  $result: scale-color(map-get($colors, $color), $alpha: $amount);
+  @return $result;
+}
