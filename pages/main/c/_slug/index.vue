@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="width-s ml-30 fx-no-shrink ml-0@s width-100@s">
+            <div class="width-xs ml-30 fx-no-shrink ml-0@s width-100@s">
                 <div class="block-r p-15 mb-10">
                     <div class="fx-center">
                         <h2 class="ft-title-2xs">

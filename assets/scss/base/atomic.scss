@@ -167,6 +167,11 @@ $value in $breakpoints {
       }
     }
 
+    .bg-cover-100#{$name}::before { opacity: 1; }
+    .bg-cover-75#{$name}::before { opacity: 0.75; }
+    .bg-cover-50#{$name}::before { opacity: 0.5; }
+    .bg-cover-25#{$name}::before { opacity: 0.25; }
+
     .ft-medium#{$name} {
       font-weight: 440;
     }

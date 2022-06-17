@@ -3,6 +3,7 @@
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
+            
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">

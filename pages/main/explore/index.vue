@@ -1,18 +1,33 @@
 <template>
-    <div class="Gatherings page">
+    <div>
         <div class="Page_wrapper Wrapper">
-            <h1 class="ft-title-l">
+            <h1 class="ft-title-s mb-20">
                 Explorer les groupes
             </h1>
 
-            <div class="row-s mt-20">
+            <slider-block
+                :slots="constellations.map(g => g._id)"
+                class="outflow@xs"
+                :offset="$smallerThan('xs') ? 20 : 0"
+                item-class="width-s"
+            >
+                <template v-for="conste in constellations" :slot="conste._id">
+                    <block-const
+                        style="height: 100%"
+                        v-bind="conste"
+                        :key="conste._id"
+                    />
+                </template>
+            </slider-block>
+
+            <!-- <div class="row-s mt-20">
                 <div class="col-4 col-6@s col-12@xs mb-10" v-for="constel in constellations" :key="constel._id">
                     <block-const
                         style="height: 100%"
                         v-bind="constel"
                     />
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -38,6 +53,7 @@ export default {
     computed: {
         constellations () {
             return this.$store.getters['constellation/find']({
+                isMember: false
             })
         },
     },

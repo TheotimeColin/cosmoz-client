@@ -11,7 +11,7 @@
                     {{ name|specials }}
                 </h3>
             
-                <p class="ellipsis-3">{{ intro|specials }}"</p>
+                <p class="BlockConst_intro ellipsis-2">{{ intro|specials }}"</p>
             </div>
 
             <div class="fx-center mt-15">
@@ -115,6 +115,10 @@ export default {
 .BlockConst_name {
     font: var(--ft-title-2xs);
     margin-bottom: 10px;
+}
+
+.BlockConst_intro {
+    min-height: 42px;
 }
 
 .BlockConst_location {

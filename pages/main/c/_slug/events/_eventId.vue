@@ -1,7 +1,7 @@
 <template>
     <div class="Page page pb-150">
         <template v-if="!isLoading && gathering">
-            <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${gathering.hero})` }">
+            <div class="bg-cover-50 bg-bg-xstrong bg-cover-100@xs" :style="{ '--background': `url(${gathering.hero})` }">
                 <div class="Wrapper Wrapper--xs text-center pv-60">
                     <h1 class="ft-title-m d-none@xs">{{ gathering.title }}</h1>
                 </div>

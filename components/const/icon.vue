@@ -1,7 +1,9 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
+
         <client-only>
             <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
+                <ripples />
                 <div v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</div>
             </div>
         </client-only>
@@ -59,6 +61,7 @@ export default {
     justify-content: center;
     text-align: center;
     position: relative;
+    overflow: hidden;
 }
 
 .ConstIcon_name {

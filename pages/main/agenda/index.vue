@@ -22,7 +22,7 @@
                 </button-base>
             </div>
         
-            <div class="block-r mt-15" v-if="pastGatherings.length > 0">
+            <div class="block-r mt-20" v-if="pastGatherings.length > 0">
                 <h2 class="ft-title-xs mb-20">
                     Mes sorties passées
                 </h2>
@@ -97,14 +97,14 @@ export default {
 .Gatherings_item {
 
     & + & {
-        margin-top: 15px;
+        margin-top: 20px;
     }
 }
 
 .Date {
 
     & + & {
-        margin-top: 15px;
+        margin-top: 20px;
     }
 }
 </style>

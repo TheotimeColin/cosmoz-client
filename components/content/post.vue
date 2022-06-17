@@ -1,6 +1,6 @@
 <template>
     <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="ownerData">
-        <ripples :auto="false" :size="300" :modifiers="['weak']" ref="ripples" v-if="!noLink && !forbidden" />
+        <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
         <div class="Post_head" @click="onClick">
             <div class="d-flex fxa-center fx-grow">
@@ -54,11 +54,13 @@
         </div>
 
         <div class="Post_forbidden" v-if="isForbidden && consteData">
-            <div class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
+            <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
+                <ripples :size="300" />
+
                 <p class="mr-10">Ce contenu n'est visible que par les membres de {{ consteData.name }}.</p>
 
-                <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: consteData.slug } }" :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
-            </div>
+                <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
+            </nuxt-link>
         </div>
 
         <content-reaction-popin
@@ -193,8 +195,7 @@ export default {
             })
         },
         onClick (e) {
-            if (!this.noLink && !this.forbidden) {
-
+            if (!this.noLink && !this.isForbidden) {
                 if (this.$refs.ripples && this.$refs.container) {
                     let bounds = this.$refs.container.getBoundingClientRect()
 
@@ -238,7 +239,8 @@ export default {
             }
         }
 
-        &.is-no-link {
+        &.is-no-link,
+        &.is-forbidden {
             cursor: default;
         }
     }
@@ -270,6 +272,15 @@ export default {
         max-width: 400px;
         background-color: var(--color-bg-xweak);
         box-shadow: 0 3px 6px 0 color-opacity('bg-xstrong', -25%);
+        overflow: hidden;
+        position: relative;
+        transition: all 200ms ease;
+
+        &:hover {
+            background-color: var(--color-cosmoz);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px 0 color-opacity('bg-xstrong', -10%);
+        }
     }
 
     .Post_icon {
@@ -355,6 +366,10 @@ export default {
         .Post {
             margin: 0 -20px;
             padding: 15px 15px 0;
+            border-radius: 0;
+        }
+
+        .Post_forbidden {
             border-radius: 0;
         }
 
