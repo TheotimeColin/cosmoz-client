@@ -2,7 +2,7 @@
     <popin :is-active="isActive" :modifiers="['s']" @close="$store.commit('page/register', null)">
         <template slot="content">
             <div class="p-30">
-                <register-form class="strong" :type="$store.state.page.popins.register == 'login' ? 'login' : 'register'" />
+                <register-form class="strong" :type="$store.state.page.popins.register == 'login' ? 'login' : 'register'" @success="$store.commit('page/register', null)" />
             </div>
         </template>
     </popin>

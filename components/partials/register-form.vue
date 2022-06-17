@@ -177,13 +177,15 @@ export default {
                     this.errors = response.data.errors
                     this.isLoading = false
                 } else {
-                    if (this.redirect) window.location = this.localePath({ name: 'feed' })
+                    if (this.redirect) this.$router.push(this.localePath({ name: 'feed' }))
 
                     this.$emit('success')
                 }
             } catch (e) {
                 console.log(e)
             }
+
+            this.isLoading = false
         }
     }
 }
