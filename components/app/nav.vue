@@ -47,6 +47,11 @@
                         </div>
                     </div>
                     <div class="AppNav_subContent" v-else-if="!selected && isExplore" key="explore">
+                        <div class="AppNav_header AppNav_header--explore bg-cover bg-ice-cream text-center">
+                            <p class="ft-title-xs">
+                                <fa icon="far fa-compass" class="mr-5" /> Explorer
+                            </p>
+                        </div>
                         <div class="AppNav_menu">
                             <nav-list :items="exploreNav" />
                         </div>
@@ -141,7 +146,8 @@ export default {
         this.exploreNav = [
             {
                 children: [
-                    { label: `Accueil`, fa: 'compass', to: { name: 'explore' } }
+                    { label: `Suggestions`, fa: 'wand-magic-sparkles', to: { name: 'explore' } },
+                    { label: `Événements à venir`, fa: 'calendar-star', to: { name: 'explore-events' } }
                 ]
             }
         ]
@@ -326,6 +332,10 @@ export default {
     justify-content: space-between;
     padding: 5px 15px;
     min-height: 100px;
+}
+
+.AppNav_header--explore {
+    justify-content: center;
 }
 
 .AppNav_sub {

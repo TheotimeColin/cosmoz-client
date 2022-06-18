@@ -1,5 +1,5 @@
 <template>
-    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', '--margin': margin + 'px' }">
         <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
@@ -31,6 +31,7 @@ export default {
     props: {
         slots: { type: Array, default: () => [] },
         itemClass: { type: String, default: '' },
+        margin: { type: Number, default: 15 },
         offset: { type: Number, default: 0 },
         offsetV: { type: Number, default: 20 },
         ratio: { type: Number, default: 0 },
@@ -50,6 +51,9 @@ export default {
         this.checkDimensions()
     },
     watch: {
+        slots () {
+            this.$nextTick(() => this.checkDimensions())
+        },
         isLoading (v) {
             if (!v) this.$nextTick(() => this.checkDimensions())
         },
@@ -100,7 +104,7 @@ export default {
         white-space: normal;
         display: inline-block;
         vertical-align: top;
-        margin-right: 10px;
+        margin-right: var(--margin, 10px);
 
         &:last-child {
             margin-right: 0;

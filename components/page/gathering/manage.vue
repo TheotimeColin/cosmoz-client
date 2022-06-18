@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-6 col-12@xs">
                         <div class="+mt-10 d-flex" v-if="organizers && organizers.length > 0">
-                            <user-icon v-bind="user" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
+                            <user-icon v-bind="organizers[0]" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
 
                             <p>Organisé par {{ $pluralize(organizers.map(o => o.name)) }}</p>
                         </div>

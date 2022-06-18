@@ -33,11 +33,10 @@
 
                 <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" @click="$store.commit('page/register', 'g-join')">Rejoindre le groupe</button-base>
             </div>
-            <div class="p-15 bg-cosmoz" v-else-if="$isConsteFollower">
-                <p class="ft-title-2xs mb-5">Demande en cours</p>
-                <p class="ft-s mb-15">Ta demande a été envoyée et elle est en attente. Un peu de patience !</p>
+            <div class="p-15 bg-bg-weak" v-else-if="$isConsteFollower">
+                <p class="ft-title-2xs mb-15">Demande envoyée</p>
 
-                <button-base :modifiers="['full', 's', 'light']" icon-before="sparkles" :to="{ name: 'c-slug-rejoindre', params: { slug } }">Gérer ma demande</button-base>
+                <button-base :modifiers="['full', 's', 'light']" icon-before="cog" :to="{ name: 'c-slug-rejoindre', params: { slug } }">Gérer ma demande</button-base>
             </div>
             <div class="p-15 bg-cosmoz" v-else-if="!$isConsteMember">
                 <p class="ft-title-2xs mb-5">Devenir membre</p>

@@ -79,6 +79,7 @@ export default {
         } else if (this.author) {
             query.owner = this.author
             query.gathering = '$null'
+            query.constellation = '$null'
             await this.$store.dispatch('status/fetch', { query })
         } else {
             await this.$store.dispatch('status/fetchFeed')

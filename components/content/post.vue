@@ -37,7 +37,7 @@
         <div class="Post_main" @click="onClick">
             <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-if="content"></div>
 
-            <div class="Post_text Post_block" v-if="forbidden">
+            <div class="Post_text Post_block" v-if="isForbidden">
                 {{ placeholderText }}
             </div>
 

@@ -56,7 +56,7 @@
                         </link-base> -->
                     </div>
 
-                    <div class="n-mh-3 mt-10">
+                    <div class="n-mh-3 mt-15">
                         <div class="p-3 d-inline-block" v-for="user in admins" :key="user._id">
                             <user-icon v-bind="user" />
                         </div>
@@ -65,15 +65,15 @@
 
                 <div class="block-r p-15" v-if="users.length > 5">
                     <div class="fx-center">
-                        <h2 class="ft-title-2xs">
-                            <span class="round-s bg-bg-strong mr-10">{{ users.length }}</span> Membres
+                        <h2 class="ft-title-3xs">
+                            <span class="round-s bg-bg-strong mr-5">{{ users.length }}</span> Membres
                         </h2>
 
                         <link-base :to="{ name: 'c-slug-members', params: { slug: $constellation.slug }}">Voir tout
                         </link-base>
                     </div>
 
-                    <div class="n-mh-3 mt-10">
+                    <div class="n-mh-3 mt-15">
                         <div class="p-3 d-inline-block" v-for="user in users" :key="user._id">
                             <user-icon v-bind="user" />
                         </div>
