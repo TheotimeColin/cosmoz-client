@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const { nanoid }  = require('nanoid')
+const { nanoid }  = require('nanoid')
 const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
