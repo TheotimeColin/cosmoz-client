@@ -117,7 +117,8 @@ export default {
             'user-not-found': `Ton adresse e-mail n'est pas reconnue.`,
             'token-expired': `Cette demande a expiré, merci de refaire une demande de réinitialisation.`,
             'slug-taken': `Désolé, ce nom de boutique est déjà pris par un autre utilisateur.`,
-            'unauthorized': `Tu n'es pas autorisé à modifier cet élément. Contacte notre support si tu penses que c'est une erreur.`
+            'unauthorized': `Tu n'es pas autorisé à modifier cet élément. Contacte notre support si tu penses que c'est une erreur.`,
+            'no-content': `Cette publication doit avoir du contenu.`
         }
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading } ]" :to="localePath(to)"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled } ]" :to="localePath(to)"
+        :disabled="disabled"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
@@ -26,7 +27,7 @@
             </span>
         </div>
 
-        <ripples />
+        <ripples v-show="!disabled" />
 
         <div class="ButtonBase_iconLoading">
             <fa :icon="`far fa-${iconLoading}`" />
@@ -47,6 +48,7 @@ export default {
         link: { type: String },
         text: { type: String },
         notification: { type: Boolean },
+        disabled: { type: Boolean, default: false },
         to: { type: [Object, Boolean], default: false },
         node: { type: Object, default: () => {} },
         iconBefore: { type: String, default: '' },

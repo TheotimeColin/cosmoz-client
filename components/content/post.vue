@@ -32,10 +32,17 @@
                 </div>
             </div>
 
-            <quick-menu class="Post_menu fx-no-shrink ml-10" :items="actions" />
+            <quick-menu
+                class="Post_menu fx-no-shrink ml-10"
+                :items="actions"
+            />
         </div>
         <div class="Post_main" @click="onClick">
-            <div class="Post_text Post_block" v-html="$options.filters.specials(content)" v-if="content"></div>
+            <div class="Post_text Post_block" v-if="content">
+                <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
+
+                <link-base class="mt-20" v-if="isOverflow && !showAll" @click.native.stop="showAll = true">Voir plus</link-base>
+            </div>
 
             <div class="Post_text Post_block" v-if="isForbidden">
                 {{ placeholderText }}
@@ -139,8 +146,13 @@ export default {
     data: () => ({
         max: 2,
         isAdd: false,
-        reacted: null
+        reacted: null,
+        isOverflow: false,
+        showAll: false
     }),
+    mounted () {
+        this.checkOverflow()
+    },
     computed: {
         user () { return this.$store.getters['user/self'] },
         displayedComments () {
@@ -180,7 +192,15 @@ export default {
             return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Hé non, ce contenu est vraiment caché, petit malin ! Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
         }
     },
+    watch: {
+        isLoading (v) {
+            if (!v) this.$nextTick(() => this.checkOverflow())
+        }
+    },
     methods: {
+        checkOverflow () {
+            this.isOverflow = this.$refs.text ? (this.$refs.text.scrollHeight > this.$refs.text.offsetHeight) : false
+        },
         reset () {
             this.$refs.commentInput.reset()
         },

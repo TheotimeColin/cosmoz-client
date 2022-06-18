@@ -157,6 +157,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 5px 15px;
+        min-height: 100px;
 
         &::after {
             content: "";

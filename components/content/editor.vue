@@ -18,12 +18,12 @@
                     <div class="mt-10 ft-s color-ft-weak line-2 b-bottom pb-10" v-if="read">
                         <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
                     </div>
-
+                    
                     <form-errors class="mt-15" :items="errors" />
 
                     <div class="Editor_secondary">
                         <div class="d-flex fx-grow pr-10 fxj-end">
-                            <input-file icon="image" :multiple="true" @input="addImages" />
+                            <input-file icon="image" :multiple="true" @input="addImages" :disabled="images.length > 3" />
                         </div>
                         <div class="fx-no-shrink">
                             <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">

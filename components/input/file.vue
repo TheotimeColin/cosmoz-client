@@ -1,6 +1,6 @@
 <template>
-    <label :for="id" class="InputFile" :class="{ 'is-icon': icon }">
-        <button-base tag="div" :modifiers="['round', 'xs', 'xweak']" :icon-before="icon" v-if="icon" />
+    <component :is="disabled ? 'div' : 'label'" :for="id" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
+        <button-base tag="div" :modifiers="['round', 's', 'xweak']" :icon-before="icon" :disabled="disabled" v-if="icon" />
         <div class="InputFile_title" v-else>
             <p class="ft-3xl">
                 <fa class="color-ft-xweak mb-20" icon="far fa-cloud-upload" />
@@ -10,7 +10,7 @@
         </div>
 
         <input type="file" :id="id" @change="onChange" ref="input" :multiple="multiple" :accept="accept.join(', ')">
-    </label>
+    </component>
 </template>
 
 <script>
@@ -20,6 +20,7 @@ export default {
     name: 'InputFile',
     props: {
         multiple: { type: Boolean, default: false },
+        disabled: { type: Boolean, default: false },
         accept: { type: Array, default: () => ['image/png', 'image/jpeg'] },
         max: { type: Number, default: 4 },
         label: { type: String, default: 'Sélectionner un fichier' },
@@ -73,6 +74,10 @@ export default {
         padding: 0;
         display: block;
         border-radius: 0;
+    }
+
+    &.is-disabled {
+        pointer-events: none;
     }
 }
 

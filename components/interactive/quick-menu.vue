@@ -1,9 +1,9 @@
 <template>
     <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
-        <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click="isActive = !isActive" />
+        <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click.stop="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
-            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native="onClick(item)" @click="onClick(item)">
+            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native.stop="onClick(item)" @click.stop="onClick(item)">
                 <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
             </component>
         </div>
