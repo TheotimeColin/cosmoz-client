@@ -26,6 +26,7 @@
 <script>
 export default {
     name: 'ExploreIndex',
+    layout: c => c.$auth.loggedIn ? 'app' : 'default',
     async fetch () {
         let response = await this.$store.dispatch('constellation/fetch', {
             query: {}

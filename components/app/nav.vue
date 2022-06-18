@@ -121,7 +121,7 @@ export default {
             }) : null
         },
         currentConst () { return this.$store.state.page.currentConst },
-        isOpenNav () { return true; return this.$store.state.page.isOpenNav },
+        isOpenNav () { return true; },
         isExplore () { return this.$route.name.includes('explore') },
         translate () {
             return Math.max(this.isClosePanning ? 1 + (this.closePan / 340) : (this.pan / 340), 0)

@@ -25,6 +25,7 @@
                 :active-gathering="gathering"
                 :active-constellation="constellation"
                 :disableCreate="disableInteract"
+                :is-loading="isLoading"
                 :key="status._id"
                 ref="posts"
             />

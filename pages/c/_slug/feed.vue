@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" v-if="!isLoading">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
             <content-feed
                 :constellation="$constellation._id"
@@ -18,6 +18,8 @@ export default {
     mixins: [ ConstellationMixin, PermissionsMixin ],
     layout: 'app',
     async fetch () {
+        this.isLoading = true
+
         await this.$preFetch()
 
         await this.$store.dispatch('gathering/fetch', {
@@ -25,6 +27,8 @@ export default {
         })
 
         await this.$store.dispatch('user/softFetch', this.$constellation.members)
+
+        this.isLoading = false
     },
     data: () => ({
         isLoading: false,
@@ -59,10 +63,8 @@ export default {
         }
     },
     head () {
-        this.$store.commit('page/set', { subtitle: this.$constellation.name, fa: '' })
+        if (!this.$constellation) return {}
         
-        this.$emit('page', { subtitle: this.$constellation.name, fa: '' })
-
         let meta = {
             title: `${this.$constellation.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
         }

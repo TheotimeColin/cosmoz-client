@@ -1,35 +1,35 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="ownerData">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="!isLoading">
         <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
         <div class="Post_head" @click="onClick">
             <div class="d-flex fxa-center fx-grow">
                 <div class="Post_icon" @click.stop>
-                    <user-icon class="Post_user" :modifiers="['']" v-bind="ownerData" />
+                    <user-icon class="Post_user" :modifiers="['']" v-bind="ownerData"  v-if="ownerData" />
                 </div>
 
-                <client-only>
-                    <div class="ml-10 ft-xs line-1" @click.stop>
-                        <nuxt-link :to="titleLink" class="ft-title-2xs subtitle">{{ title }}</nuxt-link>
+                <div class="ml-10 ft-xs line-1" @click.stop>
+                    <component :is="titleLink ? 'nuxt-link' : 'div'" :to="titleLink" class="ft-title-2xs subtitle">
+                        {{ title }}
+                    </component>
 
-                        <template v-if="gatheringData && !isCurrent">
-                            <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                            <link-base :to="gatheringLink" :modifiers="['l']">
-                                {{ gatheringData.title }}
-                            </link-base>
-                        </template>
-                        <template v-else-if="consteData && !isCurrent">
-                            <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                            <link-base :to="gatheringLink" :modifiers="['l']">
-                                {{ consteData.name }}
-                            </link-base>
-                        </template>
+                    <template v-if="gatheringData && !isCurrent">
+                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                        <link-base :to="gatheringLink" :modifiers="['l']">
+                            {{ gatheringData.title }}
+                        </link-base>
+                    </template>
+                    <template v-else-if="consteData && !isCurrent">
+                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                        <link-base :to="gatheringLink" :modifiers="['l']">
+                            {{ consteData.name }}
+                        </link-base>
+                    </template>
 
-                        <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break" v-if="!isForbidden">
-                            {{ subtitle }}
-                        </div>
+                    <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break" v-if="!isForbidden">
+                        {{ subtitle }}
                     </div>
-                </client-only>
+                </div>
             </div>
 
             <quick-menu class="Post_menu fx-no-shrink ml-10" :items="actions" />
@@ -148,14 +148,14 @@ export default {
             return this.constellation || this.gatheringData?.constellation ? this.$store.getters['constellation/findOne']({ _id: (this.gatheringData?.constellation || this.constellation) }) : null
         },
         title () {
-            return this.ownerData.name
+            return this.ownerData ? this.ownerData.name : ''
         },
         subtitle () {
             let subtitle = this.$moment(this.createdAt).fromNow()
             return subtitle
         },
         titleLink () {
-            return this.localePath({ name: 'p-userId', params: { userId: this.ownerData.id } })
+            return this.ownerData ? this.localePath({ name: 'p-userId', params: { userId: this.ownerData.id } }) : null
         },
         gatheringLink () {
             let link = null
@@ -169,7 +169,7 @@ export default {
             return link
         },
         isForbidden () {
-            return this.forbidden.includes('content')
+            return !this.user || this.forbidden.includes('content')
         },
         placeholderText () {
             return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))

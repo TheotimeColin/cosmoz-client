@@ -18,9 +18,9 @@ export default {
                 _id: this.owner
             })
         },
-        isOwner () { return this.owner._id == this.user._id },
+        isOwner () { return this.user && this.owner._id == this.user._id },
         isCurrent () { return (this.activeConstellation && this.activeConstellation == this.constellation) || (this.activeGathering && this.activeGathering == this.gathering) },
-        isReacted () { return this.reactions.find(r => r.owner == this.user._id) },
+        isReacted () { return this.user && this.reactions.find(r => r.owner == this.user._id) },
         reactionTooltip () {
             let reaction = ''
             let owners = this.reactionsOwners ? this.reactionsOwners.filter(m => m.owner.name).map(m => m.owner.name) : []

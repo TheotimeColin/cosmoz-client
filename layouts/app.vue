@@ -33,7 +33,8 @@ export default {
         pan: 0,
         isPanning: false,
         isPanCancelled: false,
-        isTransition: false
+        isTransition: false,
+        isOpenNav: true
     }),
     watch: {
         $route: {

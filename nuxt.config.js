@@ -18,6 +18,8 @@ export default {
             { src: 'https://accounts.google.com/gsi/client', async: true, defer: true }
         ]
     },
+
+    ssr: false,
     
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
@@ -49,11 +51,7 @@ export default {
     buildModules: [
         '@nuxtjs/moment',
         '@nuxtjs/pwa',
-        [ '@nuxtjs/router', {
-            path: 'router',
-            fileName: 'index.js',
-            keepDefaultRouter: true,
-        } ]
+        '@nuxtjs/router'
     ],
 
     modules: [

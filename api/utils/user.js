@@ -77,7 +77,7 @@ exports.accessCheck = async function (type = 'write', entity, requested = null, 
             if (requiredRole.slice(0, 2) == 'g-') {
                 if ((!requested && !fields.constellation) || !user) granted = false
 
-                if (user.role == 'admin') {
+                if (user && user.role == 'admin') {
                     granted = true
                 } else {
                     let conste = await Entities.constellation.model.findOne({ _id: requested ? requested.constellation : fields.constellation })
@@ -172,7 +172,9 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
 
                         if (!constellation || !user) granted = false
 
-                        if (user.role == 'admin') {
+                        if (!user) {
+                            granted = false
+                        } else if (user.role == 'admin') {
                             granted = true
                         } else {
                             let conste = await Entities.constellation.model.findOne({ _id: constellation })
