@@ -170,9 +170,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     if (requiredRole.slice(0, 2) == 'g-') {
                         let constellation = requested.admins ? requested._id : requested.constellation
 
-                        if (!constellation || !user) granted = false
-
-                        if (!user) {
+                        if (!constellation || !user) {
                             granted = false
                         } else if (user.role == 'admin') {
                             granted = true
@@ -188,7 +186,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
 
                                 if (requiredRole == 'g-follower') allowed = [...allowed, ...conste.followers]
 
-                                granted = allowed.find(u => user._id.equals(u))
+                                granted = allowed.find(u => user._id.equals(u)) ? true : false
                             } else {
                                 granted = false
                             }

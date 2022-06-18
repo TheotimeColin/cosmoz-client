@@ -259,7 +259,7 @@ $value in $breakpoints {
       margin-left: auto;
     }
 
-    @each $size in (10, 15, 25, 50, 75, 100, 150, 200) {
+    @each $size in (10, 15, 25, 35, 50, 75, 100, 150, 200) {
       .ratio-#{$size}#{$name} {
 
         &::after {

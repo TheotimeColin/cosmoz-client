@@ -1,8 +1,8 @@
 <template>
-    <div class="Page page">
+    <div class="Page">
         <template v-if="profile && this.user">
-            <app-banner :background="$bg.holo">
-                <div class="fx-center width-100 d-block@xs">
+            <div class="bg-cover-10 bg-bg-xstrong" :style="{ '--background': `url(${$bg.holo})` }">
+                <div class="fx-center width-100 d-block@xs p-30">
                     <div class="fx-center fx-no-shrink">
                         <div class="p-relative mr-20" @click="() => isSelf ? editSection = 'picture' : ''">
                             <user-icon
@@ -53,7 +53,7 @@
                         </button-base>
                     </div>
                 </div>
-            </app-banner>
+            </div>
 
             <!-- <div class="Wrapper pv-60 pv-30@xs">
                 <div class="row-s">

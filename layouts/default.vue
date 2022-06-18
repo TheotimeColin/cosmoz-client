@@ -62,8 +62,8 @@ export default {
 
 <style lang="scss" scoped>
 .LayoutDefault_content {
-    margin-top: var(--header-height);
-    min-height: calc(100vh - var(--header-height));
+    margin-top: var(--default-header-height);
+    min-height: calc(100vh - var(--default-header-height));
     contain: paint;
 }
 

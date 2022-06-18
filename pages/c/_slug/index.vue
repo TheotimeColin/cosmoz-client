@@ -1,6 +1,6 @@
 <template>
     <div v-if="$constellation">
-        <div class="bg-cover-100 ratio-15 ratio-25@xs" :style="{ '--background': `url(${$constellation.hero}` }"
+        <div class="bg-cover-100 ratio-15 ratio-35@xs" :style="{ '--background': `url(${$constellation.hero}` }"
             v-if="$constellation.hero"></div>
 
         <div class="Page_wrapper d-flex Wrapper d-block@s">

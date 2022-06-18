@@ -62,6 +62,11 @@
                 <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
             </nuxt-link>
         </div>
+        <div class="Post_forbidden" v-else-if="isForbidden && ownerData">
+            <div class="Post_forbiddenMessage Post_forbiddenMessage--user ft-s p-15 br-xs">
+                <p>Ce contenu n'est visible que par les amis de {{ ownerData.name }}.</p>
+            </div>
+        </div>
 
         <content-reaction-popin
             :is-active="isSeeReactions"
@@ -172,7 +177,7 @@ export default {
             return !this.user || this.forbidden.includes('content')
         },
         placeholderText () {
-            return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
+            return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Hé non, ce contenu est vraiment caché, petit malin ! Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
         }
     },
     methods: {
@@ -281,6 +286,11 @@ export default {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px 0 color-opacity('bg-xstrong', -10%);
         }
+    }
+
+    .Post_forbiddenMessage--user {
+        text-align: center;
+        pointer-events: none;
     }
 
     .Post_icon {

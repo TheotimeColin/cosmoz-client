@@ -188,7 +188,7 @@ export default {
 
         .Wrapper {
             display: block;
-            padding: 100px 30px 40px;
+            padding: 30px;
         }
     }
 

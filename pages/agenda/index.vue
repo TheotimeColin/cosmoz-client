@@ -68,6 +68,7 @@ export default {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',
                 status: 'active',
+                isAttending: true,
                 display: false
             })
         },

@@ -3,13 +3,19 @@
         :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left">
-                <nuxt-link :to="localePath({ name: 'index' })" class="Header_logo">
+                <nuxt-link :to="localePath({ name: user ? 'feed' : 'index' })" class="Header_logo">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
             </div>
 
-            <div class="Header_nav">
-                <link-base class="Header_navItem" :to="{ name: 'explore' }" :modifiers="['current']">Explorer nos groupes
+            <div class="Header_right" v-if="user">
+                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20"
+                    :to="{ name: 'p-userId', params: { userId: user.id } }">
+                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
+                </button-base>
+            </div>
+            <div class="Header_nav" v-else>
+                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
                 </link-base>
 
                 <link-base class="Header_navItem" :modifiers="['current']"
@@ -24,7 +30,7 @@
             </div>
 
             <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'"
-                @click="isOpen = !isOpen" v-show="!user && !isLoading" />
+                @click="isOpen = !isOpen" />
         </div>
     </div>
 </template>
@@ -34,10 +40,6 @@ import logo from '@/assets/img/logo/logo_white_sparkles.webp'
 
 export default {
     name: 'Header',
-    layout: (context) => {
-        console.log(context)
-        return 'default'
-    },
     data: () => ({
         assets: { logo },
         isLoading: true,
@@ -84,7 +86,7 @@ export default {
 
 <style lang="scss">
     :root {
-        --header-height: 58px;
+        --default-header-height: 65px;
     }
 </style>
 
@@ -118,7 +120,7 @@ export default {
 }
 
 .Header_wrapper {
-    height: var(--header-height);
+    height: var(--default-header-height);
     display: flex;
     justify-content: space-between;
     position: relative;

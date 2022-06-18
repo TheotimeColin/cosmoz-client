@@ -34,14 +34,21 @@ export default {
         isPanning: false,
         isPanCancelled: false,
         isTransition: false,
-        isOpenNav: true
+        isOpenNav: true,
+        prevRoute: ''
     }),
     watch: {
         $route: {
             deep: true,
-            handler () {
-                this.isTransition = true
-                setTimeout(() => this.isTransition = false, 600)
+            handler (v) {
+                let name = v.name + JSON.stringify(v.params)
+
+                if (this.prevRoute && this.prevRoute != name) {
+                    this.isTransition = true
+                    setTimeout(() => this.isTransition = false, 600)
+                }
+
+                this.prevRoute = name
             }
         }
     },

@@ -131,6 +131,7 @@
 .bgi-night { background-image: url('./../img/texture/night.webp'); }
 
 .bg-cover,
+.bg-cover-10,
 .bg-cover-25,
 .bg-cover-50,
 .bg-cover-75,
@@ -160,6 +161,7 @@
 .bg-cover-75::before { opacity: 0.75; }
 .bg-cover-50::before { opacity: 0.5; }
 .bg-cover-25::before { opacity: 0.25; }
+.bg-cover-10::before { opacity: 0.1; }
 
 .tape {
     display: inline-block;
