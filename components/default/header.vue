@@ -3,23 +3,13 @@
         :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
         <div class="Header_wrapper">
             <div class="Header_left">
-                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
+                <nuxt-link :to="localePath({ name: 'index' })" class="Header_logo">
                     <img :src="assets.logo" height="20" class="n-mt-5">
                 </nuxt-link>
             </div>
 
-            <div class="Header_right" v-if="user">
-                <button-icon :href="$config.adminUrl" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
-                <button-icon class="Header_button" fa="paper-plane" />
-                <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
-        
-                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20"
-                    :to="{ name: 'p-userId', params: { userId: user.id } }">
-                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
-                </button-base>
-            </div>
-            <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
+            <div class="Header_nav">
+                <link-base class="Header_navItem" :to="{ name: 'explore' }" :modifiers="['current']">Explorer nos groupes
                 </link-base>
 
                 <link-base class="Header_navItem" :modifiers="['current']"
@@ -34,7 +24,7 @@
             </div>
 
             <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'"
-                @click="isOpen = !isOpen" v-if="!user && !isLoading" />
+                @click="isOpen = !isOpen" v-show="!user && !isLoading" />
         </div>
     </div>
 </template>
@@ -44,6 +34,10 @@ import logo from '@/assets/img/logo/logo_white_sparkles.webp'
 
 export default {
     name: 'Header',
+    layout: (context) => {
+        console.log(context)
+        return 'default'
+    },
     data: () => ({
         assets: { logo },
         isLoading: true,
@@ -91,12 +85,6 @@ export default {
 <style lang="scss">
     :root {
         --header-height: 58px;
-    }
-
-    @include breakpoint-s {
-        :root {
-            --header-height: 0px;
-        }
     }
 </style>
 
@@ -173,16 +161,16 @@ export default {
 
 @include breakpoint-s {
     .Header {
-        display: none;
-        box-shadow: 0 0 0 999px rgba(39, 39, 43, 0);
+        box-shadow: 0 0 0 999px color-opacity('bg-2xstrong', -100%);
 
         &.is-open {
-            box-shadow: 0 0 0 999px rgba(39, 39, 43, 0.8);
+            box-shadow: 0 0 0 999px color-opacity('bg-2xstrong', -20%);
         }
     }
 
     .Header_burger {
         display: flex;
+        align-self: center;
     }
 
     .Header_nav {
@@ -237,18 +225,12 @@ export default {
     }
 }
 
-.AppNav_navBar,
 .Header_bars {
     display: none;
 }
 
 @include breakpoint-s {
     
-    .AppNav_container,
-    .Header_logo {
-        display: none;
-    }
-
     .Header_wrapper {
         padding: 0 10px 0 0;
     }

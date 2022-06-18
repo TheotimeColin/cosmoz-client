@@ -8,6 +8,7 @@
 
 <script>
 export default {
+    layout: 'app',
     transition (to, from) {
         if (to.name.includes('postId')) {
             return { name: 'slide-in', mode: 'in-out' }

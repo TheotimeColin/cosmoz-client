@@ -1,13 +1,22 @@
 <template>
-    <div class="Layout LayoutDefault LayoutApp" :class="[ classes ]">
-        <app-nav />
+    <div class="Layout LayoutApp" :class="[ classes, { 'is-open-nav': isOpenNav, 'is-transition': isTransition } ]">
+        <app-header @navOpen="onNavOpen" />
+        <app-head />
+        <app-notifications v-if="user" />
 
-        <div class="LayoutApp_content">
-            <!-- <app-header /> -->
+        <div
+            class="LayoutApp_content"
+            v-hammer:panstart="onPanStart"
+            v-hammer:pan.horizontal="onPan"
+            v-hammer:panend="onPanEnd"
+        >
             <Nuxt />
-            
-            <tooltip-manager />
         </div>
+
+        <app-nav :pan="pan" :is-panning="isPanning" ref="nav" />
+
+        <popin-register />
+        <tooltip-manager />
     </div>
 </template>
 
@@ -17,16 +26,29 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutApp',
     computed: {
-        classes () { return this.$store.state.page.body.classes }
+        user () { return this.$store.getters['user/self'] },
+        classes () { return this.$store.state.page.body.classes },
     },
     data: () => ({
-        onWindowResize: null,
+        pan: 0,
+        isPanning: false,
+        isPanCancelled: false,
+        isTransition: false
     }),
+    watch: {
+        $route: {
+            deep: true,
+            handler () {
+                this.isTransition = true
+                setTimeout(() => this.isTransition = false, 600)
+            }
+        }
+    },
     async mounted () {
         try {
             await this.$recaptcha.init()
         } catch (e) {
-            console.error(e);
+            console.error(e)
         }
 
         if (process.server) return
@@ -35,34 +57,63 @@ export default {
 
         this.onWindowResize = Debounce(this.windowResize, 500)
         window.addEventListener('resize', this.onWindowResize)
-        
+
+        this.$store.commit('page/setScrolled', window.scrollY > 5)
+        window.addEventListener('scroll', () => {
+            let action = window.scrollY > 5
+            
+            if (this.$store.state.page.isScrolled != action) this.$store.commit('page/setScrolled', action)
+        })
+
         window.addEventListener('beforeinstallprompt', e => e.preventDefault())
     },
     beforeDestroy() {
        this.$recaptcha.destroy()
-        window.removeEventListener('resize', this.onWindowResize)
+       window.removeEventListener('resize', this.onWindowResize)
     },
     methods: {
-      windowResize () {
-          this.$store.commit('page/setBreakpoint', window.innerWidth)
-      }
+        onNavOpen () {
+            if (this.$refs.nav) this.$refs.nav.open()
+        },
+        windowResize () {
+            this.$store.commit('page/setBreakpoint', window.innerWidth)
+        },
+        onPan (v) {
+            if (this.isPanCancelled) return
+
+            this.isPanning = true
+            this.pan = Math.min(300, v.deltaX)
+        },
+        onPanStart (v) {
+            if (this.$isFixedPosition(v.target) || this.$biggerThan('s')) this.isPanCancelled = true
+        },
+        onPanEnd () {
+            this.isPanCancelled = false
+            this.isPanning = false
+            this.$nextTick(() => this.pan = 0)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .LayoutApp {
-    display: flex;
-    background-color: var(--color-bg);
+
+    &.is-transition {
+        
+        .LayoutApp_content {
+            contain: paint;
+        }
+    }
 }
 
 .LayoutApp_content {
-    flex-grow: 1;
-    min-height: 100vh;
-    margin-left: 300px;
-    box-shadow: 0 0 10px 0 rgba(20, 20, 20, 1);
+    min-height: calc(100vh - var(--header-height));
+    touch-action: pan-y !important;
+    user-select: auto !important;
+    margin-left: var(--nav-width);
+    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
     position: relative;
-    z-index: 20;
 }
 
 .page-enter-active,
@@ -91,19 +142,13 @@ export default {
 }
 
 @include breakpoint-s {
-  
-  .LayoutApp_content {
-    margin-left: 0;
-    z-index: 5;
-    padding-top: 70px;
-  }
-}
-
-@include breakpoint-xs {
-  
-  .LayoutApp_content {
-    padding-bottom: 70px;
-    width: 100%;
-  }
+    .LayoutApp_content {
+        user-select: none !important;
+        margin-left: 0;
+    }
+    
+    .Footer {
+        display: none;
+    }
 }
 </style>

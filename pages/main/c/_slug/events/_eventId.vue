@@ -42,6 +42,7 @@
 <script>
 export default {
     name: 'GatheringPage',
+    layout: 'app',
     transition (to, from) {
         if (to.name.includes('eventId')) {
             return { name: 'slide-in', mode: 'in-out' }

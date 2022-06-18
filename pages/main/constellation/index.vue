@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div v-if="user">
         <div class="Page_wrapper Wrapper Wrapper--xs">
             <div class="Section">
                 <div class="row-xs" v-if="constellation.length > 0">
@@ -50,6 +50,8 @@
 <script>
 export default {
     name: 'GatheringsPast',
+    middleware: ['loggedUser'],
+    layout: 'app',
     async fetch () {
         await this.$store.dispatch('user/fetch', {
             query: {}

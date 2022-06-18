@@ -7,12 +7,9 @@
 </template>
 
 <script>
-import { InputBase, SelectBase } from 'instant-coffee-core'
 
 export default {
     name: 'LoginPage',
-    components: { InputBase, SelectBase },
-    layout: 'default',
     middleware: 'notLoggedIn',
     data: () => ({
         isReset: false,

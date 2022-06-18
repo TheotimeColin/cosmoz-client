@@ -19,7 +19,7 @@
                     <fa icon="far fa-home" />
                 </div>
 
-                <default-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
+                <app-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
             </div>
         </div>
     </div>

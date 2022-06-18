@@ -77,6 +77,7 @@ import ConstellationMixin from '@/mixins/constellation'
 
 export default {
     mixins: [ ConstellationMixin ],
+    layout: 'app',
     async fetch () {
         await this.$preFetch()
 

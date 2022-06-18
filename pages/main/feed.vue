@@ -22,6 +22,8 @@
 <script>
 export default {
     name: 'DashboardIndex',
+    middleware: ['loggedUser'],
+    layout: 'app',
     async fetch () {
         this.isLoading = true
 

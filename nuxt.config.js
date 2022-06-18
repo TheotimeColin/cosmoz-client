@@ -78,8 +78,7 @@ export default {
     sitemap: sitemap,
 
     loading: {
-        color: '#471ffe',
-        height: '3px'
+        color: '#471ffe'
     },
     
     pwa: {

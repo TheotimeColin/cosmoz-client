@@ -1,8 +1,8 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['s']" @close="$store.commit('page/register', null)">
+    <popin :is-active="isActive" :modifiers="['s']" @close="onClose">
         <template slot="content">
             <div class="p-30">
-                <register-form class="strong" :type="$store.state.page.popins.register == 'login' ? 'login' : 'register'" @success="$store.commit('page/register', null)" />
+                <register-form class="strong" :type="$store.state.page.popins.register == 'login' ? 'login' : 'register'" @success="onClose" />
             </div>
         </template>
     </popin>
@@ -28,8 +28,8 @@ export default {
         }
     },
     methods: {
-        async onSubmit () {
-
+        onClose () {
+            this.$store.commit('page/register', null)
         }
     }
 }

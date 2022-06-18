@@ -120,7 +120,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: none;
+    transition: 1ms all;
+    transition-delay: 350ms;
 }
 
 .PopinBase_hider {
@@ -204,6 +205,7 @@ export default {
     top: 0;
     left: 0;
     pointer-events: all;
+    transition-delay: 0ms;
 
     & > .PopinBase_body {
         transform: translateY(0);
@@ -275,8 +277,11 @@ export default {
 }
 
 .PopinBase--panel-bottom {
-    top: var(--header-height);
     height: calc(100% - var(--header-height));
+
+    &.is-active {
+        top: var(--header-height);
+    }
 }
 
 /* RESPONSIVE */
@@ -284,8 +289,11 @@ export default {
 @include breakpoint-s {
 
     .PopinBase--panel-bottom {
-        top: 0;
         height: calc(100% - var(--sticky-height));
+
+        &.is-active {
+            top: 0;
+        }
     }
     
     .PopinBase_body {

@@ -133,6 +133,7 @@ import EntityEditor from '@/mixins/entity-editor'
 
 export default {
     mixins: [ ConstellationMixin, EntityEditor ],
+    layout: 'app',
     async fetch () {
         await this.fetchEntity(this.$route.params.id)
         

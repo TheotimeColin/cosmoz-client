@@ -1,24 +1,17 @@
 <template>
-    <div class="Layout LayoutDefault" :class="[ classes, { 'is-open-nav': isOpenNav } ]">
-        <default-header @navOpen="onNavOpen" />
-        <default-app-header />
-        <default-notifications v-if="user" />
+    <div class="Layout LayoutDefault" :class="[ classes ]">
+        <default-header />
 
         <div
             class="LayoutDefault_content"
-            v-hammer:panstart="onPanStart"
-            v-hammer:pan.horizontal="onPan"
-            v-hammer:panend="onPanEnd"
         >
             <Nuxt />
         </div>
-
-        <default-nav :pan="pan" :is-panning="isPanning" ref="nav" />
-
+        
         <popin-register />
         <tooltip-manager />
         
-        <!-- <default-footer class="Footer" v-if="!isDisableFooter && !user" /> -->
+        <default-footer class="Footer" v-if="!isDisableFooter" />
     </div>
 </template>
 
@@ -31,13 +24,7 @@ export default {
         user () { return this.$store.getters['user/self'] },
         classes () { return this.$store.state.page.body.classes },
         isDisableFooter () { return this.$store.state.page.isDisableFooter },
-        isOpenNav () { return true; return this.$store.state.page.isOpenNav }
     },
-    data: () => ({
-        pan: 0,
-        isPanning: false,
-        isPanCancelled: false,
-    }),
     async mounted () {
         try {
             await this.$recaptcha.init()
@@ -66,25 +53,8 @@ export default {
        window.removeEventListener('resize', this.onWindowResize)
     },
     methods: {
-        onNavOpen () {
-            if (this.$refs.nav) this.$refs.nav.open()
-        },
         windowResize () {
             this.$store.commit('page/setBreakpoint', window.innerWidth)
-        },
-        onPan (v) {
-            if (this.isPanCancelled) return
-
-            this.isPanning = true
-            this.pan = Math.min(300, v.deltaX)
-        },
-        onPanStart (v) {
-            if (this.$isFixedPosition(v.target) || this.$biggerThan('s')) this.isPanCancelled = true
-        },
-        onPanEnd () {
-            this.isPanCancelled = false
-            this.isPanning = false
-            this.$nextTick(() => this.pan = 0)
         }
     }
 }
@@ -92,12 +62,8 @@ export default {
 
 <style lang="scss" scoped>
 .LayoutDefault_content {
+    margin-top: var(--header-height);
     min-height: calc(100vh - var(--header-height));
-    touch-action: pan-y !important;
-    user-select: auto !important;
-    margin-left: var(--nav-width);
-    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
-    position: relative;
     contain: paint;
 }
 
@@ -124,16 +90,5 @@ export default {
 .layout-enter, .layout-leave-active {
   opacity: 0;
   transform: translateY(3px);
-}
-
-@include breakpoint-s {
-    .LayoutDefault_content {
-        user-select: none !important;
-        margin-left: 0;
-    }
-    
-    .Footer {
-        display: none;
-    }
 }
 </style>

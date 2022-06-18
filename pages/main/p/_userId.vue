@@ -125,6 +125,8 @@ const TIDBITS = ['socials', 'anything']
 
 export default {
     name: 'ProfilePage',
+    layout: 'app',
+    middleware: ['loggedUser'],
     transition (to, from) {
         if (to.name.includes('userId')) {
             return { name: 'slide-in', mode: 'in-out' }

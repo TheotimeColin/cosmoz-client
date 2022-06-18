@@ -16,6 +16,7 @@ import PermissionsMixin from '@/mixins/permissions'
 
 export default {
     mixins: [ ConstellationMixin, PermissionsMixin ],
+    layout: 'app',
     async fetch () {
         await this.$preFetch()
 

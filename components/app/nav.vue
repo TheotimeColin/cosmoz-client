@@ -51,14 +51,14 @@
                             <nav-list :items="exploreNav" />
                         </div>
                     </div>
-                    <page-const-nav v-bind="selectConst" v-else-if="selected" :key="selectConst._id" />
+                    <page-const-nav v-bind="selectConst" v-else-if="selected && selectConst" :key="selectConst._id" />
                 </div>
             </div>
 
             <div class="AppNav_hider" :style="{ opacity: translate }" @click="isActive = false"></div>
         </nav>
 
-        <default-sticky
+        <app-sticky
             :translate="translate"
             :is-active="isActive"
             :is-panning="isPanning || isClosePanning"

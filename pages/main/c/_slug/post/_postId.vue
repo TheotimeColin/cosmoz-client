@@ -11,6 +11,7 @@ import ConstellationMixin from '@/mixins/constellation'
 
 export default {
     mixins: [ ConstellationMixin ],
+    layout: 'app',
     transition (to, from) {
         if (to.name.includes('postId')) {
             return { name: 'slide-in', mode: 'in-out' }

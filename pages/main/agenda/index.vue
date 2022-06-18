@@ -46,6 +46,8 @@
 <script>
 export default {
     name: 'DashboardIndex',
+    middleware: ['loggedUser'],
+    layout: 'app',
     async fetch () {
         await this.$store.dispatch('gathering/fetch', {
             query: { status: 'active' }

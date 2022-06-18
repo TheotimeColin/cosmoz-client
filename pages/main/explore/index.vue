@@ -19,15 +19,6 @@
                     />
                 </template>
             </slider-block>
-
-            <!-- <div class="row-s mt-20">
-                <div class="col-4 col-6@s col-12@xs mb-10" v-for="constel in constellations" :key="constel._id">
-                    <block-const
-                        style="height: 100%"
-                        v-bind="constel"
-                    />
-                </div>
-            </div> -->
         </div>
     </div>
 </template>
@@ -36,21 +27,17 @@
 export default {
     name: 'ExploreIndex',
     async fetch () {
-        this.$store.commit('page/set', { isOpenNav: true })
-
-        await this.$store.dispatch('constellation/fetch', {
+        let response = await this.$store.dispatch('constellation/fetch', {
             query: {}
         })
 
         this.isLoading = false
     },
-    beforeDestroy () {
-        this.$store.commit('page/set', { isOpenNav: false })
-    },
     data: () => ({
         isLoading: true,
     }),
     computed: {
+        user () { this.$store.getters['user/self'] },
         constellations () {
             return this.$store.getters['constellation/find']({
                 isMember: false

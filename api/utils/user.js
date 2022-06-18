@@ -31,7 +31,7 @@ exports.authenticate = async function (headers) {
         try {
             let user = null
 
-            if (headers['authorization']) {
+            if (headers && headers['authorization']) {
                 let token = headers['authorization'].split(' ')[1]
                 if (!token || token == 'null') {
                     user = null
@@ -60,7 +60,7 @@ exports.authenticate = async function (headers) {
             resolve(user)
         } catch (e) {
             console.warn(e)
-            reject(e)
+            reject(null)
         }
     })
 }
@@ -250,8 +250,6 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
         }))
 
         result.forbidden = forbidden
-
-        console.log(forbidden)
 
         resolve(result)
     })
