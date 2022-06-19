@@ -5,7 +5,7 @@
         </div>
         <div>
             <div class="ellipsis-2" v-html="text"></div>
-            <div class="ft-xs color-ft-xweak">{{ $moment(updatedAt).fromNow() }}</div>
+            <div class="ft-xs color-ft-xweak">{{ $moment(createdAt).fromNow() }}</div>
         </div>
     </component>
 </template>
@@ -28,7 +28,7 @@ export default {
         status: { type: String },
         gathering: { type: String },
         constellation: { type: String },
-        updatedAt: { type: String },
+        createdAt: { type: String },
         content: { type: String },
         origins: { type: Array, default: () => [] },
     },
@@ -54,7 +54,7 @@ export default {
                 _id: this.status
             })
         },
-        gatheringData() {
+        gatheringData () {
             if (!this.gathering) return null
 
             return this.$store.getters['gathering/findOne']({
@@ -62,10 +62,10 @@ export default {
             })
         },
         constellationData() {
-            if (!this.constellation) return null
+            if (!this.constellation && !this.gatheringData) return null
 
             return this.$store.getters['constellation/findOne']({
-                _id: this.constellation
+                _id: this.constellation ? this.constellation : this.gatheringData.constellation
             })
         },
         gatherings () {
@@ -117,7 +117,8 @@ export default {
             let count = this.users.length
 
             if (this.type.includes('gathering')) count = this.gatherings.length
-            if (this.type.includes('event')) count = this.gatherings.length
+            if (this.type.includes('event')) count = this.gatherings.lengthh
+            if (this.type.includes('post')) count = this.users.length
             
             return this.$tc(`notifications.${this.type}.content`, count, {
                 users: this.$pluralize(this.users.map(u => u.name)),

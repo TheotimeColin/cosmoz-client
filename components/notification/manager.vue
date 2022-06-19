@@ -19,7 +19,7 @@ export default {
         notifications () {
             return this.$store.getters['notification/find']({
                 owner: this.user._id,
-                sort: { updatedAt: 'asc' }
+                sort: { createdAt: 'asc' }
             })
         },
     },

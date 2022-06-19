@@ -98,9 +98,9 @@ exports.postStatus = async function (req, res) {
 
         // CALLBACKS
 
-        if (fields.gathering && gathering) {
+        if (fields.gathering && gathering && !fields.parent) {
             try {
-                await Promise.all(gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(async u => {
+                await Promise.all(gathering.users.filter(u => !user._id.equals(u._id) && (u.status == 'attending' || u.status == 'confirmed')).map(async u => {
                     return await createNotification({
                         type: 'post-gathering',
                         gathering: gathering._id,
