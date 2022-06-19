@@ -93,7 +93,12 @@ export default {
             this.pan = Math.min(300, v.deltaX)
         },
         onPanStart (v) {
-            if (this.$isFixedPosition(v.target) || this.$biggerThan('s')) this.isPanCancelled = true
+            this.isPanCancelled = false
+            
+            if (this.$isFixedPosition(v.target) || this.$biggerThan('s')) {
+                this.isPanCancelled = true
+                this.isPanning = false
+            }
         },
         onPanEnd () {
             this.isPanCancelled = false

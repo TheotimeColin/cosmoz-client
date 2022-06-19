@@ -9,8 +9,8 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20"
-                    :to="{ name: 'p-userId', params: { userId: user.id } }">
+                <button-base :modifiers="['', 's', 'user']" class="Header_profile"
+                    :to="{ name: 'feed' }">
                     <user-icon :display-name="true" :no-link="true" v-bind="user" />
                 </button-base>
             </div>
@@ -29,8 +29,7 @@
                 </div>
             </div>
 
-            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'"
-                @click="isOpen = !isOpen" />
+            <button-base :modifiers="['round', 'xweak']" class="Header_burger" :icon-before="isOpen ? 'times' : 'bars'" @click="isOpen = !isOpen" v-if="!user" />
         </div>
     </div>
 </template>
