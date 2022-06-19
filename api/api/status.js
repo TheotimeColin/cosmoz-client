@@ -204,7 +204,13 @@ exports.getFeed = async function (req, res) {
 
                         { owner: user._id },
                         
-                        { constellation: { $in: user.constellations } }
+                        { constellation: { $in: user.constellations } },
+
+                        { $and: [
+                            { owner: { $in: user.friends } },
+                            { constellation: null },
+                            { gathering: null },
+                        ] }
                     ],
                 },
                 { parent: null }
