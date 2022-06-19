@@ -119,14 +119,39 @@ exports.consteInviteLink = async function (req, res) {
 
         if (user.role !== 'admin' && !constellation.admins.find(u => user._id.equals(u))) throw Error('not-authorized')
 
-        // let id = nanoid()
+        let id = nanoid()
         let token = await Entities.token.model.create({
-            id: Math.random(), read: 'g-admin',
+            id: id, read: 'g-admin',
             type: 'invite',
             constellation: constellation._id
         })
 
         data.token = id
+    } catch (e) {
+        console.error(e)
+        errors.push(e.message)
+    }
+
+    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
+}
+
+exports.consteInviteLinkDelete = async function (req, res) {
+    let data = {}
+    let errors = []
+
+    try {
+        let user = await authenticate(req.headers)
+        if (!user) throw Error('no-user')
+
+        let token = await Entities.token.model.findOne({ _id: req.query.id })
+        if (!token) throw Error('no-token')
+
+        let constellation = await Entities.constellation.model.findOne({ _id: token.constellation })
+        if (!constellation) throw Error('no-constellation')
+
+        if (user.role !== 'admin' && !constellation.admins.find(u => user._id.equals(u))) throw Error('not-authorized')
+
+        await token.remove()
     } catch (e) {
         console.error(e)
         errors.push(e.message)

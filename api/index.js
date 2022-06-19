@@ -30,7 +30,7 @@ const { sendMentions, unmatch, createRequest, cancelRequest } = require('./api/a
 const { getFeed, postStatus, reactStatus } = require('./api/status')
 const { scrape } = require('./api/scraper')
 const { readAll } = require('./api/notification')
-const { consteApply, consteLeave, consteEnter, consteInviteLink } = require('./api/constellation')
+const { consteApply, consteLeave, consteEnter, consteInviteLink, consteInviteLinkDelete } = require('./api/constellation')
 const { getToken } = require('./api/token')
 
 app.use(morgan('combined'))
@@ -90,6 +90,7 @@ mongoose.connection.once('open', async () => {
     app.post('/constellation/leave', consteLeave)
     app.post('/constellation/enter', consteEnter)
     app.post('/constellation/invite-link', consteInviteLink)
+    app.delete('/constellation/invite-link', consteInviteLinkDelete)
     
     app.post('/token/get', getToken)
     

@@ -29,7 +29,7 @@
                     Liens d'invitation
                 </p>
 
-                <button-base :modifiers="['xs']" @click="createInviteLink" :loading="isLoading" :disabled="inviteTokens.filter(t => t.id).length >= 5">
+                <button-base :modifiers="['xs']" @click="createInviteLink" :loading="isLoading" :disabled="inviteTokens && inviteTokens.filter(t => t.id).length >= 5">
                     Créer un nouveau lien
                 </button-base>
             </div>
@@ -44,7 +44,7 @@
                 <div class="fx-no-shrink ml-10">
                     <button-base :modifiers="['2xs', 'round', 'weak']" icon-before="copy" @click="() => $copy(getInviteLink(token.id))" />
                     
-                    <button-base :modifiers="['2xs', 'round', 'weak']" icon-before="times" @click="() => acceptUser(user)" />
+                    <button-base :modifiers="['2xs', 'round', 'weak']" icon-before="times" @click="() => deleteInviteLink(token._id)" />
                 </div>
             </div>
         </div>
@@ -63,7 +63,10 @@ export default {
         await this.fetchEntity(this.constellation._id)
         
         this.inviteTokens = await this.$store.dispatch('token/fetch', {
-            type: 'invite'
+            query: {
+                constellation: this.constellation._id,
+                type: 'invite'
+            }
         })
 
         await this.$store.dispatch('user/softFetch', this.constellation.members)
@@ -97,6 +100,15 @@ export default {
             const response = await this.$store.dispatch('constellation/createInvite', this.constellation._id)
 
             if (response.token) this.inviteTokens = [ ...this.inviteTokens, { id: response.token } ]
+            
+            this.isLoading = false
+        },
+        async deleteInviteLink (id) {
+            this.isLoading = true
+            
+            const response = await this.$store.dispatch('constellation/deleteInvite', id)
+
+            this.inviteTokens = this.inviteTokens.filter(t => t._id != id)
             
             this.isLoading = false
         },

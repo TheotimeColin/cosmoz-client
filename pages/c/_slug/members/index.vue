@@ -59,7 +59,7 @@ export default {
         },
     },
     head () {
-        this.$store.commit('page/set', { subtitle: 'Membres', fa: 'user' })
+        if (!this.$constellation) return {}
 
         let meta = {
             title: `Membres de ${this.$constellation.name} ${this.$t('meta.append')}`,

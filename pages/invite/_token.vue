@@ -64,9 +64,11 @@ export default {
                 id: this.$route.params.token, token, type: 'invite'
             })
 
+            console.log(response)
+
             if (response && response.constellation) {
                 this.constellation = await this.$store.dispatch('constellation/get', {
-                    _id: response.constellation
+                    query: { _id: response.constellation }
                 })
             } else {
                 throw new Error('not-found')
@@ -102,12 +104,13 @@ export default {
 
 <style lang="scss" scoped>
 .Container {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px;
-    position: relative;
+    position: fixed;
     overflow: hidden;
 
     &::before {
