@@ -73,10 +73,7 @@ export default {
         inputs: ['members', 'followers'],
         usersLoading: [],
         inviteTokens: [],
-        isLoading: false,
-        defaultFormData: {
-            
-        }
+        isLoading: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },

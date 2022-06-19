@@ -43,7 +43,7 @@ export default {
         --header-height: 65px;
     }
 
-    @include breakpoint-xs {
+    @include breakpoint-s {
         :root {
             --header-height: 0px;
         }

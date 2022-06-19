@@ -1,11 +1,13 @@
 <template>
-    <form @submit.prevent="onSubmit" class="Wrapper Wrapper--xs pv-40">
-        <div class="block">
-            <button-base :modifiers="['s', 'xweak']" type="button" @click="leaveConste" :loading="isLoading">
-                Quitter la constellation
-            </button-base>
-        </div>
-    </form>
+    <div v-if="$constellation">
+        <form @submit.prevent="onSubmit" class="Wrapper Wrapper--xs pv-40">
+            <div class="block">
+                <button-base :modifiers="['s', 'xweak']" type="button" @click="leaveConste" :loading="isLoading">
+                    Quitter la constellation
+                </button-base>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>

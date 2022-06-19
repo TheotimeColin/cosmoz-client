@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" v-if="$constellation">
         <div class="Wrapper pv-40">
             Pas encore de sorties prévues
         </div>

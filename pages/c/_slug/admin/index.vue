@@ -1,6 +1,8 @@
 <template>
-    <div class="Wrapper Wrapper--xs Page_wrapper">
-        <nav-body :items="navItems" />
+    <div v-if="this.$constellation">
+        <div class="Wrapper Wrapper--xs Page_wrapper">
+            <nav-body :items="navItems" />
+        </div>
     </div>
 </template>
 

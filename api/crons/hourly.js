@@ -39,7 +39,7 @@ const sendPendingEmails = async function () {
 
                 params = {
                     ...params,
-                    G_date: moment(mail.gathering.date).format('D MMMM YYYY à hh:mm'),
+                    G_date: moment(mail.gathering.date).format('D MMMM YYYY à HH:mm'),
                     G_location: mail.gathering.location,
                     G_title: mail.gathering.title,
                     G_cover: cover ? cover.src : '',
@@ -101,7 +101,7 @@ const sendGatheringReminders = async function () {
             const response = await sendBulkMail(users, {
                 template: 3,
                 params: {
-                    date: moment(gathering.date).format('D MMMM YYYY à hh:mm'),
+                    date: moment(gathering.date).format('D MMMM YYYY à HH:mm'),
                     location: gathering.location,
                     name: gathering.title,
                     image: cover ? cover.src : '',

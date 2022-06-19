@@ -4,6 +4,7 @@ const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { createMail, sendMail } = require('../utils/mailing')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
+
 const { uploadQR } = require('../utils/files')
 
 exports.updateBookingStatus = async function (req, res) {
@@ -130,7 +131,7 @@ const sendConfirmationMail = async function (gathering, user) {
                 //     { name: `qr_code.png`, url: qr }
                 // ],
                 params: {
-                    date: moment(gathering.date).format('D MMMM YYYY à hh:mm'),
+                    date: moment(gathering.date).format('D MMMM YYYY à HH:mm'),
                     location: gathering.location,
                     address: gathering.address,
                     name: gathering.title,

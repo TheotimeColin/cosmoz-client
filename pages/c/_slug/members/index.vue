@@ -1,5 +1,5 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--s">
+    <div class="Page_wrapper Wrapper Wrapper--s" v-if="$constellation">
         <div class="pt-20 mb-30 bg-bg-weak br-s">
             <h2 class="ft-title-xs mb-20 mh-20">L'équipe</h2>
             <slider-block

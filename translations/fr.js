@@ -36,8 +36,14 @@ export default {
         'post-react': {
             content: '<b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> ont réagi à ton statut : <i>{status}</i>'
         },
+        'post-gathering': {
+            content: '<b>{users}</b> a publié dans <b>{gathering}</b> | <b>{users}</b> a publié dans <b>{gathering}</b> | <b>{users}</b> ont publié dans <b>{gathering}</b>'
+        },
         'gathering-new': {
             content: `<b>{gathering}</b> a été annoncé dans {constellation} | <b>{gathering}</b> a été annoncé dans <b>{constellation}</b> | {n} nouveaux événements ont été annoncés dans <b>{constellation}</b>`
+        },
+        'gathering-cancelled': {
+            content: `L'événement <b>{content}</b> a dû être annulé.`
         },
         'conste-application': {
             content: `<b>{users}</b> a demandé à rejoindre {constellation} | <b>{users}</b> a demandé à rejoindre <b>{constellation}</b> | {users} ont demandé à rejoindre <b>{constellation}</b>`

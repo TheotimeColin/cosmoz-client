@@ -96,6 +96,22 @@ exports.postStatus = async function (req, res) {
             parentData = await Entities.status.model.findOne({ _id: parent[0]._id })
         }
 
+        // CALLBACKS
+
+        if (fields.gathering && gathering) {
+            try {
+                await Promise.all(gathering.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(async u => {
+                    return await createNotification({
+                        type: 'post-gathering',
+                        gathering: gathering._id,
+                        owner: u._id
+                    }, user)
+                }))
+            } catch (e) {
+                console.error(e)
+            }
+        }
+
         data = await Entities.status.model.findOne({ _id: data._id })
 
         if (parentData) {

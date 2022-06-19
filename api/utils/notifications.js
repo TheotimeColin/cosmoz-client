@@ -9,6 +9,7 @@ const createNotification = function (params = {}, user) {
         gathering: null,
         constellation: null,
         action: true,
+        content: '',
         originator: { _id: user._id, type: 'user'},
         owner: user._id,
         query: ['status', 'constellation', 'gathering'],
@@ -34,6 +35,8 @@ const createNotification = function (params = {}, user) {
             if (params.status) query.status = params.status
             if (params.constellation) query.constellation = params.constellation
             if (params.gathering) query.gathering = params.gathering
+            
+            query.content = params.content
 
             if (params.action) {
                 if (existing && !existing.origins.find(o => params.originator._id.equals(o._id))) {

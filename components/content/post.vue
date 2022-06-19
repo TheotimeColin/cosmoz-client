@@ -52,11 +52,11 @@
         </div>
         <div class="Post_footer" @click="onClick">
             <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-3" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click.stop="addReaction" /> {{
+                <fa class="mr-5" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click.stop="addReaction" /> {{
                 reactions.length ? reactions.length : '' }}
             </div>
             <div class="Post_action" @click.stop="onAddComment">
-                <fa class="mr-3" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
+                <fa class="mr-5" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
             </div>
         </div>
 
@@ -141,6 +141,7 @@ export default {
         constellation: { type: String },
         activeGathering: { type: String },
         activeConstellation: { type: String },
+        maxComments: { type: Number, default: 2 },
         noLink: { type: Boolean, default: false }
     },
     data: () => ({
@@ -151,6 +152,8 @@ export default {
         showAll: false
     }),
     mounted () {
+        this.max = this.maxComments
+
         this.checkOverflow()
     },
     computed: {
@@ -363,13 +366,14 @@ export default {
 
     .Post_footer {
         display: flex;
-        padding: 15px 20px 20px;
+        padding: 15px 20px;
     }
 
     .Post_action {
-        font: var(--ft-title-3xs);
+        font: var(--ft-title-4xs);
         
         svg {
+            font-size: 16px;
             cursor: pointer;
         }
         

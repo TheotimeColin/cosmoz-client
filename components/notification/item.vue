@@ -4,7 +4,7 @@
             <div class="NotifItem_imageSecondary" :style="{ backgroundImage: `url(${constellationCover})` }" v-if="constellationCover"></div>
         </div>
         <div>
-            <div class="ellipsis-2" v-html="content"></div>
+            <div class="ellipsis-2" v-html="text"></div>
             <div class="ft-xs color-ft-xweak">{{ $moment(updatedAt).fromNow() }}</div>
         </div>
     </component>
@@ -29,6 +29,7 @@ export default {
         gathering: { type: String },
         constellation: { type: String },
         updatedAt: { type: String },
+        content: { type: String },
         origins: { type: Array, default: () => [] },
     },
     computed: {
@@ -42,7 +43,7 @@ export default {
         },
         constellationCover () {
             if (this.type == 'conste-enter') return this.user.profileSmall
-            if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
+            if (this.constellationData?.logoSmall && this.cover !== this.constellationData?.logoSmall) return this.constellationData.logoSmall
 
             return null
         },
@@ -88,7 +89,7 @@ export default {
                     name: 'post-postId',
                     params: { postId: this.statusData._id }
                 }
-            } else if (this.constellationData && this.gatherings.length > 1) {
+            } else if (this.constellationData && (this.gatherings.length > 1 || this.type == 'gathering-cancelled')) {
                 return {
                     name: 'c-slug-events',
                     params: { slug: this.constellationData.slug }
@@ -112,7 +113,7 @@ export default {
 
             return null
         },
-        content() {
+        text () {
             let count = this.users.length
 
             if (this.type.includes('gathering')) count = this.gatherings.length
@@ -122,7 +123,8 @@ export default {
                 users: this.$pluralize(this.users.map(u => u.name)),
                 status: this.statusData?.content,
                 gathering: this.gatheringData?.title,
-                constellation: this.constellationData?.name
+                constellation: this.constellationData?.name,
+                content: this.content
             })
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <client-only>
+    <div class="Page">
         <form @submit.prevent="onSubmit" class="Page_wrapper Wrapper">
             <div class="d-flex d-block@s">
                 <div class="fx-grow">
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </form>
-    </client-only>
+    </div>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
     <div class="Editor" :class="{ 'is-tiny': tiny }">
         <div class="Editor_first">
-            <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['m'] : ['m']" :no-link="true" v-bind="user" />
+            <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" v-bind="user" />
 
             <form @submit.prevent="onSubmit" class="Editor_main">
                 <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" ref="input" />

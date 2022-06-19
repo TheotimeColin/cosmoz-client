@@ -88,7 +88,7 @@ export default {
             }))
         },
         pastEvents () {
-            return this.gatherings.filter(g => g.isPast && g.isAttending).map(g => ({
+            return this.gatherings.filter(g => g.isPast && g.isAttending && !g.isExpired).map(g => ({
                 label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'calendar-heart', hasAttended: g.isAttending
             }))
         },

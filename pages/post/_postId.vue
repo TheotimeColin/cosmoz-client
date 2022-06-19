@@ -1,7 +1,7 @@
 <template>
     <div class="Page">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-            <content-post v-bind="status" :no-link="true" v-if="status"/>
+            <content-post v-bind="status" :no-link="true" :max-comments="99"  v-if="status"/>
         </div>
     </div>
 </template>

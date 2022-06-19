@@ -8,6 +8,7 @@ let Notification = {
 
         origins: { type: Array, default: [] },
         state: { type: String, default: 'unread' },
+        content: { type: String, default: '' },
 
         user: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'self', ref: 'user' },
         constellation: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'self', ref: 'constellation' },

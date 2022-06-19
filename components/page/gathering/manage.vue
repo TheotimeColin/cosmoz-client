@@ -41,22 +41,20 @@
                 <user-list class="fx-grow fxj-center@xs" :max="5" :items="usersByStatus(['attending', 'confirmed'])"
                     :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
 
-                <client-only>
-                    <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
-                        <template v-if="gathering.isPast">
-                            <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
-                        </template>
-                        <template v-else>
-                            <span v-if="$isConsteOrga">
-                                <link-base class="mr-5"
-                                    :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">
-                                    Modifier</link-base>
-                            </span>
+                <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
+                    <template v-if="gathering.isPast">
+                        <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
+                    </template>
+                    <template v-else>
+                        <span v-if="$isConsteOrga">
+                            <link-base class="mr-5"
+                                :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">
+                                Modifier</link-base>
+                        </span>
 
-                            <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
-                        </template>
-                    </div>
-                </client-only>
+                        <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
+                    </template>
+                </div>
             </div>
             <div v-else-if="hasConfirmed">
                 <p class="ft-title-xs mb-20 ph-20">
@@ -65,7 +63,7 @@
 
                 <slider-block
                     :slots="usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id).map(u => u._id)"
-                    :ratio="150" item-class="width-2xss" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20">
+                    :ratio="150" item-class="width-2xss" :margin="8" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20">
                     <div v-for="user in usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id)"
                         :slot="user._id" :key="user._id">
                         <user-profile v-bind="user" :no-link="true" :gathering="gathering._id"

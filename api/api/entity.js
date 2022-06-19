@@ -5,6 +5,9 @@ const fs = require('fs')
 const mime = require('mime')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { createNotification } = require('../utils/notifications')
+const { sendBulkMail } = require('../utils/mailing')
+import moment from 'moment-timezone'
+moment.tz.setDefault('Europe/Paris')
 
 const Entities = require('../entities')
 
@@ -110,7 +113,7 @@ exports.createEntity = async function (req, res) {
         if (!data) throw Error('error')
 
         data = await Entity.model.find({ _id: data._id })
-        if (typeCallbacks[req.body.type]) typeCallbacks[req.body.type](data[0]._doc, fields.query, user)
+        if (typeCallbacks[req.body.type]) typeCallbacks[req.body.type](data[0]._doc, fields.query, user, result)
 
         data = await fieldsCheck('read', data[0]._doc, Entity, data[0], user)
     } catch (e) {
@@ -143,12 +146,11 @@ exports.deleteEntity = async function (req, res) {
 
         if ((!result.owner || !result.owner.equals(user._id)) && !user.role == 'admin') throw Error('not-owner')
 
-        if (typeDeleters[req.query.type]) await typeDeleters[req.query.type](result)
+        if (typeDeleters[req.query.type]) await typeDeleters[req.query.type](result, user)
 
         await result.remove()
     } catch (e) {
-        console.warn(e)
-
+        console.error(e)
         errors.push(e.message)
     }
 
@@ -280,7 +282,7 @@ const typeSetters = {
 }
 
 const typeCallbacks = {
-    user: async (data, query, user) => {
+    user: async (data, query, user, previous) => {
         return new Promise(async (resolve, reject) => {
             try {
                 let unfollow = null
@@ -305,24 +307,26 @@ const typeCallbacks = {
             }
         })
     },
-    gathering: async (data, query, user) => {
+    gathering: async (data, query, user, previous) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const constellation = await Entities.constellation.model.findById(data.constellation)   
-                
-                if (data.status == 'active') {
-                    await Promise.all(constellation.members.map(async member => {
-                        return await createNotification({
-                            type: 'gathering-new',
-                            gathering: data._id,
-                            constellation: constellation._id,
-                            query: ['constellation'],
-                            originator: {
-                                _id: data._id, type: 'gathering'
-                            },
-                            owner: member
-                        }, user)
-                    }))
+                if (!previous || data.status != previous.status) {
+                    const constellation = await Entities.constellation.model.findById(data.constellation)   
+                    
+                    if (data.status == 'active') {
+                        await Promise.all(constellation.members.map(async member => {
+                            return await createNotification({
+                                type: 'gathering-new',
+                                gathering: data._id,
+                                constellation: constellation._id,
+                                query: ['constellation'],
+                                originator: {
+                                    _id: data._id, type: 'gathering'
+                                },
+                                owner: member
+                            }, user)
+                        }))
+                    }
                 }
 
                 resolve(data)
@@ -355,6 +359,60 @@ const typeDeleters = {
                 resolve(data)
             } catch (e) {
                 reject (e)
+            }
+        })
+    },
+    gathering: async (data, user) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (data.status == 'active' && moment(data.date).isAfter(moment())) {
+                    let users = data.users.filter(u => u.status == 'attending').map(u => u._id)
+        
+                    users = await Entities.user.model.find({ _id: { $in: users }})
+                    
+                    const constellation = await Entities.constellation.model.findById(data.constellation)
+
+                    try {
+                        await Entities.notification.model.deleteMany({
+                            gathering: data._id
+                        })
+
+                        await Promise.all(users.map(async u => {
+                            return await createNotification({
+                                type: 'gathering-cancelled',
+                                constellation: constellation._id,
+                                content: data.title,
+                                originator: {
+                                    _id: constellation._id, type: 'constellation'
+                                },
+                                owner: u._id
+                            }, user)
+                        }))
+                    } catch (e) {
+                        console.error(e)
+                    }
+
+                    try {
+                        await sendBulkMail(users.map(user => ({
+                            to: [ { email: user.email } ],
+                        })), {
+                            template: 5,
+                            params: {
+                                name: data.title,
+                                constellation: constellation.name,
+                                link: process.env.BASE_URL + '/c/' + constellation.slug + '/events'
+                            }
+                        })
+                    } catch (e) {
+                        console.error('bulk-mail-fail')
+                        console.error(e)
+                    }
+                }
+
+                resolve(data)
+            } catch (e) {
+                console.warn(e)
+                resolve(data)
             }
         })
     }

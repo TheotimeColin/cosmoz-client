@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" v-if="$constellation">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
             <content-feed
                 :constellation="$constellation._id"

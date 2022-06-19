@@ -8,13 +8,15 @@ const MongoClient = require('mongodb').MongoClient
 const mongoose = require('mongoose')
 const multer  = require('multer');
 const AWS = require('aws-sdk')
-const { Nuxt, Builder } = require('nuxt')
 const AutoIncrementFactory = require('mongoose-sequence');
 const stripe = require('stripe')(process.env.STRIPE)
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 let sendinBlue = SibApiV3Sdk.ApiClient.instance;
 let apiKey = sendinBlue.authentications['api-key']
 apiKey.apiKey = process.env.SENDINBLUE
+var moment = require('moment')
+require('moment/locale/fr')
+moment.locale('fr')
 
 const cronHourly = require('./crons/hourly.js')
 
