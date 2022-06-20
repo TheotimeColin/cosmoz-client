@@ -137,8 +137,8 @@ export default {
             {
                 children: [
                     { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
+                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true },
                     { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
-                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true }
                 ]
             }
         ]

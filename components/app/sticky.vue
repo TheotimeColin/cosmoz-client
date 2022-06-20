@@ -50,8 +50,8 @@ export default {
             ] : [
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
                 { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
+                { label: 'Ma constellation', fa: 'sparkles', to: { name: 'constellation' } },
                 { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
-                { label: 'Envies', fa: 'star', to: { name: 'constellation' } }
             ]
         }
     },

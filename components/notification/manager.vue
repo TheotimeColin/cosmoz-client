@@ -6,6 +6,10 @@
             v-bind="notif"
             :key="notif._id"
         />
+
+        <div class="block-r text-center bg-bg-strong" v-if="notifications.length <= 0">
+            Pas encore de notifications.
+        </div>
     </div>
 </template>
 

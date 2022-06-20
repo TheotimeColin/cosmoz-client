@@ -1,7 +1,7 @@
 <template>
-    <div class="page" v-if="$constellation">
-        <div class="Page_wrapper Wrapper Wrapper--xs">
-            <nav-bar class="mb-30" v-model="type" :items="[
+    <div v-if="$constellation">
+        <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+            <nav-bar class="mb-20" v-model="type" :items="[
                 { id: 'index', label: 'À venir' },
                 { id: 'past', label: 'Passés' },
             ]" />
@@ -20,6 +20,9 @@
                         :key="gathering._id"
                     />
                 </div>
+            </div>
+            <div class="block-r text-center bg-bg-strong" v-else>
+                Pas encore d'événements ici.
             </div>
         </div>
     </div>

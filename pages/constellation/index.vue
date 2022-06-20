@@ -1,6 +1,31 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
-        <div class="Section">
+        <div class="+mt-40">
+            <h1 class="ft-title-s mb-20">
+                Mes amis
+            </h1>
+
+            <div class="row-xs" v-if="constellation.length > 0">
+                <div class="col-3 col-4@xs mt-10" v-for="user in constellation" :key="user._id">
+                    <user-profile v-bind="user" />
+                </div>
+            </div>
+            <div class="bg-bg-strong p-30 text-center br-s" v-else>
+                <fa icon="far fa-user" class="ft-xl color-ft-xweak line-1"></fa>
+
+                <p class="mt-10 mb-20 line-1">Il n'y a encore personne dans ta constellation.</p>
+                
+                <div class="mt-5">
+                    <link-base :to="{ name: 'faq' }">C'est quoi une constellation ?</link-base>
+                </div>
+            </div>
+        </div>
+
+        <div class="+mt-40">
+            <h1 class="ft-title-s mb-20">
+                Mes groupes
+            </h1>
+
             <div class="row-xs" v-if="constellation.length > 0">
                 <div class="col-3 col-4@xs mt-10" v-for="user in constellation" :key="user._id">
                     <user-profile v-bind="user" />
@@ -9,30 +34,15 @@
             <div class="bg-bg-strong p-30 text-center br-s" v-else>
                 <fa icon="far fa-sparkles" class="ft-xl color-ft-xweak line-1"></fa>
 
-                <p class="mt-10 mb-20 line-1">Il n'y a encore personne dans ta constellation.</p>
+                <p class="mt-10 mb-20 line-1">Tu n'appartiens encore à aucun groupe.</p>
 
-                <button-base :modifiers="['light']" :to="{ name: 'g' }">
-                    Participer à un événement
+                <button-base :modifiers="['light']" :to="{ name: 'explore' }">
+                    Trouver un groupe
                 </button-base>
-                
-                <div class="mt-5">
-                    <link-base :to="{ name: 'faq' }">C'est quoi une constellation ?</link-base>
-                </div>
-            </div>
-        </div>
-        
-        <div class="Section block" v-if="encounters.length > 0">
-            <p class="ft-title-xs mb-5">Connaissances</p>
-            <p class="ft-s color-ft-weak mb-20">Tu as croisé ces personnes lors d'une rencontre.</p>
-
-            <div class="row-xs">
-                <div class="col-3 col-4@s col-6@xs mt-10" v-for="user in encounters" :key="user._id">
-                    <user-icon :display-name="true" v-bind="user" />
-                </div>
             </div>
         </div>
 
-        <div class="Section block" v-if="pending.length > 0">
+        <div class="+mt-40 block" v-if="pending.length > 0">
             <p class="ft-title-xs mb-5">Demandes en attente</p>
             <p class="ft-s color-ft-weak mb-20">Pour devenir amis sur Cosmoz, il faut que les deux personnes en fassent la demande.</p>
 
@@ -93,22 +103,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.Section {
-
-    & + & {
-        margin-top: 30px;
-    }
-}
-
-@include breakpoint-xs {
-
-    .Section {
-
-        & + & {
-            margin-top: 60px;
-        }
-    }
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
     <div class="NavBody">
-        <div class="mb-30">
+        <div class="mb-20">
             <div>
                 <slot></slot>
             </div>

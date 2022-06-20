@@ -101,13 +101,13 @@ export default {
                 }, 
                 {
                     label: `Événements`,
-                    disabled: [...this.events, ...this.pastEvents].length <= 0,
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
                     number: this.events.length,
                     children: [ ...this.events.slice(0, 3), ...this.pastEvents ]
                 },
                 {
                     label: `Sorties`,
+                    disabled: true,
                     to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
                 },
                 {
