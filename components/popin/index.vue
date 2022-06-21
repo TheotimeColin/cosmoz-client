@@ -139,7 +139,7 @@ export default {
 
 .PopinBase_body {
     background-color: var(--color-bg);
-    border-radius: 0px;
+    border-radius: 4px;
     width: 90%;
     max-width: 700px;
     max-height: 90%;

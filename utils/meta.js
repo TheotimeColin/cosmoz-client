@@ -20,6 +20,14 @@ export function getMeta ($route, $store) {
             })
         } catch (e) { console.warn(e) }
     }
+
+    if ($route.params.postId) {
+        try {
+            post = $store.getters['status/findOne']({
+                _id: $route.params.postId
+            })
+        } catch (e) { console.warn(e) }
+    }
     
     if ($route.params.userId) {
         try {
@@ -27,12 +35,10 @@ export function getMeta ($route, $store) {
                 id: $route.params.userId
             })
         } catch (e) { console.warn(e) }
-    }
-
-    if ($route.params.postId) {
+    } else if (post?.owner) {
         try {
-            post = $store.getters['status/findOne']({
-                _id: $route.params.postId
+            user = $store.getters['user/findOne']({
+                _id: post.owner
             })
         } catch (e) { console.warn(e) }
     }
@@ -49,7 +55,7 @@ export function getMeta ($route, $store) {
             children: {
 
                 'postId': {
-                    title: post?.content,
+                    title: post?.content ? post.content : user?.name ? `Publication de ${user.name}` : '',
                     isPanel: true
                 }
             }

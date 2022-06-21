@@ -13,10 +13,10 @@
             </div>
 
             <div class="fx-center mt-15">
-                <div class="BlockConst_location">
+                <div class="BlockConst_location ellipsis-1 ellipsis-break mr-10">
                     <fa icon="far fa-map-marker-alt" class="mr-3"></fa> {{ location }}
                 </div>
-                <div class="ft-xs" v-if="members.length > 0">
+                <div class="ft-xs ellipsis-1 ellipsis-break" v-if="members.length > 0">
                     <fa icon="far fa-user-check" class="mr-3"></fa> {{ members.length }} membres
                 </div>
             </div>
