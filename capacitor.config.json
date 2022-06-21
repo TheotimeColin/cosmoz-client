@@ -1,0 +1,6 @@
+{
+  "appId": "social.cosmoz",
+  "appName": "cosmoz",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

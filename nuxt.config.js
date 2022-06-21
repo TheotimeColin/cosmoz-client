@@ -182,6 +182,7 @@ export default {
     },
 
     build: {
+        publicPath: '/nuxt/',
         extend (config) {
             config.module.rules.push({
                 test: /\.svg.html$/,

@@ -19,7 +19,6 @@ require('moment/locale/fr')
 moment.locale('fr')
 
 const cronHourly = require('./crons/hourly.js')
-
 const app = express()
 
 require('./entities/index')
@@ -33,10 +32,35 @@ const { readAll } = require('./api/notification')
 const { consteApply, consteLeave, consteEnter, consteInviteLink, consteInviteLinkDelete } = require('./api/constellation')
 const { getToken } = require('./api/token')
 
+const allowedOrigins = [
+    'capacitor://localhost',
+    'ionic://localhost',
+    'http://localhost',
+    'http://cosmoz.local',
+    'https://cosmoz.social',
+    'https://cosmoz.dev',
+    'http://localhost:8080',
+    'http://localhost:8100'
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        console.log(origin)
+        
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Origin not allowed by CORS'));
+        }
+    }
+}
+
+app.options('*', cors(corsOptions));
+
 app.use(morgan('combined'))
 app.use(express.json({ limit: '10mb', extended: true }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
-app.use(cors())
+app.use(cors(corsOptions))
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ID,
