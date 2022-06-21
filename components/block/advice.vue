@@ -1,5 +1,5 @@
 <template>
-    <div class="Advice bg-cover-10 bg-night">
+    <div class="Advice bg-cover-25 bg-night">
         <div class="G_cosmoz"></div>
         
         <div class="Advice_content">
@@ -9,12 +9,12 @@
                 <chart-line class="mt-15" :current="(completed / total) * 100" />
             </div>
 
-            <slider-block :slots="steps.filter(s => !s.hidden).map(s => s.id)" :auto-height="true" :offset="20" :offset-v="20">
+            <slider-block :slots="steps.filter(s => !s.hidden).map(s => s.id)" :auto-height="true" :offset="20" :offset-v="20" v-if="completed < total">
                 <div v-for="step in steps" class="p-15 bg-bg-weak-t br-xs shadow width-xs d-flex fx-dir-column height-100 fxj-around text-center" :slot="step.id" :key="step.id">
                     <p class="ft-title-2xs">{{ step.title }}</p>
-                    <div class="ft-s-medium mv-10" v-html="step.text"></div>
+                    <div class="ft-s-medium mt-10" v-html="step.text"></div>
 
-                    <div class="text-center">
+                    <div class="text-center mt-20">
                         <p class="color-ft-weak ft-xs mb-5" v-if="step.completed">Terminé !</p>
 
                         <button-base :modifiers="['s', 'cosmoz']" icon-before="check" @click="hide(step.id)" v-if="step.completed">{{ step.amount}} points</button-base>
@@ -22,6 +22,18 @@
                     </div>
                 </div>
             </slider-block>
+            <div class="p-20 text-center bg-bg-weak-t br-xs mh-15 mb-15 " v-else>
+                <p class="ft-title-s">Bien joué, {{ user.name }}.</p>
+                <div class="ft-s-medium mt-10 mb-20">
+                    L'équipe Cosmoz espère que tu trouveras les communautés qui te feront vibrer.
+
+                    On te laisse profiter de la plateforme ! 
+                </div>
+
+                <button-base :modifiers="['light']" @click="onConclude" icon-before="party-horn">
+                    C'est parti !
+                </button-base>
+            </div>
         </div>
     </div>
 </template>
@@ -39,15 +51,6 @@ export default {
         },
         total () {
             return this.steps.reduce((t, c) => t + c.amount, 0) - 10
-        }
-    },
-    watch: {
-        completed (v) {
-            if (v >= this.total) {
-                this.$store.dispatch('user/updateNotification', {
-                    id: 'welcomed', type: 'onboarding'
-                })
-            }
         }
     },
     mounted () {
@@ -85,6 +88,11 @@ export default {
         ]
     },
     methods: {
+        onConclude () {
+            this.$store.dispatch('user/updateNotification', {
+                id: 'welcomed', type: 'onboarding'
+            })
+        },
         hide (id) {
             this.steps = this.steps.map(s => s.id == id ? { ...s, hidden: true }: s)
         }

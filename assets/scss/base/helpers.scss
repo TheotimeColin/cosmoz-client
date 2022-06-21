@@ -403,6 +403,8 @@
     width: 110%;
     height: 110%;
     opacity: 0.15;
+    transition: all 250ms ease;
+    pointer-events: none;
 
     background:
      radial-gradient(farthest-side at bottom right,

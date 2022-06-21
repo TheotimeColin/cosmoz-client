@@ -44,7 +44,7 @@
                 </div>
             
                 <div class="p-5">
-                    <button-base :modifiers="['light', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
+                    <button-base :modifiers="['cosmoz', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
                         Envoyer
                     </button-base>
                 </div>

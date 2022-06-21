@@ -5,6 +5,7 @@
         v-bind="computedAttrs"
         v-on="$listeners"
     >
+        <div class="G_cosmoz"></div>
 
         <div class="ButtonBase_content">
             <span class="ButtonBase_image" :style="{ backgroundImage: `url(${image})` }" v-if="image"></span>
@@ -117,6 +118,10 @@ export default {
     }
 }
 
+.G_cosmoz {
+    opacity: 0;
+}
+
 .ButtonBase_image {
     width: 40px;
     height: 40px;
@@ -136,6 +141,8 @@ export default {
     justify-content: center;
     user-select: none;
     white-space: nowrap;
+    position: relative;
+    z-index: 2;
 }
 
 .ButtonBase_iconLoading {
@@ -264,7 +271,11 @@ export default {
     &:hover,
     &:active {
         color: var(--color-ft-light);
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: var(--color-cosmoz);
+
+        .G_cosmoz {
+            opacity: 0.75;
+        }
     }
     
     .ButtonBase_iconLoading {
@@ -273,11 +284,20 @@ export default {
 }
 
 .ButtonBase--cosmoz {
-    background-color: var(--color-cosmoz-strong);
+    background-color: var(--color-cosmoz);
+
+    .G_cosmoz {
+        opacity: 0.75;
+    }
     
     &:hover,
     &:active {
-        background-color: var(--color-cosmoz);
+        background-color: var(--color-ft-light);
+        color: var(--color-ft);
+
+        .G_cosmoz {
+            opacity: 0;
+        }
     }
 }
 

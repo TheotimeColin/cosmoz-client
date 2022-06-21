@@ -1,9 +1,8 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
         <block-advice class="mb-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
-
         <div class="pt-20 br-s bg-bg-weak p-0@xs bg-bg@xs mb-20 mb-0@xs"
-            v-if="attending.length > 0 || upcoming.length > 0">
+            v-else-if="attending.length > 0 || upcoming.length > 0">
             <p class="ft-title-xs mb-20 ph-20 p-0@xs">
                 {{ attending.length > 0 ? `Mes prochaines sorties` : `Envie de sortir ?` }}
             </p>

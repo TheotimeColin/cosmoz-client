@@ -3,6 +3,7 @@
         <app-header @navOpen="onNavOpen" />
         <app-head />
         <app-notifications v-if="user" />
+        
 
         <div
             class="LayoutApp_content"

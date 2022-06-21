@@ -3,6 +3,7 @@
         <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
             <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item" v-if="cat.label">
                 <ripples :size="300" :modifiers="['weak']" />
+                <div class="G_cosmoz"></div>
 
                 <div class="Nav_itemMain">
                     <fa :icon="`far fa-${cat.fa}`" fixed-width v-if="cat.fa" />
@@ -21,7 +22,6 @@
                         <ripples :size="300" :modifiers="['weak']" />
 
                         <div class="Nav_itemMain">
-                            <!-- <fa :icon="`far fa-${item.fa}`" fixed-width v-if="item.fa" /> -->
                             <fa icon="far fa-corner" flip="both" />
                             
                             <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
@@ -45,7 +45,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .Nav_item {
         font: var(--ft-m-medium);
         cursor: pointer;
@@ -81,7 +81,16 @@ export default {
         &.is-active-exact {
             color: var(--color-ft-light);
             background-color: var(--color-bg-weak);
+
+            .G_cosmoz {
+                opacity: 0.15;
+            }
         }
+    }
+
+    .G_cosmoz {
+        opacity: 0;
+        width: 50%;
     }
 
     .Nav_itemMain {
