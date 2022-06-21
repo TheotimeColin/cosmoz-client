@@ -95,12 +95,20 @@ export default {
         items () {
             return [
                 {
-                    children: [
-                        { label: `Activité`, isParent: true, fa: 'home', to: { name: 'c-slug-feed', params: { slug: this.slug } } }
-                    ]
-                }, 
+                    label: `Activité`,
+                    isParent: true,
+                    fa: 'home',
+                    to: { name: 'c-slug-feed', params: { slug: this.slug } }
+                },
+                {
+                    label: `Discussions`,
+                    fa: 'comments',
+                    disabled: !this.user,
+                    to: { name: 'c-slug-discussions', params: { slug: this.slug } }
+                },
                 {
                     label: `Événements`,
+                    fa: 'calendar',
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
                     number: this.events.length,
                     children: [ ...this.events.slice(0, 3), ...this.pastEvents ]
@@ -110,14 +118,6 @@ export default {
                     disabled: true,
                     to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
                 },
-                {
-                    label: `Discussions`,
-                    disabled: !this.user,
-                    to: { name: 'c-slug-discussions', params: { slug: this.slug } },
-                    children: [
-                        { label: `général`, fa: 'hashtag', to: { name: 'c-slug-discussions-id', params: { slug: this.slug, id: 'general' } } },
-                    ]
-                }
             ]
         }
     }

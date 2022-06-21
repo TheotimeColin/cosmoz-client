@@ -200,7 +200,7 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                     } else if (requiredRole == 'friends') {
                         if (isFriend || isSelf) granted = true
                     } else if (requiredRole == 'encountered') {
-                        if (isEncountered || isSelf) granted = true
+                        if (isEncountered || isFriend || isSelf) granted = true
                     } else if (requiredRole == '$readEach') {
                         result[key] = result[key].map(r => {
                             if (r.read && r.read == 'friend') {

@@ -134,22 +134,14 @@ export default {
     },
     created () {
         this.nav = [
-            {
-                children: [
-                    { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
-                    { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true },
-                    { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
-                ]
-            }
+            { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
+            { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true },
+            { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
         ]
 
         this.exploreNav = [
-            {
-                children: [
-                    { label: `Suggestions`, fa: 'wand-magic-sparkles', to: { name: 'explore' } },
-                    { label: `Événements à venir`, fa: 'calendar-star', to: { name: 'explore-events' } }
-                ]
-            }
+            { label: `Suggestions`, fa: 'wand-magic-sparkles', to: { name: 'explore' } },
+            { label: `Événements à venir`, fa: 'calendar-star', to: { name: 'explore-events' } }
         ]
     },
     methods: {
