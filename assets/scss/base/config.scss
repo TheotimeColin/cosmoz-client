@@ -51,9 +51,15 @@ $colors: (
 
     "cosmoz-strong": #2623ca,
     "cosmoz": #471ffe,
-    "cosmoz-weak": #6c6bcf,
+    "cosmoz-weak": #6336ff,
+    "cosmoz-xweak": #6c6bcf,
     
     "emerald": #38ca8a,
+
+    "nebula": #ff24e9,
+
+
+    "nitro": #20ffff,
 
     "sticky": #FFEE80,
     "sticky-weak": #FFEE80,
@@ -89,6 +95,7 @@ $fonts: (
     "ft": (
         "name": "'Rubik', sans-serif",
         "sizes": (
+            "3xs": "9px/1.45",
             "2xs": "11px/1.45",
             "xs": "13px/1.45",
             "s": "15px/1.45",

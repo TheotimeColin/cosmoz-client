@@ -1,5 +1,7 @@
 <template>
-    <component :is="href ? 'a' : 'div'" :href="href" class="ButtonIcon" :class="{ 'is-notif': notification }"  v-on="$listeners">
+    <component :is="href ? 'a' : 'div'" :href="href" class="ButtonIcon" v-on="$listeners">
+        <div class="ButtonIcon_notif" v-if="notification">{{ notification > 99 ? '+' : notification }}</div>
+
         <fa class="ButtonIcon_reg" :icon="`far fa-${fa}`" fixed-width v-if="fa" />
         <fa class="ButtonIcon_solid" :icon="`fa-solid fa-${fa}`" fixed-width v-if="fa" />
     </component>
@@ -11,15 +13,12 @@ export default {
     props: {
         fa: { type: String },
         href: { type: String },
-        notification: { type: Boolean, default: false }
+        notification: { type: Number, default: 0 }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-
-
-
 .ButtonIcon {
     font-size: 18px;
     cursor: pointer;
@@ -28,22 +27,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    &.is-notif {
-
-        &::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background-color: var(--color-cosmoz);
-            position: absolute;
-            z-index: 5;
-            right: 50%;
-            bottom: 6px;
-            margin: 0 -3px 0 0;
-            border-radius: 50%;
-        }
-    }
     
     &:hover {
 
@@ -55,6 +38,24 @@ export default {
             display: none;
         }
     }
+}
+
+.ButtonIcon_notif {
+    font: var(--ft-3xs-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-bg-strong);
+    box-sizing: content-box;
+    background-color: var(--color-cosmoz);
+    position: absolute;
+    z-index: 5;
+    right: 50%;
+    top: 12px;
+    margin: 0 -18px 0 0;
+    border-radius: 50%;
 }
 
 .ButtonIcon_solid {

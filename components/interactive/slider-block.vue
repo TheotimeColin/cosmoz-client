@@ -8,18 +8,21 @@
                     <placeholder :height="height" :ratio="ratio" />
                 </div>
 
-                <div
-                    class="SliderBlock_item"
-                    v-for="slotId in slots"
-                    :class="[ itemClass ]"
-                    :key="slotId"
-                    ref="item"
-                >
-                    <slot :name="slotId"></slot>
-                </div>
+                <transition-group name="fade">
+                    <div
+                        class="SliderBlock_item"
+                        v-for="slotId in slots"
+                        :class="[ itemClass ]"
+                        :style="isInit && autoHeight ? { height: height + 'px' } : {}"
+                        :key="slotId"
+                        ref="item"
+                    >
+                        <slot :name="slotId"></slot>
+                    </div>
+                </transition-group>
             </div>
 
-            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0 && !isLoading" />
+            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round', 'xs']" @click="prev" v-if="step > 0 && !isLoading" />
 
             <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps && !isLoading" />
         </div>
@@ -36,7 +39,8 @@ export default {
         offset: { type: Number, default: 0 },
         offsetV: { type: Number, default: 20 },
         ratio: { type: Number, default: 0 },
-        isLoading: { type: Boolean, default: false }
+        autoHeight: { type: Boolean, default: false },
+        isLoading: { type: Boolean, default: false },
     },
     computed: {
         breakpoint () {
@@ -46,7 +50,8 @@ export default {
     data: () => ({
         step: 0,
         maxSteps: 0,
-        height: 200,
+        height: 0,
+        isInit: false,
         isSlidable: true
     }),
     mounted () {
@@ -65,19 +70,25 @@ export default {
     },
     methods: {
         checkDimensions () {
-            if (process.server) return
-            
-            if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
-                this.maxSteps = 0
-            } else {
-                this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
-            }
+            this.isInit = false
 
-            if (this.$refs.item) {
-                this.$refs.item.forEach(item => {
-                    this.height = this.height < item.offsetHeight ? item.offsetHeight : this.height
-                })
-            }
+            this.$nextTick(() => {
+                if (this.$refs.container) {
+                    if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
+                        this.maxSteps = 0
+                    } else {
+                        this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
+                    }
+                }
+
+                if (this.$refs.item) {
+                    this.$refs.item.forEach(item => {
+                        this.height = this.height < item.offsetHeight ? item.offsetHeight : this.height
+                    })
+                }
+
+                this.isInit = true
+            })
         },
         next () {
             this.step += 1
@@ -106,7 +117,7 @@ export default {
     .SliderBlock_rail {
         white-space: nowrap;
         transition: all 300ms ease;
-        transform: translateX(calc(-50% * var(--step)));
+        transform: translateX(calc(-40% * var(--step)));
     }
 
     .SliderBlock_item {

@@ -268,6 +268,7 @@ export default {
         opacity: 1;
         transform: translateX(100%);
         transition: all 250ms ease;
+        border-radius: 0;
     }
 
     &.is-active {

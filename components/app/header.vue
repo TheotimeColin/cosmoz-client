@@ -10,8 +10,10 @@
 
             <div class="Header_right" v-if="user">
                 <button-icon :href="$config.adminUrl" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
-                <button-icon class="Header_button" fa="paper-plane" />
-                <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length > 0" />
+
+                <!-- <button-icon class="Header_button" fa="paper-plane" /> -->
+
+                <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
         
                 <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20"
                     :to="{ name: 'p-userId', params: { userId: user.id } }">

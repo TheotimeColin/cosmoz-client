@@ -272,6 +272,15 @@ export default {
     }
 }
 
+.ButtonBase--cosmoz {
+    background-color: var(--color-cosmoz-strong);
+    
+    &:hover,
+    &:active {
+        background-color: var(--color-cosmoz);
+    }
+}
+
 .ButtonBase--full {
     display: flex;
     justify-content: center;

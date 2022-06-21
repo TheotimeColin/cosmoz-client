@@ -207,6 +207,10 @@ $value in $breakpoints {
         background-color: var(--color-#{$colorName});
       }
 
+      .bg-#{$colorName}-t#{$name} {
+        background-color: color-opacity($colorName, -50%);
+      }
+
       .fill-#{$colorName}#{$name} {
         fill: var(--color-#{$colorName});
       }
@@ -435,6 +439,10 @@ $value in $breakpoints {
 
     .fxj-between#{$name} {
       justify-content: space-between;
+    }
+
+    .fxj-around#{$name} {
+      justify-content: space-around;
     }
 
     .fxj-stretch#{$name} {

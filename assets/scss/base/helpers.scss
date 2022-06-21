@@ -388,6 +388,30 @@
     line-height: 1;
 }
 
+.shadow {
+    box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
+}
+
+.shadow-s {
+    box-shadow: 0 2px 6px 0px color-opacity('bg-2xstrong', -75%);
+}
+
+.G_cosmoz {
+    position: absolute;
+    top: -5%;
+    right: -5%;
+    width: 110%;
+    height: 110%;
+    opacity: 0.15;
+
+    background:
+     radial-gradient(farthest-side at bottom right,
+     color-opacity('cosmoz', -50%), transparent 75%),
+
+     radial-gradient(farthest-corner at top right,
+     color-opacity('nebula', -50%), transparent 65%);
+}
+
 @each $color in $main-colors {
 
     .fill-#{$color} {

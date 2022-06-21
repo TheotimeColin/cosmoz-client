@@ -137,7 +137,7 @@ export default {
                     ...item,
                     thumbnail,
                     isAttending: root.auth.user && item.users.find(u => u._id == root.auth.user._id && (u.status == 'attending' || u.status == 'confirmed')) ? true : false,
-                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
+                    isFull: item.max != 0 && item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
                     isPast: moment(item.date).isBefore(moment()),
                     isExpired: moment(item.date).add(5, 'days').isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
