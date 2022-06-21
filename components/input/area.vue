@@ -17,7 +17,7 @@ export default {
     }),
     computed: {
         size () {
-            if (this.localValue && this.localValue.length <= 100 && this.adaptableText) {
+            if (!this.localValue || (this.localValue && this.localValue.length <= 100 && this.adaptableText)) {
                 return 'l'
             } else if (this.localValue && this.localValue.length <= 300 && this.adaptableText) {
                 return 'm'
@@ -62,10 +62,18 @@ export default {
 
     &.is-m .Area_input {
         font: var(--ft-l);
+
+        &:empty:before {
+            font: var(--ft-l);
+        }
     }
 
     &.is-s .Area_input {
         font: var(--ft-m);
+
+        &:empty:before {
+            font: var(--ft-m);
+        }
     }
 
     &.is-tiny {
@@ -77,7 +85,8 @@ export default {
 }
 
 .Area_input {
-    font: var(--ft-xl);
+    font: var(--ft-l);
+    height: 100%;
     padding: 10px;
 
     &:focus {
@@ -86,9 +95,9 @@ export default {
 
     &:empty:before {
         content: attr(placeholder);
+        font: var(--ft-l);
         color: var(--color-ft-weak);
-        opacity: 0.5;
-        font-style: italic;
+        opacity: 0.35;
         pointer-events: none;
     }
 }

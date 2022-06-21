@@ -1,6 +1,6 @@
 <template>
     <component :is="disabled ? 'div' : 'label'" :for="id" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
-        <button-base tag="div" :modifiers="['round', 's', 'xweak']" :icon-before="icon" :disabled="disabled" v-if="icon" />
+        <button-base tag="div" :modifiers="['round', 'xweak']" :icon-before="icon" :disabled="disabled" v-if="icon" />
         <div class="InputFile_title" v-else>
             <p class="ft-3xl">
                 <fa class="color-ft-xweak mb-20" icon="far fa-cloud-upload" />

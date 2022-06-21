@@ -88,7 +88,7 @@
 
                 <content-comment v-for="post in displayedComments" class="Post_comment" v-bind="post" :key="post._id" />
 
-                <content-editor @submit="onSubmit" class="Post_comment" :tiny="true"
+                <content-input @submit="onSubmit" class="Post_comment" :tiny="true"
                     placeholder="Ajouter un commentaire..." @blur="() => children.length == 0 ? isAdd = false : ''"
                     v-show="isAdd || (children.length > 0 && $biggerThan('s'))" ref="commentInput" />
             </div>
@@ -409,7 +409,7 @@ export default {
 
         .Post_comments {
             margin: 0 -15px;
-            padding: 0 20px 20px;
+            padding: 0 10px 10px;
             border: none;
         }
 

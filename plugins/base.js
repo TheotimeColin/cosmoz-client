@@ -249,6 +249,13 @@ Vue.mixin({
                 users: users.length == 2 ? users.join(' et ') : users.slice(0, 2).join(', '),
                 others: users.length - 2
             })
+        },
+        $ellipsis (str, maxLength) {
+            if (str.length > maxLength) {
+                return str.slice(0, maxLength - 3) + '...';
+            }
+            
+            return str
         }
     }
 })

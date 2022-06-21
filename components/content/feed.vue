@@ -1,13 +1,24 @@
 <template>
     <div class="Feed">
-        <content-editor
+        <content-input
             class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak"
             :placeholder="placeholder"
             :read="read"
             :constellation="constellation"
-            :loading="isSubmitLoading"
+            :is-trigger="true"
+            @focus="isEditorActive = true"
+            v-if="!disableCreate"
+        />
+
+        <content-editor
+            :is-active="isEditorActive"
+            :placeholder="placeholder"
+            :read="read"
+            :constellation="constellation"
+            :is-loading="isSubmitLoading"
             :errors="errors"
             @submit="onSubmit"
+            @close="isEditorActive = false"
             v-if="!disableCreate"
             ref="editor"
         />
@@ -58,6 +69,7 @@ export default {
         disableCreate: { type: Boolean, default: false }
     },
     data: () => ({
+        isEditorActive: false,
         statusesData: [],
         errors: [],
         isSubmitLoading: false,
@@ -128,6 +140,7 @@ export default {
                 }
 
                 if (this.$refs.editor) this.$refs.editor.reset()
+                this.isEditorActive = false
                 
                 if (response.data.parent) { // RESET COMMENT EDITOR
                     let parent = this.$refs.posts.find(p => p._id == response.data.parent._id)

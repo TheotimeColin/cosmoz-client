@@ -1,12 +1,14 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled } ]" :to="localePath(to)"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image } ]" :to="localePath(to)"
         :disabled="disabled"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
 
         <div class="ButtonBase_content">
+            <span class="ButtonBase_image" :style="{ backgroundImage: `url(${image})` }" v-if="image"></span>
+
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
                 <fa :icon="`far fa-${iconBefore}`" />
             </span>
@@ -15,7 +17,7 @@
                 <slot name="before"></slot>
             </span>
             <span class="ButtonBase_text">
-                {{ text ? text : '' }}
+                {{ text ? $ellipsis(text, ellipsis) : '' }}
                 <slot></slot>
             </span>
             <span class="ButtonBase_after" v-if="$slots.after">
@@ -47,6 +49,8 @@ export default {
         href: { type: String },
         link: { type: String },
         text: { type: String },
+        image: { type: String },
+        ellipsis: { type: Number, default: 999 },
         notification: { type: Boolean },
         disabled: { type: Boolean, default: false },
         to: { type: [Object, Boolean], default: false },
@@ -107,6 +111,19 @@ export default {
     &:active {
         transform: scale(0.96);
     }
+
+    &.is-image {
+        padding: 5px 15px 5px 5px;
+    }
+}
+
+.ButtonBase_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    margin-right: 8px;
 }
 
 .ButtonBase_text {
@@ -265,6 +282,13 @@ export default {
 .ButtonBase--s {
     padding: 10px 15px;
     font: var(--ft-title-3xs);
+
+    
+    .ButtonBase_image {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+    }
 }
 
 .ButtonBase--xs {
