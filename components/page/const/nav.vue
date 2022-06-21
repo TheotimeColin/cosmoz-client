@@ -14,15 +14,15 @@
             <div class="p-10">
                 <div class="Nav_cat">
                     <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })" v-if="$isConsteMember">
-                        <fa icon="far fa-cog" /> Paramètres
+                        <div><fa icon="far fa-cog" /> Paramètres</div>
                     </nuxt-link>
 
                     <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-manage-events', params: { slug } })" v-if="$isConsteOrga">
-                        <fa icon="far fa-calendar" /> Gestions événements
+                        <div><fa icon="far fa-calendar" /> Gestions événements</div>
                     </nuxt-link>
 
                     <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })" v-if="$isConsteAdmin">
-                        <fa icon="far fa-crown" /> Administration
+                        <div><fa icon="far fa-crown" /> Administration</div>
                     </nuxt-link>
                 </div>
             </div>

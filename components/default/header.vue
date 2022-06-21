@@ -15,7 +15,10 @@
                 </button-base>
             </div>
             <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
+                <link-base class="Header_navItem" :to="{ name: 'explore-events' }" :modifiers="['current']">Nos rencontres
+                </link-base>
+
+                <link-base class="Header_navItem" :to="{ name: 'explore' }" :modifiers="['current']">Les communautés
                 </link-base>
 
                 <link-base class="Header_navItem" :modifiers="['current']"
@@ -96,7 +99,19 @@ export default {
     width: 100%;
     z-index: 110;
     background-color: var(--color-bg-strong);
-    transition: all 100ms ease;
+    transition: all 200ms ease;
+    
+    &.is-transparent {
+        background-color: transparent;
+
+        .Header_wrapper {
+            border-color: transparent;
+        }
+
+        &.is-scrolled {
+            background-color: var(--color-bg-strong);
+        }
+    }
 
     &.is-open {
         background-color: var(--color-bg-strong);

@@ -131,10 +131,10 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: color-opacity('bg-xstrong', -65%);
     pointer-events: none;
     opacity: 0;
-    transition: all 350ms ease;
+    transition: all 300ms ease;
 }
 
 .PopinBase_body {
@@ -145,13 +145,14 @@ export default {
     max-height: 90%;
     display: flex;
     flex-direction: column;
-    transform: translateY(5px);
+    transform: scale(0.98) translateY(5px);
     opacity: 0;
     border: none;
-    transition: all 350ms ease;
+    transition: all 300ms ease;
     overflow: hidden;
     position: relative;
     z-index: 5;
+    box-shadow: 0 5px 12px 0 color-opacity('bg-2xstrong', -75%);
 }
 
 .PopinBase_header {
@@ -215,6 +216,7 @@ export default {
     .PopinBase_hider {
         pointer-events: all;
         opacity: 1;
+        background-color: color-opacity('bg-2xstrong', -15%);
     }
 }
 

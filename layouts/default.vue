@@ -1,5 +1,5 @@
 <template>
-    <div class="Layout LayoutDefault" :class="[ classes ]">
+    <div class="Layout LayoutDefault" :class="[ classes, { 'is-transparent': $store.state.page.header.transparent } ]">
         <default-header />
 
         <div
@@ -61,6 +61,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.LayoutDefault {
+
+    &.is-transparent {
+        
+        .LayoutDefault_content {
+            margin-top: 0;
+            min-height: 100vh;
+        }
+    }
+}
+
 .LayoutDefault_content {
     margin-top: var(--default-header-height);
     min-height: calc(100vh - var(--default-header-height));

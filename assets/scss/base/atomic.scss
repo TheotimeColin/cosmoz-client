@@ -212,6 +212,10 @@ $value in $breakpoints {
       }
     }
 
+    .bg-none#{$name} {
+      background-color: transparent;
+    }
+
     /* WIDTH */
     @each $widthName,
     $width in $block-widths {

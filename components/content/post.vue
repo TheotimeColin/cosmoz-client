@@ -414,7 +414,7 @@ export default {
         }
 
         .Post_footer {
-            padding: 15px 20px;
+            padding: 15px 15px;
             margin: 0 -15px 0;
         }
 
@@ -431,6 +431,7 @@ export default {
 
         .Post_head {
             padding-top: 0;
+            padding-bottom: 15px;
             display: flex;
         }
 

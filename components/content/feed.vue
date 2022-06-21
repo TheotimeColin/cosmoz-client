@@ -24,10 +24,6 @@
         />
 
         <transition-group name="fade">
-            <div class="Feed_item ft-s color-ft-xweak bg-bg-strong br-s p-15 text-center" v-if="isLoading || isSubmitLoading" key="loader">
-                <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
-            </div>
-
             <content-post
                 v-for="status in displayedStatuses"
                 class="Feed_item"
@@ -45,6 +41,13 @@
         <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoading">
             Aucun message sur ce fil.
         </div>
+        
+        <div class="Feed_loader mt-20" v-if="isLoading || isSubmitLoading">
+            <button-base :modifiers="['light']" >
+                <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
+            </button-base>
+        </div>
+        
 
         <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
             <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>
@@ -163,6 +166,13 @@ export default {
     & + & {
         margin-top: 20px;
     }
+}
+
+.Feed_loader {
+    position: sticky;
+    z-index: 15;
+    bottom: 15px;
+    text-align: center;
 }
 
 @include breakpoint-xs {

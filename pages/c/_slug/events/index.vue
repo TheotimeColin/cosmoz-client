@@ -79,9 +79,6 @@ export default {
 
 <style lang="scss" scoped>
 .Date {
-
-    & + & {
-        margin-top: 60px;
-    }
+    margin-top: 40px;
 }
 </style>

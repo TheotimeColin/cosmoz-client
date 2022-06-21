@@ -1,11 +1,11 @@
 <template>
-    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', '--margin': margin + 'px' }">
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', '--margin': margin + 'px', '--height': (offsetV + height) + 'px' }">
         <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
             <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
                 <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in 5" :key="i" v-show="isLoading">
-                    <placeholder :ratio="ratio" />
+                    <placeholder :height="height" :ratio="ratio" />
                 </div>
 
                 <div
@@ -13,6 +13,7 @@
                     v-for="slotId in slots"
                     :class="[ itemClass ]"
                     :key="slotId"
+                    ref="item"
                 >
                     <slot :name="slotId"></slot>
                 </div>
@@ -45,6 +46,7 @@ export default {
     data: () => ({
         step: 0,
         maxSteps: 0,
+        height: 200,
         isSlidable: true
     }),
     mounted () {
@@ -70,6 +72,12 @@ export default {
             } else {
                 this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
             }
+
+            if (this.$refs.item) {
+                this.$refs.item.forEach(item => {
+                    this.height = this.height < item.offsetHeight ? item.offsetHeight : this.height
+                })
+            }
         },
         next () {
             this.step += 1
@@ -84,6 +92,7 @@ export default {
 <style lang="scss" scoped>
     .SliderBlock {
         position: relative;
+        height: var(--height, 0px);
     }
 
     .SliderBlock_container {

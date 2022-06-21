@@ -1,6 +1,6 @@
 <template>
     <div class="Placeholder">
-        <div class="Placeholder_content" :style="{ paddingBottom: ratio + '%' }"></div>
+        <div class="Placeholder_content" :style="height ? { height: height + 'px' } : { paddingBottom: ratio + '%' }"></div>
     </div>
 </template>
 
@@ -8,7 +8,8 @@
 export default {
     name: 'Placeholder',
     props: {
-        ratio: { type: Number, default: 50 }
+        ratio: { type: Number, default: 50 },
+        height: { type: Number, default: 50 }
     }
 }
 </script>
@@ -34,7 +35,7 @@ export default {
 }
 
 .Placeholder_content {
-    padding-bottom: 100%;
+    // padding-bottom: 100%;
 }
 
 @keyframes placeholder {

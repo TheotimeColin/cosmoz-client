@@ -2,16 +2,14 @@
     <nuxt-link :to="link ? link : defaultLink" class="BlockConst" :class="[ ...$modifiers ]">
         <div class="BlockConst_cover">
             <div class="BlockConst_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }"></div>
-
-            <div class="BlockConst_logo" :style="{ backgroundImage: logoSmall ? `url(${logoSmall})` : '' }"></div>
         </div>
         <div class="BlockConst_content">
             <div>
-                <h3 class="BlockConst_name">
-                    {{ name|specials }}
-                </h3>
-            
-                <p class="BlockConst_intro ellipsis-2">{{ intro|specials }}"</p>
+                <const-icon :logo="logo" :name="name" :display-name="true" />
+
+                <div class="mt-10">
+                    <p class="BlockConst_intro ellipsis-2">{{ intro|specials }}"</p>
+                </div>
             </div>
 
             <div class="fx-center mt-15">
@@ -36,6 +34,7 @@ export default {
         slug: { type: String },
         name: { type: String },
         intro: { type: String },
+        logo: { type: Object },
         logoSmall: { type: String },
         location: { type: String },
         members: { type: Array, default: () => [] },
@@ -73,15 +72,15 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.3;
+    opacity: 1;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
 }
 
 .BlockConst_logo {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
     margin-right: 15px;
     background-size: cover;
