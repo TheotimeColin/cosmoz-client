@@ -38,7 +38,11 @@ const allowedOrigins = [
     'http://localhost',
     'http://cosmoz.local',
     'https://cosmoz.social',
+    'https://www.cosmoz.social',
+    'https://cosmoz.events',
+    'https://www.cosmoz.events',
     'https://cosmoz.dev',
+    'https://www.cosmoz.dev',
     'http://localhost:8080',
     'http://localhost:8100'
 ];
