@@ -58,6 +58,7 @@ let UserEntity = {
 
 UserEntity.fields.pre('save', async function(next) {
     var user = this
+
     if (!user.isModified('password')) return next()
 
     let hash = await generatePassword(user.password)

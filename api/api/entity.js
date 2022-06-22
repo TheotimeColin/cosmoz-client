@@ -248,6 +248,40 @@ const typeSetters = {
             resolve(params)
         })
     },
+    user: async (params, req, user, doc) => {
+        return new Promise(async resolve => {
+            try {
+
+                if (req.body.params.alias && req.body.params.alias != user.alias) {
+                    const existing = await Entities.user.model.find({
+                        alias: user.alias.toLowerCase()
+                    })
+        
+                    let numbers = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    let handles = existing.map(u => u.handle)
+                    let max = 9990
+                    let result = null
+
+                    while (!result && max > 0) {
+                        let testHandle = numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))]
+        
+                        if (!handles.includes(handles)) result = testHandle
+        
+                        max -= 1
+                    }
+
+                    if (result) {
+                        params.handle = result
+                    }
+                }
+    
+                resolve(params)
+            } catch (e) {
+                console.error(e)
+                resolve(params)
+            }
+        })
+    },
     gathering: async (params, req, user, doc) => {
         return new Promise(async (resolve, reject) => {
             if (!doc || !doc.id) params.id = shortid.generate()

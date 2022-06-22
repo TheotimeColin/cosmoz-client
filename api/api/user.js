@@ -70,6 +70,7 @@ exports.logUser = async function (req, res) {
         } else if (register || (user && !user.password)) {
             if (user) {
                 user.id = shortid.generate()
+
                 if (data.name) user.name = data.name
                 user.password = data.password
             } else {
