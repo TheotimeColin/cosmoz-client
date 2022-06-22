@@ -6,7 +6,7 @@ const mime = require('mime')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { createNotification } = require('../utils/notifications')
 const { sendBulkMail } = require('../utils/mailing')
-import moment from 'moment-timezone'
+const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 
 const Entities = require('../entities')

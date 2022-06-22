@@ -112,7 +112,7 @@
         </div>
     </div>
     <div v-else>
-        <placeholder :ratio="40" />
+        <placeholder class="Post_placeholder" :ratio="$randomBetween(40, 60)" />
     </div>
 </template>
 
@@ -400,6 +400,11 @@ export default {
         .Post {
             margin: 0 -20px;
             padding: 15px 15px 0;
+            border-radius: 0;
+        }
+
+        .Post_placeholder.Placeholder {
+            margin: 0 -20px;
             border-radius: 0;
         }
 

@@ -44,17 +44,18 @@ $value in $breakpoints {
     }
 
     .hide#{$name} {
-      visibility: hidden;
-      height: 0;
-      width: 0;
-      pointer-events: none;
+      visibility: hidden !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      width: 0 !important;
+      pointer-events: none !important;
     }
 
     .show#{$name} {
-      visibility: visible;
-      height: auto;
-      width: auto;
-      pointer-events: all;
+      visibility: visible !important;
+      height: auto !important;
+      width: auto !important;
+      pointer-events: all !important;
     }
 
     /* TRANSFORM HELPERS */

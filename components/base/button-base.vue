@@ -1,7 +1,7 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
         :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image } ]" :to="localePath(to)"
-        :disabled="disabled"
+        :disabled="disabled || loading"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
@@ -149,6 +149,7 @@ export default {
     pointer-events: none;
     font-size: 150%;
     position: absolute;
+    z-index: 3;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
@@ -188,6 +189,7 @@ export default {
 }
 
 .ButtonBase.is-loading {
+    pointer-events: none;
 
     .ButtonBase_content {
         transform: scale(0.95);
@@ -269,17 +271,14 @@ export default {
     color: var(--color-ft);
 
     &:hover,
-    &:active {
+    &:active,
+    &.is-loading {
         color: var(--color-ft-light);
         background-color: var(--color-cosmoz);
 
         .G_cosmoz {
             opacity: 0.75;
         }
-    }
-    
-    .ButtonBase_iconLoading {
-        color: var(--color-ft);
     }
 }
 
@@ -291,6 +290,7 @@ export default {
     }
     
     &:hover,
+    &.is-loading,
     &:active {
         background-color: var(--color-ft-light);
         color: var(--color-ft);

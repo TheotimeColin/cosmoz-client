@@ -12,7 +12,7 @@
             <link-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" v-if="selectConst.isFollower">Voir la demande</link-base>
             <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: selectConst.slug } }" :modifiers="['round', 'light']" icon-before="arrow-right" v-else />
         </div>
-        <div >
+        <div>
             <div class="Sticky_wrapper">
                 <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
                 <div class="Sticky_current round ft-xs bg-cosmoz" @click="onOpen" v-else>
@@ -65,9 +65,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
     :root {
-        --sticky-height: 60px;
+        --sticky-height: 0px;
+    }
+
+    @include breakpoint-s {
+        
+        :root {
+            --sticky-height: 60px;
+        }
     }
 </style>
 

@@ -68,6 +68,25 @@ export default {
                 return null
             }
         },
+        async create ({ commit, rootState }, params) {
+            try {
+                const response = await this.$axios.$post('/entities', {
+                    _id: rootState.auth.user._id,
+                    ...params,
+                    type: 'user'
+                })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                commit('updateOne', response.data)
+                await this.$auth.fetchUser()
+    
+                return response
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
         async update ({ rootState }, params) {
             try {
                 const response = await this.$axios.$post('/entities', {

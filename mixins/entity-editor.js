@@ -45,7 +45,7 @@ export default {
     created () {
         if (this.preCreated) this.preCreated()
 
-        this.currentId = this.$route.params.id
+        this.currentId = this.entityId ? this.entityId : this.$route.params.id
 
         this.formData = this.decodeForm({
             ...(this.defaultFormData ? this.defaultFormData : {}),

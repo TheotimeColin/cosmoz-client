@@ -3,14 +3,12 @@
         <form @submit.prevent="onSubmit" class="block">
             <div class="d-flex mt-5 d-block@xs">
                 <input-base label="Ton vrai prénom" v-model="formData.name" :attrs="{ required: true }" />
-
-                <input-toggle class="fx-no-shrink ml-10 ml-0@xs mt-10@xs" label="Utiliser un pseudo" :value="isPseudo" @input="onTogglePseudo"/>
             </div>
 
-            <div class="ft-m p-20 br-s bg-bg strong mt-20" v-if="isPseudo">
-                <input-base class="mb-10" label="Ton pseudonyme" v-model="formData.alias" :attrs="{ placeholder: 'Capitaine Patate' }" />
+            <div class="ft-m p-20 br-s bg-bg strong mt-20">
+                <input-base class="mb-10" label="Ton pseudonyme" v-model="formData.alias" :suffix="'#' + user.handle" />
 
-                Ce pseudonyme remplace ton prénom pour les personnes que tu n'as encore pas rencontrées en vrai. 
+                S'affiche à la place de ton prénom pour les personnes avec qui tu n'as pas de groupes en commun. 
             </div>
 
             <input-date class="mt-20" label="Ta date de naissance" v-model="formData.birthdate" :attrs="{ required: true, max: $moment().subtract(17, 'years').format('YYYY-MM-DD'), min: $moment().subtract(99, 'years').format('YYYY-MM-DD') }" />

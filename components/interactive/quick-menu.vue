@@ -73,6 +73,7 @@ export default {
 
 <style lang="scss" scoped>
     .QuickMenu {
+        display: inline-block;
         position: relative;
         
         &.is-large {

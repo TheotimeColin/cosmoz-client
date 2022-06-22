@@ -73,7 +73,7 @@
                 :errors="errors"
                 :is-valid="state.isValid"
                 :is-active="errors.length > 0 && state.isFocused"
-                v-show="state.isValue"
+                v-show="state.isValue && errors.length > 0"
             />
         </div>
     </div>
@@ -205,6 +205,14 @@ export default {
     .InputBase_label,
     .SelectBase_label {
         background-color: var(--color-bg) !important;
+    }
+}
+
+.weak {
+
+    .InputBase_label,
+    .SelectBase_label {
+        background-color: var(--color-bg-weak) !important;
     }
 }
 

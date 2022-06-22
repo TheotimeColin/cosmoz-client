@@ -1,6 +1,17 @@
 <template>
     <div class="Page">
         <template v-if="profile && this.user">
+            <div class="pv-10 ph-20" :class="profile.isFriend ? ['bg-cosmoz-strong'] : ['bg-bg-xweak', 'color-ft-light']" v-if="profile.isFriend || user.encounters.includes(profile._id)">
+                <div class="ft-s-bold">
+                    <div v-if="profile.isFriend">
+                        <fa icon="far fa-sparkles" class="mr-3" /> Fait partie de ta constellation
+                    </div>
+                    <div v-else-if="user.encounters.includes(profile._id)">
+                        <fa icon="far fa-hand-wave" class="mr-3" /> Vous vous êtes rencontrés
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-cover-10 bg-bg-xstrong" :style="{ '--background': `url(${$bg.holo})` }">
                 <div class="fx-center width-100 d-block@xs p-30">
                     <div class="fx-center fx-no-shrink">
@@ -13,25 +24,11 @@
                             />
                         </div>
                         <div class="fx-grow">
-                            <div class="d-flex fxa-center">
-                                <p class="ft-title-l ft-title-m@s">{{ profile.name }}</p>
-                                
-                                <quick-menu
-                                    class="ml-10 d-none@s"
-                                    :modifiers="['right']"
-                                    :items="[
-                                        { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
-                                    ]"
-                                    v-if="!isSelf && profile.isFriend"
-                                />
-                            </div>
+                            <p class="ft-title-l ft-title-m@s">{{ profile.name }}</p>
 
-                            <div class="ft-m" v-if="profile.isFriend">
-                                Fait partie de ta constellation
-                            </div>
-                            <div class="ft-m" v-else-if="user.encounters.includes(profile._id)">
-                                Vous vous êtes rencontrés
-                            </div>
+                            <p class="ft-s-medium">
+                                {{ profile.alias }}#{{ profile.handle }}
+                            </p>
                         </div>
                     </div>
 
@@ -41,16 +38,23 @@
                         </div>
                     </div> -->
 
-                    <div class="mt-10@xs">
-                        <button-base :modifiers="['ss']" icon-before="check" v-if="!profile.isFriend && user.affinities.includes(profile._id)" @click="cancelFriendRequest" :loading="isLoading">
+                    <div>
+                        <button-base class="mt-20@xs" :modifiers="['s']" icon-before="check" v-if="!profile.isFriend && user.affinities.includes(profile._id)" @click="cancelFriendRequest" :loading="isLoading">
                             Demande envoyée
                         </button-base>
-                        <button-base :modifiers="['light']" icon-before="plus" v-else-if="!profile.isFriend && !isSelf" :loading="isLoading" @click="createFriendRequest">
+                        <button-base class="mt-20@xs" :modifiers="['light', 's']" icon-before="plus" v-else-if="!profile.isFriend && !isSelf" :loading="isLoading" @click="createFriendRequest">
                             Demander en ami
                         </button-base>
-                        <button-base :modifiers="['light']" icon-before="pen" @click="() => isSelf ? editSection = 'picture' : ''" v-else-if="isSelf">
+                        <button-base class="mt-20@xs" :modifiers="['light', 's']" icon-before="pen" @click="() => isSelf ? editSection = 'picture' : ''" v-else-if="isSelf">
                             Modifier mon profil
                         </button-base>
+                        <quick-menu
+                            class="ml-10"
+                            :items="[
+                                { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
+                            ]"
+                            v-if="!isSelf && profile.isFriend"
+                        />
                     </div>
                 </div>
             </div>
@@ -89,18 +93,26 @@
                 </div>
             </div> -->
 
-            <div class="Page_wrapper Wrapper Wrapper--xs">
+            <div class="p-20 br-xs o-hidden bg-cover-25 bg-night" v-if="isSelf && !user.picture">
+                <div class="G_cosmoz"></div>
+                
+                <div class="Wrapper Wrapper--s p-relative fx-center">
+                    <p class="ft-title-xs mr-10">C'est quand même plus sympa avec une photo !</p>
+
+                    <button-base :modifiers="['light', 's']" @click="editSection = 'picture'" icon-before="image">
+                        Ajouter une image de profil
+                    </button-base>
+                </div>
+            </div>
+
+            <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
                 <content-feed
                     :author="profile._id"
                     :disable-create="true"
                 />
             </div>
 
-            <popin :is-active="editSection" @close="editSection = null" v-if="isSelf">
-                <template slot="content">
-                    <profile-edit :section="editSection" />
-                </template>
-            </popin>
+            <profile-edit :is-active="editSection ? true : false" @close="editSection = null" v-if="isSelf" />
         </template>
         <template v-else>
             <app-banner :background="$bg.holo" />

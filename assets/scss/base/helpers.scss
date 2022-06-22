@@ -407,16 +407,16 @@
     right: -5%;
     width: 110%;
     height: 110%;
-    opacity: 0.15;
+    opacity: 0.25;
     transition: all 250ms ease;
     pointer-events: none;
 
     background:
      radial-gradient(farthest-side at bottom right,
-     color-opacity('cosmoz', -50%), transparent 75%),
+     color-opacity('cosmoz', -20%), transparent 75%),
 
      radial-gradient(farthest-corner at top right,
-     color-opacity('nebula', -50%), transparent 65%);
+     color-opacity('nebula', -75%), transparent 65%);
 }
 
 @each $color in $main-colors {

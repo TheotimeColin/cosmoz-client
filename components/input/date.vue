@@ -28,7 +28,7 @@ export default {
         value: {
             immediate: true,
             handler (v) {
-                this.localValue = (v ? this.$moment(v) : this.$moment()).format('yyyy-MM-DD')
+                this.localValue = v ? this.$moment(v).format('yyyy-MM-DD') : null
             }
         },
         localValue: {

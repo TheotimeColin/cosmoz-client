@@ -171,7 +171,7 @@ export default {
 .Feed_loader {
     position: sticky;
     z-index: 15;
-    bottom: 15px;
+    bottom: calc(var(--sticky-height) + 20px);
     text-align: center;
 }
 

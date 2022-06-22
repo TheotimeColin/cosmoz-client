@@ -9,7 +9,7 @@ export default {
     name: 'Placeholder',
     props: {
         ratio: { type: Number, default: 50 },
-        height: { type: Number, default: 50 }
+        height: { type: Number, default: 0 }
     }
 }
 </script>

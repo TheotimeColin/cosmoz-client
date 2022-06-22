@@ -1,6 +1,41 @@
 import CONSTANTS from '@/utils/constants'
 
 export default {
+    user: {
+        decode: function (form) {
+
+            return {
+                ...form
+            }
+        },
+        parse: async (form, $parent) => {
+            return new Promise(async resolve => {
+                if (form.picture && form.picture._id) {
+                    form.picture = form.picture._id
+                } else {
+                    delete form.picture
+                }
+
+                if (form.removePicture) form.picture = null
+
+                if (form.newPicture) {
+                    let result = await $parent.$store.dispatch('library/create', {
+                        file: form.newPicture,
+                        size: 'profile',
+                        path: '$user'
+                    })
+
+                    if (result) form.picture = result._id
+
+                    delete form.newPicture
+                }
+
+                resolve({
+                    ...form
+                })
+            })
+        }
+    },
     gathering: {
         decode: function (form) {
             let status = form ? CONSTANTS.status.find(c => c.value == form.status) : null

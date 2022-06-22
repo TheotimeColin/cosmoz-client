@@ -31,7 +31,7 @@
                 <button-icon class="AppHeader_button" fa="paper-plane" />
 
                 <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)"
-                    :notification="notifications.length > 0" />
+                    :notification="notifications.length" />
             </div>
         </div>
     </div>
