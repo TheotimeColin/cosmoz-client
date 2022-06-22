@@ -1,12 +1,9 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})"
-        class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]">
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath({ name: 'p-userId', params: { userId: id }})" class="UserIcon" :class="[ theme, ...$modifiers, { 'is-friend': isFriend } ]">
         <div class="UserIcon_image" :style="{ backgroundImage: `url(${src ? src : $bg.holo})` }">
-            <client-only>
-                <template v-if="hidePicture || !src">
-                    {{ name ? name.slice(0, 1) : 'a' }}
-                </template>
-            </client-only>
+            <template v-if="hidePicture || !src">
+                {{ name ? name.slice(0, 1) : 'a' }}
+            </template>
         </div>
 
         <div class="UserIcon_nameContainer" v-if="displayName">
@@ -22,6 +19,14 @@
         </div>
 
         <slot name="overlay"></slot>
+
+        <div class="UserIcon_overlay" v-if="icon">
+            <fa :icon="`far fa-${icon}`"></fa>
+        </div>
+
+        <div class="UserIcon_badge" v-if="badge">
+            <fa :icon="`far fa-${badge}`"></fa>
+        </div>
     </component>
 </template>
 
@@ -39,6 +44,8 @@ export default {
         hidePicture: { type: Boolean, default: false },
         profileLarge: { type: String },
         pictureSrc: { type: String },
+        icon: { type: String },
+        badge: { type: String },
         isFriend: { type: Boolean, default: false },
         noLink: { type: Boolean, default: false }
     },
@@ -61,6 +68,7 @@ export default {
     display: inline-flex;
     align-items: center;
     vertical-align: top;
+    position: relative;
 }
 
 .UserIcon_nameContainer {
@@ -90,6 +98,22 @@ export default {
     font-size: 15px;
 }
 
+.UserIcon_overlay {
+    font-size: 20px;
+    border-radius: 50%;
+    @include absolute-fill;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: color-opacity('bg-2xstrong', -50%);
+    transition: all 100ms ease;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: color-opacity('bg-2xstrong', -10%);
+    }
+}
+
 .UserIcon_badge {
     position: absolute;
     width: 10px;
@@ -103,7 +127,16 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 5px;
-    background-color: var(--color-sticky);
+    background-color: var(--color-bg-light);
+    cursor: pointer;
+    transition: all 100ms ease;
+    box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
+
+    &:hover {
+        color: var(--color-ft-light);
+        background-color: var(--color-cosmoz);
+        transform: scale(0.95);
+    }
 }
 
 .UserIcon--xs {
@@ -195,6 +228,12 @@ export default {
         width: 125px;
         height: 125px;
         font-size: 60px;
+    }
+
+    .UserIcon_badge {
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
     }
 }
 </style>

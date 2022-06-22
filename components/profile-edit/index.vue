@@ -1,23 +1,28 @@
 <template>
     <form @submit.prevent="onSubmit" class="ProfileEdit">
-        <div>
-            <p class="ft-title-m">Photo de profil</p>
-            <p class="mt-10">Ta photo de profil sera uniquement visible par les personnes que tu as croisé lors d'un événement.</p>
-            
-            <div class="row-s text-center mt-20">
-                <div class="col-6">
-                    <p class="ft-l-bold text-upper ft-italic mb-20">Avant de t'avoir rencontré</p>
-                    
-                    <user-icon :hide-picture="true" :no-link="true" :modifiers="['2xl']" v-bind="user" />
+        <div class="ratio-15 bgi-cover" :style="{ backgroundImage: `url(${$bg.holo})` }"></div>
 
-                    <p class="mt-20 p-20 b">Ta photo de profil est uniquement visible par les personnes que tu as déjà croisées lors d'un événement.</p>
-                </div>
-                <div class="col-6">
-                    <p class="ft-l-bold text-upper ft-italic mb-20">Après t'avoir rencontré</p>
+        <div class="p-30">
+            <div class="d-flex fxa-center">
+                <label class="c-pointer" for="profile-edit">
+                    <user-icon :no-link="true" :modifiers="['2xl']" v-bind="user" :picture-src="picture" badge="pen" />
+                </label>
 
-                    <user-icon class="" :no-link="true" :modifiers="['2xl']" v-bind="user" :picture-src="picture" />
+                <div class="ml-30">
+                    <p class="ft-title-s">Photo de profil</p>
+                    <p class="mt-5">Ta photo de profil sera uniquement visible par les personnes que tu as croisé lors d'un événement.</p>
 
-                    <input-file class="mt-20" v-model="newPicture" />
+                    <div class="mt-15">
+                        <button-base :modifiers="['s', 'cosmoz']" icon-before="image">
+                            Choisir une image
+                        </button-base>
+
+                        <link-base class="ml-10" v-if="picture">
+                            Retirer ma photo
+                        </link-base>
+                    </div>
+
+                    <input-file class="mt-20" :no-label="true" id="profile-edit" v-model="newPicture" />
                 </div>
             </div>
         </div>

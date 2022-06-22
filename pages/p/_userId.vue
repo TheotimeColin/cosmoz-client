@@ -8,12 +8,9 @@
                             <user-icon
                                 :no-link="isSelf"
                                 :modifiers="$smallerThan('s') ? ['l'] : ['xl']"
+                                :badge="isSelf ? 'pen' : ''"
                                 v-bind="profile"
                             />
-
-                            <div class="Profile_pictureOverlay" v-if="isSelf">
-                                <fa icon="far fa-camera" />
-                            </div>
                         </div>
                         <div class="fx-grow">
                             <div class="d-flex fxa-center">
@@ -50,6 +47,9 @@
                         </button-base>
                         <button-base :modifiers="['light']" icon-before="plus" v-else-if="!profile.isFriend && !isSelf" :loading="isLoading" @click="createFriendRequest">
                             Demander en ami
+                        </button-base>
+                        <button-base :modifiers="['light']" icon-before="pen" @click="() => isSelf ? editSection = 'picture' : ''" v-else-if="isSelf">
+                            Modifier mon profil
                         </button-base>
                     </div>
                 </div>
@@ -98,9 +98,7 @@
 
             <popin :is-active="editSection" @close="editSection = null" v-if="isSelf">
                 <template slot="content">
-                    <div class="p-30">
-                        <profile-edit :section="editSection" />
-                    </div>
+                    <profile-edit :section="editSection" />
                 </template>
             </popin>
         </template>

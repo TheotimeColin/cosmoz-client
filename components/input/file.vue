@@ -1,5 +1,5 @@
 <template>
-    <component :is="disabled ? 'div' : 'label'" :for="id" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
+    <component :is="noLabel || disabled ? 'div' : 'label'" :for="id" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
         <button-base tag="div" :modifiers="['round', 'xweak']" :icon-before="icon" :disabled="disabled" v-if="icon" />
         <div class="InputFile_title" v-else>
             <p class="ft-3xl">
@@ -9,7 +9,7 @@
             {{ label }}
         </div>
 
-        <input type="file" :id="id" @change="onChange" ref="input" :multiple="multiple" :accept="accept.join(', ')">
+        <input type="file" :id="computedId" @change="onChange" ref="input" :multiple="multiple" :accept="accept.join(', ')">
     </component>
 </template>
 
@@ -19,7 +19,9 @@ import shortId from 'shortid'
 export default {
     name: 'InputFile',
     props: {
+        id: { type: String, default: '' },
         multiple: { type: Boolean, default: false },
+        noLabel: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },
         accept: { type: Array, default: () => ['image/png', 'image/jpeg'] },
         max: { type: Number, default: 4 },
@@ -27,10 +29,10 @@ export default {
         icon: { type: String, default: '' },
     },
     data: () => ({
-        id: ''
+        computedId: ''
     }),
     created () {
-        this.id = this.id ? this.id : shortId.generate()
+        this.computedId = this.computedId ? this.computedId : (this.id ? this.id : shortId.generate())
     },
     methods: {
         onChange (e) {

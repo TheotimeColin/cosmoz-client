@@ -59,7 +59,7 @@ const corsOptions = {
     }
 }
 
-app.options('*', cors(corsOptions));
+app.options('*', cors())
 
 app.use(morgan('combined'))
 app.use(express.json({ limit: '10mb', extended: true }))

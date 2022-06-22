@@ -130,6 +130,11 @@
 .bgi-aluminium { background-image: url('./../img/texture/aluminium.webp'); }
 .bgi-night { background-image: url('./../img/texture/night.webp'); }
 
+.bgi-cover {
+    background-size: cover;
+    background-position: center;
+}
+
 .bg-cover,
 .bg-cover-10,
 .bg-cover-25,
