@@ -2,7 +2,7 @@
     <div class="Page_wrapper Wrapper Wrapper--s" v-if="$constellation">
         <div class="Section">
             <div class="p-30 text-center bg-bg-strong br-s">
-                <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: $constellation.slug } }" icon-before="plus">Organiser une sortie</button-base>
+                <button-base :modifiers="['light', 's']" :to="{ name: 'c-slug-manage-events-id', params: { id: 'new', slug: $constellation.slug } }" icon-before="plus">Organiser un événement</button-base>
             </div>
         </div>
 

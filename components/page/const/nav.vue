@@ -1,8 +1,25 @@
 <template>
     <div class="Nav bg-bg-strong" :class="{ 'is-absolute': isAbsolute }" style="--offset: 40px;">
         <div>
-            <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero})`}" v-if="!isHome">
-                <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
+            <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero ? hero : $bg.night })`}" v-if="!isHome">
+                <div class="fx-grow">
+                    <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
+                </div>
+
+                <quick-menu
+                    class="ml-10"
+                    :items="[
+                        { fa: 'user-astronaut', to: { name: 'c-slug-members', params: { slug } }, label: `Liste des membres` },
+                        
+                        { fa: 'calendar', to: { name: 'c-slug-manage-events', params: { slug} }, label: `Gestion des événements`, disabled: !$isConsteOrga || type != 'community' },
+
+                        
+                        { fa: 'crown', to: { name: 'c-slug-admin', params: { slug} }, label: `Administration`, disabled: !$isConsteAdmin },
+
+
+                        { fa: 'arrow-right-from-bracket', label: `Quitter ce groupe`, disabled: !$isConsteMember || $isConsteAdmin, action: onLeave },
+                    ]"
+                />
             </div>
 
             <div class="Nav_content">
@@ -10,23 +27,7 @@
             </div>
         </div>
 
-        <div class="Nav_footer">
-            <div class="p-10">
-                <div class="Nav_cat">
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-settings', params: { slug } })" v-if="$isConsteMember">
-                        <div><fa icon="far fa-cog" /> Paramètres</div>
-                    </nuxt-link>
-
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-manage-events', params: { slug } })" v-if="$isConsteOrga">
-                        <div><fa icon="far fa-calendar" /> Gestions événements</div>
-                    </nuxt-link>
-
-                    <nuxt-link class="Nav_item ellipsis-1 ellipsis-break" :to="localePath({ name: 'c-slug-admin', params: { slug } })" v-if="$isConsteAdmin">
-                        <div><fa icon="far fa-crown" /> Administration</div>
-                    </nuxt-link>
-                </div>
-            </div>
-            
+        <div class="Nav_footer">            
             <div class="p-15 bg-cosmoz" v-if="!user">
                 <p class="ft-title-2xs mb-5">Devenir membre</p>
                 <p class="ft-s mb-15">Rejoins la communauté et débloque toutes les sections !</p>
@@ -64,6 +65,7 @@ export default {
         _id: { type: String },
         slug: { type: String },
         hero: { type: String },
+        type: { type: String },
         name: { type: String },
         logo: { type: Object },
         followers: { type: Array, default: () => [] },
@@ -111,6 +113,7 @@ export default {
                     fa: 'calendar',
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
                     number: this.events.length,
+                    disabled: this.type == 'group',
                     children: [ ...this.events.slice(0, 3), ...this.pastEvents ]
                 },
                 {
@@ -119,6 +122,18 @@ export default {
                     to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
                 },
             ]
+        }
+    },
+    methods: {
+        onLeave () {
+            this.$store.commit('page/popin', { confirm: {
+                text: 'Veux-tu vraiment quitter ce groupe ?',
+                confirm: {
+                    text: 'Quitter le groupe',
+                    modifiers: ['error'],
+                    action: () => this.$store.dispatch('constellation/leave', this._id)
+                }
+            } })
         }
     }
 }

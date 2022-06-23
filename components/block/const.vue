@@ -1,20 +1,20 @@
 <template>
     <nuxt-link :to="link ? link : defaultLink" class="BlockConst" :class="[ ...$modifiers ]">
         <div class="BlockConst_cover">
-            <div class="BlockConst_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }"></div>
+            <div class="BlockConst_coverImage" :style="{ backgroundImage: `url(${thumbnail ? thumbnail : $bg.night})` }"></div>
         </div>
         <div class="BlockConst_content">
             <div>
-                <const-icon :logo="logo" :name="name" :display-name="true" />
+                <const-icon :logo="logo" :name="name" :no-link="true" :display-name="true" />
 
                 <div class="mt-10">
-                    <p class="BlockConst_intro ellipsis-2">{{ intro|specials }}"</p>
+                    <p class="BlockConst_intro ellipsis-2">{{ intro|specials }}</p>
                 </div>
             </div>
 
             <div class="fx-center mt-15">
                 <div class="BlockConst_location ellipsis-1 ellipsis-break mr-10">
-                    <fa icon="far fa-map-marker-alt" class="mr-3"></fa> {{ location }}
+                    <fa icon="far fa-map-marker-alt" class="mr-3" v-if="location" />{{ location }}
                 </div>
                 <div class="ft-xs ellipsis-1 ellipsis-break" v-if="members.length > 0">
                     <fa icon="far fa-user-check" class="mr-3"></fa> {{ members.length }} membres
@@ -107,7 +107,7 @@ export default {
 
     &::before {
         content: "";
-        @include ratio(30);
+        @include ratio(20);
     }
 }
 

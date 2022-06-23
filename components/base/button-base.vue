@@ -87,7 +87,7 @@ export default {
 <style lang="scss" scoped>
 .ButtonBase {
     display: inline-flex;
-    font: var(--ft-title-2xs);
+    font: var(--ft-title-3xs);
     line-height: 1;
     color: var(--color-ft-light);
     background-color: var(--color-bg-xstrong);
@@ -101,18 +101,20 @@ export default {
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
+    box-shadow: 0 3px 10px 0 color-opacity('bg-2xstrong', -50%);
 
     cursor: pointer;
 
     &:hover,
     &:active {
-        background-color: var(--color-bg);
-        color: var(--color-ft-light);
-        transform: scale(0.98);
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
+        transform: scale(0.99);
+        box-shadow: 0 1px 4px 0 color-opacity('bg-2xstrong', -25%);
     }
 
     &:active {
-        transform: scale(0.96);
+        transform: scale(0.95) !important;
     }
 
     &.is-image {
@@ -223,20 +225,24 @@ export default {
 
     &.is-active,
     &:hover {
+        color: var(--color-ft-light);
         background-color: var(--color-bg-strong);
     }
 }
 
 .ButtonBase--xweak {
     background-color: transparent;
-    color: var(--color-ft-weak);
+    color: var(--color-ft-light);
+    box-shadow: none;
 
     &.is-active {
+        color: var(--color-ft-light);
         background-color: var(--color-bg-strong);
     }
 
     &:hover {
         background-color: var(--color-bg);
+        color: var(--color-ft-light);
 
         &.is-active {
             background-color: var(--color-bg-strong);
@@ -246,14 +252,19 @@ export default {
 
 .ButtonBase--transparent {
     background-color: transparent;
-    color: var(--color-ft-weak);
+    color: var(--color-ft-light);
+    box-shadow: none;
 
     &.is-active {
         background-color: transparent;
+        box-shadow: none;
+        color: var(--color-ft-light);
     }
 
     &:hover {
         background-color: transparent;
+        box-shadow: none;
+        color: var(--color-ft-light);
 
         &.is-active {
             background-color: transparent;
@@ -311,6 +322,17 @@ export default {
     }
 }
 
+.ButtonBase--error {
+    background-color: var(--color-error);
+    border-radius: 3px;
+
+    &:hover,
+    &.is-loading,
+    &:active {
+        background-color: var(--color-error-strong);
+    }
+}
+
 .ButtonBase--full {
     display: flex;
     justify-content: center;
@@ -325,6 +347,7 @@ export default {
     padding: 12px;
     background-color: transparent;
     border: 1px solid var(--color-border);
+    box-shadow: none;
 
     .G_cosmoz {
         width: 40%;
@@ -335,6 +358,7 @@ export default {
         transform: translateY(-1px);
         background-color: var(--color-cosmoz);
         border-color: var(--color-cosmoz);
+        color: var(--color-ft-light);
         box-shadow: 0 2px 8px 0 color-opacity('bg-xstrong', -75%);
 
         .G_cosmoz {
@@ -363,7 +387,13 @@ export default {
 .ButtonBase--s {
     padding: 10px 15px;
     font: var(--ft-title-3xs);
+    box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
 
+    &:hover {
+        
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
+    }
     
     .ButtonBase_image {
         width: 30px;
@@ -401,6 +431,7 @@ export default {
 .ButtonBase--round {
     padding: 0;
     flex-shrink: 0;
+    font-size: 16px;
     
     .ButtonBase_iconAfter,
     .ButtonBase_iconBefore {

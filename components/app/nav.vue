@@ -82,12 +82,6 @@
 export default {
     async fetch () {
         if (this.user) {
-            console.log([
-                ...this.user.followedConstellations,
-                ...this.user.constellations,
-                ...this.user.createdConstellations
-            ])
-            
             await this.$store.dispatch('constellation/softFetch', [
                 ...this.user.followedConstellations,
                 ...this.user.constellations,
@@ -303,7 +297,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-grow: 1;
     overflow: scroll;
     padding: 10px 0;
     @include hide-scrollbars;

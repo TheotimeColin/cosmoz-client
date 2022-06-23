@@ -51,7 +51,7 @@
                         <quick-menu
                             class="ml-10"
                             :items="[
-                                { fa: 'times', label: 'Retirer de ta constellation', action: unmatch }
+                                { fa: 'times', label: 'Retirer de mes amis', action: unmatch }
                             ]"
                             v-if="!isSelf && profile.isFriend"
                         />
@@ -191,15 +191,15 @@ export default {
             return result ? result : {}
         },
         async unmatch () {
-            this.isLoading = true
-            
-            try {
-                await this.$store.dispatch('user/unmatch', this.profile)
-            } catch (e) {
-                console.error(e)
-            }
-
-            this.isLoading = false
+            this.$store.commit('page/popin', { confirm: {
+                text: `Veux-tu vraiment retirer ${this.profile.name} de tes amis ?`,
+                subtitle: `Nous ne l'informerons pas de ton choix, mais tu n'auras plus accès à son contenu.`,
+                confirm: {
+                    text: 'Retirer de mes amis',
+                    modifiers: ['error'],
+                    action: () => this.$store.dispatch('user/unmatch', this.profile)
+                }
+            } })
         },
         async createFriendRequest () {
             this.isLoading = true

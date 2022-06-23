@@ -10,10 +10,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
 
 import { faHeart, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles } from '@fortawesome/pro-solid-svg-icons'
+
+import { faMapMarkerAlt, faCalendarLines } from '@fortawesome/pro-light-svg-icons'
+
 import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 config.autoAddCss = false
-library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles)
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faMapMarkerAlt, faCalendarLines)
 
 Vue.component('fa', FontAwesomeIcon)
 

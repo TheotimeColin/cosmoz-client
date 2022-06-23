@@ -13,6 +13,7 @@
             <fa class="mr-5" :icon="`far fa-${iconBefore}`" v-if="iconBefore" />
 
             <slot></slot>
+            {{ text }}
 
             <fa class="ml-5" :icon="`far fa-${iconAfter}`" v-if="iconAfter" />
         </div>
@@ -30,6 +31,7 @@ export default {
         iconBefore: { type: [ String, Boolean ], default: false },
         invert: { type: Boolean, default: false },
         target: { type: String, defaut: '_self' },
+        text: { type: String },
         node: { type: Object, default: () => {} },
         to: { type: [Object, String] },
         link: { type: [ String ], default: '' },

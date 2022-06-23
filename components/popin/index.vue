@@ -197,7 +197,7 @@ export default {
     z-index: 5;
     top: 0px;
     right: 0px;
-    padding: 15px 20px;
+    padding: 10px 15px;
 }
 
 /* STATES */
@@ -248,7 +248,7 @@ export default {
 .PopinBase--xs {
     
     .PopinBase_body {
-        max-width: 300px;
+        max-width: 350px;
     }
 }
 
@@ -337,6 +337,19 @@ export default {
         transform: translateY(100%);
         opacity: 1;
         transition: all 250ms ease;
+    }
+
+    .PopinBase--xs {
+        align-items: center;
+
+        .PopinBase_body {
+            max-width: 350px;
+            width: 85%;
+            height: auto;
+            border-radius: 4px;
+            opacity: 0;
+            transform: scale(0.98) translateY(5px);
+        }
     }
 
     .PopinBase--panel {

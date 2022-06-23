@@ -34,7 +34,8 @@ export default {
         },
         popins: {
             register: null,
-            constellationCreate: null
+            constellationCreate: null,
+            confirm: null
         },
         meta: {
             title: ''

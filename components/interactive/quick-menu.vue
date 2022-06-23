@@ -95,7 +95,7 @@ export default {
         padding: 5px;
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
-        background-color: var(--color-bg-xstrong);
+        background-color: var(--color-bg-2xstrong);
         border-radius: 5px;
         transition: all 100ms ease;
     }
@@ -110,7 +110,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-strong);
+            background-color: var(--color-bg-xstrong);
 
             .QuickMenu_icon {
                 color: var(--color-ft-light);
@@ -130,6 +130,10 @@ export default {
             opacity: 1;
             transform: translateY(100%);
             pointer-events: all;
+        }
+
+        .QuickMenu_button {
+            background-color: var(--color-bg-2xstrong);
         }
     }
 

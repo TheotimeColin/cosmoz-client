@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLabel || disabled ? 'div' : 'label'" :for="id" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
+    <component :is="noLabel || disabled ? 'div' : 'label'" :for="computedId" class="InputFile" :class="{ 'is-icon': icon, 'is-disabled': disabled }">
         <button-base tag="div" :modifiers="['round', 'xweak']" :icon-before="icon" :disabled="disabled" v-if="icon" />
         <div class="InputFile_title" v-else>
             <p class="ft-3xl">

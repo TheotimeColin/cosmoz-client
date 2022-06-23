@@ -1,40 +1,49 @@
 <template>
     <div>
         <div class="block bg-bg-weak p-0 br-none@xs">
-            <div class="p-20">
-                <h1 class="ft-title-xs d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
+            <div class="p-15">
+                <h1 class="ft-title-s d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
 
-                <div class="row">
-                    <div class="col-6 col-12@xs mb-20@xs">
-                        <p class="ellipsis-3">
-                            {{ gathering.description|striptags }}
-                        </p>
+                <div class="d-flex fxa-center">
+                    <fa icon="fal fa-calendar-lines" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
-                        <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
-                    </div>
-                    <div class="col-6 col-12@xs">
-                        <div class="+mt-10 d-flex" v-if="organizers && organizers.length > 0">
-                            <user-icon v-bind="organizers[0]" class="mr-10 fx-no-shrink" :modifiers="['xs']" />
-
-                            <p>Organisé par {{ $pluralize(organizers.map(o => o.name)) }}</p>
-                        </div>
-                        <div class="+mt-10 d-flex">
-                            <fa icon="far fa-calendar" class="mt-5 mr-10 fx-no-shrink" fixed-width />
-
-                            <p>{{ $moment(gathering.date).format('ddd D MMMM YYYY à HH:mm') }}</p>
-                        </div>
-                        <div class="+mt-10 d-flex">
-                            <fa icon="far fa-map-marker-alt" class="mt-5 mr-10 fx-no-shrink" fixed-width />
-
-                            <div>
-                                <p class="ft-bold">{{ gathering.location }}</p>
-                                <p class="color-ft-weak">{{ gathering.address }}</p>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
+                        <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
                     </div>
                 </div>
 
-                <hr class="Separator mt-20">
+                <hr class="Separator mv-15">
+
+                <div class="d-flex fxa-center">
+                    <fa icon="fal fa-map-marker-alt" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+
+                    <div>
+                        <p class="ft-l-bold">{{ gathering.location }}</p>
+                        <p>{{ gathering.address }}</p>
+                    </div>
+                </div>
+
+                <hr class="Separator mv-15">
+
+                <div>
+                    <div class="ellipsis-3">
+                        {{ gathering.description|striptags }}
+                    </div>
+
+                    <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
+                </div>
+
+                <hr class="Separator mv-15">
+
+                <div class="d-flex fxa-center" v-if="organizers && organizers.length > 0">
+                    <user-icon v-bind="organizers[0]" class="mr-10 fx-no-shrink" :modifiers="['s']" />
+
+                    <p class="ft-m-medium">Organisé par {{ $pluralize(organizers.map(o => o.name)) }}</p>
+                </div>
+
+
+                <hr class="Separator mt-15">
             </div>
             <div class="fx-center ph-20 pb-20 d-block@xs"
                 v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
@@ -43,14 +52,12 @@
 
                 <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
                     <template v-if="gathering.isPast">
+                        <link-base class="mr-5" @click="isFull = true">Détails</link-base>
                         <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
                     </template>
                     <template v-else>
-                        <span v-if="$isConsteOrga">
-                            <link-base class="mr-5"
-                                :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }">
-                                Modifier</link-base>
-                        </span>
+                        <link-base class="mr-5" :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }" v-if="$isConsteOrga">Modifier</link-base>
+                        <link-base class="mr-5" @click="isFull = true">Détails</link-base>
 
                         <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
                     </template>

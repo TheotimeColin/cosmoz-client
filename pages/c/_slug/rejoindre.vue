@@ -83,8 +83,8 @@
                     <link-base class="mr-10 mr-0@s mb-10@s" @click="cancel" v-if="isPending">
                         Annuler ma demande
                     </link-base>
-                    <button-base :modifiers="['light']" :disabled="true" :loading="true" v-if="isPending">
-                        En attente d'approbation
+                    <button-base :modifiers="['light']" :disabled="true" icon-before="check" v-if="isPending">
+                        Demande envoyée
                     </button-base>
                     <button-base :modifiers="['light']" @click="apply" :loading="isLoading" v-else>
                         Envoyer la demande
