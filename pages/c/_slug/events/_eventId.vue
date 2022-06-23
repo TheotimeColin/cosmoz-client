@@ -2,7 +2,7 @@
     <div class="Page page pb-150">
         <template v-if="!isLoading && gathering">
             <div class="bg-cover-50 bg-bg-xstrong bg-cover-100@xs" :style="{ '--background': `url(${gathering.hero})` }">
-                <div class="Wrapper Wrapper--xs text-center pv-60">
+                <div class="Wrapper Wrapper--xs text-center pv-60 ratio-25@xs">
                     <h1 class="ft-title-m d-none@xs">{{ gathering.title }}</h1>
                 </div>
             </div>

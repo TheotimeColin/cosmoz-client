@@ -234,10 +234,17 @@ Vue.mixin({
         },
         $isFixedPosition(node) {
             while (node && node.nodeName.toLowerCase() !== 'body') {
-                if (window.getComputedStyle(node).getPropertyValue('position').toLowerCase() === 'fixed' || window.getComputedStyle(node).getPropertyValue('overflow').toLowerCase() === 'auto')
-                    { return true; }
-                node = node.parentNode;
+                if (window.getComputedStyle(node).getPropertyValue('position').toLowerCase() === 'fixed')  {          
+                    return true
+                }
+
+                if (window.getComputedStyle(node).getPropertyValue('overflow').toLowerCase() === 'auto') {
+                    return true
+                }
+                
+                node = node.parentNode
             }
+
             return false
         },
         $pluralize (users) {

@@ -5,7 +5,7 @@
 
         <div class="Page_wrapper d-flex Wrapper d-block@s">
             <div class="fx-grow">
-                <div class="block mb-40 o-hidden" v-if="$constellation.description">
+                <div class="block mb-40 o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
                     <h1 class="ft-title-xs mb-15">
                         À propos du groupe
                     </h1>

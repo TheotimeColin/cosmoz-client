@@ -14,15 +14,19 @@
                 <div class="AppNav_primary">
                     <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" />
 
-                    <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+                    <hr class="Separator mt-10 bg-bg">
 
-                    <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                    <div class="AppNav_constellations">
+                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
 
-                    <hr class="Separator mv-10 bg-bg">
+                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                    </div>
+
+                    <hr class="Separator mb-10 bg-bg">
+
+                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" v-if="user" />
                     
                     <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
-
-                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" />
                 </div>
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
@@ -152,11 +156,11 @@ export default {
         },
         onPan (v) {
             this.isClosePanning = true
-            this.closePan = Math.min(0, v.deltaX)
+            this.$nextTick(() => this.closePan = Math.min(0, v.deltaX))
         },
         onPanEnd () {
             this.isClosePanning = false
-            this.isFirst = false
+            
             this.$nextTick(() => this.closePan = 0)
         }
     }
@@ -276,6 +280,23 @@ export default {
     & + & {
         margin-top: 10px;
     }
+}
+
+.AppNav_const {
+    
+    & + & {
+        margin-top: 7px;
+    }
+}
+
+.AppNav_constellations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    overflow: scroll;
+    padding: 10px 0;
+    @include hide-scrollbars;
 }
 
 .AppNav_icon--explore {

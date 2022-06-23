@@ -30,6 +30,16 @@
     padding-bottom: #{$ratio + '%'};
 }
 
+@mixin hide-scrollbars {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+  }
+}
+
 @mixin img-cover($overflow: 100) {
     position: absolute;
     top: #{(100 - $overflow) / 2 +'%'};

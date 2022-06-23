@@ -90,7 +90,10 @@ export default {
             this.$store.commit('page/setBreakpoint', window.innerWidth)
         },
         onPan (v) {
-            if (this.isPanCancelled) return
+            if (this.isPanCancelled || v.deltaX <= 0) {
+                this.isPanning = true
+                return
+            }
 
             this.isPanning = true
             this.pan = Math.min(300, v.deltaX)
@@ -106,6 +109,7 @@ export default {
         onPanEnd () {
             this.isPanCancelled = false
             this.isPanning = false
+            
             this.$nextTick(() => this.pan = 0)
         }
     }
