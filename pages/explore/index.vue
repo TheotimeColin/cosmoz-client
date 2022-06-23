@@ -29,7 +29,7 @@ export default {
     layout: c => c.$auth.loggedIn ? 'app' : 'default',
     async fetch () {
         let response = await this.$store.dispatch('constellation/fetch', {
-            query: {}
+            query: { type: 'community', featured: true }, softRefresh: true
         })
 
         this.isLoading = false

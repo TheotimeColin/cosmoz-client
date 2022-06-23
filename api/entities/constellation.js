@@ -9,6 +9,9 @@ let Constellation = {
         name: { type: String, write: 'g-admin' },
         intro: { type: String, write: 'g-admin' },
         description: { type: String, write: 'g-admin' },
+
+        type: { type: String, default: 'group', write: 'g-admin' },
+        featured: { type: Boolean, default: false, write: 'admin' },
         
         location: { type: String, write: 'g-admin' },
         

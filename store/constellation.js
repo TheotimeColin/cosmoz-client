@@ -28,7 +28,9 @@ export default {
                     ...params.query, type: 'constellation'
                 }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
-                if (params.refresh !== false) commit('refresh', response.data)
+                if (params.softRefresh) {
+                    commit('softRefresh', response.data)
+                } else if (params.refresh !== false) commit('refresh', response.data)
 
                 return response.data
             } catch (e) {

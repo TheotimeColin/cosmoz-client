@@ -81,9 +81,19 @@
 <script>
 export default {
     async fetch () {
-        await this.$store.dispatch('constellation/fetch', {
-            query: {}
-        })
+        if (this.user) {
+            console.log([
+                ...this.user.followedConstellations,
+                ...this.user.constellations,
+                ...this.user.createdConstellations
+            ])
+            
+            await this.$store.dispatch('constellation/softFetch', [
+                ...this.user.followedConstellations,
+                ...this.user.constellations,
+                ...this.user.createdConstellations
+            ])
+        }
     },
     name: 'AppNav',
     props: {

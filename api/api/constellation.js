@@ -42,9 +42,12 @@ exports.consteCreate = async function (req, res) {
             admins: [ user._id ]
         })
 
-        console.log(data)
-
         if (data) {
+            user.constellations = [
+                ...user.constellations,
+                data._id
+            ]
+
             user.createdConstellations = [
                 ...user.createdConstellations,
                 data._id
@@ -73,6 +76,13 @@ exports.consteApply = async function (req, res) {
         if (!constellation) throw Error('no-constellation')
 
         data = await Entities.constellation.model.findOne({ _id: req.body.id })
+
+        user.followedConstellations = [
+            ...user.followedConstellations,
+            data._id
+        ]
+
+        await user.save()
 
         try {
             await Promise.all(data.admins.map(async admin => {
@@ -129,6 +139,8 @@ exports.consteEnter = async function (req, res) {
         target.constellations = [
             ...target.constellations, conste._id
         ]
+
+        target.followedConstellations = target.followedConstellations.filter(c => !conste._id.equals(c))
 
         await target.save()
 
@@ -226,6 +238,8 @@ exports.consteLeave = async function (req, res) {
         if (!constellation) throw Error('no-constellation')
 
         user.constellations = user.constellations.filter(c => !c.equals(req.body.id))
+
+        user.followedConstellations = user.followedConstellations.filter(c => !c.equals(req.body.id))
 
         await user.save()
 

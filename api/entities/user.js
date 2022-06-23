@@ -42,8 +42,12 @@ let UserEntity = {
         friends: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'user' }
         ],
-
+        
         constellations: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'constellation' }
+        ],
+
+        followedConstellations: [
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'constellation' }
         ],
 
