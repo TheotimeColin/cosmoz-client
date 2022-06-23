@@ -21,6 +21,8 @@
                     <hr class="Separator mv-10 bg-bg">
                     
                     <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
+
+                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" />
                 </div>
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
@@ -281,6 +283,15 @@ export default {
     &:hover,
     &.is-active {
         background-color: var(--color-emerald);
+        color: var(--color-ft-light);
+    }
+}
+
+.AppNav_icon--create {
+
+    &:hover,
+    &.is-active {
+        background-color: var(--color-cosmoz);
         color: var(--color-ft-light);
     }
 }

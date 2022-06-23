@@ -27,6 +27,14 @@ export default {
 
         return { valid: errors.length == 0, errors }
     },
+    consteName (v) {
+        let errors = []
+
+        if (v.length < 5) errors.push('Ton nom doit comporter au moins 5 caractères.')
+        if (v.length > 24) errors.push('Ton nom ne peut pas faire plus de 24 caractères.')
+
+        return { valid: errors.length == 0, errors }
+    },
     userId (v, $store) {
         return new Promise(async resolve => {
             let errors = []

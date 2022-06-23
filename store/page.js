@@ -33,7 +33,8 @@ export default {
             title: ''
         },
         popins: {
-            register: null
+            register: null,
+            constellationCreate: null
         },
         meta: {
             title: ''
@@ -54,6 +55,12 @@ export default {
             state.popins = {
                 ...state.popins,
                 register: v
+            }
+        },
+        popin (state, v) {
+            state.popins = {
+                ...state.popins,
+                ...v
             }
         },
         setMode (state, v) {

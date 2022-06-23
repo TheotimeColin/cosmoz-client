@@ -9,11 +9,9 @@
 </template>
 
 <script>
-import { InputBase } from 'instant-coffee-core'
 
 export default {
     name: 'RegisterPopin',
-    components: { InputBase },
     data: () => ({
         errors: [],
         isSuccess: false,

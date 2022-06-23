@@ -1,10 +1,15 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: 'c-slug', params: { slug }})" class="ConstIcon" :class="[ ...$modifiers ]" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
 
         <client-only>
             <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
-                <ripples />
-                <div v-if="!logo">{{ name ? name.slice(0, 1) : '' }}</div>
+                <ripples v-if="!badge" />
+
+                <div v-if="!logo && !pictureSrc">{{ name ? name.slice(0, 1) : '' }}</div>
+
+                <div class="ConstIcon_badge" v-if="badge">
+                    <fa :icon="`far fa-${badge}`"></fa>
+                </div>
             </div>
         </client-only>
 
@@ -21,6 +26,8 @@ export default {
     props: {
         slug: { type: String },
         name: { type: String },
+        badge: { type: String },
+        pictureSrc: { type: String },
         displayName: { type: Boolean, default: false },
         logo: { type: Object },
         noLink: { type: Boolean, default: false },
@@ -33,7 +40,7 @@ export default {
         src ()  {
             let src = this.logo ? this.logo.medias.find(m => m.size == 's') : null
 
-            return src && src.src ? src.src : this.$bg.holo
+            return this.pictureSrc ? this.pictureSrc : src && src.src ? src.src : this.$bg.holo
         }
     },
 }
@@ -44,6 +51,13 @@ export default {
     display: inline-flex;
     align-items: center;
     vertical-align: top;
+
+    &.is-badge {
+
+        .ConstIcon_image {
+            overflow: visible;
+        }
+    }
 }
 
 .ConstIcon_image {
@@ -62,6 +76,31 @@ export default {
     text-align: center;
     position: relative;
     overflow: hidden;
+}
+
+.ConstIcon_badge {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    font-size: 0;
+    color: var(--color-ft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5px;
+    background-color: var(--color-bg-light);
+    cursor: pointer;
+    transition: all 100ms ease;
+    box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
+
+    &:hover {
+        color: var(--color-ft-light);
+        background-color: var(--color-cosmoz);
+        transform: scale(0.95);
+    }
 }
 
 .ConstIcon_name {
@@ -112,6 +151,12 @@ export default {
         width: 65px;
         height: 65px;
         font-size: 40px;
+    }
+
+    .ConstIcon_badge {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
     }
 }
 

@@ -11,7 +11,7 @@
             <span class="ButtonBase_image" :style="{ backgroundImage: `url(${image})` }" v-if="image"></span>
 
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
-                <fa :icon="`far fa-${iconBefore}`" />
+                <fa :icon="`far fa-${iconBefore}`" fixed-width />
             </span>
 
             <span class="ButtonBase_before" v-if="$slots.before">
@@ -20,13 +20,14 @@
             <span class="ButtonBase_text">
                 {{ text ? $ellipsis(text, ellipsis) : '' }}
                 <slot></slot>
+                <div class="ButtonBase_subtitle" v-if="subtitle">{{ subtitle }}</div>
             </span>
             <span class="ButtonBase_after" v-if="$slots.after">
                 <slot name="after"></slot>
             </span>
 
             <span class="ButtonBase_iconAfter" v-if="iconAfter">
-                <fa :icon="`far fa-${iconAfter}`" />
+                <fa :icon="`far fa-${iconAfter}`" fixed-width />
             </span>
         </div>
 
@@ -50,6 +51,7 @@ export default {
         href: { type: String },
         link: { type: String },
         text: { type: String },
+        subtitle: { type: String },
         image: { type: String },
         ellipsis: { type: Number, default: 999 },
         notification: { type: Boolean },
@@ -143,6 +145,7 @@ export default {
     white-space: nowrap;
     position: relative;
     z-index: 2;
+    pointer-events: none;
 }
 
 .ButtonBase_iconLoading {
@@ -156,6 +159,13 @@ export default {
     line-height: 1;
     opacity: 0;
     animation: baseSpin 1000ms cubic-bezier(0.39, 0.32, 0.18, 0.87) 0s infinite;
+}
+
+.ButtonBase_subtitle {
+    font: var(--ft-s-medium);
+    margin-top: 5px;
+    line-height: 1.2;
+    white-space: normal;
 }
 
 .ButtonBase_iconBefore {
@@ -306,6 +316,48 @@ export default {
     justify-content: center;
     text-align: center;
     width: 100%;
+}
+
+.ButtonBase--rect {
+    width: 100%;
+    text-align: left;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+
+    .G_cosmoz {
+        width: 40%;
+        opacity: 0.15;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        background-color: var(--color-cosmoz);
+        border-color: var(--color-cosmoz);
+        box-shadow: 0 2px 8px 0 color-opacity('bg-xstrong', -75%);
+
+        .G_cosmoz {
+            opacity: 1;
+        }
+    }
+
+    .ButtonBase_iconAfter {
+        margin-left: auto;
+    }
+
+    .ButtonBase_text {
+        padding-right: 12px;
+    }
+
+    .ButtonBase_iconBefore {
+        margin-right: 12px;
+    }
+
+    .ButtonBase_content {
+        flex-grow: 1;
+        justify-content: flex-start;
+    }
 }
 
 .ButtonBase--s {

@@ -17,6 +17,8 @@
         <app-nav :pan="pan" :is-panning="isPanning" ref="nav" />
 
         <popin-register />
+        <popin-constellation-create />
+        
         <tooltip-manager />
     </div>
 </template>
