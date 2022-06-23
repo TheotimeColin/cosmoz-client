@@ -41,7 +41,7 @@
                 label="Choisis un mot de passe"
                 type="password"
                 :helpers="['reveal']"
-                :validator="$validator('password')"
+                validator="password"
                 :attrs="{ required: true, autocomplete: 'password' }"
                 v-model="formData.password"
             />
@@ -88,11 +88,11 @@
 
 <script>
 
-import { InputBase, SelectBase, ToggleBase } from 'instant-coffee-core'
+import { SelectBase, ToggleBase } from 'instant-coffee-core'
 
 export default {
     name: 'RegisterForm',
-    components: { InputBase, SelectBase, ToggleBase },
+    components: { SelectBase, ToggleBase },
     props: {
         type: { type: String },
         redirect: { type: Boolean, default: true },

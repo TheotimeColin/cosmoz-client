@@ -9,9 +9,8 @@ let UserEntity = {
     write: 'self',
     fields: new mongoose.Schema({
         id: { type: String, write: 'private' },
-        handle: { type: String, write: 'private', read: 'public' },
         alias: { type: String, write: 'self', read: 'public' },
-        name: { type: String, write: 'self', read: 'public', fallback: { alias: 'encountered' } },
+        name: { type: String, write: 'self', read: 'public' },
 
         email: { type: String, write: 'admin', read: 'admin' },
         password: { type: String, write: 'admin', read: 'private' },

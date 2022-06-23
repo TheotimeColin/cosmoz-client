@@ -9,6 +9,7 @@ const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 const { sendMail } = require('../utils/mailing')
 const { createMediaCollection } = require('../utils/files')
+const USERID = require('../../utils/user-id');
 
 const { authenticate } = require('../utils/user')
 const { ErrorModel } = require('sib-api-v3-sdk')
@@ -23,6 +24,7 @@ exports.logUser = async function (req, res) {
         let authenticated = false
         let user = null
         let data = {}
+        const allUsers = await Entities.user.model.find()
 
         if (req.body.credential) {
             const responsePayload = jwt_decode(req.body.credential)
@@ -60,7 +62,7 @@ exports.logUser = async function (req, res) {
         
         if (!data.email) throw Error('no-data-provided')
 
-        user = await Entities.user.model.findOne({ email: data.email })
+        user = allUsers.find(u => u.email == data.email)
         
         if (!req.body.credential && register && user && user.password) throw Error('already-registered')
         if (!register && !user) throw Error('email-not-found')
@@ -68,14 +70,23 @@ exports.logUser = async function (req, res) {
         if (user && user.password) {
             authenticated = req.body.credential ? true : await user.comparePassword(data.password)
         } else if (register || (user && !user.password)) {
+            let newId = null
+            let numbers = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+            while (!newId) {
+                let test = USERID.names[Math.floor(Math.random() * (USERID.names.length))] + '.' + USERID.adjectives[Math.floor(Math.random() * (USERID.adjectives.length))] + '.' + (numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))])
+
+                if (!allUsers.map(u => u.id).includes(test)) newId = test
+            }
+
             if (user) {
-                user.id = shortid.generate()
+                user.id = newId
 
                 if (data.name) user.name = data.name
                 user.password = data.password
             } else {
                 user = await Entities.user.model.create({
-                    id: shortid.generate(),
+                    id: newId,
                     ...data,
                     ref: sanitize(req.body.ref),
                     role: 'user'

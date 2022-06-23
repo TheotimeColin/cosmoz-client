@@ -1,17 +1,13 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
         <form @submit.prevent="onSubmit" class="block">
-            <div class="d-flex mt-5 d-block@xs">
-                <input-base label="Ton vrai prénom" v-model="formData.name" :attrs="{ required: true }" />
+            <div class="ft-m p-20 br-s bg-bg strong">
+                <input-base class="mb-10" label="Ton nom d'utilisateur" v-model="formData.id" validator="userId" :required="true" prefix="@" />
+
+                Nom unique qui permet de t'identifier facilement.
             </div>
 
-            <div class="ft-m p-20 br-s bg-bg strong mt-20">
-                <input-base class="mb-10" label="Ton pseudonyme" v-model="formData.alias" :suffix="'#' + user.handle" />
-
-                S'affiche à la place de ton prénom pour les personnes avec qui tu n'as pas de groupes en commun. 
-            </div>
-
-            <input-date class="mt-20" label="Ta date de naissance" v-model="formData.birthdate" :attrs="{ required: true, max: $moment().subtract(17, 'years').format('YYYY-MM-DD'), min: $moment().subtract(99, 'years').format('YYYY-MM-DD') }" />
+            <input-date class="mt-20" label="Ta date de naissance" v-model="formData.birthdate" :required="true" />
 
             <p class="ft-s color-ft-weak mt-10">
                 <fa icon="fas fa-lock" class="mr-3" /> Ta date de naissance reste privée.
@@ -37,19 +33,16 @@
 </template>
 
 <script>
-import { InputBase } from 'instant-coffee-core'
-
 export default {
     name: 'AccountPage',
-    components: { InputBase },
+    layout: 'app',
     middleware: 'loggedUser',
     data: () => ({
         isLoading: false,
         isPseudo: false,
         isSuccess: false,
         formData: {
-            name: '',
-            alias: '',
+            id: '',
             birthdate: '1995-09-24',
         }
     }),
@@ -60,22 +53,12 @@ export default {
         user: {
             immediate: true,
             handler (v) {
-                this.formData.name = v.name
                 this.formData.birthdate = v.birthdate
-                
-                if (v.alias) {
-                    this.formData.alias = v.alias
-                    this.isPseudo = true
-                }
+                this.formData.id = v.id
             }
         }
     },
     methods: {
-        onTogglePseudo (v) {
-            this.isPseudo = v
-
-            if (!v) this.formData.alias = ''
-        },
         async onSubmit () {
             this.isLoading = true
             this.isSuccess = false

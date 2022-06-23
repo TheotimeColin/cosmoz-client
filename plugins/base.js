@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment-timezone'
 moment.tz.setDefault('Europe/Paris')
-import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
 import striptags from 'striptags'
@@ -210,9 +209,6 @@ Vue.mixin({
         },
         $onPopinClose () {
             this.$store.commit('page/toggleOverflow', true)
-        },
-        $validator (type) {
-            return Validators[type]
         },
         $smallerThan (v) {
             return this.$store.getters['page/smallerThan'](v)

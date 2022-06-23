@@ -1,7 +1,7 @@
 <template>
     <div class="InputBase InputDate is-value">
         <label class="InputBase_label">{{ label }}</label>
-        <input class="InputBase_element" v-bind="attrs" type="date" v-model="localValue">
+        <input class="InputBase_element" v-bind="attrs"  :required="required" type="date" v-model="localValue">
     </div>
 </template>
 
@@ -14,6 +14,7 @@ export default {
     props: {
         label: { type: String, default: '' },
         value: { type: [String, Date] },
+        required: { type: Boolean, default: false },
         attrs: { type: Object, default: () => {} }
     },
     data: () => ({

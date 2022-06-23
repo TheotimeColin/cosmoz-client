@@ -20,7 +20,7 @@ exports.getEntities = async function (req, res) {
     try {
         let user = await authenticate(req.headers)
         let cancel = false
-        let idQuery = req.query._id && typeof req.query._id !== 'object' && !req.query._id.includes('$in') || req.query.id
+        let idQuery = req.query._id && typeof req.query._id !== 'object' && !req.query._id.includes('$in')
         let queryType = req.query.type
 
         console.log(`\n -- QUERY ${queryType} --\n`)
@@ -31,7 +31,7 @@ exports.getEntities = async function (req, res) {
         if (!Entity) throw Error('entity-not-found')
 
         if (idQuery) {
-            result = await Entity.model.find(req.query._id ? { _id: req.query._id } : { id: req.query.id })
+            result = await Entity.model.find({ _id: req.query._id })
 
             if (!result[0]) throw Error('id-not-found')
         } else {
@@ -251,27 +251,17 @@ const typeSetters = {
     user: async (params, req, user, doc) => {
         return new Promise(async resolve => {
             try {
+                if (req.body.params.id && req.body.params.id != user.id) {
+                    let newId = req.body.params.id
 
-                if (req.body.params.alias && req.body.params.alias != user.alias) {
-                    const existing = await Entities.user.model.find({
-                        alias: user.alias.toLowerCase()
+                    const existing = await Entities.user.model.findOne({
+                        id: new RegExp(`^${newId}$`, 'i')
                     })
-        
-                    let numbers = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                    let handles = existing.map(u => u.handle)
-                    let max = 9990
-                    let result = null
-
-                    while (!result && max > 0) {
-                        let testHandle = numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))]
-        
-                        if (!handles.includes(handles)) result = testHandle
-        
-                        max -= 1
-                    }
-
-                    if (result) {
-                        params.handle = result
+                    
+                    if (!existing && newId.length >= 3 && newId.length <= 30 && /^[0-9a-zA-Z\.]*$/.test(newId)) {
+                        params.id = newId
+                    } else {
+                        delete params.id
                     }
                 }
     
@@ -319,21 +309,6 @@ const typeCallbacks = {
     user: async (data, query, user, previous) => {
         return new Promise(async (resolve, reject) => {
             try {
-                let unfollow = null
-                let orga = (query['$addToSet'] && query['$addToSet'].followed) || (query['$pull'] && query['$pull'].followed)
-
-                if (user.followed.includes(orga) && !data.followed.includes(orga)) {
-                    unfollow = true
-                } else if (!user.followed.includes(orga) && data.followed.includes(orga)) {
-                    unfollow = false
-                }
-
-                if (orga && unfollow !== null) {
-                    await Entities.constellation.model.findByIdAndUpdate(orga, {
-                        $inc: { followers: unfollow ? -1 : 1 }
-                    })    
-                }
-
                 resolve(data)
             } catch (e) {
                 console.warn(e)
@@ -484,7 +459,6 @@ const parseQuery = function (query, user) {
         if (value && (typeof value === 'object' && !Array.isArray(value))) {
             let entries = Object.entries(value)
 
-
             if (entries[0]) {
                 entries = entries[0]
                 
@@ -496,6 +470,8 @@ const parseQuery = function (query, user) {
                     delete parsedQuery[key]
                 } else if (entries[0] == '$in') {
                     parsedQuery[key] = { '$in': entries[1] }
+                } else if (entries[0] == '$broad') {
+                    parsedQuery[key] = new RegExp(`^${entries[1]}$`, 'i')
                 }
             }
         }

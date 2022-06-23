@@ -1,7 +1,7 @@
 <template>
     <div class="InputBase_errors" :class="{ 'is-active': isActive }">
-        <i class="InputBase_errorValid fal fa-check" v-show="isValid"></i>
-        <i class="InputBase_errorInvalid fal fa-times" v-show="!isValid"></i>
+        <fa icon="far fa-check" class="InputBase_errorValid" v-show="isValid"></fa>
+        <fa icon="far fa-times" class="InputBase_errorInvalid" v-show="!isValid"></fa>
 
         <div class="InputBase_errorPopin">
             <template v-for="error in errors">
@@ -22,5 +22,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+
+.InputBase_errorInvalid,
+.InputBase_errorValid {
+    color: var(--color-ft-light);
+}
 </style>

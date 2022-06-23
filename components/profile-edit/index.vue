@@ -29,10 +29,11 @@
                     </div>
                 </div>
                 
-                <input-base class="+mt-10" label="Ton prénom" v-model="formData.name" :attrs="{ required: true }" />
+                <input-base class="+mt-10" label="Nom affiché" 
+                validator="name" v-model="formData.name" :required="true" />
             
                 <div class="+mt-10 p-15 br-xs bg-bg-weak weak">
-                    <input-date label="Date de naissance" v-model="formData.birthdate" :attrs="{ required: true }" />
+                    <input-date label="Date de naissance" v-model="formData.birthdate" :required="true" prefix="@" />
 
                     <p class="ft-xs color-ft-weak mt-15">
                         <fa icon="fas fa-lock" class="mr-3"></fa> Information privée

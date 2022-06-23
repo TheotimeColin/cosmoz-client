@@ -65,7 +65,7 @@ export default {
                 id: 'profile',
                 title: `Complète ton profil`,
                 text: `C'est super important pour que tes amis puissent te reconnaître !`,
-                completed: this.user.profileSmall && this.user.alias && this.user.birthdate,
+                completed: this.user.profileSmall && this.user.birthdate,
                 amount: 60,
                 cta: { text: 'Compléter', iconBefore: 'pen' },
                 to: { name: 'p-userId', params: { userId: this.user.id } }

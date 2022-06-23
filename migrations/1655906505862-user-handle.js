@@ -1,4 +1,5 @@
 const { user } = require('../api/entities/index')
+const userId = require('../utils/user-id')
 
  async function up () {
   try {
@@ -6,9 +7,13 @@ const { user } = require('../api/entities/index')
 
     await Promise.all(users.map(async user => {
       let numbers = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      let id = numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))]
 
-      user.set('alias', user.name ? user.name.toLowerCase() : '')
-      user.set('handle', numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))] + numbers[Math.floor(Math.random() * (numbers.length))])
+      let name = userId.names[Math.floor(Math.random() * (userId.names.length))]
+      name += '.' + userId.adjectives[Math.floor(Math.random() * (userId.adjectives.length))]
+
+      user.set('id', name + '.' + id)
+      user.set('alias', user.name)
 
       return await user.save()
     }))

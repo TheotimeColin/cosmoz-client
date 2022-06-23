@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="bg-cover-10 bg-bg-xstrong" :style="{ '--background': `url(${$bg.holo})` }">
+            <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${$bg.holo})` }">
                 <div class="fx-center width-100 d-block@xs p-30">
                     <div class="fx-center fx-no-shrink">
                         <div class="p-relative mr-20" @click="() => isSelf ? editSection = 'picture' : ''">
@@ -27,7 +27,7 @@
                             <p class="ft-title-l ft-title-m@s">{{ profile.name }}</p>
 
                             <p class="ft-s-medium">
-                                {{ profile.alias }}#{{ profile.handle }}
+                                @{{ profile.id }}
                             </p>
                         </div>
                     </div>

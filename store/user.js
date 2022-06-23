@@ -43,9 +43,9 @@ export default {
 
                 let user = null
 
-                if (response.data) {
-                    commit('updateOne', response.data)
-                    user =  parseUser(response.data)
+                if (response.data && response.data[0]) {
+                    commit('updateOne', response.data[0])
+                    user =  parseUser(response.data[0])
                 }
                 
                 return user
@@ -57,7 +57,7 @@ export default {
         async fetch ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$post('/entities/get', {
-                    ...params.query, type: 'user',
+                    ...params.query, type: 'user'
                 }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)

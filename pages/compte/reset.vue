@@ -19,7 +19,7 @@
                         class="mv-20"
                         type="password"
                         :helpers="['reveal']"
-                        :validator="$validator('password')"
+                        validator="password"
                         :attrs="{ autocomplete: 'new-password' }"
                         v-model="formData.password"
                     />
