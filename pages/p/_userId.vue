@@ -93,11 +93,11 @@
                 </div>
             </div> -->
 
-            <div class="p-20 br-xs o-hidden bg-cover-25 bg-night" v-if="isSelf && !user.picture">
+            <div class="pv-20 br-xs o-hidden bg-cover-25 bg-night" v-if="isSelf && !user.picture">
                 <div class="G_cosmoz"></div>
                 
-                <div class="Wrapper Wrapper--s p-relative fx-center">
-                    <p class="ft-title-xs mr-10">C'est quand même plus sympa avec une photo !</p>
+                <div class="Wrapper Wrapper--s p-relative fx-center d-block@xs">
+                    <p class="ft-title-xs mr-10 mr-0@xs mb-10@xs">C'est quand même plus sympa avec une photo !</p>
 
                     <button-base :modifiers="['light', 's']" @click="editSection = 'picture'" icon-before="image">
                         Ajouter une image de profil
@@ -112,7 +112,7 @@
                 />
             </div>
 
-            <profile-edit :is-active="editSection ? true : false" @close="editSection = null" v-if="isSelf" />
+            <profile-edit :is-active="editSection ? true : false" @close="editSection = null" @open="editSection = 'picture'" v-if="isSelf" />
         </template>
         <template v-else>
             <app-banner :background="$bg.holo" />

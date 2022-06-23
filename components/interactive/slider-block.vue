@@ -77,7 +77,7 @@ export default {
                     if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
                         this.maxSteps = 0
                     } else {
-                        this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
+                        this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / (this.$refs.rail.clientWidth * 0.5))
                     }
                 }
 
@@ -117,7 +117,7 @@ export default {
     .SliderBlock_rail {
         white-space: nowrap;
         transition: all 300ms ease;
-        transform: translateX(calc(-40% * var(--step)));
+        transform: translateX(calc(-50% * var(--step)));
     }
 
     .SliderBlock_item {

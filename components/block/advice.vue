@@ -18,7 +18,7 @@
                         <p class="color-ft-weak ft-xs mb-5" v-if="step.completed">Terminé !</p>
 
                         <button-base :modifiers="['s', 'cosmoz']" icon-before="check" @click="hide(step.id)" v-if="step.completed">{{ step.amount}} points</button-base>
-                        <button-base :modifiers="['s', 'light']" :to="localePath(step.to)" v-bind="step.cta" v-else />
+                        <button-base :modifiers="['s', 'light']" :to="step.to" v-bind="step.cta" v-else />
                     </div>
                 </div>
             </slider-block>
@@ -84,7 +84,15 @@ export default {
                 amount: 30,
                 cta: { text: 'Inviter', iconBefore: 'paper-plane' },
                 to: { name: 'constellation' }
-            }
+            }, {
+                id: 'publish',
+                title: `Dis bonjour !`,
+                text: `Publie un petit message ou une image drôle. C'est uniquement visible par tes amis.`,
+                completed: false,
+                amount: 30,
+                cta: { text: 'Publier', iconBefore: 'plus' },
+                to: { name: 'feed', query: { publish: true } }
+            },
         ]
     },
     methods: {

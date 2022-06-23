@@ -1,5 +1,5 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['s']" @close="$emit('close')" v-if="user">
+    <popin :is-active="isActive" :modifiers="['s']" query="publish" @close="$emit('close')" @open="$emit('open')" v-if="user">
         <div class="Editor_content" slot="content">
             <div class="fx-center p-15">
                 <user-icon :display-name="true" :no-link="true" v-bind="user" />
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="mb-15 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
-                    <p class="ft-s-medium mr-10">Publié pour :</p>
+                    <p class="ft-s-medium mr-10">Visible par :</p>
 
                     <div>
                         <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />

@@ -18,6 +18,7 @@
             :is-loading="isSubmitLoading"
             :errors="errors"
             @submit="onSubmit"
+            @open="isEditorActive = true"
             @close="isEditorActive = false"
             v-if="!disableCreate"
             ref="editor"

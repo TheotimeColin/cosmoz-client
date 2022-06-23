@@ -1,5 +1,5 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['m']" @close="$emit('close')">
+    <popin :is-active="isActive" :modifiers="['m']" query="edit" @open="$emit('open')" @close="$emit('close')">
         <form id="profile" @submit.prevent="onSubmit" class="ProfileEdit strong" slot="content">
             <div class="ratio-15 ratio-25@xs bgi-cover" :style="{ backgroundImage: `url(${$bg.holo})` }"></div>
 
