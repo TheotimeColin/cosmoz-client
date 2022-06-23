@@ -29,7 +29,7 @@ const { sendMentions, unmatch, createRequest, cancelRequest } = require('./api/a
 const { getFeed, postStatus, reactStatus } = require('./api/status')
 const { scrape } = require('./api/scraper')
 const { readAll } = require('./api/notification')
-const { consteApply, consteLeave, consteEnter, consteInviteLink, consteInviteLinkDelete } = require('./api/constellation')
+const { consteCreate, consteApply, consteLeave, consteEnter, consteInviteLink, consteInviteLinkDelete } = require('./api/constellation')
 const { getToken } = require('./api/token')
 
 const allowedOrigins = [
@@ -115,6 +115,7 @@ mongoose.connection.once('open', async () => {
     app.post('/constellation/apply', consteApply)
     app.post('/constellation/leave', consteLeave)
     app.post('/constellation/enter', consteEnter)
+    app.post('/constellation/create', consteCreate)
     app.post('/constellation/invite-link', consteInviteLink)
     app.delete('/constellation/invite-link', consteInviteLinkDelete)
     

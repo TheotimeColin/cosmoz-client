@@ -11,7 +11,8 @@ export default {
     },
     updateOne (state, value) {
         let items = JSON.parse(JSON.stringify(state.items))
-        items[value._id] = value
+
+        if (value) items[value._id] = value
 
         return items
     },

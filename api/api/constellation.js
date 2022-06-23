@@ -3,9 +3,62 @@ const { nanoid }  = require('nanoid')
 const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
+const slugify = require('slugify')
+const sanitize = require('sanitize-html')
 
 const { createNotification } = require('../utils/notifications')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
+const { getHandle } = require('../utils/base')
+
+exports.consteCreate = async function (req, res) {
+    let data = {}
+    let errors = []
+
+    try {
+        if (!req.body.name) throw Error('missing-fields')
+
+        let user = await authenticate(req.headers)
+        if (!user) throw Error('no-user')
+
+        if (user.createdConstellations.length >= 5 && !user.role.admin) throw Error('too-many-constellations')
+
+        const constellations = await Entities.constellation.model.find()
+
+        let slug = null
+        let suffix = ''
+
+        while (!slug) {
+            let test = slugify(req.body.name, { lower: true, strict: true }) + suffix
+
+            if (!constellations.map(c => c.slug).includes(test)) slug = test
+
+            suffix = '-' + getHandle(4)
+        }
+
+        data = await Entities.constellation.model.create({
+            name: sanitize(req.body.name),
+            slug: slug,
+            members: [ user._id ],
+            admins: [ user._id ]
+        })
+
+        console.log(data)
+
+        if (data) {
+            user.createdConstellations = [
+                ...user.createdConstellations,
+                data._id
+            ]
+
+            await user.save()
+        }
+    } catch (e) {
+        console.error(e)
+        errors.push(e.message)
+    }
+
+    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
+}
 
 exports.consteApply = async function (req, res) {
     let data = {}

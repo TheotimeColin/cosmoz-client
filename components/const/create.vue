@@ -30,7 +30,7 @@
                 <div class="mt-20 fx-center">
                     <link-base icon-before="arrow-left" @click="formData.type = ''">Retour</link-base>
 
-                    <button-base type="button" :modifiers="['cosmoz']" :disabled="!formData.name">
+                    <button-base type="submit" :modifiers="['cosmoz']" :disabled="!formData.name || formData.name.length < 5" :loading="isLoading">
                         Créer
                     </button-base>
                 </div>
@@ -45,9 +45,10 @@ export default {
     middleware: ['loggedUser'],
     layout: 'app',
     data: () => ({
+        isLoading: false,
         formData: {
+            name: '',
             type: '',
-            join: '',
             newPicture: ''
         }
     }),
@@ -55,7 +56,28 @@ export default {
         picture () {
             if (this.formData.removePicture) return null
 
-            return this.formData.newPicture ? URL.createObjectURL(this.formData.newPicture) : this.user.profileLarge
+            return this.formData.newPicture ? URL.createObjectURL(this.formData.newPicture) : null
+        }
+    },
+    methods: {
+        async onSubmit () {
+            this.isLoading = true
+
+            let response = await this.$store.dispatch('constellation/createNew', this.formData)
+
+            if (response.status == 1)  {
+                this.$router.push(this.localePath({
+                    name: 'c-slug', params: { slug: response.data.slug }
+                }))
+
+                this.formData = {
+                    type: '',
+                    name: '',
+                    newPicture: ''
+                }
+            }
+            
+            this.isLoading = false
         }
     }
 }

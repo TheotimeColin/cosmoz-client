@@ -1,8 +1,6 @@
 <template>
     <div class="Wrapper--s pv-100">
-        <div v-for="i in 15" :key="i">
-            {{ getName() }}
-        </div>
+        {{ getHandle(4) }}
     </div>
 </template>
 
@@ -10,8 +8,15 @@
 import userId from '@/utils/user-id'
 export default {
     methods: {
-        getName () {
-            return this.$random(userId.names) + '.' + this.$random(userId.adjectives)
+        getHandle (length) {
+            let result = ''
+            let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            
+            for (let i = 0; i < length; i++) {
+                result += numbers[Math.floor(Math.random() * (numbers.length))]
+            }
+
+            return result
         }
     }
 }

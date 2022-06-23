@@ -1,5 +1,5 @@
 <template>
-    <div class="InputBase" :class="[ $modifiers, ...classes, { 'is-prefix': prefix, 'is-invalid': errors.length > 0 } ]">
+    <div class="InputBase" :class="[ $modifiers, ...classes, { 'is-prefix': prefix, 'is-invalid': isFirstFocus && errors.length > 0 } ]">
         <div class="InputBase_prefix" v-if="prefix">
             {{ prefix }} 
         </div>
@@ -107,6 +107,7 @@ export default {
     },
     data: () => ({
         isValidationLoading: false,
+        isFirstFocus: false,
         state: {
             isFocused: false,
             isValue: false,
@@ -129,6 +130,9 @@ export default {
         }
     },
     watch: {
+        ['state.isFocused'] (v) {
+            if (v) this.isFirstFocus = true
+        },
         value: {
             immediate: true,
             deep: true,

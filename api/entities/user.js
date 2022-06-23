@@ -47,6 +47,10 @@ let UserEntity = {
             { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'constellation' }
         ],
 
+        createdConstellations: [
+            { type: mongoose.Schema.Types.ObjectId, write: 'editor', read: 'self', ref: 'constellation' }
+        ],
+
         isFriend: { type: Boolean, default: false, write: 'private', read: 'public', replace: { friends: '$requester' } },
 
         tidbits: { type: Array, default: [], write: 'self', read: '$readEach' },

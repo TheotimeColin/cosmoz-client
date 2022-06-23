@@ -30,8 +30,8 @@ export default {
     consteName (v) {
         let errors = []
 
-        if (v.length < 5) errors.push('Ton nom doit comporter au moins 5 caractères.')
-        if (v.length > 24) errors.push('Ton nom ne peut pas faire plus de 24 caractères.')
+        if (!v || v.length < 5) errors.push('Ton nom doit comporter au moins 5 caractères.')
+        if (v && v.length > 26) errors.push('Ton nom ne peut pas faire plus de 26 caractères.')
 
         return { valid: errors.length == 0, errors }
     },
