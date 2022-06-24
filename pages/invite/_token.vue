@@ -1,7 +1,9 @@
 <template>
     <div class="Container" :class="{ 'is-loading': isLoading }" :style="cover ? { '--cover': `url(${cover})` } : {}">
         <div v-if="constellation">
-            <div class="Invite block p-40 width-100 text-center">
+            <div class="Invite block-r p-40 width-100 text-center o-hidden p-relative shadow" :class="join ? [] : ['bg-cover-25 bg-night']">
+                <div class="G_cosmoz" v-if="!join"></div>
+
                 <template v-if="!join">
                     <div>
                         <const-icon v-bind="constellation" :modifiers="['xl']" :no-link="true" />
@@ -18,16 +20,11 @@
                 <register-form :redirect="false" @success="onSuccess" v-else />
             </div>
             
-            <div class="text-center p-relative">
-                <div class="bg-bg-xweak br-l p-3 d-inline-flex mt-10" v-if="user">
-                    <user-icon v-bind="user" :display-name="true" :no-link="true" />
-
-                    <button-base class="ml-20" icon-before="times" :modifiers="['round', '2xs']" @click="logOut" />
-                </div>
+            <div class="text-center p-relative" v-if="user">
+                <button-base class="mt-20" :image="user.profileSmall" icon-after="times" :modifiers="['s']" :text="user.name" @click="logOut" />
             </div>
         </div>
-        <div class="Invite block p-40 max-width-s width-100 text-center" v-else-if="!isLoading">
-
+        <div class="Invite block-r p-40 max-width-s width-100 text-center" v-else-if="!isLoading">
             <p class="ft-title-m">Lien d'invitation invalide</p>
             <p class="ft-s color-ft-weak mt-10">Ce lien a peut-être expiré.</p>
             

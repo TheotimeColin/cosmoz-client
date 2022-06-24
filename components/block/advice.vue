@@ -9,7 +9,7 @@
                 <chart-line class="mt-15" :current="(completed / total) * 100" />
             </div>
 
-            <slider-block :slots="steps.filter(s => !s.hidden).map(s => s.id)" :auto-height="true" :offset="20" :offset-v="20" v-if="completed < total">
+            <slider-block :slots="steps.filter(s => !isHidden(s.id)).map(s => s.id)" :auto-height="true" :offset="20" :offset-v="20" v-if="completed < total">
                 <div v-for="step in steps" class="p-15 bg-bg-weak-t br-xs shadow width-xs d-flex fx-dir-column height-100 fxj-around text-center" :slot="step.id" :key="step.id">
                     <p class="ft-title-2xs">{{ step.title }}</p>
                     <div class="ft-s-medium mt-10" v-html="step.text"></div>
@@ -42,67 +42,81 @@
 export default {
     name: 'BlockAdvice',
     data: () => ({
-        steps: []
+        hidden: []
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
         completed () {
-            return this.steps.filter(s => s.hidden).reduce((t, c) => t + c.amount, 0) + 10
+            return this.steps.filter(s => this.isHidden(s.id)).reduce((t, c) => t + c.amount, 0) + 10
         },
         total () {
             return this.steps.reduce((t, c) => t + c.amount, 0) - 10
+        },
+        statuses () {
+            return this.$store.getters['status/find']({
+                owner: this.user._id
+            })
+        },
+        steps () {
+            return [
+                {
+                    id: 'register',
+                    title: `Inscrit(e) sur Cosmoz`,
+                    text: `Bienvenue parmi nous !`,
+                    amount: 20,
+                    completed: true
+                }, {
+                    id: 'profile',
+                    title: `Complète ton profil`,
+                    text: `C'est super important pour que tes amis puissent te reconnaître !`,
+                    completed: this.user.profileSmall && this.user.birthdate,
+                    amount: 40,
+                    cta: { text: 'Compléter', iconBefore: 'pen' },
+                    to: { name: 'p-userId', params: { userId: this.user.id } }
+                }, {
+                    id: 'group',
+                    title: `Rejoins un groupe`,
+                    text: `Cosmoz, c'est une histoire de communautés. Il est temps d'en rejoindre une.`,
+                    amount: 80,
+                    cta: { text: 'Explorer', iconBefore: 'compass' },
+                    completed: this.user.constellations.length > 0,
+                    to: { name: 'explore' }
+                },
+                // {
+                //     id: 'friends',
+                //     title: `Invite tes amis`,
+                //     text: `Plus on est de fous, plus on rit ! Invite tes amis à rejoindre la plateforme.`,
+                //     amount: 40,
+                //     cta: { text: 'Inviter', iconBefore: 'paper-plane' },
+                //     to: { name: 'constellation' }
+                // },
+                {
+                    id: 'publish',
+                    title: `Dis bonjour !`,
+                    text: `Publie un petit message ou une image drôle. C'est uniquement visible par tes amis.`,
+                    completed: this.statuses.length > 0,
+                    amount: 30,
+                    cta: { text: 'Publier', iconBefore: 'plus' },
+                    to: { name: 'feed', query: { publish: true } }
+                }
+            ]
         }
     },
-    mounted () {
-        this.steps = [
-            {
-                id: 'register',
-                title: `Inscrit(e) sur Cosmoz`,
-                text: `Bienvenue parmi nous !`,
-                amount: 20,
-                completed: true
-            }, {
-                id: 'profile',
-                title: `Complète ton profil`,
-                text: `C'est super important pour que tes amis puissent te reconnaître !`,
-                completed: this.user.profileSmall && this.user.birthdate,
-                amount: 60,
-                cta: { text: 'Compléter', iconBefore: 'pen' },
-                to: { name: 'p-userId', params: { userId: this.user.id } }
-            }, {
-                id: 'group',
-                title: `Rejoins un groupe`,
-                text: `Cosmoz, c'est une histoire de communautés. Il est temps d'en rejoindre une.`,
-                amount: 80,
-                cta: { text: 'Explorer', iconBefore: 'compass' },
-                completed: this.user.constellations.length > 0,
-                to: { name: 'explore' }
-            }, {
-                id: 'friends',
-                title: `Invite tes amis`,
-                text: `Plus on est de fous, plus on rit ! Invite tes amis à rejoindre la plateforme.`,
-                amount: 30,
-                cta: { text: 'Inviter', iconBefore: 'paper-plane' },
-                to: { name: 'constellation' }
-            }, {
-                id: 'publish',
-                title: `Dis bonjour !`,
-                text: `Publie un petit message ou une image drôle. C'est uniquement visible par tes amis.`,
-                completed: false,
-                amount: 30,
-                cta: { text: 'Publier', iconBefore: 'plus' },
-                to: { name: 'feed', query: { publish: true } }
-            },
-        ]
-    },
     methods: {
+        isHidden (id) {
+            return this.hidden.includes(id) || this.$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == id) ? true : false
+        },
         onConclude () {
             this.$store.dispatch('user/updateNotification', {
                 id: 'welcomed', type: 'onboarding'
             })
         },
         hide (id) {
-            this.steps = this.steps.map(s => s.id == id ? { ...s, hidden: true }: s)
+            this.hidden = [ ...this.hidden, id ]
+            
+            this.$store.dispatch('user/updateNotification', {
+                id, type: 'onboarding'
+            })
         }
     }
 }

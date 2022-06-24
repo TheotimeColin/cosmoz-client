@@ -182,6 +182,7 @@ export default {
         flex-shrink: 0;
         border-radius: 50%;
         background-size: cover;
+        background-position: center;
         margin-right: 15px;
         transition: all 100ms ease;
         opacity: 1;

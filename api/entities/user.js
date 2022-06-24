@@ -19,7 +19,7 @@ let User = {
         birthdate: { type: Date, write: 'self', read: 'self' },
         interests: { type: Array, default: [], write: 'self', read: 'friends' },
 
-        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'encountered', ref: 'mediaCollection' },
+        picture: { type: mongoose.Schema.Types.ObjectId, write: 'self', read: 'user', ref: 'mediaCollection' },
 
         ref: { type: String, write: 'self' },
         referral: { type: String, write: 'self' },
