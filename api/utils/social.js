@@ -3,6 +3,7 @@ const { $fetch } = require('ohmyfetch/node')
 const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
+const { createNotification } = require('../utils/notifications')
 
 exports.requestFriend = async function (requester, target) {
     return new Promise(async (resolve, reject) => {
@@ -28,6 +29,18 @@ exports.requestFriend = async function (requester, target) {
                     target.friends = [
                         ...target.friends, requester._id
                     ]
+                }
+
+                try {
+                    let notification = await createNotification({
+                        type: 'friends-new',
+                        user: requester._id,
+                        owner: target._id
+                    })
+
+                    if (!notification) throw Error('notif-failed')
+                } catch (e) {
+                    console.error(e)
                 }
             }
 

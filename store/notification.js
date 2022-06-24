@@ -32,9 +32,22 @@ export default {
                 return null
             }
         },
+        async read ({ commit }, _id) {
+            try {
+                const response = await this.$axios.$get(storeUtils.getQuery('/notifications/read', { _id }))
+                
+                if (response.status == 0) throw Error(response.errors[0])
+                
+                commit('refresh', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async readAll ({ commit }) {
             try {
-                const response = await this.$axios.$get('/notifications/read',)
+                const response = await this.$axios.$get('/notifications/read')
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 

@@ -94,7 +94,7 @@ export default {
         
             if (this.gathering) query.gathering = this.gathering
             if (this.constellation) query.constellation = this.constellation
-            if (this.author) query = { ...query, owner: this.author, constellation: null }
+            if (this.author) query = { ...query, owner: this.author, constellation: null, gathering: null }
 
             return this.$store.getters['status/find']({
                 ...query

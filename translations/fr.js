@@ -50,6 +50,9 @@ export default {
         },
         'conste-enter': {
             content: `Ta demande a été approuvée : bienvenue chez <b>{constellation}</b> !`
+        },
+        'friends-new': {
+            content: `<b>{user}</b> a accepté ta demande et a rejoint ta constellation !`
         }
     },
     permissions: {

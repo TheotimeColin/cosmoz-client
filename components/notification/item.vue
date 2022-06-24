@@ -1,5 +1,5 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read', 'is-gathering': gatherings[0] }">
+    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read', 'is-gathering': gatherings[0] }" @click="$store.dispatch('notification/read', _id)" @click.native="$store.dispatch('notification/read', _id)">
         <div class="NotifItem_image" :style="{ backgroundImage: `url(${cover})` }">
             <div class="NotifItem_imageSecondary" :style="{ backgroundImage: `url(${constellationCover})` }" v-if="constellationCover"></div>
         </div>
@@ -14,8 +14,10 @@
 export default {
     name: 'Notifications',
     props: {
+        _id: { type: String },
         state: { type: String },
         type: { type: String },
+        user: { type: String },
         status: { type: String },
         gathering: { type: String },
         constellation: { type: String },
@@ -24,8 +26,9 @@ export default {
         origins: { type: Array, default: () => [] },
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        self () { return this.$store.getters['user/self'] },
         cover () {
+            if (this.userData?.profileLarge) return this.userData.profileLarge
             if (this.users[0]?.profileLarge) return this.users[0].profileLarge
             if (this.gatherings[0]?.hero) return this.gatherings[0].hero
             if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
@@ -33,10 +36,17 @@ export default {
             return this.$bg.plasticBlack
         },
         constellationCover () {
-            if (this.type == 'conste-enter') return this.user.profileSmall
+            if (this.type == 'conste-enter') return this.self.profileSmall
             if (this.constellationData?.logoSmall && this.cover !== this.constellationData?.logoSmall) return this.constellationData.logoSmall
 
             return null
+        },
+        userData () {
+            if (!this.user) return null
+
+            return this.$store.getters['user/findOne']({
+                _id: this.user
+            })
         },
         statusData () {
             if (!this.status) return null
@@ -100,6 +110,8 @@ export default {
                     name: 'c-slug-feed',
                     params: { slug: this.constellationData.slug }
                 }
+            } else if (this.userData) {
+                return { name: 'p-userId', params: { userId: this.userData.id } }
             }
 
             return null
@@ -112,6 +124,7 @@ export default {
             if (this.type.includes('post')) count = this.users.length
             
             return this.$tc(`notifications.${this.type}.content`, count, {
+                user: this.userData?.name,
                 users: this.$pluralize(this.users.map(u => u.name)),
                 status: this.statusData?.content,
                 gathering: this.gatheringData?.title,
@@ -169,7 +182,7 @@ export default {
         flex-shrink: 0;
         border-radius: 50%;
         background-size: cover;
-        margin-right: 20px;
+        margin-right: 15px;
         transition: all 100ms ease;
         opacity: 1;
         position: relative;

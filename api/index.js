@@ -28,7 +28,7 @@ const { updateBookingStatus } = require('./api/gathering');
 const { sendMentions, unmatch, createRequest, cancelRequest } = require('./api/affinities')
 const { getFeed, postStatus, reactStatus } = require('./api/status')
 const { scrape } = require('./api/scraper')
-const { readAll } = require('./api/notification')
+const { notificationRead } = require('./api/notification')
 const { consteCreate, consteApply, consteLeave, consteEnter, consteInviteLink, consteInviteLinkDelete } = require('./api/constellation')
 const { getToken } = require('./api/token')
 
@@ -121,7 +121,7 @@ mongoose.connection.once('open', async () => {
     
     app.post('/token/get', getToken)
     
-    app.get('/notifications/read', readAll)
+    app.get('/notifications/read', notificationRead)
     app.get('/scraper', scrape)
 
     cronHourly(app)

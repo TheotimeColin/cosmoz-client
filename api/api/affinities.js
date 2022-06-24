@@ -37,32 +37,6 @@ exports.sendMentions = async function (req, res) {
         })
 
         if (req.body.requestFriend) data.match = await requestFriend(user, target)
-
-    } catch (e) {
-        console.error(e)
-        errors.push(e.message)
-    }
-
-    res.send({ data, errors, status: errors.length > 0 ? 0 : 1 })
-}
-
-exports.requestFriend = async function (req, res) {
-    let data = {}
-    let errors = []
-
-    try {
-        let user = await authenticate(req.headers)
-        let target = await Entities.user.model.findById(req.body.target)
-
-        if (!target) throw Error('target-user-not-found')
-
-        user.affinities = user.affinities.filter(u => !target._id.equals(u))
-        user.constellation = user.constellation.filter(u => !target._id.equals(u))
-
-        target.constellation = target.constellation.filter(u => !user._id.equals(u))
-
-        await user.save()
-        await target.save()
     } catch (e) {
         console.error(e)
         errors.push(e.message)

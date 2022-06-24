@@ -2,17 +2,18 @@ const Entities = require('../entities')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Europe/Paris')
 
-const createNotification = function (params = {}, user) {
+const createNotification = function (params = {}, user = null) {
     params = {
         type: 'default',
         status: null,
         gathering: null,
         constellation: null,
+        user: null,
         action: true,
         content: '',
-        originator: { _id: user._id, type: 'user'},
-        owner: user._id,
-        query: ['status', 'constellation', 'gathering'],
+        originator: user ? { _id: user._id, type: 'user'} : {},
+        owner: user ? user._id : null,
+        query: ['status', 'constellation', 'gathering', 'user'],
         ...params
     }
 
@@ -26,6 +27,7 @@ const createNotification = function (params = {}, user) {
             if (params.query.includes('status') && params.status) query.status = params.status
             if (params.query.includes('constellation') && params.constellation) query.constellation = params.constellation
             if (params.query.includes('gathering') && params.gathering) query.gathering = params.gathering
+            if (params.query.includes('user') && params.user) query.user = params.user
 
             let existing = await Entities.notification.model.findOne({
                 ...query,
@@ -35,6 +37,7 @@ const createNotification = function (params = {}, user) {
             if (params.status) query.status = params.status
             if (params.constellation) query.constellation = params.constellation
             if (params.gathering) query.gathering = params.gathering
+            if (params.user) query.user = params.user
             
             query.content = params.content
 

@@ -1,20 +1,25 @@
 const { authenticate } = require('../utils/user')
 const Entities = require('../entities')
 
-exports.readAll = async function (req, res) {
+exports.notificationRead = async function (req, res) {
     let data = null
     let errors = []
 
     try {
         let user = await authenticate(req.headers)
         if (!user) throw Error('no-user')
-
-        await Entities.notification.model.updateMany({
-            owner: user._id,
-            state: 'unread'
-        }, {
-            state: 'read'
-        })
+        
+        if (req.query._id) {
+            await Entities.notification.model.updateOne({
+                _id: req.query._id,
+                owner: user._id
+            }, { state: 'read' })
+        } else {
+            await Entities.notification.model.updateMany({
+                owner: user._id,
+                state: 'unread'
+            }, { state: 'read' })
+        }
 
         data = await Entities.notification.model.find({
             owner: user._id
