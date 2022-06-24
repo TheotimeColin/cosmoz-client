@@ -49,13 +49,9 @@ export default {
     middleware: ['loggedUser'],
     layout: 'app',
     async fetch () {
-        await this.$store.dispatch('gathering/fetch', {
-            query: { status: 'active' }
-        })
-
-        await this.$store.dispatch('constellation/fetch', {
-            query: {}
-        })
+        await this.$store.dispatch('gathering/softFetch', [
+            ...this.user.gatherings.map(g => g._id)
+        ])
 
         this.isLoading = false
     },
@@ -64,6 +60,7 @@ export default {
         format: 'YYYYDDD'
     }),
     computed: {
+        user () { return this.$store.getters['user/self'] },
         gatherings () {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',

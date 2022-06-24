@@ -336,6 +336,15 @@ const typeCallbacks = {
                             }, user)
                         }))
                     }
+                    
+                    if (!constellation.gatherings.includes(data._id)) {
+                        constellation.gatherings = [
+                            ...constellation.gatherings,
+                            data._id
+                        ]
+                        
+                        await constellation.save()
+                    }
                 }
 
                 resolve(data)

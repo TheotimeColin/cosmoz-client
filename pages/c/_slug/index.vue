@@ -37,7 +37,7 @@
                     </p>
 
                     <slider-block :slots="pastEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
-                        :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20">
+                        :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
                         <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
                             <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
                         </div>
@@ -94,9 +94,7 @@ export default {
         await this.$preFetch()
 
         if (this.$constellation) {
-            await this.$store.dispatch('gathering/fetch', {
-                query: { constellation: this.$constellation._id, status: 'active' }
-            })
+            await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
 
             await this.$store.dispatch('user/softFetch', this.$constellation.members)
         }

@@ -37,17 +37,7 @@ export default {
     async fetch () {
         await this.$preFetch()
 
-        this.$emit('page', {
-            subtitle: `Rencontres prévues`, fa: 'calendar'
-        })
-
-        this.$store.commit('page/set', {
-            subtitle: `Rencontres prévues`, fa: 'calendar'
-        })
-
-        await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.$constellation._id, status: 'active' }
-        })
+        await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
     },
     props: {
         constellation: { type: Object }

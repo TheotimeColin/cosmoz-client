@@ -17,9 +17,9 @@
                     <hr class="Separator mt-10 bg-bg">
 
                     <div class="AppNav_constellations">
-                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" :feed="true" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
 
-                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" :feed="true" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
                     </div>
 
                     <hr class="Separator mb-10 bg-bg">
@@ -62,7 +62,10 @@
                             <nav-list :items="exploreNav" />
                         </div>
                     </div>
-                    <page-const-nav v-bind="selectConst" v-else-if="selected && selectConst" :key="selectConst._id" />
+                    <page-const-nav
+                        v-bind="selectConst"
+                        v-else-if="selected && selectConst" :key="selectConst._id"
+                    />
                 </div>
             </div>
 
@@ -131,9 +134,7 @@ export default {
             return this.$route.params.slug ? this.$route.params.slug : false
         },
         selectConst () {
-            return this.selected ? this.$store.getters['constellation/findOne']({
-                slug: this.$route.params.slug
-            }) : null
+            return this.selected ? this.$store.getters['constellation/findOne']({ slug: this.$route.params.slug }) : null
         },
         currentConst () { return this.$store.state.page.currentConst },
         isOpenNav () { return true; },

@@ -22,12 +22,6 @@ export default {
 
         await this.$preFetch()
 
-        await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.$constellation._id, status: 'active' }
-        })
-
-        await this.$store.dispatch('user/softFetch', this.$constellation.members)
-
         this.isLoading = false
     },
     data: () => ({
@@ -35,32 +29,7 @@ export default {
         showFull: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
-        admins () {
-            return this.$store.getters['user/find']({
-                _id: { $in: [ ...this.$constellation.admins, ...this.$constellation.organizers ] }
-            })
-        },
-        users () {
-            return this.$store.getters['user/find']({
-                _id: { $in: this.$constellation.members }
-            })
-        },
-        gatherings () {
-            return this.$store.getters['gathering/find']({
-                status: 'active',
-                constellation: this.$constellation._id
-            })
-        },
-        isFollowed () {
-            return this.user ? this.user.followed.includes(this.$constellation._id) : false
-        },
-        pastEvents () {
-            return this.gatherings.filter(g => g.isPast)
-        },
-        upcomingEvents () {
-            return this.gatherings.filter(g => !g.isPast)
-        }
+        user () { return this.$store.getters['user/self'] }
     },
     head () {
         if (!this.$constellation) return {}

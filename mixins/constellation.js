@@ -11,9 +11,26 @@ export default {
             if (!this.$route.params.slug) return null
             
             return new Promise(async (resolve) => {
-                resolve(await this.$store.dispatch('constellation/get', {
-                    query: { slug: this.$route.params.slug }
-                }))
+                let result = this.$store.getters['constellation/findOne']({
+                    slug: this.$route.params.slug
+                })
+        
+                if (!result) {
+                    await this.$store.dispatch('constellation/get', {
+                        query: { slug: this.$route.params.slug }
+                    })
+                }
+
+                if (result) {
+                    await this.$store.dispatch('user/softFetch', [
+                        ...result.members,
+                        ...result.organizers,
+                        ...result.followers,
+                        ...result.admins
+                    ])
+                }
+
+                resolve(result)
             })
         }
     }

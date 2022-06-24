@@ -56,10 +56,7 @@ export default {
     name: 'PageConstNav',
     mixins: [ Permissions ],
     async fetch () {
-        await this.$store.dispatch('gathering/fetch', {
-            constellation: this._id,
-            status: 'active'
-        })
+        await this.$store.dispatch('gathering/softFetch', this.gatherings)
     },
     props: {
         _id: { type: String },
@@ -68,6 +65,7 @@ export default {
         type: { type: String },
         name: { type: String },
         logo: { type: Object },
+        gatherings: { type: Array, default: () => [] },
         followers: { type: Array, default: () => [] },
         members: { type: Array, default: () => [] },
         admins: { type: Array, default: () => [] },
@@ -77,7 +75,7 @@ export default {
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
-        gatherings () {
+        gatheringsData () {
             return this.$store.getters['gathering/find']({
                 constellation: this._id,
                 status: 'active',
@@ -85,12 +83,12 @@ export default {
             })
         },
         events () {
-            return this.gatherings.filter(g => !g.isPast).map(g => ({
+            return this.gatheringsData.filter(g => !g.isPast).map(g => ({
                 label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: g.isAttending ? 'calendar-check' : 'calendar'
             }))
         },
         pastEvents () {
-            return this.gatherings.filter(g => g.isPast && g.isAttending && !g.isExpired).map(g => ({
+            return this.gatheringsData.filter(g => g.isPast && g.isAttending && !g.isExpired).map(g => ({
                 label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'calendar-heart', hasAttended: g.isAttending
             }))
         },

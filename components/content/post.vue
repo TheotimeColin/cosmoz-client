@@ -123,6 +123,8 @@ export default {
     name: 'Post',
     async fetch () {
         await this.$store.dispatch('user/softFetch', [ this.owner, ...this.children.map(c => c.owner) ])
+
+        this.isLoading = false
     },
     mixins: [ PostMixin ],
     props: {
@@ -130,7 +132,6 @@ export default {
         content: { type: String },
         read: { type: String },
         images: { type: Array, default: () => [] },
-        isLoading: { type: Boolean, default: false },
         owner: { type: String },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
@@ -145,6 +146,7 @@ export default {
         noLink: { type: Boolean, default: false }
     },
     data: () => ({
+        isLoading: false,
         max: 2,
         isAdd: false,
         reacted: null,

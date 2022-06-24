@@ -15,9 +15,7 @@ export default {
     async fetch () {
         await this.$preFetch()
 
-        await this.$store.dispatch('gathering/fetch', {
-            query: { constellation: this.$constellation._id }
-        })
+        await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
     },
     props: {
         constellation: { type: Object }

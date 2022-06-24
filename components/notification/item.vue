@@ -13,15 +13,6 @@
 <script>
 export default {
     name: 'Notifications',
-    async fetch () {
-        await this.$store.dispatch('user/softFetch', this.origins.filter(o => o.type == 'user').map(o => o._id))
-
-        if (this.status) await this.$store.dispatch('status/softFetch', [ this.status, ...this.origins.filter(o => o.type == 'status').map(o => o._id) ])
-
-        if (this.gathering) await this.$store.dispatch('gathering/softFetch', [ this.gathering, ...this.origins.filter(o => o.type == 'gathering').map(o => o._id) ])
-
-        if (this.constellation) await this.$store.dispatch('constellation/softFetch', [ this.constellation, ...this.origins.filter(o => o.type == 'constellation').map(o => o._id) ])
-    },
     props: {
         state: { type: String },
         type: { type: String },

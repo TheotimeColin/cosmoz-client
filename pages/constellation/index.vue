@@ -27,7 +27,7 @@
                 <div class="fx-center p-10 bg-bg-xweak br-xs mt-5" v-for="user in pending" :key="user._id">
                     <user-icon :display-name="true" v-bind="user" />
 
-                    <button-base icon-before="times" :modifiers="['round', 'xs']" @click="() => cancelRequest(user)" :loading="loading.includes(user._id)" />
+                    <button-base icon-before="times" :modifiers="['round', 'xs']" @click="() => confirmCancel(user)" :loading="loading.includes(user._id)" />
                 </div>
             </div>
         </div>
@@ -57,13 +57,15 @@
 
 <script>
 export default {
-    name: 'GatheringsPast',
+    name: 'ConstellationPage',
     middleware: ['loggedUser'],
     layout: 'app',
     async fetch () {
-        await this.$store.dispatch('user/fetch', {
-            query: {}
-        })
+        await this.$store.dispatch('user/softFetch', [
+            ...this.user.friends,
+            ...this.user.encounters,
+            ...this.user.affinities,
+        ])
     },
     data: () => ({
         loading: []
@@ -94,6 +96,19 @@ export default {
         }
     },
     methods: {
+        confirmCancel (user) {
+            this.$store.commit('page/popin', { confirm: {
+                text: `Veux-tu vraiment annuler ta demande d'ami avec ${user.name} ?`,
+                cancel: {
+                    text: 'Retour'
+                },
+                confirm: {
+                    text: 'Annuler la demande',
+                    modifiers: ['light'],
+                    action: () => this.cancelRequest(user)
+                }
+            } })
+        },
         async cancelRequest (user) {
             this.loading = [ ...this.loading, user._id ] 
             

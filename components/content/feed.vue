@@ -26,17 +26,17 @@
 
         <transition-group name="fade">
             <content-post
-                v-for="status in displayedStatuses"
+                v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
                 @submit="onSubmit"
                 :active-gathering="gathering"
                 :active-constellation="constellation"
                 :disableCreate="disableInteract"
-                :is-loading="isLoading"
                 :key="status._id"
                 ref="posts"
             />
+            <placeholder class="Feed_item" v-for="i in 10" :ratio="33" v-show="isLoading" :key="i" />
         </transition-group>
 
         <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoading">
@@ -99,6 +99,13 @@ export default {
             await this.$store.dispatch('status/fetch', { query })
         } else {
             await this.$store.dispatch('status/fetchFeed')
+        }
+
+        if (this.statuses) {
+            await this.$store.dispatch('user/softFetch', [
+                ...this.statuses.map(s => s.owner),
+                ...(this.statuses.children ? this.statuses.children.reduce((all, c) => [ ...all, ...c.map(c => c.owner) ], []) : [])
+            ])
         }
 
         this.isLoading = false

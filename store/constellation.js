@@ -5,6 +5,7 @@ moment.tz.setDefault('Europe/Paris')
 export default {
     namespaced: true,
     state: () => ({
+        type: 'constellation',
         items: {}
     }),
     mutations: {

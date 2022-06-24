@@ -28,13 +28,40 @@ export default {
         },
     },
     mounted () {
-        this.fetch()
+        setTimeout(() => this.fetch(), 1000)
     },
     methods: {
         async fetch () {
             await this.$store.dispatch('notification/fetch', {
                 owner: this.user._id
             })
+
+            let origins = this.notifications.reduce((origins, n) => [ ...origins, ...n.origins ], [])
+
+            let users = [
+                ...this.notifications.map(n => n.user).filter(n => n),
+                ...origins.filter(o => o.type == 'user').map(o => o._id)
+            ]
+
+            let gatherings = [
+                ...this.notifications.map(n => n.gathering).filter(n => n),
+                ...origins.filter(o => o.type == 'gathering').map(o => o._id)
+            ]
+
+            let statuses = [
+                ...this.notifications.map(n => n.status).filter(n => n),
+                ...origins.filter(o => o.type == 'status').map(o => o._id)
+            ]
+
+            let constes = [
+                ...this.notifications.map(n => n.constellation).filter(n => n),
+                ...origins.filter(o => o.type == 'constellation').map(o => o._id)
+            ]
+
+            this.$store.dispatch('user/softFetch', users)
+            this.$store.dispatch('gathering/softFetch', gatherings)
+            this.$store.dispatch('status/softFetch', statuses)
+            this.$store.dispatch('status/softFetch', constes)
         },
         async readAll () {
             this.$store.dispatch('notification/readAll')

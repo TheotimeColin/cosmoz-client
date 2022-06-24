@@ -7,6 +7,7 @@ import { parseUser } from '@/utils/parsers'
 export default {
     namespaced: true,
     state: () => ({
+        type: 'status',
         items: {}
     }),
     mutations: {

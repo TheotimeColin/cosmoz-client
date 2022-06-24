@@ -41,9 +41,12 @@ export default {
             try {
                 let result = []
                 let existing = JSON.parse(JSON.stringify($store.state.items))
-
+                let alreadyFetched = false
+                
+                queried = [ ...new Set(queried) ]
+                
                 for (let item of queried) {
-                    if (!existing[item]) {
+                    if (item && !existing[item] && !alreadyFetched) {
                         let newItems = await $store.dispatch('fetch', {
                             query: { _id: { $in: queried } },
                             refresh: false
@@ -52,13 +55,19 @@ export default {
                         if (newItems) {
                             existing = newItems.reduce((acc, value) => ({ ...acc, [value._id]: value }), {})
                         }
+
+                        // console.log(`NOT FOUND ${$store.state.type} : ${item}`)
+
+                        // console.log('----\n\n')
+
+                        alreadyFetched = true
                     }
                     
                     if (existing[item]) result = [ ...result, existing[item] ]
                 }
                 
                 $store.commit('softRefresh', result)
-
+                
                 resolve(result)
             } catch (e) {
                 console.error(e)

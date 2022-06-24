@@ -4,6 +4,7 @@ import { parseUser } from '@/utils/parsers'
 export default {
     namespaced: true,
     state: () => ({
+        type: 'user',
         guestId: null,
         items: {}
     }),

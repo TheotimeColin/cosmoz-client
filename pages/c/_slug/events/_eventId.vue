@@ -51,7 +51,7 @@ export default {
         }
     },
     async fetch () {
-        this.isLoading = true 
+        this.isLoading = true
 
         let result = this.$store.getters['gathering/findOne']({
             id: this.$route.params.eventId,
