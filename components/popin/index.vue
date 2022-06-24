@@ -10,7 +10,9 @@
                         {{ title }}
                     </h1>
                 </div>
-                <div></div>
+                <div>
+                    <slot name="headerRight"></slot>
+                </div>
             </div>
 
             <div class="PopinBase_close" @click="$emit('close')" v-else>

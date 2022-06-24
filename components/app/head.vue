@@ -63,6 +63,15 @@ export default {
             } else {
                 document.documentElement.style.setProperty('--app-height', '0px')
             }
+
+            if (v.isPanel) {
+                setTimeout(() => {
+                    document.documentElement.style.setProperty('--sticky-height', '0px')
+                }, 300)
+            } else {
+                document.documentElement.style.removeProperty('--sticky-height', '0px')
+            }
+
             if (this.prev?.title !== v?.title && !this.changed) {
                 this.changed = true
 

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="Tooltip"
+        class="Tooltip shadow"
         :class="[ ...$modifiers ]"
         :style="{ marginTop: top + 'px', marginLeft: left + 'px' }"
     >
@@ -30,8 +30,9 @@ export default {
 <style lang="scss" scoped>
 .Tooltip {
     font: var(--ft-m);
-    color: var(--color-ft-weak);
-    background-color: var(--color-bg-xstrong);
+    color: var(--color-ft);
+    background-color: color-opacity('bg-xstrong', -5%);
+    backdrop-filter: blur(2px);
     pointer-events: none;
     transform-origin: center;
     transform: scale(0.98) translateY(3px);

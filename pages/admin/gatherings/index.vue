@@ -8,7 +8,7 @@
                             v-bind="gathering"
                             :modifiers="['square']"
                             :const-only="true"
-                            :replace-link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                            :replace-link="localePath({ name: 'admin-gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                             v-bind="gathering"
                             :modifiers="['square']"
                             :const-only="true"
-                            :replace-link="localePath({ name: 'gatherings-id', params: { id:  gathering._id } })"
+                            :replace-link="localePath({ name: 'admin-gatherings-id', params: { id:  gathering._id } })"
                         />
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :to="{ name: 'gatherings-id', params: { id: 'new' } }"
+                    :to="{ name: 'admin-gatherings-id', params: { id: 'new' } }"
                 >
                     Nouveau
                 </button-base>

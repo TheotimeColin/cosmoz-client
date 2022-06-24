@@ -29,6 +29,10 @@ export default {
     },
     mounted () {
         setTimeout(() => this.fetch(), 1000)
+        setInterval(this.fetch, 30000)
+    },
+    beforeDestroy () {
+        window.clearInterval(this.fetch)
     },
     methods: {
         async fetch () {

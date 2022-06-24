@@ -122,7 +122,11 @@ import PostMixin from '@/mixins/post'
 export default {
     name: 'Post',
     async fetch () {
-        await this.$store.dispatch('user/softFetch', [ this.owner, ...this.children.map(c => c.owner) ])
+        await this.$store.dispatch('user/softFetch', [
+            this.owner,
+            ...this.reactions.map(r => r.owner),
+            ...this.children.reduce((all, c) => [ ...all, c.owner, ...c.reactions.map(r => r.owner)], [])
+        ])
 
         this.isLoading = false
     },

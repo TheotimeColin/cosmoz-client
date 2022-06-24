@@ -6,7 +6,7 @@
 
                 <div v-if="reactions">
                     <div class="mt-10" v-for="reaction in reactions" :key="reaction._id"> 
-                        <user-icon v-bind="reaction.owner" :display-name="true" />
+                        <user-icon v-bind="reaction" :display-name="true" />
                     </div>
                 </div>
                 <div v-else>

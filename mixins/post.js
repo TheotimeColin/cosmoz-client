@@ -3,14 +3,10 @@ export default {
         isDeleted: false,
         isDeleteLoading: false,
         isSeeReactions: false,
-        reactionsOwners: null,
-        pendingDelete: false
+        pendingDelete: false,
+        isReactionLoading: false,
+        reactionAction: false
     }),
-    watch: {
-        isSeeReactions (v) {
-            if (v) this.fetchOwners()
-        }  
-    },
     computed: {
         user () { return this.$store.getters['user/self'] },
         ownerData () {
@@ -20,20 +16,24 @@ export default {
         },
         isOwner () { return this.user && this.owner == this.user._id },
         isCurrent () { return (this.activeConstellation && this.activeConstellation == this.constellation) || (this.activeGathering && this.activeGathering == this.gathering) },
-        isReacted () { return this.user && this.reactions.find(r => r.owner == this.user._id) },
+        isReacted () {
+            return this.isReactionLoading ? this.reactionAction : this.user && this.reactions.find(r => r.owner == this.user._id)
+        },
+        reactionsOwners () {
+            return this.$store.getters['user/find']({
+                _id: { $in: this.reactions.map(r => r.owner) }
+            })
+        },
         reactionTooltip () {
-            let reaction = ''
-            let owners = this.reactionsOwners ? this.reactionsOwners.filter(m => m.owner.name).map(m => m.owner.name) : []
+            let owners = this.reactionsOwners.map(m => m.name)
 
             if (owners.length == 1) {
-                reaction = owners[0] + ' a réagi.'
-            } else if (owners.length > 1 && owners.length <= 3) {
-                reaction = owners.slice(0, 3).join(', ') + ' ont réagi.'
-            } else if (owners.length > 3) {
-                reaction = owners.slice(0, 3).join(', ') + ` et ${owners.length - 3} autres ont réagi.`
+                return owners[0] + ' a réagi.'
+            } else if (owners.length > 1) {
+                return this.$pluralize(owners) + ' ont réagi.'
             }
 
-            return reaction
+            return ''
         },
         actions () {
             return [
@@ -44,22 +44,9 @@ export default {
     },
     methods: {
         async onReactionTooltip (e) {
-            if (this.reactionsOwners && this.reactionTooltip == '') return
+            if (this.reactionTooltip == '') return
 
-            this.$tLoad(e, { id: this._id })
-
-            await this.fetchOwners()
-
-            this.$tOpen(this.reactionTooltip, e, { id: this._id, load: false })
-        },
-        async fetchOwners () {
-            return new Promise(async (resolve) => {
-                this.reactionsOwners = await this.$store.dispatch('user/mapUsers', {
-                    items: this.reactions, property: 'owner'
-                })
-                
-                resolve(this.reactionsOwners)
-            })
+            this.$tOpen(this.reactionTooltip, e, { id: this._id })
         },
         async deletePost () {
             this.isDeleteLoading = true
@@ -75,11 +62,16 @@ export default {
             this.isDeleteLoading = false
         },
         async addReaction (params) {
+            this.isReactionLoading = true
+            this.reactionAction = params.action ? params.action : !this.isReacted
+
             let response = await this.$store.dispatch('status/react', {
                 _id: params.id ? params.id : this._id,
                 type: '❤️',
-                action: params.action ? params.action : !this.isReacted
+                action: this.reactionAction
             })
+
+            this.isReactionLoading = false
         },
     }
 }

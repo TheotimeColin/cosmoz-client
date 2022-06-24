@@ -6,7 +6,7 @@
                     <div class="col-6 col-6@s col-12@xs mb-10" v-for="constellation in constellations" :key="constellation._id">
                         <block-const
                             v-bind="constellation"
-                            :link="localePath({ name: 'constellations-id', params: { id:  constellation._id } })"
+                            :link="localePath({ name: 'admin-constellations-id', params: { id:  constellation._id } })"
                         />
                     </div>
                 </div>
@@ -17,7 +17,7 @@
                     tag="nuxt-link"
                     :modifiers="['light']"
                     icon-before="plus"        
-                    :to="{ name: 'constellations-id', params: { id: 'new' } }"
+                    :to="{ name: 'admin-constellations-id', params: { id: 'new' } }"
                 >
                     Nouveau
                 </button-base>

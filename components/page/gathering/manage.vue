@@ -77,7 +77,9 @@
             </div>
 
             <div class="d-flex p-20 bg-bg-xstrong fxa-center" v-if="$isConsteOrga">
-                <qr-code class="width-3xs fx-no-shrink" :data="$config.baseUrl + localePath({ name: 'v-id', params: { id: gathering._id } })" />
+                <div class="width-3xs fx-no-shrink">
+                    <qr-code :data="$config.baseUrl + localePath({ name: 'v-id', params: { id: gathering._id } })" v-if="isInit" />
+                </div>
                 
                 <div class="pl-20">
                     Fais scanner ce QR sur place pour que les participants puissent :
@@ -131,6 +133,7 @@ export default {
         gathering: { type: Object, default: () => {} }
     },
     data: () => ({
+        isInit: false,
         isFull: false,
         isList: false,
         selectedUser: null,
@@ -142,6 +145,9 @@ export default {
                 _id: { $in: this.gathering.organizers }
             })
         }
+    },
+    mounted () {
+        this.isInit = true
     }
 }
 </script>

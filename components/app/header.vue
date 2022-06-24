@@ -9,7 +9,7 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-icon :href="$config.adminUrl" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
+                <button-icon :to="{ name: 'admin' }" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
 
                 <!-- <button-icon class="Header_button" fa="paper-plane" /> -->
 

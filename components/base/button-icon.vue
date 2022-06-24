@@ -1,5 +1,5 @@
 <template>
-    <component :is="href ? 'a' : 'div'" :href="href" class="ButtonIcon" v-on="$listeners">
+    <component :is="to ? 'nuxt-link' : (href ? 'a' : 'div')" :href="href" :to="to ? localePath(to) : {}" class="ButtonIcon" v-on="$listeners">
         <div class="ButtonIcon_notif" v-if="notification">{{ notification > 99 ? '+' : notification }}</div>
 
         <fa class="ButtonIcon_reg" :icon="`far fa-${fa}`" fixed-width v-if="fa" />
@@ -12,6 +12,7 @@ export default {
     name: 'ButtonIcon',
     props: {
         fa: { type: String },
+        to: { type: Object },
         href: { type: String },
         notification: { type: Number, default: 0 }
     }

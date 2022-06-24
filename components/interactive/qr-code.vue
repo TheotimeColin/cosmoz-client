@@ -32,8 +32,6 @@ export default {
         zoom: false
     }),
     mounted () {
-        if (process.server) return
-
         if (this.$refs.canvas) QRCode.toCanvas(this.$refs.canvas, this.data)
 
         if (this.$refs.zoomed) QRCode.toCanvas(this.$refs.zoomed, this.data, {

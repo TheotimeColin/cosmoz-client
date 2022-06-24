@@ -103,8 +103,16 @@ export default {
 
         if (this.statuses) {
             await this.$store.dispatch('user/softFetch', [
-                ...this.statuses.map(s => s.owner),
-                ...(this.statuses.children ? this.statuses.children.reduce((all, c) => [ ...all, ...c.map(c => c.owner) ], []) : [])
+                ...this.statuses.reduce((all, s) => [ ...all, s.owner, ...s.reactions.map(r => r.owner) ], []),
+                ...this.statuses.reduce((all, s) => {
+                    return [
+                        ...all,
+                        ...s.children.reduce((children, c) => [
+                            ...children, c.owner,
+                            ...c.reactions.map(r => r.owner)
+                        ], [])
+                    ]
+                }, [])
             ])
         }
 
