@@ -339,6 +339,7 @@ export default {
         transition: all 250ms ease;
     }
 
+    .PopinBase--fixed,
     .PopinBase--xs {
         align-items: center;
 

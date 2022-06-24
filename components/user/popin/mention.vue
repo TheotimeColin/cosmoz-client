@@ -29,25 +29,28 @@
                             {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
                         </div>
                     </template>
-                    <div class="mt-30 bg-bg-strong p-15 br-s d-flex fxa-center" v-if="isRequested && !isFriend">
-                        <fa icon="far fa-spinner-third" class="spin mr-15" />
+                    <div class="mt-30 block-cosmoz d-flex fxa-center" v-if="isRequested && !isFriend">
+                        <fa icon="far fa-check" class="mr-15" />
                         <div>
-                            <p class="ft-title-2xs">Demande d'ami en attente</p>
+                            <p class="ft-title-2xs">Demande d'ami envoyée
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div v-else>
-                    <p>Tu peux remercier {{ selectedUser.name }} pour sa présence lors de la rencontre ! C'est anonyme.</p>
+                    <p>Tu peux remercier {{ selectedUser.name }} pour sa présence lors de l'événement ! C'est anonyme.</p>
 
                     <div class="mt-10">
-                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'light'] : ['s']" :class="{ 'is-disabled': mentions.length >= 2 && !mentions.includes(mention.value) }" :icon-before="mention.icon" v-for="mention in $const.mentions" @click="toggleMention(mention.value)" :key="mention.id">
+                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'cosmoz'] : ['s']" :icon-before="mention.icon" v-for="mention in $const.mentions" @click="toggleMention(mention.value)"  :disabled="mentions.length >= 2 && !mentions.includes(mention.value)" :key="mention.id">
                             {{ mention.label }}
                         </button-base>
                     </div>
 
-                    <div class="mt-30 bg-bg-strong p-20 br-s">
-                        <p class="ft-title-xs">Ajouter en ami ?</p>
-                        <p class="mt-10">{{ selectedUser.name }} ne verra pas ta demande. Vous deviendriez amis seulement si c'est réciproque. </p>
+                    <div class="mt-30 block-cosmoz">
+                        <p class="ft-title-xs">
+                            <fa icon="far fa-sparkles" class="mr-5" /> Ajouter en ami ?
+                        </p>
+                        <p class="mt-10">{{ selectedUser.name }} ne verra pas ta demande. Vous deviendriez amis seulement si la demande est réciproque. </p>
 
                         <input-toggle class="mt-15" label="Je veux rester en contact" v-model="requestFriend" />
                     </div>
@@ -66,9 +69,8 @@
                     </button-base>
                 </template>
                 <template v-else>
-                    <link-base class="mr-5">Comment ça marche ?</link-base>
-                    <button-base :modifiers="['light']" :disabled="mentions.length <= 0 && !requestFriend" @click="onSubmit">
-                        Valider
+                    <button-base :modifiers="['light']" :disabled="mentions.length <= 0 && !requestFriend" @click="onSubmit" icon-before="paper-plane">
+                        Envoyer
                     </button-base>
                 </template>
             </div>

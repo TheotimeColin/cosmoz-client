@@ -21,6 +21,9 @@ exports.updateBookingStatus = async function (req, res) {
         await Promise.all(req.body.users.map(async userUpdate => {
             try {
                 let status = userUpdate.status
+                let add = userUpdate.add
+                userUpdate = await Entities.user.model.findById(userUpdate._id)
+                
 
                 if (user.role !== 'admin' && user.role !== 'editor') {
                     if (!user._id.equals(userUpdate._id)) {
@@ -50,6 +53,19 @@ exports.updateBookingStatus = async function (req, res) {
                     } catch (e) {
                         console.error(e)
                     }
+
+                    if (add && !userUpdate.constellations.find(c => c.equals(gathering.constellation))) {
+                        await Entities.constellation.model.updateOne({ _id: gathering.constellation }, {
+                            $addToSet: { members: userUpdate._id },
+                            $pull: { followers: userUpdate._id }
+                        })
+                
+                        userUpdate.constellations = [
+                            ...userUpdate.constellations, gathering.constellation
+                        ]
+
+                        userUpdate.followedConstellations = userUpdate.followedConstellations.filter(c => !c.equals(gathering.constellation))
+                    }
                 }
 
                 gathering.users = [
@@ -57,8 +73,6 @@ exports.updateBookingStatus = async function (req, res) {
                     { _id: userUpdate._id, status: status }
                 ]
 
-                userUpdate = await Entities.user.model.findById(userUpdate._id)
-                
                 userUpdate.gatherings = userUpdate.gatherings.filter(g => !gathering._id.equals(g._id))
                 
                 userUpdate.gatherings = [

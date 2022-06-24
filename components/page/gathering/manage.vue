@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="block bg-bg-weak p-0 br-none@xs">
-            <div class="p-15">
+            <div class="p-20" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
                 <h1 class="ft-title-s d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
 
-                <div class="d-flex fxa-center">
+                <div class="d-flex fxa-center" v-if="gathering.date">
                     <fa icon="fal fa-calendar-lines" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
                     <div>
@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div class="d-flex fxa-center mt-15">
+                <div class="d-flex fxa-center mt-10" v-if="gathering.location">
                     <fa icon="fal fa-map-marker-alt" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
                     <div>
@@ -22,40 +22,42 @@
                     </div>
                 </div>
 
-                <hr class="Separator mv-15">
+                <template v-if="gathering.description && gathering.description !== '<p></p>'">
+                    <hr class="Separator mv-20">
 
-                <div>
-                    <div class="ellipsis-3">
-                        {{ gathering.description|striptags }}
+                    <div>
+                        <div class="ellipsis-3">
+                            {{ gathering.description|striptags }}
+                        </div>
+
+                        <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
                     </div>
+                </template>
 
-                    <link-base class="mt-5" @click="isFull = true">Voir plus</link-base>
-                </div>
+                <hr class="Separator mv-20">
 
-                <hr class="Separator mt-15">
-            </div>
-            <div class="fx-center ph-20 pb-20 d-block@xs"
-                v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
-                <user-list class="fx-grow fxj-center@xs" :max="5" :items="usersByStatus(['attending', 'confirmed'])"
-                    :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
+                <div class="fx-center d-block@xs">
+                    <user-list class="fx-grow fxj-center@xs" :max="5" :items="usersByStatus(['attending', 'confirmed'])"
+                        :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
 
-                <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
-                    <template v-if="gathering.isPast">
-                        <link-base class="mr-5" @click="isFull = true">Détails</link-base>
-                        <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
-                    </template>
-                    <template v-else>
-                        <link-base class="mr-5"
-                            :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }"
-                            v-if="$isConsteOrga">Modifier</link-base>
-                        <link-base class="mr-5" @click="isFull = true">Détails</link-base>
+                    <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
+                        <template v-if="gathering.isPast">
+                            <link-base class="mr-5" @click="isFull = true">Détails</link-base>
+                            <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
+                        </template>
+                        <template v-else>
+                            <link-base class="mr-5"
+                                :to="{ name: 'c-slug-manage-events-id', params: { slug: constellation.slug, id: gathering._id } }"
+                                v-if="$isConsteOrga">Modifier</link-base>
+                            <link-base class="mr-5" @click="isFull = true">Détails</link-base>
 
-                        <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
-                    </template>
+                            <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
+                        </template>
+                    </div>
                 </div>
             </div>
             <div v-else-if="hasConfirmed">
-                <p class="ft-title-xs mb-20 ph-20">
+                <p class="ft-title-xs mb-20 pt-20 ph-20">
                     Tu les as rencontrés
                 </p>
 
@@ -73,6 +75,19 @@
                 <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id"
                     @close="selectedUser = null" />
             </div>
+
+            <div class="d-flex p-20 bg-bg-xstrong fxa-center" v-if="$isConsteOrga">
+                <qr-code class="width-3xs fx-no-shrink" :data="localePath({ name: 'v-id', params: { id: gathering._id } })" />
+                
+                <div class="pl-20">
+                    Fais scanner ce QR sur place pour que les participants puissent :
+                    <div class="ft-m-medium pl-10 mt-5">
+                        <p><fa icon="far fa-check" class="mr-5" /> Créer un compte en un clic</p>
+                        <p><fa icon="far fa-check" class="mr-5" /> Rejoindre le groupe automatiquement</p>
+                        <p><fa icon="far fa-check" class="mr-5" /> Obtenir le statut de Membre vérifié</p>
+                    </div>
+                </div>
+            </div> 
         </div>
 
         <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" @open="isFull = true" />

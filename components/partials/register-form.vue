@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mb-30">
+        <div class="mb-30" v-if="title">
             <p class="ft-title-m">
                 {{ formType == 'register' ? `Créer mon compte Cosmoz` : `Se connecter` }}
             </p>
@@ -94,6 +94,7 @@ export default {
     name: 'RegisterForm',
     components: { SelectBase, ToggleBase },
     props: {
+        title: { type: Boolean, default: true },
         type: { type: String },
         redirect: { type: Boolean, default: true },
         reference: { type: String, default: 'unknown' },
