@@ -105,10 +105,32 @@
                 </div>
             </div>
 
+            <popin :is-active="isMatch" :modifiers="['xs']" @close="isMatch = false" >
+                <template slot="content">
+                    <div class="bg-cover bg-night text-center p-40 height-100">
+                        <div class="d-flex fxa-center fxj-center">
+                            <user-icon :modifiers="['xl']" v-bind="profile" :no-link="true" />
+
+                            <fa icon="far fa-sparkles" class="mh-10" />
+
+                            <user-icon :modifiers="['xl']" v-bind="user" :no-link="true" />
+                        </div>
+
+                        <div class="ft-title-m mt-30 mb-10">Nouvelle personne dans ta constellation</div>
+                        <p class="mb-15">{{ profile.name }} a également envie de rester en contact !</p>
+
+                        <div class="mt-20">
+                            <button-base :modifiers="['light']" @click="isMatch = false">Fermer</button-base>
+                        </div>
+                    </div>
+                </template>
+            </popin>
+
             <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
                 <content-feed
                     :author="profile._id"
                     :disable-create="true"
+                    ref="feed"
                 />
             </div>
 
@@ -147,17 +169,18 @@ export default {
     async fetch () {
         await this.$store.dispatch('user/fetchOne', this.$route.params.userId)
 
-        if (this.target) {
-            await this.$store.dispatch('mention/fetch', { query: {
-                target: this.target._id
-            }})
-        }
+        // if (this.target) {
+        //     await this.$store.dispatch('mention/fetch', { query: {
+        //         target: this.target._id
+        //     }})
+        // }
     },
     data: () => ({
         TIDBITS,
         editSection: null,
         common: [],
-        isLoading: false
+        isLoading: false,
+        isMatch: false
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
@@ -197,7 +220,10 @@ export default {
                 confirm: {
                     text: 'Retirer de mes amis',
                     modifiers: ['error'],
-                    action: () => this.$store.dispatch('user/unmatch', this.profile)
+                    action: async () => {
+                        await this.$store.dispatch('user/unmatch', this.profile)
+                        if (this.$refs.feed) this.$refs.feed.refresh()
+                    }
                 }
             } })
         },
@@ -206,6 +232,11 @@ export default {
             
             try {
                 const response = await this.$store.dispatch('user/createRequest', this.profile)
+
+                if (response.match) {
+                    this.isMatch = true
+                    if (this.$refs.feed) this.$refs.feed.refresh()
+                }
             } catch (e) {
                 console.error(e)
             }

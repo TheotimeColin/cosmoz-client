@@ -83,38 +83,7 @@ export default {
     async fetch () {
         this.isLoading = true
 
-        let query = { parent: '$null' }
-
-        if (this.gathering) {
-            query.gathering = this.gathering
-            await this.$store.dispatch('status/fetch', { query })
-        } else if (this.constellation) {
-            query.constellation = this.constellation
-            query.gathering = '$null'
-            await this.$store.dispatch('status/fetch', { query })
-        } else if (this.author) {
-            query.owner = this.author
-            query.gathering = '$null'
-            query.constellation = '$null'
-            await this.$store.dispatch('status/fetch', { query })
-        } else {
-            await this.$store.dispatch('status/fetchFeed')
-        }
-
-        if (this.statuses) {
-            await this.$store.dispatch('user/softFetch', [
-                ...this.statuses.reduce((all, s) => [ ...all, s.owner, ...s.reactions.map(r => r.owner) ], []),
-                ...this.statuses.reduce((all, s) => {
-                    return [
-                        ...all,
-                        ...s.children.reduce((children, c) => [
-                            ...children, c.owner,
-                            ...c.reactions.map(r => r.owner)
-                        ], [])
-                    ]
-                }, [])
-            ])
-        }
+        await this.refresh()
 
         this.isLoading = false
     },
@@ -125,7 +94,7 @@ export default {
         
             if (this.gathering) query.gathering = this.gathering
             if (this.constellation) query.constellation = this.constellation
-            if (this.author) query.owner = this.author
+            if (this.author) query = { ...query, owner: this.author, constellation: null }
 
             return this.$store.getters['status/find']({
                 ...query
@@ -136,6 +105,46 @@ export default {
         }
     },
     methods: {
+        async refresh () {
+            return new Promise(async resolve => {
+                try {
+                    let query = { parent: '$null' }
+
+                    if (this.gathering) {
+                        query.gathering = this.gathering
+                        await this.$store.dispatch('status/fetch', { query })
+                    } else if (this.constellation) {
+                        query.constellation = this.constellation
+                        query.gathering = '$null'
+                        await this.$store.dispatch('status/fetch', { query })
+                    } else if (this.author) {
+                        query.owner = this.author
+                        query.gathering = '$null'
+                        query.constellation = '$null'
+                        await this.$store.dispatch('status/fetch', { query })
+                    } else {
+                        await this.$store.dispatch('status/fetchFeed')
+                    }
+
+                    if (this.statuses) {
+                        await this.$store.dispatch('user/softFetch', 
+                            this.statuses.reduce((all, s) => [
+                                ...all, s.owner, 
+                                ...(s.reactions ? s.reactions : []).map(r => r.owner),
+                                ...(s.children ? s.children : []).reduce((children, c) => [
+                                    ...children, c.owner,
+                                    ...c.reactions.map(r => r.owner)
+                                ], [])
+                            ] , [])
+                        )
+                    }
+                } catch (e) {
+                    console.error(e)
+                }
+
+                resolve(true)
+            })
+        },
         async onSubmit (formData) {
             this.isSubmitLoading = true
 
