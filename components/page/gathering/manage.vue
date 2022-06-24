@@ -2,7 +2,7 @@
     <div>
         <div class="block bg-bg-weak p-0 br-none@xs">
             <div class="p-20" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
-                <h1 class="ft-title-s d-none mb-15 d-block@xs">{{ gathering.title }}</h1>
+                <h1 class="ft-title-s d-none mb-20 mt-5 d-block@xs">{{ gathering.title }}</h1>
 
                 <div class="d-flex fxa-center" v-if="gathering.date">
                     <fa icon="fal fa-calendar-lines" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
@@ -77,7 +77,7 @@
             </div>
 
             <div class="d-flex p-20 bg-bg-xstrong fxa-center" v-if="$isConsteOrga">
-                <qr-code class="width-3xs fx-no-shrink" :data="localePath({ name: 'v-id', params: { id: gathering._id } })" />
+                <qr-code class="width-3xs fx-no-shrink" :data="$config.baseUrl + localePath({ name: 'v-id', params: { id: gathering._id } })" />
                 
                 <div class="pl-20">
                     Fais scanner ce QR sur place pour que les participants puissent :
