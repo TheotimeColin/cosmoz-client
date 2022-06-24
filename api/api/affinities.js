@@ -36,9 +36,7 @@ exports.sendMentions = async function (req, res) {
             owner: user._id
         })
 
-        if (req.body.requestFriend) {
-            data.match = await requestFriend(user, target)
-        }
+        if (req.body.requestFriend) data.match = await requestFriend(user, target)
 
     } catch (e) {
         console.error(e)

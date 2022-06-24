@@ -1,20 +1,23 @@
 <template>
     <div class="Homepage">
-        <div class="bg-cosmoz-strong">
-            <div class="Wrapper Wrapper--m fx-center pv-60 pt-100@s d-block@s">
-                <div>
+        <div class="bg-cover-10 bg-night">
+            <div class="G_cosmoz"></div>
+            <div class="Wrapper Wrapper--m fx-center pv-60 pt-150@s d-block@s">
+                <div class="text-center@xs">
                     <h1 class="ft-title-xl ft-title-l@xs">
-                        Rejoins une communauté dans laquelle tu te sentiras bien.
+                        Des communautés dans lesquelles tu te sentiras bien.
                     </h1>
 
-                    <p class="ft-l mt-20 max-width-m">Rencontre des personnes extraordinaires qui partagent tes passions et trouve ta place dans nos groupes locaux.</p>
+                    <p class="ft-l mt-20 max-width-m">Trouve ta place et rencontre d'autres personnes extraordinaires qui partagent tes passions.</p>
 
-                    <div class="mt-30 text-center@s">
+                    <div class="mt-30 text-center@xs">
                         <button-base :modifiers="['light']" icon-before="sparkles" @click="$store.commit('page/register', 'landing-1')">
                             Commencer
                         </button-base>
+                        
+                        <br v-if="$smallerThan('xs')">
 
-                        <link-base class="ml-10" :to="{ name: 'explore' }">
+                        <link-base class="ml-10 ml-0@xs mt-10@xs" :to="{ name: 'explore' }">
                             Parcourir les groupes
                         </link-base>
                     </div>
@@ -25,7 +28,7 @@
             </div>
         </div>
 
-        <div class="bg-bg-weak o-hidden">
+        <div class="bg-cosmoz o-hidden">
             <div class="Wrapper">
                 <div class="row fxa-center fxa-stretch">
                     <div class="col-6 col-12@s pv-100 pv-40@xs">
@@ -37,9 +40,11 @@
                             <b>Dans ta communauté, pas d'influenceurs ni de pub déguisée.</b> Ici, on peut être soi-même et partager ses photos, même quand elles sont moches.
                         </p>
 
-                        <input-toggle class="ft-title-2xs mt-30" style="--height: 30px" label="Filtre anti-ego-surdimensionné" v-model="filterOn" @click.native="hasClicked = true" />
+                        <div class="block-r p-15 shadow mt-30">
+                            <input-toggle class="ft-title-2xs" style="--height: 30px" label="Filtre anti-ego-surdimensionné" v-model="filterOn" @click.native="hasClicked = true" />
+                        </div>
                     </div>
-                    <div class="col-6 col-12@s p-relative pb-20@xs" :class="{ 'bg-cosmoz@xs': filterOn, 'bg-bg-xweak@xs': !filterOn }">
+                    <div class="col-6 col-12@s p-relative pb-20@xs bg-bg-xstrong@xs">
                         <img class="Homepage_image2" :src="assets.landingAuthentic" width="100%" v-show="filterOn">
 
                         <img class="Homepage_image2" :src="assets.landingFake" width="100%" v-show="!filterOn">
@@ -48,21 +53,25 @@
             </div>
         </div>
 
-        <div class="bg-cover-75 bg-ice-cream">
-            <div class="Wrapper pv-60 pv-20@xs">
-                <div class="block bg-bg-strong bg-none@xs p-0 ph-20@xs">
-                    <h3 class="ft-title-s pv-20 ph-20 ph-0@xs">
-                        Trouver sa communauté
+        <div class="bg-cover-75 bg-bg-xstrong o-hidden">
+            <div class="G_cosmoz"></div>
+
+            <div class="Wrapper pv-60 pt-20@xs pb-0@xs">
+                <div class="block bg-bg-t shadow bg-none@xs p-0 ph-20@xs">
+                    <h3 class="ft-title-s pv-30 ph-30 ph-0@xs pt-10@xs">
+                        Trouve ta communauté
                     </h3>
 
                     <slider-block
                         :slots="constellations.map(g => g._id)"
                         class="outflow@xs"
-                        :offset="$smallerThan('xs') ? 20 : 20"
+                        :offset="20"
+                        :offset-v="30"
                         item-class="width-xs"
                     >
                         <template v-for="conste in constellations" :slot="conste._id">
                             <block-const
+                                class="shadow-s"
                                 v-bind="conste"
                                 :key="conste._id"
                             />
@@ -72,7 +81,7 @@
             </div>
         </div>
 
-        <div class="bg-cosmoz-strong pv-60 text-center">
+        <div class="bg-bg-light bg-cover bg-paper color-bg pv-60 text-center">
             <div class="Wrapper Wrapper--s">
                 <h2 class="ft-title-l mb-20 ft-title-m@xs">
                     En ligne c'est bien.<br><u>Hors-ligne</u>, c'est encore mieux.
@@ -101,7 +110,7 @@
                     </div>
                 </div>
 
-                <button-base :modifiers="['light']" class="mt-30 n-ml-3" @click="$store.commit('page/register', 'landing-2')" icon-before="arrow-right">
+                <button-base :modifiers="['cosmoz']" class="mt-30 n-ml-3" @click="$store.commit('page/register', 'landing-2')" icon-before="arrow-right">
                     C'est parti !
                 </button-base>
             </div>
@@ -120,7 +129,9 @@ import feat3 from '@/assets/img/landing/v2/feat3.webp'
 export default {
     name: 'Homepage',
     async fetch () {
-        await this.$store.dispatch('constellation/fetch', {})
+        await this.$store.dispatch('constellation/fetch', {
+            query: { type: 'community', featured: true }
+        })
     },
     data: () => ({
         filterOn: false,
@@ -130,7 +141,7 @@ export default {
     computed: {
         constellations () {
             return this.$store.getters['constellation/find']({
-
+                type: 'community', featured: true
             })
         }
     },
