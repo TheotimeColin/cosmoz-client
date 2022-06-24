@@ -168,6 +168,7 @@ export default {
     bottom: -10%;
     width: 155%;
     z-index: 3;
+    top: 0;
 }
 
 @include breakpoint-s {

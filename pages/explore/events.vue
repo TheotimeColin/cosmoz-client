@@ -28,7 +28,12 @@ export default {
     name: 'ExploreIndex',
     layout: c => c.$auth.loggedIn ? 'app' : 'default',
     async fetch () {
-        let response = await this.$store.dispatch('gathering/fetch', {
+        await this.$store.dispatch('constellation/fetch', {
+            query: { type: 'community', featured: true },
+            softRefresh: true
+        })
+
+        await this.$store.dispatch('gathering/fetch', {
             query: { status: 'active' }
         })
 
