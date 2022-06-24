@@ -46,7 +46,8 @@ Gathering.fields.pre('findOneAndUpdate', async function(next) {
     const doc = await this.findOne(this.getFilter())
 
     if (doc && doc.cover && !doc.cover._id.equals(this._update.cover)) {
-        await mediaCollection.model.deleteOne({ _id: doc.cover._id })
+        let media = await mediaCollection.model.deleteOne({ _id: doc.cover._id })
+        if (media) await media.remove()
     }
 
     next()

@@ -214,7 +214,7 @@ const typeSetters = {
                         let metadata = await sharp(buffer).metadata()
                         
                         let prepend = 'library'
-                        if (params.path == '$user') prepend = `users/${user._id}`
+                        if (params.path) prepend = params.path.includes('$user') ? params.path.replace('$user', `users/${user._id}`) : params.path
 
                         let fileDirectory = `${prepend}/${shortid.generate()}-${size.id}.${mime.getExtension(file.mimetype)}`
                         

@@ -36,7 +36,7 @@
                 :key="status._id"
                 ref="posts"
             />
-            <placeholder class="Feed_item" v-for="i in 10" :ratio="33" v-show="isLoading" :key="i" />
+            <placeholder class="Feed_item outflow@xs" v-for="i in 10" :ratio="$smallerThan('xs') ? 65 : 45" v-show="isLoading" :key="i" />
         </transition-group>
 
         <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoading">

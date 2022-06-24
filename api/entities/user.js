@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-const Entities = require('../index.js')
+const mediaCollection = require('./media-collection')
 
 const { generatePassword } = require('../utils/user')
 
-let UserEntity = {
+let User = {
     read: 'public',
     write: 'self',
     fields: new mongoose.Schema({
@@ -63,7 +63,7 @@ let UserEntity = {
     }, { timestamps: true })
 }
 
-UserEntity.fields.pre('save', async function(next) {
+User.fields.pre('save', async function(next) {
     var user = this
 
     if (!user.isModified('password')) return next()
@@ -74,11 +74,22 @@ UserEntity.fields.pre('save', async function(next) {
     next()
 })
 
-UserEntity.fields.pre('find', function () {
+User.fields.pre('findOneAndUpdate', async function(next) {
+    const doc = await this.findOne(this.getFilter())
+
+    if (this._update?.picture && doc.picture && !doc.picture._id.equals(this._update.picture)) {
+        let media = await mediaCollection.model.findOne({ _id: doc.picture._id })
+        if (media) await media.remove()
+    }
+
+    next()
+})
+
+User.fields.pre('find', function () {
     this.populate('picture')
 })
 
-UserEntity.fields.methods.comparePassword = function(candidatePassword) {
+User.fields.methods.comparePassword = function(candidatePassword) {
     return new Promise(resolve => {
         bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
             resolve(isMatch, err)
@@ -87,7 +98,7 @@ UserEntity.fields.methods.comparePassword = function(candidatePassword) {
     
 }
 
-UserEntity.model = global.UserEntity ? global.UserEntity.model : mongoose.model('user', UserEntity.fields)
-global.UserEntity = UserEntity
+User.model = global.User ? global.User.model : mongoose.model('user', User.fields)
+global.User = User
 
-module.exports = UserEntity
+module.exports = User

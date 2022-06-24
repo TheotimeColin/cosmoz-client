@@ -22,7 +22,7 @@ export default {
                     let result = await $parent.$store.dispatch('library/create', {
                         file: form.newPicture,
                         size: 'profile',
-                        path: '$user'
+                        path: '$user/profile'
                     })
 
                     if (result) form.picture = result._id
@@ -102,7 +102,8 @@ export default {
 
             if (form.logoSelect) {
                 let result = await $parent.$store.dispatch('library/create', {
-                    file: form.logoSelect
+                    file: form.logoSelect,
+                    path: `constellation/${$parent.currentId}/logo`
                 })
 
                 if (result) form.logo = result._id
