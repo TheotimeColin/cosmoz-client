@@ -91,7 +91,6 @@ export default {
         if (!this.gathering || !this.constellation) return {}
 
         let meta = {
-            title: `${this.gathering.title} organisé par ${this.constellation ? this.constellation.name : ''} ${this.$t('meta.append')}`,
             meta: [
                 { hid: 'description', name: 'description', content: this.gathering.intro },
                 { property: 'og:title', content: `${this.gathering.title} organisé par ${this.constellation ? this.constellation.name : ''} ${this.$t('meta.append')}` },

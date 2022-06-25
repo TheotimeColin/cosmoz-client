@@ -25,13 +25,6 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] }
-    },
-    head () {
-        let meta = {
-            title: `Sorties prévues ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

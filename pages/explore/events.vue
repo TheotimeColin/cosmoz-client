@@ -51,13 +51,6 @@ export default {
                 sort: { date: 'desc' }
             })
         },
-    },
-    head () {
-        let meta = {
-            title: `Explorer les événements ${this.$t('meta.append')}`
-        }
-
-        return meta
     }
 }
 </script>

@@ -29,11 +29,6 @@ export default {
                 _id: this.$route.params.postId
             })
         }
-    },
-    head () {
-        let meta = {}
-
-        return meta
     }
 }
 </script>

@@ -30,15 +30,6 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] }
-    },
-    head () {
-        if (!this.$constellation) return {}
-        
-        let meta = {
-            title: `${this.$constellation.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

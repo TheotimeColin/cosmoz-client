@@ -56,13 +56,6 @@ export default {
                 sort: { date: this.type == 'past' ? 'asc' : 'desc' }
             }, { asDays: true })
         }
-    },
-    head () {
-        let meta = {
-            title: `Rencontres prévues ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

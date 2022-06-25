@@ -27,7 +27,7 @@
             <div class="Area_user" v-for="user in displayedUsers.filter(u => !value.includes(u._id))" :key="user._id" @click="$emit('input', [ ...value, user._id ])">
                 <user-icon v-bind="user" :modifiers="['s']" :no-link="true" :display-name="true">
                     <div class="ft-s color-ft-weak ml-5" slot="name">
-                        {{ user.id }}
+                        @{{ user.id }}
                     </div>
                 </user-icon>
 

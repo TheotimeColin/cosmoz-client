@@ -236,13 +236,6 @@ export default {
                 path: this.localePath({ name: 'c-slug-manage-events-id', params: { slug: this.$constellation.slug, id: this.currentId } })
             })
         }
-    },
-    head () {
-        let meta = {
-            title: `Organiser une rencontre ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

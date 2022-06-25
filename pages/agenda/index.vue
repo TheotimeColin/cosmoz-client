@@ -81,13 +81,6 @@ export default {
                 isAttending: true,
             })
         }
-    },
-    head () {
-        let meta = {
-            title: `Les rencontres ${this.$t('meta.append')}`
-        }
-
-        return meta
     }
 }
 </script>

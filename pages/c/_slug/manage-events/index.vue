@@ -95,13 +95,6 @@ export default {
                 constellation: this.$constellation._id
             })
         }
-    },
-    head () {
-        let meta = {
-            title: `Gestion des rencontres ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

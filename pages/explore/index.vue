@@ -47,13 +47,6 @@ export default {
                 featured: true
             })
         },
-    },
-    head () {
-        let meta = {
-            title: `Explorer les groupes ${this.$t('meta.append')}`
-        }
-
-        return meta
     }
 }
 </script>

@@ -57,15 +57,6 @@ export default {
                 _id: { $in: this.$constellation.members }
             })
         },
-    },
-    head () {
-        if (!this.$constellation) return {}
-
-        let meta = {
-            title: `Membres de ${this.$constellation.name} ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

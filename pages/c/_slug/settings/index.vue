@@ -35,13 +35,6 @@ export default {
 
             this.$router.push(this.localePath({ name: 'c-slug', params: { slug: this.$constellation.slug } }))
         }
-    },
-    head () {
-        let meta = {
-            title: `Paramètres ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

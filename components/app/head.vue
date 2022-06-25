@@ -97,6 +97,22 @@ export default {
                 this.$router.back()
             }
         }
+    },
+    head () {
+        let title = '(0) ' + (this.$appMeta?.title ? this.$appMeta.title : '') + ' ' + this.$t('meta.append')
+
+        if (this.notifications?.length > 0) {
+            title = title.replace(/[0-9]/, this.notifications.length)
+        } else {
+            title = title.replace(/ *\([^)]*\) */g, "")
+        }
+
+        return {
+            title: title,
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: `/${this.$config.isDev ? 'favicon_local' : 'favicon'}${this.notifications?.length > 0 ? '_notification' : ''}.png?${Math.random()}`  }
+            ]
+        }
     }
 }
 </script>

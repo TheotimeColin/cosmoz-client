@@ -11,7 +11,7 @@ export default {
             { hid: 'description', name: 'description', content: 'Fais des rencontres amicales ou amoureuses sur Paris en participant à nos expériences insolites dans nos lieux partenaires. Groupes mixtes, seulement entre filles ou entre LGBTQ : découvre la rencontre sans applis.' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+            { rel: 'icon', type: 'image/x-icon', href: process.env.NODE_ENV == 'PRODUCTION' ? '/favicon.png?02' : '/favicon_local.png?test' }
         ],
         script: [
             { src: 'sib.js', type: 'text/javascript', async: true },
@@ -126,6 +126,7 @@ export default {
         adminUrl: process.env.ADMIN_URL,
         blogUrl: process.env.BLOG_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
+        isDev: process.env.NODE_ENV != 'PRODUCTION',
 
         PEXELS: process.env.PEXELS,
         gtm: {

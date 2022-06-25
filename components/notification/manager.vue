@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import FaviconDefault from '@/static/favicon.png'
+
 export default {
     name: 'Notifications',
     data: () => ({

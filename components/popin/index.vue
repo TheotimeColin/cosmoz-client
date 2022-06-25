@@ -359,6 +359,7 @@ export default {
 
         .PopinBase_body {
             border-radius: 0;
+            box-shadow: none;
         }
     }
 }

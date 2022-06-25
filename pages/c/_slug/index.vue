@@ -130,15 +130,6 @@ export default {
         upcomingEvents () {
             return this.gatherings.filter(g => !g.isPast)
         }
-    },
-    head () {
-        if (!this.$constellation) return {}
-        
-        let meta = {
-            title: `${this.$constellation.name} organise ses événements sur Cosmoz ${this.$t('meta.append')}`,
-        }
-
-        return meta
     }
 }
 </script>

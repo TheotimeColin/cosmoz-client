@@ -25,13 +25,6 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] }
-    },
-    head () {
-        let meta = {
-            
-        }
-
-        return meta
     }
 }
 </script>

@@ -13,7 +13,7 @@ exports.notificationRead = async function (req, res) {
             await Entities.notification.model.updateOne({
                 _id: req.query._id,
                 owner: user._id
-            }, { state: 'read' })
+            }, { state: 'unread' })
         } else {
             await Entities.notification.model.updateMany({
                 owner: user._id,
