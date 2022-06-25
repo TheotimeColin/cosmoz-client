@@ -1,5 +1,5 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-reacted': isReacted, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="!isLoading">
+    <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="!isLoading">
         <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
         <div class="Post_head" @click="onClick">
@@ -31,12 +31,8 @@
                     </div>
                 </div>
             </div>
-
-            <quick-menu
-                class="Post_menu fx-no-shrink ml-10"
-                :items="actions"
-            />
         </div>
+
         <div class="Post_main" @click="onClick">
             <div class="Post_text Post_block" v-if="content">
                 <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
@@ -49,14 +45,52 @@
             </div>
 
             <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
+
+            <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative">
+                <button-base
+                    :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'light' : 'highlight') : '']"
+                    class="m-3"
+                    :emoji-before="reactionType"
+                    v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
+                    @click.stop="addReaction({ type: reactionType })"
+                >
+                    {{ reaction.length }}
+                </button-base>
+            </transition-group>
         </div>
+
         <div class="Post_footer" @click="onClick">
-            <div class="Post_action Post_action--react" @mouseenter="onReactionTooltip" @mouseleave="$tClose">
-                <fa class="mr-5" :icon="`${isReacted ? 'fas' : 'far'} fa-heart`" @click.stop="addReaction" /> {{
-                reactions.length ? reactions.length : '' }}
+            <div class="Post_action" @click.stop>
+                <quick-menu
+                    :modifiers="['right']"
+                    :button="{ modifiers: ['s', 'xweak'] }"
+                    :items="actions"
+                />
             </div>
-            <div class="Post_action" @click.stop="onAddComment">
-                <fa class="mr-5" icon="far fa-comment-lines" /> {{ children.length ? children.length : '' }}
+            <div class="Post_action" @click.stop>
+                <button-base
+                    icon-before="comments"
+                    :modifiers="['s', 'xweak']"
+                    class="mr-3"
+                    :text="children.length ? children.length : ''"
+                />
+            </div>
+            <div class="Post_action" @click.stop>
+                <button-base
+                    icon-before="face-smile"
+                    :modifiers="['s', 'xweak']"
+                    @mouseenter="isShowEmojis = true"
+                    @mouseleave="isShowEmojis = null"
+                />
+
+                <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }">
+                    <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
+                        <reaction-emoji-selector @input="(v) => {
+                            isShowEmojis = false;
+                            addReaction({ type: v, action: true });
+                        }" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -82,7 +116,7 @@
             v-if="!isForbidden"
         />
 
-        <transition name="fade">
+        <!-- <transition name="fade">
             <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
                 <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
 
@@ -92,7 +126,7 @@
                     placeholder="Ajouter un commentaire..." @blur="() => children.length == 0 ? isAdd = false : ''"
                     v-show="isAdd || (children.length > 0 && $biggerThan('s'))" ref="commentInput" />
             </div>
-        </transition>
+        </transition> -->
 
         <div class="Post_delete" v-show="pendingDelete">
             <div class="max-width-s">
@@ -121,6 +155,7 @@ import PostMixin from '@/mixins/post'
 
 export default {
     name: 'Post',
+    mixins: [ PostMixin ],
     async fetch () {
         await this.$store.dispatch('user/softFetch', [
             this.owner,
@@ -130,7 +165,6 @@ export default {
 
         this.isLoading = false
     },
-    mixins: [ PostMixin ],
     props: {
         _id: { type: String },
         content: { type: String },
@@ -155,7 +189,8 @@ export default {
         isAdd: false,
         reacted: null,
         isOverflow: false,
-        showAll: false
+        showAll: false,
+        isShowEmojis: false
     }),
     mounted () {
         this.max = this.maxComments
@@ -164,6 +199,9 @@ export default {
     },
     computed: {
         user () { return this.$store.getters['user/self'] },
+        reactionTypes () {
+            return this.$groupBy(this.reactions, 'type')
+        },
         displayedComments () {
             return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []
         },
@@ -262,6 +300,7 @@ export default {
         background-color: var(--color-bg-weak);
         position: relative;
         cursor: pointer;
+        box-shadow: 0 3px 8px 0px color-opacity('bg-xstrong', -50%);
 
         &.is-reacted {
 
@@ -281,9 +320,20 @@ export default {
 
     .Post_block {
         margin-bottom: 20px;
-        
-        &:last-child {
+    }
+
+    .Post_reactions {
+        position: relative;
+        z-index: 5;
+    }
+
+    .Post_gallery {
+        margin-bottom: 0;
+
+        & + .Post_reactions {
+            margin-top: -44px;
             margin-bottom: 0;
+            padding-bottom: 14px;
         }
     }
 
@@ -371,21 +421,56 @@ export default {
     }
 
     .Post_footer {
+        // border-top: 1px solid var(--color-border-weak);
+        background-color: var(--color-bg);
+        background-color: color-opacity('bg', -50%);
         display: flex;
-        padding: 15px 20px;
+        justify-content: space-between;
+        padding: 5px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .Post_action {
-        font: var(--ft-title-4xs);
+        font: var(--ft-title-3xs);
+        position: relative;
         
         svg {
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
         }
         
         & + & {
             margin-left: 20px;
         }
+    }
+
+    .Post_emojiSelector {
+        pointer-events: none;
+        opacity: 0;
+
+        position: absolute;
+        box-sizing: content-box;
+        border: 20px solid transparent;
+        z-index: 50;
+        bottom: 20px;
+        right: 0;
+        transform: translateY(calc(100% + 5px));
+        transition: all 100ms ease;
+
+        &.is-active,
+        &:hover:not(.is-disabled) {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(100%);
+        }
+    }
+
+    .Post_emojiSelectorContainer {
+        width: 400px;
+        overflow: hidden;
+        max-height: 350px;
+        display: flex;
     }
 
     .Post_comments {

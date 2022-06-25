@@ -13,21 +13,31 @@
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
                 <fa :icon="`far fa-${iconBefore}`" fixed-width />
             </span>
+            <span class="ButtonBase_iconBefore ButtonBase_emoji" v-if="emojiBefore">
+                {{ emojiBefore }}
+            </span>
 
             <span class="ButtonBase_before" v-if="$slots.before">
                 <slot name="before"></slot>
             </span>
-            <span class="ButtonBase_text">
+
+            <span class="ButtonBase_text" v-if="text || subtitle || ($slots.default && $slots.default !== '')">
                 {{ text ? $ellipsis(text, ellipsis) : '' }}
+
                 <slot></slot>
+
                 <div class="ButtonBase_subtitle" v-if="subtitle">{{ subtitle }}</div>
             </span>
+            
             <span class="ButtonBase_after" v-if="$slots.after">
                 <slot name="after"></slot>
             </span>
 
             <span class="ButtonBase_iconAfter" v-if="iconAfter">
                 <fa :icon="`far fa-${iconAfter}`" fixed-width />
+            </span>
+            <span class="ButtonBase_iconAfter ButtonBase_emoji" v-if="emojiAfter">
+                {{ emojiAfter }}
             </span>
         </div>
 
@@ -50,7 +60,7 @@ export default {
         tag: { type: String },
         href: { type: String },
         link: { type: String },
-        text: { type: String },
+        text: { type: [String, Number], default: '' },
         subtitle: { type: String },
         image: { type: String },
         ellipsis: { type: Number, default: 999 },
@@ -58,6 +68,8 @@ export default {
         disabled: { type: Boolean, default: false },
         to: { type: [Object, Boolean], default: false },
         node: { type: Object, default: () => {} },
+        emojiBefore: { type: String, default: '' },
+        emojiAfter: { type: String, default: '' },
         iconBefore: { type: String, default: '' },
         iconAfter: { type: String, default: '' },
         loading: { type: Boolean, default: false },
@@ -163,6 +175,11 @@ export default {
     animation: baseSpin 1000ms cubic-bezier(0.39, 0.32, 0.18, 0.87) 0s infinite;
 }
 
+.ButtonBase_emoji {
+    font-family: 'Segoe UI Emoji';
+    line-height: 1;
+}
+
 .ButtonBase_subtitle {
     font: var(--ft-s-medium);
     margin-top: 5px;
@@ -170,13 +187,16 @@ export default {
     white-space: normal;
 }
 
+.ButtonBase_iconBefore + .ButtonBase_text,
+.ButtonBase_text + .ButtonBase_iconAfter {
+    margin-left: 8px;
+}
+
 .ButtonBase_iconBefore {
-    margin-right: 8px;
     pointer-events: none;
 }
 
 .ButtonBase_iconAfter {
-    margin-left: 8px;
     pointer-events: none;
 }
 
@@ -192,12 +212,46 @@ export default {
 
 /* MODIFIERS */
 
-.ButtonBase--link {
-    display: inline-flex;
-    background-color: transparent;
-    color: var(--color-primary);
-    padding: 0;
-    text-align: left;
+.ButtonBase--s {
+    padding: 10px 15px;
+    font: var(--ft-title-3xs);
+    box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
+
+    &:hover {
+        
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
+    }
+    
+    .ButtonBase_image {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+    }
+}
+
+.ButtonBase--xs {
+    padding: 5px 10px;
+    min-width: 39px;
+    min-height: 39px;
+    font: var(--ft-title-3xs);
+}
+
+.ButtonBase--2xs {
+    padding: 3px 10px 3px 8px;
+    min-width: 0px;
+    min-height: 28px;
+    font: var(--ft-title-3xs);
+    font-size: 12px;
+
+    .ButtonBase_emoji {
+        font-size: 15px;
+    }
+
+    .ButtonBase_iconBefore + .ButtonBase_text,
+    .ButtonBase_text + .ButtonBase_iconAfter {
+        margin-left: 4px;
+    }
 }
 
 .ButtonBase.is-loading {
@@ -241,8 +295,9 @@ export default {
     }
 
     &:hover {
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-xweak);
         color: var(--color-ft-light);
+        box-shadow: none;
 
         &.is-active {
             background-color: var(--color-bg-strong);
@@ -384,31 +439,6 @@ export default {
     }
 }
 
-.ButtonBase--s {
-    padding: 10px 15px;
-    font: var(--ft-title-3xs);
-    box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
-
-    &:hover {
-        
-        transform: scale(0.98);
-        box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
-    }
-    
-    .ButtonBase_image {
-        width: 30px;
-        height: 30px;
-        margin-right: 8px;
-    }
-}
-
-.ButtonBase--xs {
-    padding: 5px 10px;
-    min-width: 39px;
-    min-height: 39px;
-    font: var(--ft-title-3xs);
-}
-
 .ButtonBase.is-loading {
     pointer-events: none;
 }
@@ -439,8 +469,8 @@ export default {
     }
 
     .ButtonBase_content {
-        width: 45px;
-        height: 45px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
     }
 
@@ -461,8 +491,8 @@ export default {
     &.ButtonBase--s {
 
         .ButtonBase_content {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
         }
     
         .ButtonBase_iconAfter,
@@ -518,5 +548,28 @@ export default {
             font-size: 12px;
         }
     }
+}
+
+.ButtonBase--highlight {
+    border: 1px solid color-opacity('cosmoz', -70%);
+    background-color: color-opacity('cosmoz', -80%);
+
+    .G_cosmoz {
+        opacity: 0.25;
+    }
+
+    &:hover {
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
+        border-color: transparent;
+
+        .G_cosmoz {
+            opacity: 0;
+        }
+    }
+}
+
+.ButtonBase--no-s {
+    box-shadow: none !important;
 }
 </style>

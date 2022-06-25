@@ -9,14 +9,14 @@ import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
 
-import { faHeart, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles } from '@fortawesome/pro-solid-svg-icons'
+import { faHeart, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faFaceGrinSquintTears, faUserHelmetSafety, faBurgerCheese, faCat, faTree, faBasketball } from '@fortawesome/pro-solid-svg-icons'
 
-import { faMapMarkerAlt, faCalendarLines } from '@fortawesome/pro-light-svg-icons'
+import { faMapMarkerAlt, faCalendarLines, faHeart as falHeart, faComments as falComments } from '@fortawesome/pro-light-svg-icons'
 
 import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 config.autoAddCss = false
-library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faMapMarkerAlt, faCalendarLines)
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faMapMarkerAlt, faCalendarLines, falHeart, falComments, faFaceGrinSquintTears, faUserHelmetSafety, faBurgerCheese, faCat, faTree, faBasketball)
 
 Vue.component('fa', FontAwesomeIcon)
 
@@ -135,6 +135,8 @@ Vue.mixin({
                     text: `"${text}"`,
                     type: 'success'
                 })
+
+                console.log('Copié dans le presse-papier ' + text)
 
                 return 
             }

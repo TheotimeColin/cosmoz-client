@@ -49,9 +49,8 @@
             </button-base>
         </div>
         
-
-        <div class="text-center mt-20" v-if="displayedStatuses.length < statusesData.length">
-            <button-base :modifiers="['light']" @click="page++">Afficher la suite</button-base>
+        <div class="text-center mt-20" v-if="displayedStatuses.length < statuses.length">
+            <button-base :modifiers="['light']" icon-before="arrow-down" @click="page++">Afficher la suite</button-base>
         </div>
         <div class="text-center color-ft-xweak mt-20" v-else-if="displayedStatuses.length > 0">
             <p>Fin du fil.</p>
@@ -64,7 +63,7 @@ export default {
     name: 'Feed',
     props: {
         read: { type: String, default: 'friends' },
-        max: { type: Number, default: 5 },
+        max: { type: Number, default: 10 },
         gathering: { type: String },
         constellation: { type: String },
         author: { type: String },

@@ -317,6 +317,15 @@
     }
 }
 
+.transition-list-enter, .transition-list-leave-to {
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.transition-list-leave-active {
+    position: absolute;
+}
+
 // 
 
 .default-enter {

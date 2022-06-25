@@ -1,6 +1,6 @@
 <template>
     <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
-        <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click.stop="isActive = !isActive" />
+        <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" v-bind="button" :modifiers="['round', ...(button && button.modifiers ? button.modifiers : [])]" @click.stop="isActive = !isActive" />
         
         <div class="QuickMenu_actions">
             <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native.stop="onClick(item)" @click.stop="onClick(item)">
@@ -18,6 +18,7 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         items: { type: Array, default: () => [] },
+        button: { type: Object, default: () => {} },
         large: { type: Boolean, default: false },
         icon: { type: String, default: 'ellipsis'}
     },
@@ -27,19 +28,6 @@ export default {
             close: null
         }
     }),
-    computed: {
-        buttonModifiers () {
-            let modifiers = []
-
-            if (this.large) modifiers = ['weak']
-            else if (this.modifiers.includes('strong')) modifiers = [...modifiers, 'xs', 'weak']
-            else modifiers = [...modifiers, 'xs', 'xweak']
-
-            if (this.modifiers.includes('s')) modifiers = [ ...modifiers, 's']
-
-            return [...modifiers, 'round']
-        }
-    },
     watch: {
         isActive: {
             handler (v) {

@@ -50,10 +50,10 @@ export default {
         user () { return this.$store.getters['user/self'] },
         $appMeta() { return getMeta(this.$route, this.$store) },
         notifications() {
-            return this.$store.getters['notification/find']({
+            return this.user ? this.$store.getters['notification/find']({
                 owner: this.user._id,
                 state: 'unread'
-            })
+            }) : []
         }
     },
     watch: {

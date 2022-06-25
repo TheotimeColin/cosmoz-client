@@ -16,9 +16,6 @@ export default {
         },
         isOwner () { return this.user && this.owner == this.user._id },
         isCurrent () { return (this.activeConstellation && this.activeConstellation == this.constellation) || (this.activeGathering && this.activeGathering == this.gathering) },
-        isReacted () {
-            return this.isReactionLoading ? this.reactionAction : this.user && this.reactions.find(r => r.owner == this.user._id)
-        },
         reactionsOwners () {
             return this.$store.getters['user/find']({
                 _id: { $in: this.reactions.map(r => r.owner) }
@@ -38,6 +35,7 @@ export default {
         actions () {
             return [
                 { fa: 'heart', label: 'Voir les réactions', disabled: !this.reactions.length, action: () => this.isSeeReactions = true },
+                { fa: 'copy', label: 'Copier le lien', action: () => this.$copy(this.$config.baseUrl + this.localePath({ name: 'post-postId', params: { postId: this._id }})) },
                 { fa: 'trash', label: 'Supprimer', disabled: !this.isOwner, action: () => this.pendingDelete = true }
             ]
         }
@@ -62,16 +60,22 @@ export default {
             this.isDeleteLoading = false
         },
         async addReaction (params) {
-            this.isReactionLoading = true
-            this.reactionAction = params.action ? params.action : !this.isReacted
+            let type = params.type ? params.type : '❤️'
 
-            let response = await this.$store.dispatch('status/react', {
-                _id: params.id ? params.id : this._id,
-                type: '❤️',
+            this.isReactionLoading = true
+            this.reactionAction = params.action ? params.action : !this.isReacted(type)
+
+            console.log(this.reactionAction)
+
+            await this.$store.dispatch('status/react', {
+                _id: params.id ? params.id : this._id, type,
                 action: this.reactionAction
             })
 
             this.isReactionLoading = false
         },
+        isReacted (type = '') {
+            return this.reactions.find(r => r.type == type && r.owner == this.user._id) ? true : false
+        }
     }
 }
