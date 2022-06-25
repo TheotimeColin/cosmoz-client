@@ -97,6 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .ButtonBase {
     display: inline-flex;
     font: var(--ft-title-3xs);
@@ -117,7 +118,6 @@ export default {
 
     cursor: pointer;
 
-    &:hover,
     &:active {
         background-color: var(--color-bg-light);
         color: var(--color-ft);
@@ -216,12 +216,6 @@ export default {
     padding: 10px 15px;
     font: var(--ft-title-3xs);
     box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
-
-    &:hover {
-        
-        transform: scale(0.98);
-        box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
-    }
     
     .ButtonBase_image {
         width: 30px;
@@ -278,7 +272,7 @@ export default {
     border-color: transparent;
 
     &.is-active,
-    &:hover {
+    &:active {
         color: var(--color-ft-light);
         background-color: var(--color-bg-strong);
     }
@@ -293,16 +287,6 @@ export default {
         color: var(--color-ft-light);
         background-color: var(--color-bg-strong);
     }
-
-    &:hover {
-        background-color: var(--color-bg-xweak);
-        color: var(--color-ft-light);
-        box-shadow: none;
-
-        &.is-active {
-            background-color: var(--color-bg-strong);
-        }
-    }
 }
 
 .ButtonBase--transparent {
@@ -315,38 +299,12 @@ export default {
         box-shadow: none;
         color: var(--color-ft-light);
     }
-
-    &:hover {
-        background-color: transparent;
-        box-shadow: none;
-        color: var(--color-ft-light);
-
-        &.is-active {
-            background-color: transparent;
-        }
-    }
-}
-
-.ButtonBase--current {
-    color: var(--color-current-strong);
-    background-color: transparent;
-
-    &:hover,
-    &:active {
-        color: var(--color-ft-light);
-        background-color: var(--color-current-strong);
-    }
-
-    &:active {
-        background-color: var(--color-current-xstrong);
-    }
 }
 
 .ButtonBase--light {
     background-color: var(--color-ft-light);
     color: var(--color-ft);
 
-    &:hover,
     &:active,
     &.is-loading {
         color: var(--color-ft-light);
@@ -365,7 +323,6 @@ export default {
         opacity: 0.75;
     }
     
-    &:hover,
     &.is-loading,
     &:active {
         background-color: var(--color-ft-light);
@@ -381,7 +338,6 @@ export default {
     background-color: var(--color-error);
     border-radius: 3px;
 
-    &:hover,
     &.is-loading,
     &:active {
         background-color: var(--color-error-strong);
@@ -409,7 +365,7 @@ export default {
         opacity: 0.15;
     }
 
-    &:hover {
+    &:active {
         transform: translateY(-1px);
         background-color: var(--color-cosmoz);
         border-color: var(--color-cosmoz);
@@ -558,7 +514,7 @@ export default {
         opacity: 0.25;
     }
 
-    &:hover {
+    &:active {
         background-color: var(--color-bg-light);
         color: var(--color-ft);
         border-color: transparent;
@@ -571,5 +527,86 @@ export default {
 
 .ButtonBase--no-s {
     box-shadow: none !important;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .ButtonBase:hover {
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
+        transform: scale(0.99);
+        box-shadow: 0 1px 4px 0 color-opacity('bg-2xstrong', -25%);
+    }
+
+    .ButtonBase--s:hover {
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
+    }
+
+    .ButtonBase--highlight:hover {
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
+        border-color: transparent;
+
+        .G_cosmoz {
+            opacity: 0;
+        }
+    }
+
+    .ButtonBase--rect:hover {
+        transform: translateY(-1px);
+        background-color: var(--color-cosmoz);
+        border-color: var(--color-cosmoz);
+        color: var(--color-ft-light);
+        box-shadow: 0 2px 8px 0 color-opacity('bg-xstrong', -75%);
+
+        .G_cosmoz {
+            opacity: 1;
+        }
+    }
+
+    .ButtonBase--weak:hover {
+        color: var(--color-ft-light);
+        background-color: var(--color-bg-strong);
+    }
+
+    .ButtonBase--xweak:hover {
+        background-color: var(--color-bg-xweak);
+        color: var(--color-ft-light);
+        box-shadow: none;
+    }
+
+    .ButtonBase--transparent:hover {
+        background-color: transparent;
+        box-shadow: none;
+        color: var(--color-ft-light);
+
+        &.is-active {
+            background-color: transparent;
+        }
+    }
+
+    .ButtonBase--light:hover {
+        color: var(--color-ft-light);
+        background-color: var(--color-cosmoz);
+
+        .G_cosmoz {
+            opacity: 0.75;
+        }
+    }
+
+    .ButtonBase--error:hover {
+        background-color: var(--color-error-strong);
+    }
+
+    .ButtonBase--cosmoz:hover {
+        background-color: var(--color-ft-light);
+        color: var(--color-ft);
+
+        .G_cosmoz {
+            opacity: 0;
+        }
+    }
+
+
 }
 </style>
