@@ -35,7 +35,8 @@ export default {
         popins: {
             register: null,
             constellationCreate: null,
-            confirm: null
+            confirm: null,
+            emojis: null
         },
         meta: {
             title: ''

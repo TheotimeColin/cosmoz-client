@@ -79,13 +79,14 @@
                 <button-base
                     icon-before="face-smile"
                     :modifiers="['s', 'xweak']"
+                    @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : {}"
                     @mouseenter="isShowEmojis = true"
                     @mouseleave="isShowEmojis = null"
                 />
 
-                <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }">
+                <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseenter="isShowEmojis = true" @mouseleave="isShowEmojis = null" v-if="$biggerThan('s')">
                     <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
-                        <reaction-emoji-selector @input="(v) => {
+                        <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
                             isShowEmojis = false;
                             addReaction({ type: v, action: true });
                         }" />
@@ -340,6 +341,7 @@ export default {
     .Post_forbidden {
         padding: 25px;
         position: absolute;
+        z-index: 15;
         top: 0;
         left: 0;
         width: 100%;
@@ -469,7 +471,7 @@ export default {
     .Post_emojiSelectorContainer {
         width: 400px;
         overflow: hidden;
-        max-height: 350px;
+        height: 350px;
         display: flex;
     }
 
@@ -510,7 +512,6 @@ export default {
         }
 
         .Post_footer {
-            padding: 15px 15px;
             margin: 0 -15px 0;
         }
 
@@ -525,9 +526,15 @@ export default {
             padding-right: 0;
         }
 
+        .Post_reactions {
+            padding: 0;
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+
         .Post_head {
             padding-top: 0;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
             display: flex;
         }
 

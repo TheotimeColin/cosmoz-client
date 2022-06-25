@@ -1,6 +1,6 @@
 <template>
-    <div class="EmojiSelector">
-        <div class="EmojiSelector_grid">
+    <div class="EmojiSelector" :class="{ 'is-active': isActive }">
+        <div class="EmojiSelector_featured EmojiSelector_grid">
             <div class="EmojiSelector_item EmojiSelector_item--l" v-for="emoji in EMOJIS.featured" @click="$emit('input', emoji)" :key="emoji">
                 <span>{{ emoji }} </span>
             </div>
@@ -36,6 +36,9 @@ import EMOJIS from '@/utils/emojis'
 
 export default {
     name: 'EmojiSelector',
+    props: {
+        isActive: { type: Boolean, default: false }
+    },
     data: () => ({
         EMOJIS
     }),
@@ -56,10 +59,18 @@ export default {
 .EmojiSelector {
     display: flex;
     flex-direction: column;
+
+    &.is-active {
+        
+        .EmojiSelector_grid,
+        .EmojiSelector_search {
+            display: flex;
+        } 
+    }
 }
 
 .EmojiSelector_search {
-    display: flex;
+    display: none;
     flex-grow: 1;
     overflow: hidden;
 }
@@ -70,8 +81,12 @@ export default {
     @include hide-scrollbars;
 }
 
+.EmojiSelector_featured {
+    justify-content: center;
+}
+
 .EmojiSelector_grid {
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     padding: 10px;
 }

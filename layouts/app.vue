@@ -18,6 +18,7 @@
         <popin-register />
         <popin-constellation-create />
         <popin-confirm />
+        <popin-emojis />
         
         <tooltip-manager />
     </div>

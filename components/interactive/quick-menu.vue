@@ -63,6 +63,7 @@ export default {
     .QuickMenu {
         display: inline-block;
         position: relative;
+        z
         
         &.is-large {
             
@@ -76,7 +77,7 @@ export default {
     .QuickMenu_actions {
         width: 250px;
         position: absolute;
-        z-index: 10;
+        z-index: 30;
         bottom: -5px;
         right: 0;
         opacity: 0;
