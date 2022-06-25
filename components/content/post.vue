@@ -46,7 +46,7 @@
 
             <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
 
-            <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative">
+            <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative" :class="{ 'is-reactions': reactions.length }">
                 <button-base
                     :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'light' : 'highlight') : '']"
                     class="m-3"
@@ -326,15 +326,20 @@ export default {
     .Post_reactions {
         position: relative;
         z-index: 5;
+        margin: 0;
+
+        &.is-reactions {
+            margin-bottom: 20px;
+        }
     }
 
     .Post_gallery {
         margin-bottom: 0;
 
-        & + .Post_reactions {
+        & + .Post_reactions.is-reactions {
             margin-top: -44px;
             margin-bottom: 0;
-            padding-bottom: 14px;
+            padding-bottom: 10px;
         }
     }
 

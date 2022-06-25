@@ -12,7 +12,7 @@
         >
             <div class="AppNav_content">
                 <div class="AppNav_primary">
-                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak']" :to="{ name: 'feed' }" icon-before="home" />
+                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
 
                     <hr class="Separator mt-10 bg-bg">
 
@@ -24,9 +24,9 @@
 
                     <hr class="Separator mb-10 bg-bg">
 
-                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" v-if="user" />
+                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" v-if="user" />
                     
-                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak']" :to="{ name: 'explore' }" icon-before="compass" />
+                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" />
                 </div>
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
@@ -34,6 +34,7 @@
                             <user-icon v-bind="user" :modifiers="['m']" :display-name="true" />
 
                             <quick-menu
+                                :button="{ modifiers: ['xweak'] }"
                                 :items="[
                                     { fa: 'gear', to: { name: 'compte' }, label: `Mon compte` },
                                     { fa: 'arrow-right-from-bracket', to: { name: 'compte-logout'}, label: `Se déconnecter` }

@@ -1,12 +1,12 @@
 <template>
     <div class="EmojiSelector" :class="{ 'is-active': isActive }">
-        <div class="EmojiSelector_featured EmojiSelector_grid">
+        <div class="EmojiSelector_featured EmojiSelector_grid" v-if="isActive">
             <div class="EmojiSelector_item EmojiSelector_item--l" v-for="emoji in EMOJIS.featured" @click="$emit('input', emoji)" :key="emoji">
                 <span>{{ emoji }} </span>
             </div>
         </div>
         
-        <div class="EmojiSelector_search">
+        <div class="EmojiSelector_search" v-if="isActive">
             <div class="EmojiSelector_main">
                 <div class="+mt-10" v-for="(value, category) in emojisByCat" :key="category" :ref="category">
                     <div class="EmojiSelector_label">

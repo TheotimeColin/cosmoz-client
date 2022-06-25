@@ -8,6 +8,7 @@
 
                 <quick-menu
                     class="ml-10"
+                    :button="{ modifiers: ['xweak'] }"
                     :items="[
                         { fa: 'user-astronaut', to: { name: 'c-slug-members', params: { slug } }, label: `Liste des membres` },
                         

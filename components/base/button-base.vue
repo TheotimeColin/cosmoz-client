@@ -430,6 +430,20 @@ export default {
         border-radius: 50%;
     }
 
+    &.ButtonBase--m {
+
+        .ButtonBase_content {
+            width: 45px;
+            height: 45px;
+        }
+    
+        .ButtonBase_iconAfter,
+        .ButtonBase_iconBefore {
+            margin: 0;
+        }
+
+    }
+
     &.ButtonBase--l {
 
         .ButtonBase_content {

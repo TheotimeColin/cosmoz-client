@@ -27,7 +27,7 @@
                 <div class="fx-center p-10 bg-bg-xweak br-xs mt-5" v-for="user in pending" :key="user._id">
                     <user-icon :display-name="true" v-bind="user" />
 
-                    <button-base icon-before="times" :modifiers="['round', 'xs']" @click="() => confirmCancel(user)" :loading="loading.includes(user._id)" />
+                    <button-base icon-before="times" :modifiers="['round', 'xweak', 'xs']" @click="() => confirmCancel(user)" :loading="loading.includes(user._id)" />
                 </div>
             </div>
         </div>
