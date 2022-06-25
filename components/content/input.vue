@@ -96,21 +96,6 @@ export default {
 <style lang="scss" scoped>
 .Editor {
 
-    &.is-tiny {
-        
-        .Editor_main {
-            margin-left: 10px;
-        }
-
-        .Editor_input {
-            background-color: var(--color-bg);
-        }
-
-        .Editor_secondary {
-            border: none;
-            padding-top: 10px;
-        }
-    }
 }
 
 .Editor_first {

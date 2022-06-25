@@ -31,7 +31,7 @@ export default {
     },
     mounted () {
         setTimeout(() => this.fetch(), 1000)
-        setInterval(this.fetch, 30000)
+        setInterval(this.fetch, 60000)
     },
     beforeDestroy () {
         window.clearInterval(this.fetch)

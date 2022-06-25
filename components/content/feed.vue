@@ -29,13 +29,13 @@
                 v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
-                @submit="onSubmit"
                 :active-gathering="gathering"
                 :active-constellation="constellation"
                 :disableCreate="disableInteract"
                 :key="status._id"
                 ref="posts"
             />
+
             <placeholder class="Feed_item outflow@xs" v-for="i in 10" :ratio="$smallerThan('xs') ? 65 : 45" v-show="isLoading" :key="i" />
         </transition-group>
 
@@ -146,6 +146,8 @@ export default {
         },
         async onSubmit (formData) {
             this.isSubmitLoading = true
+
+            console.log(formData)
 
             try {
                 let data = { ...formData, read: this.read }

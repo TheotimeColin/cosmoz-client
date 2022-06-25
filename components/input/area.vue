@@ -1,5 +1,5 @@
 <template>
-    <div class="Area" :class="[ `is-${size}`, { 'is-tiny': !adaptableText } ]">
+    <div class="Area" :class="[ { 'is-tiny': !adaptableText } ]">
         <div class="Area_input" contenteditable="true" :placeholder="$options.filters.specials(placeholder)" @input="onInput" @paste="onPaste" @focus="$emit('focus')" @blur="$emit('blur')" ref="content"></div>
     </div>
 </template>
@@ -15,17 +15,6 @@ export default {
     data: () => ({
         localValue: ''
     }),
-    computed: {
-        size () {
-            if (!this.localValue || (this.localValue && this.localValue.length <= 100 && this.adaptableText)) {
-                return 'l'
-            } else if (this.localValue && this.localValue.length <= 300 && this.adaptableText) {
-                return 'm'
-            } else {
-                return 's'
-            }
-        }
-    },
     mounted () {
         if (this.$refs.content) this.$refs.content.innerText = this.value
     },
@@ -60,22 +49,6 @@ export default {
 .Area {
     border-radius: 6px;
 
-    &.is-m .Area_input {
-        font: var(--ft-l);
-
-        &:empty:before {
-            font: var(--ft-l);
-        }
-    }
-
-    &.is-s .Area_input {
-        font: var(--ft-m);
-
-        &:empty:before {
-            font: var(--ft-m);
-        }
-    }
-
     &.is-tiny {
 
         .Area_input {
@@ -85,7 +58,7 @@ export default {
 }
 
 .Area_input {
-    font: var(--ft-l);
+    font: var(--ft-m);
     height: 100%;
     padding: 10px;
 
@@ -95,7 +68,7 @@ export default {
 
     &:empty:before {
         content: attr(placeholder);
-        font: var(--ft-l);
+        font: var(--ft-m);
         color: var(--color-ft-weak);
         opacity: 0.35;
         pointer-events: none;

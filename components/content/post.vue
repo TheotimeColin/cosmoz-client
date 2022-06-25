@@ -1,153 +1,164 @@
 <template>
-    <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" v-if="!isLoading">
-        <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
+    <div>
+        <div v-if="!isLoading && ownerData">
+            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" >
+                <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
-        <div class="Post_head" @click="onClick">
-            <div class="d-flex fxa-center fx-grow">
-                <div class="Post_icon" @click.stop>
-                    <user-icon class="Post_user" :modifiers="['']" v-bind="ownerData"  v-if="ownerData" />
+                <div class="Post_head" @click="onClick">
+                    <div class="d-flex fxa-center fx-grow">
+                        <div class="Post_icon fx-no-shrink" @click.stop>
+                            <user-icon class="Post_user" :modifiers="['m']" v-bind="ownerData"  v-if="ownerData" />
+                        </div>
+
+                        <div class="ml-10 ft-xs line-1" @click.stop>
+                            <component :is="titleLink ? 'nuxt-link' : 'div'" :to="titleLink" class="ft-title-2xs subtitle">
+                                {{ title }}
+                            </component>
+
+                            <template v-if="gatheringData && !isCurrent">
+                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                                <link-base :to="gatheringLink" :modifiers="['l']">
+                                    {{ gatheringData.title }}
+                                </link-base>
+                            </template>
+                            <template v-else-if="consteData && !isCurrent">
+                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                                <link-base :to="gatheringLink" :modifiers="['l']">
+                                    {{ consteData.name }}
+                                </link-base>
+                            </template>
+
+                            <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break" v-if="!isForbidden">
+                                @{{ ownerData.id }} · {{ subtitle }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ml-10 ft-xs line-1" @click.stop>
-                    <component :is="titleLink ? 'nuxt-link' : 'div'" :to="titleLink" class="ft-title-2xs subtitle">
-                        {{ title }}
-                    </component>
+                <div class="Post_main" @click="onClick">
+                    <div class="Post_text Post_block" v-if="content">
+                        <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
 
-                    <template v-if="gatheringData && !isCurrent">
-                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                        <link-base :to="gatheringLink" :modifiers="['l']">
-                            {{ gatheringData.title }}
-                        </link-base>
-                    </template>
-                    <template v-else-if="consteData && !isCurrent">
-                        <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                        <link-base :to="gatheringLink" :modifiers="['l']">
-                            {{ consteData.name }}
-                        </link-base>
-                    </template>
+                        <link-base class="mt-20" v-if="isOverflow && !showAll" @click.native.stop="showAll = true">Voir plus</link-base>
+                    </div>
 
-                    <div class="color-ft-weak mt-3 ellipsis-1 ellipsis-break" v-if="!isForbidden">
-                        {{ subtitle }}
+                    <div class="Post_text Post_block" v-if="isForbidden">
+                        {{ placeholderText }}
+                    </div>
+
+                    <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
+
+                    <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative" :class="{ 'is-reactions': reactions.length }">
+                        <button-base
+                            :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'light' : 'highlight') : '']"
+                            class="m-3"
+                            :emoji-before="reactionType"
+                            v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
+                            @click.stop="addReaction({ type: reactionType })"
+                        >
+                            {{ reaction.length }}
+                        </button-base>
+                    </transition-group>
+                </div>
+
+                <div class="Post_footer" @click="onClick">
+                    <div class="Post_action" @click.stop>
+                        <quick-menu
+                            :modifiers="['right']"
+                            :button="{ modifiers: ['s', 'xweak'] }"
+                            :items="actions"
+                        />
+                    </div>
+                    <div class="Post_action" @click.stop>
+                        <button-base
+                            icon-before="comments"
+                            :modifiers="['s', 'xweak']"
+                            :to="permaLink"
+                            class="mr-3"
+                            :text="children.length ? children.length : ''"
+                        />
+                    </div>
+                    <div class="Post_action" @click.stop>
+                        <button-base
+                            icon-before="face-smile"
+                            :modifiers="['s', 'round', isShowEmojis ? 'light' : 'xweak']"
+                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : {}"
+                            @mouseenter="isShowEmojis = true"
+                            @mouseleave="isShowEmojis = null"
+                        />
+
+                        <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseenter="isShowEmojis = true" @mouseleave="isShowEmojis = null" v-if="$biggerThan('s')">
+                            <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
+                                <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
+                                    isShowEmojis = false;
+                                    addReaction({ type: v, action: true });
+                                }" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Post_forbidden" v-if="isForbidden && consteData">
+                    <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
+                        <ripples :size="300" />
+
+                        <p class="mr-10">Ce contenu n'est visible que par les membres de {{ consteData.name }}.</p>
+
+                        <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
+                    </nuxt-link>
+                </div>
+                <div class="Post_forbidden" v-else-if="isForbidden && ownerData">
+                    <div class="Post_forbiddenMessage Post_forbiddenMessage--user ft-s p-15 br-xs">
+                        <p>Ce contenu n'est visible que par les amis de {{ ownerData.name }}.</p>
+                    </div>
+                </div>
+
+                <content-reaction-popin
+                    :is-active="isSeeReactions"
+                    :reactions="reactionsOwners"
+                    @close="isSeeReactions = false"
+                    v-if="!isForbidden"
+                />
+
+                <div class="Post_delete" v-show="pendingDelete">
+                    <div class="max-width-s">
+                        Veux-tu vraiment supprimer ce message et tout ses commentaires ?
+
+                        <div class="mt-20">
+                            <button-base :modifiers="['s']" class="mr-5" @click.stop="pendingDelete = false">
+                                Annuler
+                            </button-base>
+
+                            <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading"
+                                @click.stop="deletePost">
+                                Oui, supprimer
+                            </button-base>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="Post_main" @click="onClick">
-            <div class="Post_text Post_block" v-if="content">
-                <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
+            <div class="Post_comments" v-if="displayComments">
+                <div class="fx-center mb-15">
+                    <p class="ft-title-2xs">
+                        <span class="round-s bg-bg-strong mr-3">{{ children.length }}</span> Commentaires
+                    </p>
 
-                <link-base class="mt-20" v-if="isOverflow && !showAll" @click.native.stop="showAll = true">Voir plus</link-base>
-            </div>
-
-            <div class="Post_text Post_block" v-if="isForbidden">
-                {{ placeholderText }}
-            </div>
-
-            <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
-
-            <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative" :class="{ 'is-reactions': reactions.length }">
-                <button-base
-                    :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'light' : 'highlight') : '']"
-                    class="m-3"
-                    :emoji-before="reactionType"
-                    v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
-                    @click.stop="addReaction({ type: reactionType })"
-                >
-                    {{ reaction.length }}
-                </button-base>
-            </transition-group>
-        </div>
-
-        <div class="Post_footer" @click="onClick">
-            <div class="Post_action" @click.stop>
-                <quick-menu
-                    :modifiers="['right']"
-                    :button="{ modifiers: ['s', 'xweak'] }"
-                    :items="actions"
-                />
-            </div>
-            <div class="Post_action" @click.stop>
-                <button-base
-                    icon-before="comments"
-                    :modifiers="['s', 'xweak']"
-                    class="mr-3"
-                    :text="children.length ? children.length : ''"
-                />
-            </div>
-            <div class="Post_action" @click.stop>
-                <button-base
-                    icon-before="face-smile"
-                    :modifiers="['s', 'xweak']"
-                    @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : {}"
-                    @mouseenter="isShowEmojis = true"
-                    @mouseleave="isShowEmojis = null"
-                />
-
-                <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseenter="isShowEmojis = true" @mouseleave="isShowEmojis = null" v-if="$biggerThan('s')">
-                    <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
-                        <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
-                            isShowEmojis = false;
-                            addReaction({ type: v, action: true });
-                        }" />
-                    </div>
+                    <div class="ft-xs-medium color-ft-weak">Les plus récents</div>
                 </div>
-            </div>
-        </div>
 
-        <div class="Post_forbidden" v-if="isForbidden && consteData">
-            <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
-                <ripples :size="300" />
-
-                <p class="mr-10">Ce contenu n'est visible que par les membres de {{ consteData.name }}.</p>
-
-                <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
-            </nuxt-link>
-        </div>
-        <div class="Post_forbidden" v-else-if="isForbidden && ownerData">
-            <div class="Post_forbiddenMessage Post_forbiddenMessage--user ft-s p-15 br-xs">
-                <p>Ce contenu n'est visible que par les amis de {{ ownerData.name }}.</p>
-            </div>
-        </div>
-
-        <content-reaction-popin
-            :is-active="isSeeReactions"
-            :reactions="reactionsOwners"
-            @close="isSeeReactions = false"
-            v-if="!isForbidden"
-        />
-
-        <!-- <transition name="fade">
-            <div class="Post_comments" v-show="displayedComments.length > 0 || isAdd">
-                <link-base :invert="true" icon-before="arrow-up" class="Post_comment color-ft-weak d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires précédents</link-base>
+                <content-comment-input @submit="onSubmit" class="Post_comment" placeholder="Ajouter un commentaire..." ref="commentInput" />
 
                 <content-comment v-for="post in displayedComments" class="Post_comment" v-bind="post" :key="post._id" />
 
-                <content-input @submit="onSubmit" class="Post_comment" :tiny="true"
-                    placeholder="Ajouter un commentaire..." @blur="() => children.length == 0 ? isAdd = false : ''"
-                    v-show="isAdd || (children.length > 0 && $biggerThan('s'))" ref="commentInput" />
-            </div>
-        </transition> -->
-
-        <div class="Post_delete" v-show="pendingDelete">
-            <div class="max-width-s">
-                Veux-tu vraiment supprimer ce message et tout ses commentaires ?
-
-                <div class="mt-20">
-                    <button-base :modifiers="['s']" class="mr-5" @click.stop="pendingDelete = false">
-                        Annuler
-                    </button-base>
-
-                    <button-base icon-before="trash" :modifiers="['light']" :loading="isDeleteLoading"
-                        @click.stop="deletePost">
-                        Oui, supprimer
-                    </button-base>
+                <div class="text-center mv-20">
+                    <button-base icon-before="arrow-down" :modifiers="['light']" class=" d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires suivants</button-base>
                 </div>
             </div>
         </div>
-    </div>
-    <div v-else>
-        <placeholder class="Post_placeholder" :ratio="$randomBetween(40, 60)" />
+        <div v-else>
+            <placeholder class="Post_placeholder" :ratio="$randomBetween(40, 60)" />
+        </div>
     </div>
 </template>
 
@@ -182,7 +193,8 @@ export default {
         activeGathering: { type: String },
         activeConstellation: { type: String },
         maxComments: { type: Number, default: 2 },
-        noLink: { type: Boolean, default: false }
+        noLink: { type: Boolean, default: false },
+        displayComments: { type: Boolean, default: false },
     },
     data: () => ({
         isLoading: false,
@@ -204,7 +216,9 @@ export default {
             return this.$groupBy(this.reactions, 'type')
         },
         displayedComments () {
-            return this.children ? this.children.slice(Math.max(0, this.children.length - this.max), this.children.length) : []
+            let children = this.children ? [ ...this.children ] : []
+
+            return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(Math.max(0, children.length - this.max), children.length)
         },
         gatheringData () {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
@@ -238,6 +252,19 @@ export default {
         },
         placeholderText () {
             return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Hé non, ce contenu est vraiment caché, petit malin ! Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
+        },
+        permaLink () {
+            if (this.consteData) {
+                return {
+                    name: 'c-slug-post-postId',
+                    params: { slug: this.consteData.slug, postId: this._id }
+                }
+            } else {
+                return {
+                    name: 'post-postId',
+                    params: { postId: this._id }
+                }
+            }
         }
     },
     watch: {
@@ -278,17 +305,7 @@ export default {
                     })
                 }
 
-                if (this.consteData) {
-                    this.$router.push(this.localePath({
-                        name: 'c-slug-post-postId',
-                        params: { slug: this.consteData.slug, postId: this._id }
-                    }))
-                } else {
-                    this.$router.push(this.localePath({
-                        name: 'post-postId',
-                        params: { postId: this._id }
-                    }))
-                }
+                this.$router.push(this.localePath(this.permaLink))
             }
         }
     }
@@ -383,8 +400,6 @@ export default {
         display: block;
         flex-shrink: 0;
         flex-grow: 0;
-        width: 35px;
-        height: 35px;
         position: relative;
     }
 
@@ -428,9 +443,8 @@ export default {
     }
 
     .Post_footer {
-        // border-top: 1px solid var(--color-border-weak);
         background-color: var(--color-bg);
-        background-color: color-opacity('bg', -50%);
+        background-color: color-opacity('bg', -75%);
         display: flex;
         justify-content: space-between;
         padding: 5px;
@@ -481,9 +495,7 @@ export default {
     }
 
     .Post_comments {
-        border-top: 1px solid var(--color-border);
-        margin: 0 20px;
-        padding: 20px 0;
+        margin-top: 30px;
     }
 
     .Post_comment {
@@ -511,7 +523,7 @@ export default {
         }
 
         .Post_comments {
-            margin: 0 -15px;
+            margin: 20px -15px 0;
             padding: 0 10px 10px;
             border: none;
         }

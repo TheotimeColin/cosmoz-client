@@ -102,25 +102,19 @@ export default {
     cursor: pointer;
     position: relative;
     transition: all 50ms ease-out;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     span {
         line-height: 1;
         font-family: 'Segoe UI Emoji';
-        font-size: 35px;
-        transform: translate3d(-50%, -50%, 0) scale(0.70);
-        transform-origin: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transition: transform 100ms ease-out;
+        font-size: 27px;
     }
 
     &:hover {
         background: var(--color-bg-weak);
-
-        span {
-            transform: translate3d(-50%, -50%, 0) scale(1);
-        }
     }
 }
 
@@ -131,11 +125,20 @@ export default {
     
     &:hover {
         background: transparent;
+
+        span {
+            transform: translate3d(-50%, -50%, 0) scale(1);
+        }
     }
 
     span {
         font-size: 50px;
         transform: translate3d(-50%, -50%, 0) scale(0.60);
+        transition: transform 100ms ease-out;
+        transform-origin: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
         z-index: 10;
     }
 }

@@ -63,7 +63,6 @@ export default {
     .QuickMenu {
         display: inline-block;
         position: relative;
-        z
         
         &.is-large {
             
