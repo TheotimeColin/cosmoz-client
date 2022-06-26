@@ -24,7 +24,7 @@ export default {
         tooltips () {
             return this.$store.state.tooltips.items.filter(t => t.active).map(tooltip => ({
                 ...tooltip,
-                style: this.getPosition(tooltip.position)
+                style: this.getPosition(tooltip.position, tooltip.pos)
             }))
         }
     },
@@ -48,10 +48,18 @@ export default {
                 scroll: window.pageYOffset || document.documentElement.scrollTop
             })
         },
-        getPosition (tooltip) {
+        getPosition (tooltip, pos) {
             let position = { top: 0, left: 0 }
-            position.top = Math.round(tooltip.top + tooltip.height)
-            position.left = Math.round(tooltip.left)
+
+            if (pos == 'right') {
+                position.top = Math.round(tooltip.top)
+                position.left = Math.round(tooltip.left + tooltip.width) + 5
+
+            } else {
+                position.top = Math.round(tooltip.top + tooltip.height)
+                position.left = Math.round(tooltip.left)
+            }
+            
             return { top: position.top + 'px', left: position.left + 'px' }
         }
     }

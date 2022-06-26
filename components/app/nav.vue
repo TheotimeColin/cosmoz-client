@@ -12,21 +12,23 @@
         >
             <div class="AppNav_content">
                 <div class="AppNav_primary">
-                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
+                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" 
+                    @mouseenter.native="(e) => $tOpen('Mon espace', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"
+                    :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
 
                     <hr class="Separator mt-10 bg-bg">
 
                     <div class="AppNav_constellations">
-                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" :feed="true" v-for="constellation in constellations" v-bind="constellation" :key="constellation._id" />
+                        <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == constellation.slug }" :modifiers="['m']" :feed="true" v-for="constellation in constellations" @mouseenter.native="(e) => $tOpen(constellation.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="constellation" :key="constellation._id" />
 
-                        <const-icon class="AppNav_const AppNav_icon" :modifiers="['m']" :feed="true" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
+                        <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == selectConst.slug }" :modifiers="['m']" :feed="true"  @mouseenter.native="(e) => $tOpen(selectConst.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
                     </div>
 
                     <hr class="Separator mb-10 bg-bg">
 
-                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" v-if="user" />
+                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" @mouseenter.native="(e) => $tOpen('Créer une constellation', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"  v-if="user" />
                     
-                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" />
+                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" @mouseenter.native="(e) => $tOpen('Explorer', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" />
                 </div>
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">

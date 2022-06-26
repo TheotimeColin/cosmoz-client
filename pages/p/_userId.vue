@@ -13,7 +13,7 @@
             </div>
 
             <div class="bg-cover-25 bg-bg-xstrong" :style="{ '--background': `url(${$bg.holo})` }">
-                <div class="fx-center width-100 d-block@xs p-30">
+                <div class="fx-center width-100 d-block@xs p-30 ph-15@xs">
                     <div class="fx-center fx-no-shrink">
                         <div class="p-relative mr-20" @click="() => isSelf ? editSection = 'picture' : ''">
                             <user-icon
@@ -29,6 +29,17 @@
                             <p class="ft-s-medium">
                                 @{{ profile.id }}
                             </p>
+                        </div>
+
+                        <div class="d-none d-block@xs">
+                            <quick-menu
+                                class="ml-10"
+                                :button="{ modifiers: ['xweak'] }"
+                                :items="[
+                                    { fa: 'times', label: 'Retirer de mes amis', action: unmatch }
+                                ]"
+                                v-if="!isSelf && profile.isFriend"
+                            />
                         </div>
                     </div>
 
@@ -48,8 +59,10 @@
                         <button-base class="mt-20@xs" :modifiers="['light', 's']" icon-before="pen" @click="() => isSelf ? editSection = 'picture' : ''" v-else-if="isSelf">
                             Modifier mon profil
                         </button-base>
+                        
                         <quick-menu
-                            class="ml-10"
+                            class="ml-10 d-none@xs"
+                            :button="{ modifiers: ['xweak'] }"
                             :items="[
                                 { fa: 'times', label: 'Retirer de mes amis', action: unmatch }
                             ]"

@@ -1,7 +1,9 @@
 <template>
     <popin :is-active="selectedUser ? true : false" :modifiers="['m']" @close="onClose" >
         <template slot="content" v-if="selectedUser">
-            <div class="bg-cover bg-night text-center p-40 height-100" v-if="isFriend && isSent">
+            <div class="bg-cover bg-night text-center p-40 height-100 o-hidden" v-if="isFriend && isSent">
+                <div class="G_cosmoz" style="opacity: 0.2"></div>
+
                 <div class="d-flex fxa-center fxj-center">
                     <user-icon :modifiers="['xl']" v-bind="selectedUser" :no-link="true" />
 
@@ -13,27 +15,28 @@
                 <p class="mb-15">{{ selectedUser.name }} a également envie de rester en contact !</p>
 
                 <div class="mt-20">
-                    <button-base :modifiers="['light']" :to="{ name: 'p-userId', params: { userId: selectedUser.id }}">Voir son profil</button-base>
+                    <button-base :modifiers="['cosmoz']" :to="{ name: 'p-userId', params: { userId: selectedUser.id }}" @click.native="onClose">Voir son profil</button-base>
                 </div>
             </div>
-            <div class="p-30" v-else>
+            <div class="p-20" v-else>
                 <user-icon :modifiers="['l']" :display-name="true" v-bind="selectedUser" />
 
-                <hr class="Separator mv-20">
-                
                 <div v-if="isSent.length > 0 || isSuccess">
-                    <template v-if="sent.length > 0">
-                        <p class="mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
+                    <div class="mt-20 block-cosmoz">
+                        <div class="+mt-20" v-if="sent.length > 0">
+                            <p class="ft-m-medium mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
-                        <div class="ft-title-2xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
-                            {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
+                            <div class="ft-title-2xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
+                                {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
+                            </div>
                         </div>
-                    </template>
-                    <div class="mt-30 block-cosmoz d-flex fxa-center" v-if="isRequested && !isFriend">
-                        <fa icon="far fa-check" class="mr-15" />
-                        <div>
-                            <p class="ft-title-2xs">Demande d'ami envoyée
-                            </p>
+                        
+                        <div class="d-flex fxa-center +mt-20 p-15 bg-bg-weak-t br-xs" v-if="isRequested && !isFriend">
+                            <fa icon="far fa-check" class="mr-15" />
+                            <div>
+                                <p class="ft-title-2xs">Demande d'ami envoyée
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

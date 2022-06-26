@@ -2,12 +2,11 @@
     <div
         class="Tooltip shadow"
         :class="[ ...$modifiers ]"
-        :style="{ marginTop: top + 'px', marginLeft: left + 'px' }"
+        :style="{ marginTop: top + 'px', marginLeft: left + 'px', transitionDelay: `${delay}ms` }"
     >
         <div class="Tooltip_loading" v-if="load">
             <fa :icon="`far fa-spinner-third`" class="spin" />
         </div>
-
         <slot></slot>
     </div>
 </template>
@@ -20,6 +19,8 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         tag: { type: String, default: 'span' },
+        
+        delay: { type: Number, default: 0 },
         top: { type: Number, default: 10 },
         load: { type: Boolean, default: false },
         left: { type: Number, default: 0 }
@@ -31,8 +32,8 @@ export default {
 .Tooltip {
     font: var(--ft-m);
     color: var(--color-ft);
-    background-color: color-opacity('bg-xstrong', -5%);
-    backdrop-filter: blur(2px);
+    background-color: color-opacity('bg-2xstrong', -10%);
+    backdrop-filter: blur(4px);
     pointer-events: none;
     transform-origin: center;
     transform: scale(0.98) translateY(3px);
