@@ -187,4 +187,18 @@ export default {
         background: var(--color-bg-weak);
     }
 }
+
+@include breakpoint-xs {
+    .EmojiSelector {
+        flex-direction: column-reverse;
+    }
+
+    .EmojiSelector_featured {
+        box-shadow: 0 -3px 8px 0px color-opacity('bg-2xstrong', -60%);
+    }
+
+    .EmojiSelector_categories {
+        justify-content: flex-end;
+    }
+}
 </style>

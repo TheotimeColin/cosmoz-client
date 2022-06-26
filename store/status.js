@@ -92,7 +92,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.origin ? response.data.origin : response.data)
+                if (response.data.origin) commit('updateOne', response.data.origin)
+                commit('updateOne', response.data)
                 
                 return response
             } catch (e) {
@@ -105,7 +106,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.origin ? response.data.origin : response.data)
+                if (response.data.origin) commit('updateOne', response.data.origin)
+                commit('updateOne', response.data)
                 
                 return response
             } catch (e) {

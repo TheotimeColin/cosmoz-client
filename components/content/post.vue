@@ -242,7 +242,6 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         reactionTypes () {
-            console.log(this.$groupBy(this.reactions, 'type', { orderBy: true }))
             return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },
         maxDisplayedReactions () {
