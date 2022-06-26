@@ -50,7 +50,7 @@
 
                     <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative" :class="{ 'is-reactions': reactions.length }">
                         <button-base
-                            :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'light' : 'highlight') : '']"
+                            :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'highlight-strong' : 'highlight') : '']"
                             class="m-3"
                             :emoji-before="reactionType"
                             v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
@@ -75,10 +75,9 @@
                             :modifiers="['s', 'xweak']"
                             :to="permaLink"
                             class="mr-3"
-                            :text="children.length ? children.length : ''"
+                            :text="replyCount ? replyCount : ''"
                         />
-                    </div>
-                    <div class="Post_action" @click.stop>
+
                         <button-base
                             icon-before="face-smile"
                             :modifiers="['s', 'round', isShowEmojis ? 'light' : 'xweak']"
@@ -149,7 +148,7 @@
 
                 <content-comment-input @submit="onSubmit" class="Post_comment" placeholder="Ajouter un commentaire..." ref="commentInput" />
 
-                <content-comment v-for="post in displayedComments" class="Post_comment" v-bind="post" :key="post._id" />
+                <content-comment v-for="post in displayedComments" class="Post_comment" @submit="(v) => $emit('submit', v)" v-bind="post" :parent-id="_id" :key="post._id" ref="comment" />
 
                 <div class="text-center mv-20">
                     <button-base icon-before="arrow-down" :modifiers="['light']" class=" d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires suivants</button-base>
@@ -218,7 +217,7 @@ export default {
         displayedComments () {
             let children = this.children ? [ ...this.children ] : []
 
-            return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(Math.max(0, children.length - this.max), children.length)
+            return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(0, this.max)
         },
         gatheringData () {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
@@ -235,6 +234,9 @@ export default {
         },
         titleLink () {
             return this.ownerData ? this.localePath({ name: 'p-userId', params: { userId: this.ownerData.id } }) : null
+        },
+        replyCount () {
+            return this.children.length + this.children.reduce((total, c) => total += c.children.length, 0)
         },
         gatheringLink () {
             let link = null
@@ -278,6 +280,8 @@ export default {
         },
         reset () {
             this.$refs.commentInput.reset()
+
+            this.$refs.comment.forEach(c => c.reset())
         },
         onAddComment () {
             if (this.disableCreate) return
@@ -291,6 +295,7 @@ export default {
             this.$emit('submit', {
                 ...data,
                 read: this.read,
+                origin: this._id,
                 parent: this._id
             })
         },
@@ -501,7 +506,7 @@ export default {
     .Post_comment {
 
         & + & {
-            margin-top: 10px;
+            margin-top: 15px;
         }
     }
 

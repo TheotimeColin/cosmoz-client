@@ -520,12 +520,13 @@ export default {
     }
 }
 
-.ButtonBase--highlight {
+.ButtonBase--highlight,
+.ButtonBase--highlight-strong {
     border: 1px solid color-opacity('cosmoz', -70%);
-    background-color: color-opacity('cosmoz', -80%);
+    background-color: color-opacity('cosmoz', -45%);
 
     .G_cosmoz {
-        opacity: 0.25;
+        opacity: 0.45;
     }
 
     &:active {
@@ -536,6 +537,14 @@ export default {
         .G_cosmoz {
             opacity: 0;
         }
+    }
+}
+
+.ButtonBase--highlight-strong {
+    background-color: var(--color-cosmoz);
+
+    .G_cosmoz {
+        opacity: 1;
     }
 }
 
@@ -556,6 +565,7 @@ export default {
         box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
     }
 
+    .ButtonBase--highlight-strong:hover,
     .ButtonBase--highlight:hover {
         background-color: var(--color-bg-light);
         color: var(--color-ft);

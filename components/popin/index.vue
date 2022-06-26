@@ -271,6 +271,7 @@ export default {
         transform: translateX(100%);
         transition: all 250ms ease;
         border-radius: 0;
+        box-shadow: none;
     }
 
     &.is-active {

@@ -360,19 +360,12 @@ const typeDeleters = {
     status: async (data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                let toDelete = [ data._id ]
-
-                if (data.children) toDelete = [...toDelete, ...data.children]
-                    
-                if (data.children && data.children.length > 0) {
-                    await Entities.status.model.deleteMany({ _id: { $in: data.children }})
-                }
-
-                if (toDelete.length > 0) {
-                    await Entities.notification.model.deleteMany({
-                        status: { $in: toDelete }
-                    })
-                }
+                await Entities.status.model.deleteMany({
+                    $or: [
+                        { parent: data._id },
+                        { origin: data._id }
+                    ]
+                })
 
                 resolve(data)
             } catch (e) {

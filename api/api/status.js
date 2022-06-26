@@ -115,7 +115,13 @@ exports.postStatus = async function (req, res) {
         data = await Entities.status.model.findOne({ _id: data._id })
 
         if (parentData) {
-            data = { ...data._doc, parent: parentData._doc }
+            let origin = parentData
+
+            if (origin && !origin._id.equals(data.origin)) {
+                origin = await Entities.status.model.findOne({ _id: data.origin })
+            }
+
+            data = { ...data._doc, parent: parentData._doc, origin: origin._doc }
             data = await fieldsCheck('read', data, Entities.status, data, user)
         } else {
             data = await fieldsCheck('read', data._doc, Entities.status, data, user)
@@ -151,11 +157,13 @@ exports.reactStatus = async function (req, res) {
 
         if (!status) throw Error('status-not-found')
 
-        let updated = await Entities.status.model.find({ _id: { $in: [fields._id, status.parent] } })
+        let updated = await Entities.status.model.find({ _id: { $in: [fields._id, status.parent, status.origin] } })
         
         data = updated.find(d => d._id.equals(fields._id))
 
         if (status.parent) data.parent = updated.find(d => d._id.equals(status.parent))
+
+        if (status.origin) data.origin = updated.find(d => d._id.equals(status.origin))
 
         if (!user.equals(status.owner)) {
             try {

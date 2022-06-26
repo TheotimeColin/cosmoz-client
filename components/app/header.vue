@@ -1,6 +1,7 @@
 <template>
-    <div class="Header"
-        :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
+    <div class="Header" :class="{ 'is-open': isOpen, 'is-transparent': $store.state.page.header.transparent, 'is-scrolled': $store.state.page.isScrolled }">
+        <div class="Header_gradient G_cosmoz"></div>
+
         <div class="Header_wrapper">
             <div class="Header_left">
                 <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="Header_logo">
@@ -114,6 +115,12 @@ export default {
     &.is-open {
         background-color: var(--color-bg-strong);
     }
+}
+
+.Header_gradient {
+    width: 150%;
+    height: 100%;
+    opacity: 0.15;
 }
 
 .Header_button {

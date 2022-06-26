@@ -1,6 +1,6 @@
 <template>
-    <div class="Editor" :class="{ 'is-focused': isFocused}">
-        <div class="Editor_left">
+    <div class="Editor" :class="{ 'is-focused': isFocused }">
+        <div class="Editor_left d-none@xs">
             <user-icon class="fx-no-shrink mr-10" :modifiers="['s']" v-bind="user" />
         </div>
 
@@ -23,7 +23,7 @@
                         <form-errors class="mt-15" :items="errors" />
 
                         <div class="Editor_secondary">
-                            <link-base @click="isFocused = false">Annuler</link-base>
+                            <link-base @click="() => { isFocused = false; $emit('cancel') }">Annuler</link-base>
                             <div class="d-flex fx-grow pr-10 fxj-end">
                                 <input-file icon="image" :multiple="true" @input="addImages" :disabled="images.length > 3" />
                             </div>
@@ -104,7 +104,9 @@ export default {
     &.is-focused {
         
         .Editor_main {
+            padding: 5px 15px;
             background: var(--color-bg-weak);
+            box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
         }
     }
 }
@@ -115,7 +117,7 @@ export default {
 }
 
 .Editor_main {
-    padding: 5px 15px;
+    padding: 0px 15px;
     background: var(--color-bg-strong);
     border-radius: 5px;
     flex-grow: 1;

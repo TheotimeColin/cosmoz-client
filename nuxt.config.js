@@ -93,8 +93,8 @@ export default {
         manifest: {
             name: 'Cosmoz',
             short_name: 'Cosmoz',
-            background_color: '#1d1b27',
-            theme_color: '#1d1b27',
+            background_color: '#2a2a42',
+            theme_color: '#2a2a42',
             lang: 'fr',
             display: 'standalone',
             start_url: '/feed'

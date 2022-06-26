@@ -22,6 +22,8 @@ let Status = {
 
         gathering: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'gathering' },
 
+        origin: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' },
+
         parent: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'status' },
 
         owner: { type: mongoose.Schema.Types.ObjectId, write: 'private', read: 'user', ref: 'user' }

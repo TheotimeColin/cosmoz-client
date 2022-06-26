@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-input
-            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak"
+            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak shadow"
             :placeholder="placeholder"
             :read="read"
             :constellation="constellation"
@@ -146,8 +146,6 @@ export default {
         },
         async onSubmit (formData) {
             this.isSubmitLoading = true
-
-            console.log(formData)
 
             try {
                 let data = { ...formData, read: this.read }

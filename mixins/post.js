@@ -65,8 +65,6 @@ export default {
             this.isReactionLoading = true
             this.reactionAction = params.action ? params.action : !this.isReacted(type)
 
-            console.log(this.reactionAction)
-
             await this.$store.dispatch('status/react', {
                 _id: params.id ? params.id : this._id, type,
                 action: this.reactionAction
