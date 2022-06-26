@@ -8,6 +8,10 @@ export default {
     },
     async fetch () {
         await this.$store.dispatch('status/get', this.$route.params.postId)
+        
+        if (this.status?.origin && this.$route.params.postId !== this.status?.origin) {
+            await this.$store.dispatch('status/get', this.status.origin)
+        }
     },
     data: () => ({
         isLoading: false
@@ -18,6 +22,41 @@ export default {
             return this.$store.getters['status/findOne']({
                 _id: this.$route.params.postId
             })
+        },
+        originPost () {
+            if (this.status?.origin && this.$route.params.postId !== this.status?.origin) {
+                return this.$store.getters['status/findOne']({
+                    _id: this.status.origin
+                }) 
+            }
+        },
+        originConste () {
+            if (this.originPost.constellation) {
+                return this.$store.getters['constellation/findOne']({
+                    _id: this.originPost.constellation
+                }) 
+            }
+        },
+        originLink () {
+            if (this.originConste) {
+                return {
+                    name: 'c-slug-post-postId',
+                    params: { slug: this.originConste.slug, postId: this.originPost._id }
+                }
+            } else {
+                return {
+                    name: 'post-postId',
+                    params: { postId: this.originPost._id }
+                }
+            }
+        },
+        originOwner () {
+            return this.$store.getters['user/findOne']({
+                _id: this.originPost.owner
+            })
+        },
+        originTitle () {
+            return this.originPost.content ? this.originPost.content : `Publication de ${this.originOwner?.name}`
         }
     },
     methods: {

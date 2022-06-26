@@ -404,11 +404,11 @@
 }
 
 .shadow {
-    box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
+    @include shadow;
 }
 
 .shadow-s {
-    box-shadow: 0 2px 6px 0px color-opacity('bg-2xstrong', -75%);
+    @include shadow-s;
 }
 
 .G_cosmoz {
@@ -634,6 +634,8 @@
     padding: 20px;
     border-radius: 10px;
     background: var(--color-bg-weak);
+    
+    @include shadow-xs;
 }
 
 .block-cosmoz-p,
@@ -642,7 +644,6 @@
     background-color: var(--color-bg-xstrong);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
 
     &::before {
         content: "";
@@ -781,6 +782,7 @@
         margin-left: -20px;
         margin-right: -20px;
         background-color: transparent;
+        box-shadow: none;
 
         .InputBase_label,
         .SelectBase_label {

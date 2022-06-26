@@ -20,11 +20,11 @@
                 </div>
             </div>
 
-            <div class="mt-20 block-r" v-if="pending.length > 0">
+            <div class="mt-20 block-r shadow" v-if="pending.length > 0">
                 <p class="ft-title-xs mb-5">Demandes en attente</p>
                 <p class="ft-s color-ft-weak mb-20">Pour devenir amis sur Cosmoz, il faut que les deux personnes en fassent la demande.</p>
 
-                <div class="fx-center p-10 bg-bg-xweak br-xs mt-5" v-for="user in pending" :key="user._id">
+                <div class="+mt-10 fx-center p-10 bg-bg-xweak br-xs shadow-s" v-for="user in pending" :key="user._id">
                     <user-icon :display-name="true" v-bind="user" />
 
                     <button-base icon-before="times" :modifiers="['round', 'xweak', 'xs']" @click="() => confirmCancel(user)" :loading="loading.includes(user._id)" />

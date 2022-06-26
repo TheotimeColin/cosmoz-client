@@ -7,15 +7,15 @@ let Status = {
     fields: new mongoose.Schema({
         read: { type: String, default: 'friends', write: 'self' },
 
-        content: { type: String, write: 'user', read: '$read' },
-        reactions: { type: Array, default: [], write: 'user', read: '$read' },
+        content: { type: String, write: 'user', read: '$status' },
+        reactions: { type: Array, default: [], write: 'user', read: '$status' },
         
         images: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'mediaCollection' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$status', ref: 'mediaCollection' }
         ],
 
         children: [
-            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$read', ref: 'status' }
+            { type: mongoose.Schema.Types.ObjectId, write: 'private', read: '$status', ref: 'status' }
         ],
 
         constellation: { type: mongoose.Schema.Types.ObjectId, write: 'private', ref: 'constellation' },

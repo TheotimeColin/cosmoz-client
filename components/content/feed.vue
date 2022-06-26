@@ -1,7 +1,7 @@
 <template>
     <div class="Feed">
         <content-input
-            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak shadow"
+            class="Feed_editor Feed_item p-15 mb-20 br-s bg-bg-weak shadow-s"
             :placeholder="placeholder"
             :read="read"
             :constellation="constellation"

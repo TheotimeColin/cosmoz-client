@@ -106,7 +106,7 @@ export default {
         .Editor_main {
             padding: 5px 15px;
             background: var(--color-bg-weak);
-            box-shadow: 0 3px 8px 0px color-opacity('bg-2xstrong', -75%);
+            @include shadow-xs;
         }
     }
 }

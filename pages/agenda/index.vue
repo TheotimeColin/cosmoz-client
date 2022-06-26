@@ -27,9 +27,9 @@
                     Mes sorties passées
                 </h2>
 
-                <div class="Gatherings_item" v-for="gathering in pastGatherings" :key="gathering._id">
+                <div class="+mt-10" v-for="gathering in pastGatherings" :key="gathering._id">
                     <template v-if="isLoading">
-                        <placeholder class="Gatherings_item" :ratio="40" v-for="i in 2" :key="i" />
+                        <placeholder class="+mt-10" :ratio="40" v-for="i in 2" :key="i" />
                     </template>
 
                     <block-gathering
@@ -86,13 +86,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.Gatherings_item {
-
-    & + & {
-        margin-top: 20px;
-    }
-}
 
 .Date {
 

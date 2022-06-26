@@ -118,7 +118,7 @@ export default {
 }
 
 .Header_gradient {
-    width: 150%;
+    width: 50%;
     height: 100%;
     opacity: 0.15;
 }

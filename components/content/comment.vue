@@ -71,6 +71,7 @@
                         :button="{ modifiers: ['2xs', 'xweak'] }"
                         :items="[
                             { label: 'Répondre', fa: 'reply', action: onAddReply },
+                            { label: 'Voir le fil', fa: 'arrow-up-right-from-square', disabled: !isParent, to: permaLink },
                             ...actions
                         ]"
                     />
@@ -124,6 +125,7 @@ export default {
         parentId: { type: String },
         isParent: { type: Boolean, default: true },
         content: { type: String },
+        slug: { type: String },
         owner: { type: String },
         disableCreate: { type: Boolean, default: false },
         images: { type: Array, default: () => [] },
@@ -146,6 +148,19 @@ export default {
             let children = this.children ? [ ...this.children ] : []
 
             return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(0, this.max)
+        },
+        permaLink () {
+            if (this.slug) {
+                return {
+                    name: 'c-slug-post-postId',
+                    params: { slug: this.slug, postId: this._id }
+                }
+            } else {
+                return {
+                    name: 'post-postId',
+                    params: { postId: this._id }
+                }
+            }
         }
     },
     methods: {
@@ -200,7 +215,7 @@ export default {
     }
 
     .Comment_actions {
-        background-color: color-opacity('bg', -75%);
+        background-color: color-opacity('bg', -65%);
         padding: 3px;
         display: flex;
         flex-direction: column;

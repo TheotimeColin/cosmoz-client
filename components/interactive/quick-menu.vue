@@ -2,7 +2,7 @@
     <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
         <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" v-bind="button" :modifiers="['round', ...(button && button.modifiers ? button.modifiers : [])]" @click.stop="isActive = !isActive" />
         
-        <div class="QuickMenu_actions">
+        <div class="QuickMenu_actions shadow">
             <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native.stop="onClick(item)" @click.stop="onClick(item)">
                 <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
             </component>
@@ -84,7 +84,7 @@ export default {
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
         background-color: var(--color-bg-2xstrong);
-        border-radius: 5px;
+        border-radius: 8px;
         transition: all 100ms ease;
     }
 
@@ -98,7 +98,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-xstrong);
+            background-color: var(--color-bg-strong);
 
             .QuickMenu_icon {
                 color: var(--color-ft-light);

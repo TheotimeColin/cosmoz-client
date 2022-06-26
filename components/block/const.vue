@@ -64,6 +64,7 @@ export default {
     flex-direction: column;
     border-radius: 10px;
     overflow: hidden;
+    @include shadow-s;
 }
 
 .BlockConst_coverImage {

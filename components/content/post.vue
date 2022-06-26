@@ -97,6 +97,8 @@
                     </div>
                 </div>
 
+                
+
                 <div class="Post_forbidden" v-if="isForbidden && consteData">
                     <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
                         <ripples :size="300" />
@@ -148,7 +150,14 @@
 
                 <content-comment-input @submit="onSubmit" class="Post_comment" placeholder="Ajouter un commentaire..." ref="commentInput" />
 
-                <content-comment v-for="post in displayedComments" class="Post_comment" @submit="(v) => $emit('submit', v)" v-bind="post" :parent-id="_id" :key="post._id" ref="comment" />
+                <content-comment
+                    v-for="post in displayedComments"
+                    class="Post_comment" @submit="(v) => $emit('submit', v)" v-bind="post"
+                    :parent-id="_id"
+                    :slug="consteData ? consteData.slug : ''"
+                    :key="post._id"
+                    ref="comment"
+                />
 
                 <div class="text-center mv-20">
                     <button-base icon-before="arrow-down" :modifiers="['light']" class=" d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires suivants</button-base>
@@ -323,7 +332,7 @@ export default {
         background-color: var(--color-bg-weak);
         position: relative;
         cursor: pointer;
-        box-shadow: 0 3px 8px 0px color-opacity('bg-xstrong', -50%);
+        @include shadow-s;
 
         &.is-reacted {
 
@@ -449,7 +458,7 @@ export default {
 
     .Post_footer {
         background-color: var(--color-bg);
-        background-color: color-opacity('bg', -75%);
+        background-color: color-opacity('bg', -65%);
         display: flex;
         justify-content: space-between;
         padding: 5px;

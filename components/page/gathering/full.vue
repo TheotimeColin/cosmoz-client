@@ -2,7 +2,7 @@
     <div>
         <popin :is-active="isActive" :modifiers="['panel']" :title="'Détails de : ' + gathering.title" query="full"
             @close="$emit('close')" @open="$emit('open')">
-            <div class="p-30 p-20@s" slot="content">
+            <div class="p-30 p-20@s" slot="content" v-if="constellation">
                 <transition name="fade">
                     <div v-show="!isManage">
                         <div class="+mt-30">
