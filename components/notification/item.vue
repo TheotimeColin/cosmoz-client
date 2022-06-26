@@ -81,14 +81,28 @@ export default {
         },
         link () {
             if (this.statusData && this.constellationData) {
-                return {
-                    name: 'c-slug-post-postId',
-                    params: { slug: this.constellationData.slug, postId: this.statusData._id }
+                if (this.statusData.origin) {
+                    return {
+                        name: 'c-slug-post-postId-replyId',
+                        params: { postId: this.statusData.origin, replyId: this.statusData._id, slug: this.constellationData.slug }
+                    }
+                } else {
+                    return {
+                        name: 'c-slug-post-postId',
+                        params: { postId: this.statusData._id, slug: this.constellationData.slug }
+                    }
                 }
             } else if (this.statusData) {
-                return {
-                    name: 'post-postId',
-                    params: { postId: this.statusData._id }
+                if (this.statusData.origin) {
+                    return {
+                        name: 'post-postId-replyId',
+                        params: { postId: this.statusData.origin, replyId: this.statusData._id }
+                    }
+                } else {
+                    return {
+                        name: 'post-postId',
+                        params: { postId: this.statusData._id }
+                    }
                 }
             } else if (this.constellationData && (this.gatherings.length > 1 || this.type == 'gathering-cancelled')) {
                 return {

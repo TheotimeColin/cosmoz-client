@@ -1,9 +1,12 @@
+import striptags from 'striptags'
+
 export function getMeta ($route, $store) {
     let name = $route ? $route.name.split('_')[0] : ''
     let constellation = { name: '' }
     let gathering = { title: '' }
     let user = { name: '' }
     let post = { content: '' }
+    let reply = { content: '' }
     
     if ($route.params.slug) {
         try {
@@ -25,6 +28,14 @@ export function getMeta ($route, $store) {
         try {
             post = $store.getters['status/findOne']({
                 _id: $route.params.postId
+            })
+        } catch (e) { console.warn(e) }
+    }
+
+    if ($route.params.replyId) {
+        try {
+            reply = $store.getters['status/findOne']({
+                _id: $route.params.replyId
             })
         } catch (e) { console.warn(e) }
     }
@@ -55,8 +66,19 @@ export function getMeta ($route, $store) {
             children: {
 
                 'postId': {
-                    title: post?.content ? post.content : user?.name ? `Publication de ${user.name}` : '',
-                    isPanel: true
+                    title: post?.content ? striptags(post.content) : user?.name ? `Publication de ${user.name}` : '',
+                    back: { name: 'feed' },
+                    isPanel: true,
+
+                    children: {
+                        'replyId': {
+                            title: `Réponse pour : ${post?.content ? striptags(post.content) : user?.name ? `Publication de ${user.name}` : ''}`,
+
+                            back: { name: 'post-postId', params: { postId: post?._id } },
+
+                            isPanel: true,
+                        }
+                    }
                 }
             }
         },
@@ -92,8 +114,19 @@ export function getMeta ($route, $store) {
                     children: {
 
                         'postId': {
-                            title: post?.content,
-                            isPanel: true
+                            title: striptags(post?.content),
+                            back: { name: 'c-slug-discussions', params: { slug: constellation?.slug } },
+                            isPanel: true,
+
+                            children: {
+                                'replyId': {
+                                    title: `Réponse pour : ${post?.content ? striptags(post.content) : user?.name ? `Publication de ${user.name}` : ''}`,
+        
+                                    back: { name: 'c-slug-post-postId', params: { postId: post?._id, slug: constellation?.slug } },
+        
+                                    isPanel: true,
+                                }
+                            }
                         }
                     }
                 },
@@ -103,7 +136,9 @@ export function getMeta ($route, $store) {
                 },
                 'members': {
                     title: 'Membres de ' + constellation?.name,
-                    fa: 'user-astronaut'
+                    fa: 'user-astronaut',
+                    back: { name: 'c-slug-feed', params: { slug: constellation?.slug } },
+                    isPanel: true
                 },
                 'hangouts': {
                     title: 'Sorties',

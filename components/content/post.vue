@@ -15,16 +15,22 @@
                                 {{ title }}
                             </component>
 
-                            <template v-if="gatheringData && !isCurrent">
+                            <template v-if="parentData">
+                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                                <link-base :to="consteData ? { name: 'c-slug-,postId', params: { slug: consteData.slug, postId: parentData._id } } : { name: 'post-postId', params: { postId: parentData._id } }" :modifiers="['l']">
+                                    {{ $ellipsis(parentData.content, 40) }}
+                                </link-base>
+                            </template>
+                            <template v-else-if="gatheringData && !isCurrent">
                                 <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
                                 <link-base :to="gatheringLink" :modifiers="['l']">
-                                    {{ gatheringData.title }}
+                                    {{ $ellipsis(gatheringData.title, 40) }}
                                 </link-base>
                             </template>
                             <template v-else-if="consteData && !isCurrent">
                                 <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
                                 <link-base :to="gatheringLink" :modifiers="['l']">
-                                    {{ consteData.name }}
+                                    {{ $ellipsis(consteData.name, 40) }}
                                 </link-base>
                             </template>
 
@@ -97,8 +103,6 @@
                     </div>
                 </div>
 
-                
-
                 <div class="Post_forbidden" v-if="isForbidden && consteData">
                     <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
                         <ripples :size="300" />
@@ -154,6 +158,7 @@
                     v-for="post in displayedComments"
                     class="Post_comment" @submit="(v) => $emit('submit', v)" v-bind="post"
                     :parent-id="_id"
+                    :is-parent="!isChild"
                     :slug="consteData ? consteData.slug : ''"
                     :key="post._id"
                     ref="comment"
@@ -200,8 +205,10 @@ export default {
         constellation: { type: String },
         activeGathering: { type: String },
         activeConstellation: { type: String },
+        origin: { type: String },
         maxComments: { type: Number, default: 2 },
         noLink: { type: Boolean, default: false },
+        isChild: { type: Boolean, default: false },
         displayComments: { type: Boolean, default: false },
     },
     data: () => ({
@@ -230,6 +237,9 @@ export default {
         },
         gatheringData () {
             return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
+        },
+        parentData () {
+            return this.origin ? this.$store.getters['status/findOne']({ _id: this.origin }) : null
         },
         consteData () {
             return this.constellation || this.gatheringData?.constellation ? this.$store.getters['constellation/findOne']({ _id: (this.gatheringData?.constellation || this.constellation) }) : null

@@ -152,13 +152,13 @@ export default {
         permaLink () {
             if (this.slug) {
                 return {
-                    name: 'c-slug-post-postId',
-                    params: { slug: this.slug, postId: this._id }
+                    name: 'c-slug-post-postId-replyId',
+                    params: { slug: this.slug, postId: this.parentId, replyId: this._id }
                 }
             } else {
                 return {
-                    name: 'post-postId',
-                    params: { postId: this._id }
+                    name: 'post-postId-replyId',
+                    params: { postId: this.parentId, replyId: this._id }
                 }
             }
         }

@@ -220,6 +220,8 @@ const fieldsCheck = function (type = 'write', data = {}, entity, requested = nul
                             origin = await Entities.status.model.findOne({ _id: requested.origin })
                         }
 
+                        isFriend = user['friends'].find(u => u._id.equals(origin.owner))
+
                         if (origin.gathering) {
                             granted = user ? true : false
                         } else if (origin.constellation) {

@@ -22,7 +22,7 @@
 
 .anchor {
     position: absolute;
-    top: -65px;
+    top: calc(-1 * calc(var(--header-height) + var(--app-height)));
 }
 
 .bg-to-right {

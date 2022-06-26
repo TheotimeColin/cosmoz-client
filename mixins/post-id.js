@@ -9,9 +9,11 @@ export default {
     async fetch () {
         await this.$store.dispatch('status/get', this.$route.params.postId)
         
-        if (this.status?.origin && this.$route.params.postId !== this.status?.origin) {
-            await this.$store.dispatch('status/get', this.status.origin)
+        if (this.$route.params.replyId) {
+            await this.$store.dispatch('status/get', this.$route.params.replyId)
         }
+
+        if (this.onLoaded) this.onLoaded()
     },
     data: () => ({
         isLoading: false
@@ -20,13 +22,13 @@ export default {
         user () { return this.$store.getters['user/self'] },
         status () {
             return this.$store.getters['status/findOne']({
-                _id: this.$route.params.postId
+                _id: this.$route.params.replyId ? this.$route.params.replyId : this.$route.params.postId
             })
         },
         originPost () {
-            if (this.status?.origin && this.$route.params.postId !== this.status?.origin) {
+            if (this.$route.params.replyId) {
                 return this.$store.getters['status/findOne']({
-                    _id: this.status.origin
+                    _id: this.$route.params.postId
                 }) 
             }
         },
