@@ -85,6 +85,7 @@ export default {
     color: var(--color-ft-light);
     background-size: cover;
     background-position: center;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;

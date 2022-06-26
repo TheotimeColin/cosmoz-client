@@ -113,13 +113,13 @@ export default {
 
             &::after {
                 right: -2px;
-                background: linear-gradient(to right, rgba(29, 27, 39, 0) 0%, rgba(29, 27, 39, 0.95) 100%);
+                background: linear-gradient(to right, color-opacity('bg', -100%), color-opacity('bg', 0%));
             }
 
             &::before {
                 width: 10%;
                 left: -2px;
-                background: linear-gradient(to left, rgba(29, 27, 39, 0) 0%, rgba(29, 27, 39, 0.95) 100%);
+                background: linear-gradient(to left, color-opacity('bg', -100%), color-opacity('bg', 0%));
             }
 
             .NavBar_container {
@@ -154,7 +154,7 @@ export default {
     }
 
     .NavBar_item {
-        height: 60px;
+        height: 45px;
         display: flex;
         align-items: center;
         margin-right: 20px;

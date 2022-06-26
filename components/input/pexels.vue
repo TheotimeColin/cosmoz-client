@@ -1,31 +1,36 @@
 <template>
-    <form @submit.prevent="() => search(query)" class="PexelsGallery">
-        <div class="PexelsGallery_search">
-            <div class="p-20">
-                <input-base type="text" class="mr-15" :modifiers="['light']" v-model="query" placeholder="Restaurant, groupe, atelier..." />
+    <popin :is-active="isActive" :modifiers="['m']" @close="$emit('close')">
+        <template slot="content">
+            <form @submit.prevent="() => search(query)" class="PexelsGallery">
+                <div class="PexelsGallery_list p-20">
+                    <div ref="container">
+                        <div class="PexelsGallery_row" v-for="(row, i) in rows" :key="i">
+                            <div class="PexelsGallery_photo" v-for="photo in row.photos" :key="photo.id" :style="{ '--width': photo.width + 'px', '--height': photo.height + 'px' }" @click="() => { $emit('select', photo.original); $emit('close') }">
+                                <img :src="photo.original.src.medium" :width="Math.min(photo.original.width * 0.8, photo.width)" :height="Math.min(photo.original.height * 0.8, photo.height)" />
+                            </div>
+                        </div>
+                    </div>
 
-                <button-base type="submit" :modifiers="['s', 'light']" :class="{ 'is-loading': isLoading }" class="mt-10@s">
-                    Rechercher
-                </button-base>
-            </div>
-        </div>
-
-        <div class="">
-            <div ref="container">
-                <div class="PexelsGallery_row" v-for="(row, i) in displayedRows" :key="i">
-                    <div class="PexelsGallery_photo" v-for="photo in row.photos" :key="photo.id" :style="{ '--width': photo.width + 'px', '--height': photo.height + 'px' }" @click="$emit('select', photo.original)">
-                        <img :src="photo.original.src.medium" :width="Math.min(photo.original.width * 0.8, photo.width)" :height="Math.min(photo.original.height * 0.8, photo.height)" />
+                    <div class="mt-20 text-center">
+                        <button-base type="button" :modifiers="['s', 'light']" 
+                        :loading="isLoading" @click="offset += 1">
+                            Charger plus
+                        </button-base>
                     </div>
                 </div>
 
-                <div class="text-center mt-20">
-                    <button-base type="button" :modifiers="['secondary', 's']" :class="{ 'is-loading': isLoading }" icon-before="arrows-rotate" @click="getNext">
-                        Afficher d'autres
-                    </button-base>
+                <div class="PexelsGallery_search fx-no-shrink">
+                    <div class="p-20">
+                        <input-base type="text" class="mr-15" :modifiers="['light']" v-model="query" placeholder="Restaurant, groupe, atelier..." />
+
+                        <button-base type="submit" :modifiers="['s', 'light']" :class="{ 'is-loading': isLoading }">
+                            Rechercher
+                        </button-base>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </form>
+            </form>
+        </template>
+    </popin>
 </template>
 
 <script>
@@ -37,42 +42,35 @@ export default {
         isLoading: false,
         photos: [],
         rows: [],
-        offset: 0,
-        maxWidth: 0,
-        random: {}
+        offset: 1,
+        maxWidth: 0
     }),
     props: {
+        isActive: { type: Boolean, default: false },
         height: { type: Number, default: 150 },
-        maxRows: { type: [Number, Boolean], default: 1 },
+        maxRows: { type: [Number, Boolean], default: 5 },
         maxPhotos: { type: [Number, Boolean], default: false }
-    },
-    computed: {
-        displayedRows () {
-            return this.rows.slice(0, this.maxRows)
-        }
     },
     mounted () {
         this.$data.maxWidth = this.$refs.container.offsetWidth
         this.search(this.query ? this.query : 'friends')
     },
+    watch: {
+        offset () {
+            this.search(this.query ? this.query : 'friends')
+        }
+    },
     methods: {
-        getNext () {
-            if (this.rows.length > 2) {
-                this.rows = this.rows.slice(2)
-            } else {
-                this.search(this.query)
-            }
-        },
         async search (v = null) {
             this.isLoading = true
 
+            if (this.prevQuery != v) this.rows = []
+
+            this.prevQuery = v
+
             try {
-
-                if (this.query == this.prevQuery) this.offset += 1
-                this.prevQuery = this.query
-
                 let params = {
-                    query: { per_page: 100, page: this.offset }
+                    query: { per_page: 30, page: this.offset }
                 }
 
                 if (v) params.query = { ...params.query, query: v }
@@ -80,9 +78,11 @@ export default {
                 let response = await this.$store.dispatch('pexels/fetch', params)
 
                 this.photos = response
-                this.rows = this.arrangePhotos(this.photos)
 
-                this.random = this.photos[this.$randomBetween(0, this.photos.length - 1)]
+                this.rows = [
+                    ...this.rows,
+                    ...this.arrangePhotos(this.photos)
+                ]
             } catch (e) {
 
             }
@@ -144,16 +144,16 @@ export default {
 
 <style lang="scss" scoped>
     .PexelsGallery {
-        border: 2px solid var(--color-onyx);
         overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .PexelsGallery_search {
         position: relative;
-        background-color: var(--color-bg-xstrong);
+        background-color: var(--color-bg-strong);
         overflow: hidden;
-        margin-bottom: 10px;
-        border-radius: 5px;
 
         &::before {
             display: none;
@@ -176,6 +176,13 @@ export default {
             position: relative;
             z-index: 1;
         }
+    }
+
+    .PexelsGallery_list {
+        min-height: 300px;
+        max-height: 400px;
+        overflow: auto;
+        flex-grow: 1;
     }
 
     .PexelsGallery_row {
@@ -213,14 +220,9 @@ export default {
         }
     }
 
-    @include breakpoint-s {
-
-        .PexelsGallery_search {
-
-            & > div {
-                display: block;
-                text-align: center;
-            }
+    @include breakpoint-xs {
+        .PexelsGallery_list {
+            max-height: 9999px;
         }
     }
 </style>

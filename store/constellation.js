@@ -174,6 +174,7 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
+                await this.$auth.fetchUser()
                 commit('deleteOne', _id)
                 
                 return response

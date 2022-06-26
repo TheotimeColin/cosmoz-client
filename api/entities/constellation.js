@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 const mediaCollection = require('./media-collection')
+const status = require('./status')
+const user = require('./user')
+const notification = require('./notification')
+const token = require('./token')
+const gathering = require('./gathering')
 
 let Constellation = {
     write: 'g-organizer',
@@ -64,6 +69,56 @@ Constellation.fields.pre('findOne', function () {
 Constellation.fields.pre('find', function () {
     this.populate('logo')
     this.populate('cover')
+})
+
+Constellation.fields.pre('remove', async function (next) {
+    if (this.logo) {
+        let logo = await mediaCollection.model.findOne({ _id: this.logo })
+        await logo.remove()
+    }
+
+    if (this.cover) {
+        let cover = await mediaCollection.model.findOne({ _id: this.cover })
+        await cover.remove()
+    }
+
+    let users = await user.model.find({
+        $or: [
+            { constellations: this._id },
+            { followedConstellations: this._id },
+            { createdConstellations: this._id },
+        ]
+    })
+
+    await Promise.all(users.map(async user => {
+        user.constellations = user.constellations.filter(c => !c.equals(this._id))
+        user.followedConstellations = user.followedConstellations.filter(c => !c.equals(this._id))
+        user.createdConstellations = user.createdConstellations.filter(c => !c.equals(this._id))
+
+        return await user.save()
+    }))
+
+    let notifications = await notification.model.find({
+        constellation: this._id
+    })
+
+    let tokens = await token.model.find({
+        constellation: this._id
+    })
+
+    let statuses = await status.model.find({
+        constellation: this._id
+    })
+
+    let gatherings = await gathering.model.find({
+        constellation: this._id
+    })
+
+    await Promise.all([...gatherings, ...notifications, ...tokens, ...statuses].map(async s => {
+        return await s.remove()
+    }))
+
+    next()
 })
 
 Constellation.model = global.Constellation ? global.Constellation.model : mongoose.model('constellation', Constellation.fields)

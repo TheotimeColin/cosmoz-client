@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const mediaCollection = require('./media-collection')
+const notification = require('./notification')
+const status = require('./status')
 
 let Gathering = {
     write: 'g-organizer',
@@ -33,7 +35,6 @@ let Gathering = {
 
         constellation: { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'constellation' },
 
-        
         organizers: [
             { type: mongoose.Schema.Types.ObjectId, write: 'g-organizer', ref: 'user' }
         ],
@@ -55,12 +56,31 @@ Gathering.fields.pre('findOneAndUpdate', async function(next) {
 
 Gathering.fields.pre('findOne', function () {
     this.populate('cover')
-    // this.populate('constellation')
 })
 
 Gathering.fields.pre('find', function () {
     this.populate('cover')
-    // this.populate('constellation')
+})
+
+Gathering.fields.pre('remove', async function (next) {
+    if (this.cover) {
+        let cover = await mediaCollection.model.findOne({ _id: this.cover })
+        await cover.remove()
+    }
+
+    let notifications = await notification.model.find({
+        gathering: this._id
+    })
+
+    let statuses = await status.model.find({
+        gathering: this._id
+    })
+
+    await Promise.all([...notifications, ...statuses].map(async s => {
+        return await s.remove()
+    }))
+
+    next()
 })
 
 Gathering.model = global.Gathering ? global.Gathering.model : mongoose.model('gathering', Gathering.fields)

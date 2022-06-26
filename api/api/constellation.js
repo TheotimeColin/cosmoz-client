@@ -36,9 +36,11 @@ exports.consteCreate = async function (req, res) {
             suffix = '-' + getHandle(4)
         }
 
+        console.log(req.body)
 
         data = await Entities.constellation.model.create({
             name: sanitize(req.body.name),
+            type: req.body.type == 'community' ? 'community' : 'group',
             slug: slug,
             members: [ user._id ],
             admins: [ user._id ]

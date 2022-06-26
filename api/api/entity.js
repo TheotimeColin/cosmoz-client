@@ -357,22 +357,6 @@ const typeCallbacks = {
 }
 
 const typeDeleters = {
-    status: async (data) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                await Entities.status.model.deleteMany({
-                    $or: [
-                        { parent: data._id },
-                        { origin: data._id }
-                    ]
-                })
-
-                resolve(data)
-            } catch (e) {
-                reject (e)
-            }
-        })
-    },
     gathering: async (data, user) => {
         return new Promise(async (resolve, reject) => {
             try {

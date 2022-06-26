@@ -4,11 +4,13 @@
             <div class="mb-30">
                 <p class="ft-title-xs mb-15">Administration</p>
 
-                <div class="fx-center p-10 br-xs bg-bg-strong mr-5 mb-5" v-for="user in formData.admins" :key="user">
+                <div class="+mt-5 fx-center block-r bg-bg p-10" v-for="user in formData.admins" :key="user">
                     <user-icon :modifiers="['s']" :display-name="true" v-bind="getUser(user)" />
 
                     <div>
-                        <button-base type="button" icon-before="times" :modifiers="['xs', 'round', 'xweak']" @click="removeUser(user, 'admins')" v-if="formData.admins.length > 1" />
+                        <quick-menu :items="[
+                            { label: `Retirer de l'équipe`, disabled: formData.admins.length <= 1, fa: 'times', action: () => removeUser(user, 'admins') }
+                        ]" :button="{ modifiers: ['2xs', 'xweak'] }" />
                     </div>
                 </div>
             </div>
@@ -19,18 +21,27 @@
                 <div class="p-10 br-xs bg-bg text-center color-ft-xweak" v-if="formData.organizers.length <= 0">
                     Pas d'organisateurs.
                 </div>
+
                 <div class="fx-center p-10 br-xs bg-bg-strong mr-5 mb-5" v-for="user in formData.organizers" :key="user" v-else>
                     <user-icon :modifiers="['s']" :display-name="true" v-bind="getUser(user)" />
 
                     <div>
-                        <button-base type="button" icon-before="crown" :modifiers="['xs', 'round', 'xweak']" @click="addAdmin(user)" />
-
-                        <button-base type="button" icon-before="times" :modifiers="['xs', 'round', 'xweak']" @click="removeUser(user, 'organizers')" />
+                        <quick-menu :items="[
+                            { label: 'Nommer administrateur', fa: 'crown', action: () => addAdmin(user) },
+                            { label: `Retirer de l'équipe`, fa: 'times', action: () => removeUser(user, 'organizers') }
+                        ]" :button="{ modifiers: ['xs', 'xweak'] }" />
                     </div>
                 </div>
             </div>
             
-            <input-user @input="addUser" :items="serverEntity.members.map(m => getUser(m))" :exclude="[...formData.organizers, ...formData.admins ]" />
+            <input-user
+                :actions="[
+                    { label: 'Nommer administrateur', fa: 'crown', action: (v) => addAdmin(v) },
+                    { label: 'Nommer organisateur', fa: 'star', action: (v) => addUser(v) },
+                ]"
+                :items="serverEntity.members.map(m => getUser(m))"
+                :exclude="[...formData.organizers, ...formData.admins ]"
+            />
         </div>
 
         <form-errors class="mt-20" :items="errors" />

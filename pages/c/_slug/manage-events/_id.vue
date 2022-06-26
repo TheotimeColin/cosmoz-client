@@ -46,11 +46,7 @@
                                 @click="options.cover = !options.cover" />
                         </block-gathering>
 
-                        <transition name="fade">
-                            <div class="mt-20 b p-15 br-s" v-if="options.cover">
-                                <input-pexels @select="(v) => formData.coverSelect = v" />
-                            </div>
-                        </transition>
+                        <input-pexels @select="(v) => formData.coverSelect = v" :is-active="options.cover" @close="options.cover = false" />
                     </div>
 
                     <div class="block mt-20 mt-40@xs">
@@ -221,9 +217,6 @@ export default {
             return {
                 constellation: this.$constellation._id
             }
-        },
-        postCreated () {
-            if (!this.formData.cover) this.options.cover = true
         },
         postDelete () {
             this.$router.push({ path: this.localePath({ name: `c-slug-manage-events`, params: { slug: this.$constellation.slug } }) })

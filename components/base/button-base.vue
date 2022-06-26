@@ -336,6 +336,7 @@ export default {
 }
 
 .ButtonBase--error {
+    color: var(--color-ft-light);
     background-color: var(--color-error);
     border-radius: 3px;
 
@@ -621,6 +622,7 @@ export default {
     }
 
     .ButtonBase--error:hover {
+        color: var(--color-ft-light);
         background-color: var(--color-error-strong);
     }
 

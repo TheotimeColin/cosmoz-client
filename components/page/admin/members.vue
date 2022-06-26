@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="block +mt-20" v-if="formData.followers.length > 0">
+        <div class="block-r +mt-20" v-if="formData.followers.length > 0">
             <p class="ft-title-xs mb-20">
                 <span class="round-s mr-5 bg-bg">{{ formData.followers.length }}</span> Demandes d'entrée
             </p>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="block +mt-20">
+        <div class="block-r +mt-20">
             <input-user :items="formData.members.map(m => getUser(m))" />
         </div>
 
@@ -29,14 +29,12 @@
                     Liens d'invitation
                 </p>
 
-                <button-base :modifiers="['xs']" @click="createInviteLink" :loading="isLoading" :disabled="inviteTokens && inviteTokens.filter(t => t.id).length >= 5">
+                <button-base :modifiers="['xs']" @click="createInviteLink" :loading="isLoading" :disabled="inviteTokens && inviteTokens.filter(t => t.id).length >= 5" icon-before="plus">
                     Créer un nouveau lien
                 </button-base>
             </div>
 
             <p class="mb-20">Les personnes qui utilisent ce lien deviennent directement membre de ton groupe, <b>sans vérification</b>.
-            
-            <br><br>On te conseille de le diffuser à nombre limité de personnes, qui font déjà partie de la communauté.</p>
 
             <div class="+mt-5 bg-bg p-10 pl-15 br-xs fx-center bg-bg-weak@xs" v-for="token in inviteTokens.filter(t => t.id)" :key="token.id">
                 <p class="ellipsis-1" style="user-select: all">{{ getInviteLink(token.id) }}</p>

@@ -1,6 +1,5 @@
 <template>
-    <div class="">
-
+    <div>
         <div class="row-2xs mb-15" v-if="value && value.length > 0">
             <div class="col-6 col-12@xs mt-5" v-for="user in selectedUsers" :key="user._id">
                 <div class="fx-center p-10 bg-bg br-xs bg-bg-weak@xs">
@@ -15,23 +14,30 @@
             </div>
         </div>
 
-        <div class="fx-center p-15 bg-bg strong">
+        <div class="fx-center">
             <input-base class="mr-15" v-model="search" label="Rechercher un membre" placeholder="Nom ou ID" />
 
-            <button-base type="button" :modifiers="['s', 'light']">
+            <button-base type="button" :modifiers="['s']">
                 Rechercher
             </button-base>
         </div>
         
         <div class="Area">
             <div class="Area_user" v-for="user in displayedUsers.filter(u => !value.includes(u._id))" :key="user._id" @click="$emit('input', [ ...value, user._id ])">
-                <user-icon v-bind="user" :modifiers="['s']" :no-link="true" :display-name="true">
-                    <div class="ft-s color-ft-weak ml-5" slot="name">
-                        @{{ user.id }}
-                    </div>
-                </user-icon>
+                <div class="fx-grow">
+                    <user-icon v-bind="user" :modifiers="['m']" :no-link="true" :display-name="true">
+                        <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
+                            @{{ user.id }}
+                        </div>
+                    </user-icon>
+                </div>
 
-                <button-base type="button" :modifiers="['light', 'round', '2xs']" icon-before="check" />
+                <div class="fx-no-shrink">
+                    <quick-menu :items="actions.map(a => ({
+                        ...a,
+                        action: () => a.action(user._id)
+                    }))" :button="{ modifiers: ['xs', 'xweak'] }" />
+                </div>
             </div>
         </div>
     </div>
@@ -48,7 +54,8 @@ export default {
         label: { type: String, default: '' },
         items: { type: [Array, Boolean], default: false },
         exclude: { type: Array, default: () => [] },
-        value: { type: Array, default: () => [] }
+        value: { type: Array, default: () => [] },
+        actions: { type: Array, default: () => [] }
     },
     data: () => ({
         localValue: [],
@@ -106,10 +113,11 @@ export default {
 
 <style lang="scss" scoped>
 .Area {
+    margin-top: 20px;
+    padding-top: 20px;
     max-height: 250px;
-    padding: 10px;
     overflow: auto;
-    background-color: var(--color-bg);
+    border-top: 1px solid var(--color-border);
 }
 
 .Area_user {
@@ -122,7 +130,6 @@ export default {
     transition: all 200ms ease;
 
     &:hover {
-        transform: translateY(-1px);
         background-color: var(--color-cosmoz);
     }
 }

@@ -1,27 +1,30 @@
 <template>
     <div>
         <form @submit.prevent="onSubmit">
-            <div class="block d-flex fxa-start">
-                <div class="Logo mr-20" :style="{ backgroundImage: `url(${logoPreview})` }">
-                    <label class="Logo_edit">
-                        <input-file class="hide" v-model="formData.logoSelect" />
-                        <fa icon="far fa-pen" />
-                    </label>
-                </div>
-
-                <div class="fx-grow">
-                    <input-base class="mb-15" label="Nom de la constellation" v-model="formData.name" :required="true" />
-                    <input-base class="mv-15" label="En une phrase..." v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
-                    <input-base class="mt-15" label="Localisation" v-model="formData.location" placeholder="Région, ville..." :required="true" />
-                </div>
-            </div>
-            
             <div class="block mt-20">
                 <div class="Image" :style="{ backgroundImage: `url(${coverPreview})` }">
                     <button-base type="button" :modifiers="['round', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
                 </div>
 
-                <input-pexels class="mt-15" @select="(v) => formData.coverSelect = v" v-if="options.cover"/>
+                <input-pexels @select="(v) => formData.coverSelect = v" :is-active="options.cover" @close="options.cover = false" :height="$smallerThan('xs') ? 250 : 150" />
+
+                 <div class="d-flex fxa-start mt-30 d-block@xs n-mt-30@xs ">
+                    <label>
+                        <const-icon class="mr-15" :no-link="true" :picture-src="logoPreview" :modifiers="['xl']" badge="pen" />
+
+                        <div class="hide">
+                            <input-file v-model="formData.logoSelect" />
+                        </div>
+                    </label>
+
+                    <div class="fx-grow mt-20@xs">
+                        <input-base class="mb-15" label="Nom de la constellation" v-model="formData.name" :required="true" />
+                        
+                        <input-base class="mv-15" label="En une phrase..." v-model="formData.intro" placeholder="Se balader dans un parc et profiter du soleil !" :required="true" />
+
+                        <input-base class="mt-15" label="Localisation" v-model="formData.location" placeholder="Région, ville..." :required="true" />
+                    </div>
+                </div>
             </div>
 
             <div class="block mt-20">
@@ -118,8 +121,8 @@ export default {
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     position: relative;
     overflow: hidden;
 }
@@ -140,6 +143,14 @@ export default {
 
     &:hover {
         opacity: 1;
+    }
+}
+
+@include breakpoint-xs {
+
+    .Logo {
+        width: 60px;
+        height: 60px;
     }
 }
 </style>

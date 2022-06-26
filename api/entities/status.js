@@ -49,6 +49,13 @@ Status.fields.pre('remove', async function (next) {
         }))
     }
 
+    await Status.model.deleteMany({
+        $or: [
+            { parent: this._id },
+            { origin: this._id }
+        ]
+    })
+
     next()
 })
 

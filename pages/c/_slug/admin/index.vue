@@ -33,6 +33,11 @@ export default {
                     component: 'page-admin-roles',
                     label: 'Rôles',
                     props: { constellation: this.$constellation }
+                }, {
+                    id: 'advanced',
+                    component: 'page-admin-advanced',
+                    label: 'Avancé',
+                    props: { constellation: this.$constellation }
                 }
             ]
         },
