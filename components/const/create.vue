@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="hide">
-                    <input-file :no-label="true" id="image-edit" v-model="formData.newPicture" />
+                    <input-file :no-label="true" id="image-edit" v-model="formData.file" />
                 </div>
 
                 <div class="mt-20 fx-center">
@@ -49,14 +49,14 @@ export default {
         formData: {
             name: '',
             type: '',
-            newPicture: ''
+            file: ''
         }
     }),
     computed: {
         picture () {
             if (this.formData.removePicture) return null
 
-            return this.formData.newPicture ? URL.createObjectURL(this.formData.newPicture) : null
+            return this.formData.file ? URL.createObjectURL(this.formData.file) : null
         }
     },
     methods: {
@@ -73,7 +73,7 @@ export default {
                 this.formData = {
                     type: '',
                     name: '',
-                    newPicture: ''
+                    file: ''
                 }
             }
             

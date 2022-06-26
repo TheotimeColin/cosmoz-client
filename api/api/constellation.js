@@ -9,6 +9,7 @@ const sanitize = require('sanitize-html')
 const { createNotification } = require('../utils/notifications')
 const { authenticate, accessCheck, fieldsCheck } = require('../utils/user')
 const { getHandle } = require('../utils/base')
+const { createMediaCollection } = require('../utils/files')
 
 exports.consteCreate = async function (req, res) {
     let data = {}
@@ -35,6 +36,7 @@ exports.consteCreate = async function (req, res) {
             suffix = '-' + getHandle(4)
         }
 
+
         data = await Entities.constellation.model.create({
             name: sanitize(req.body.name),
             slug: slug,
@@ -43,6 +45,25 @@ exports.consteCreate = async function (req, res) {
         })
 
         if (data) {
+            if (req.file) {
+                try {
+                    let logo = await createMediaCollection(req.file, {
+                        path: `constellation/${data._id}/logo`
+                    })
+
+                    if (logo) {
+                        data.logo = logo
+                        await data.save()
+                    }
+
+                    data = await Entities.constellation.model.findOne({
+                        _id: data._id
+                    })
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+
             user.constellations = [
                 ...user.constellations,
                 data._id

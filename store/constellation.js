@@ -135,7 +135,23 @@ export default {
         },
         async createNew ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$post('/constellation/create', { ...params })
+                let formData = new FormData()
+
+                Object.keys(params).forEach(key => {
+                    if (Array.isArray(params[key])) {
+                        const arrayKey = `${key}`
+
+                        params[key].forEach(v => {
+                            formData.append(arrayKey, v)
+                        })
+                    } else {
+                        formData.append(key, params[key])
+                    }
+                })
+                
+                const response = await this.$axios.$post('/constellation/create', formData, { headers: {
+                    'Content-Type': 'multipart/undefined'
+                } })
                 
                 if (response.status == 0) throw Error(response.errors[0])
 

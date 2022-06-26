@@ -115,7 +115,7 @@ mongoose.connection.once('open', async () => {
     app.post('/constellation/apply', consteApply)
     app.post('/constellation/leave', consteLeave)
     app.post('/constellation/enter', consteEnter)
-    app.post('/constellation/create', consteCreate)
+    app.post('/constellation/create', upload.single('file'), consteCreate)
     app.post('/constellation/invite-link', consteInviteLink)
     app.delete('/constellation/invite-link', consteInviteLinkDelete)
     

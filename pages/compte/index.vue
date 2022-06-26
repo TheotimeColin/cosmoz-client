@@ -1,13 +1,15 @@
 <template>
     <div class="Page_wrapper Wrapper Wrapper--xs">
         <form @submit.prevent="onSubmit" class="block">
-            <div class="ft-m p-20 br-s bg-bg strong">
+            <div class="ft-m">
                 <input-base class="mb-10" label="Ton nom d'utilisateur" v-model="formData.id" validator="userId" :required="true" prefix="@" />
 
-                Nom unique qui permet de t'identifier facilement.
+                <p class="ft-s color-ft-weak mt-10">
+                    <fa icon="fas fa-sparkles" class="mr-3" /> Un nom unique qui permet de t'identifier facilement.
+                </p>
             </div>
 
-            <input-date class="mt-20" label="Ta date de naissance" v-model="formData.birthdate" :required="true" />
+            <input-date class="mt-30" label="Ta date de naissance" v-model="formData.birthdate" :required="true" />
 
             <p class="ft-s color-ft-weak mt-10">
                 <fa icon="fas fa-lock" class="mr-3" /> Ta date de naissance reste privée.
