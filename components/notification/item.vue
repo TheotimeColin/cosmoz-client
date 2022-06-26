@@ -28,9 +28,9 @@ export default {
     computed: {
         self () { return this.$store.getters['user/self'] },
         cover () {
+            if (this.gatherings[0]?.hero ) return this.gatherings[0].hero
             if (this.userData?.profileLarge) return this.userData.profileLarge
             if (this.users[0]?.profileLarge) return this.users[0].profileLarge
-            if (this.gatherings[0]?.hero) return this.gatherings[0].hero
             if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
 
             return this.$bg.plasticBlack

@@ -7,7 +7,7 @@
                     <div v-show="!isManage">
                         <div class="+mt-30">
                             <div class="d-flex fxa-center">
-                                <fa icon="fal fa-calendar-lines" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+                                <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                                 <div>
                                     <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
@@ -16,7 +16,7 @@
                             </div>
 
                             <div class="d-flex fxa-center mt-15">
-                                <fa icon="fal fa-map-marker-alt" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+                                <fa icon="fal fa-map-marker-alt" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                                 <div>
                                     <p class="ft-l-bold">{{ gathering.location }}</p>

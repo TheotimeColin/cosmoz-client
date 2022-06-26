@@ -5,7 +5,7 @@
                 <h1 class="ft-title-s d-none mb-20 mt-5 d-block@xs">{{ gathering.title }}</h1>
 
                 <div class="d-flex fxa-center" v-if="gathering.date">
-                    <fa icon="fal fa-calendar-lines" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+                    <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                     <div>
                         <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="d-flex fxa-center mt-10" v-if="gathering.location">
-                    <fa icon="fal fa-map-marker-alt" size="xl" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+                    <fa icon="fal fa-map-marker-alt" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                     <div>
                         <p class="ft-l-bold">{{ gathering.location }}</p>

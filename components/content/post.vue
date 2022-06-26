@@ -8,6 +8,8 @@
                     <div class="d-flex fxa-center fx-grow">
                         <div class="Post_icon fx-no-shrink" @click.stop>
                             <user-icon class="Post_user" :modifiers="['m']" v-bind="ownerData"  v-if="ownerData" />
+
+                            <const-icon class="Post_conste" v-bind="consteData" :modifiers="['xs']" v-if="consteData" />
                         </div>
 
                         <div class="ml-10 ft-xs line-1" @click.stop>
@@ -465,6 +467,14 @@ export default {
         position: relative;
     }
 
+    .Post_conste {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        border-radius: 50%;
+        border: 2px solid var(--color-bg-weak);
+    }
+
     .Post_gathering {
         width: 25px;
         height: 25px;
@@ -490,7 +500,7 @@ export default {
 
 
     .Post_head {
-        padding: 20px;
+        padding: 15px 15px 20px;
         position: relative;
     }
 

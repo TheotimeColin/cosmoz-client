@@ -387,7 +387,8 @@ export default {
     }
 
     .ButtonBase_iconBefore {
-        margin-right: 12px;
+        margin-right: 4px;
+        font-size: 18px;
     }
 
     .ButtonBase_content {

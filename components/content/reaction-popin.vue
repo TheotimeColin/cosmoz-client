@@ -1,5 +1,5 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['s']" @close="$emit('close')">
+    <popin :is-active="isActive" :modifiers="['s']" query="reactions" @close="$emit('close')">
         <template slot="content">
             <div class="p-20">
                 <p class="ft-title-xs mb-20"><span class="mr-5 round-s bg-bg-strong" v-if="reactions">{{ reactions.reduce((t, c) => t += c[1].length, 0) }}</span> Réactions</p>

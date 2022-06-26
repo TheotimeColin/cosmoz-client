@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import FaviconDefault from '@/static/favicon.png'
-
 export default {
     name: 'Notifications',
     data: () => ({
@@ -58,7 +56,7 @@ export default {
                 ...this.notifications.map(n => n.status).filter(n => n),
                 ...origins.filter(o => o.type == 'status').map(o => o._id)
             ]
-
+            
             let constes = [
                 ...this.notifications.map(n => n.constellation).filter(n => n),
                 ...origins.filter(o => o.type == 'constellation').map(o => o._id)

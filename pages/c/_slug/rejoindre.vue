@@ -3,7 +3,7 @@
         <div class="bg-cover-100 ratio-15 ratio-35@xs" :style="{ '--background': `url(${$constellation.hero}` }"
             v-if="$constellation.hero"></div>
 
-        <div class="Page_wrapper Wrapper Wrapper--s">
+        <div class="Page_wrapper Wrapper Wrapper--xs">
             <h1 class="ft-title-xs mb-20">Conditions d'adhésion</h1>
 
             <!-- <div class="fx-center pv-15 ph-20 bg-bg-weak br-xs mt-10">
@@ -81,7 +81,7 @@
             <div class="mt-20 text-right text-center@s">
                 <div>
                     <link-base class="mr-10 mr-0@s mb-10@s" @click="cancel" v-if="isPending">
-                        Annuler ma demande
+                        Annuler
                     </link-base>
                     <button-base :modifiers="['light']" :disabled="true" icon-before="check" v-if="isPending">
                         Demande envoyée
