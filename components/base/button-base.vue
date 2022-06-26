@@ -114,6 +114,7 @@ export default {
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
+    vertical-align: middle;
     box-shadow: 0 3px 10px 0 color-opacity('bg-2xstrong', -50%);
 
     cursor: pointer;

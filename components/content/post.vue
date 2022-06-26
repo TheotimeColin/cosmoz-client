@@ -54,15 +54,29 @@
 
                     <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
 
-                    <transition-group name="transition-list" tag="div" class="Post_block Post_reactions ph-15 br-l p-relative" :class="{ 'is-reactions': reactions.length }">
+                    <transition-group name="transition-list" tag="div" class="Post_block Post_reactions p-relative" :class="{ 'is-reactions': reactions.length }">
                         <button-base
-                            :modifiers="['2xs', 'no-s', isReacted(reactionType) ? (images && images.length > 0 ? 'highlight-strong' : 'highlight') : '']"
+                            :modifiers="['2xs', 'no-s', isReacted(reaction[0]) ? (images && images.length > 0 ? 'highlight-strong' : 'highlight') : '']"
                             class="m-3"
-                            :emoji-before="reactionType"
-                            v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
-                            @click.stop="addReaction({ type: reactionType })"
+                            :emoji-before="reaction[0]"
+                            v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
+                            @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
+                            @mouseleave="$tClose"
+                            @click.stop="addReaction({ type: reaction[0] })"
                         >
-                            {{ reaction.length }}
+                            {{ reaction[1].length }}
+                        </button-base>
+
+                        <button-base
+                            icon-before="plus"
+                            class="m-3"
+                            :modifiers="['2xs']"
+                            key="plus"
+                            type="button"
+                            @click.stop="isSeeReactions = true"
+                            v-if="reactionTypes.length - maxDisplayedReactions > 0"
+                        >
+                            {{ reactionTypes.length - maxDisplayedReactions }}
                         </button-base>
                     </transition-group>
                 </div>
@@ -120,7 +134,7 @@
 
                 <content-reaction-popin
                     :is-active="isSeeReactions"
-                    :reactions="reactionsOwners"
+                    :reactions="reactionTypes"
                     @close="isSeeReactions = false"
                     v-if="!isForbidden"
                 />
@@ -228,7 +242,11 @@ export default {
     computed: {
         user () { return this.$store.getters['user/self'] },
         reactionTypes () {
-            return this.$groupBy(this.reactions, 'type')
+            console.log(this.$groupBy(this.reactions, 'type', { orderBy: true }))
+            return this.$groupBy(this.reactions, 'type', { orderBy: true })
+        },
+        maxDisplayedReactions () {
+            return this.$smallerThan('xs') ? 8 : 12
         },
         displayedComments () {
             let children = this.children ? [ ...this.children ] : []
@@ -360,28 +378,49 @@ export default {
         }
     }
 
-    .Post_block {
-        margin-bottom: 20px;
+    .Post_main {
+        position: relative;
+        background-color: color-opacity('bg', -65%);
     }
 
-    .Post_reactions {
+    .Post_block.Post_reactions {
         position: relative;
         z-index: 5;
         margin: 0;
+        padding: 0 20% 0 15px;
+        background-color: var(--color-bg-weak);
 
         &.is-reactions {
-            margin-bottom: 20px;
+            padding-bottom: 20px;
         }
     }
 
-    .Post_gallery {
-        margin-bottom: 0;
+    .Post_block.Post_gallery {
+        padding-bottom: 0;
 
+        // & + .Post_reactions.is-reactions {
+        //     position: absolute;
+        //     bottom: 6px;
+        //     left: 3px;
+        //     margin: 0;
+        //     padding: 0;
+        // }
+        
         & + .Post_reactions.is-reactions {
-            margin-top: -44px;
-            margin-bottom: 0;
-            padding-bottom: 10px;
+            margin: -18px 0 0px 0;
+            padding: 0 20% 0px 10px;
+            background-color: transparent;
         }
+    }
+
+    .Post_text {
+        font: var(--ft-m);
+        padding: 0 20px;
+        background-color: var(--color-bg-weak);
+    }
+
+    .Post_block {
+        padding-bottom: 20px;
     }
 
     .Post_forbidden {
@@ -450,10 +489,6 @@ export default {
         background-color: rgba(0, 0, 0, 0.75);
     }
 
-    .Post_text {
-        font: var(--ft-m);
-        padding: 0 20px;
-    }
 
     .Post_head {
         padding: 20px;
@@ -567,10 +602,23 @@ export default {
             padding-right: 0;
         }
 
-        .Post_reactions {
-            padding: 0;
-            margin-left: -5px;
-            margin-right: -5px;
+        .Post_block.Post_reactions {
+            padding: 0 10% 0 0;
+            margin: 0 -5px;
+
+            &.is-reactions {
+                padding-bottom: 20px;
+            }
+        }
+
+        .Post_block.Post_gallery {
+            padding-bottom: 0;
+            
+            & + .Post_reactions.is-reactions {
+                margin: -18px 0 0px -10px;
+                padding: 0 10% 0px 0;
+                background-color: transparent;
+            }
         }
 
         .Post_head {

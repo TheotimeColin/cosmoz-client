@@ -27,13 +27,27 @@
 
                     <transition-group name="transition-list" tag="div" class="Comment_reactions" v-if="reactions.length > 0">
                         <button-base
-                            :modifiers="['2xs', 'no-s', isReacted(reactionType) ? 'highlight' : '']"
+                            :modifiers="['2xs', 'no-s', isReacted(reaction[0]) ? 'highlight' : '']"
                             class="m-3"
-                            :emoji-before="reactionType"
-                            v-for="(reaction, reactionType) in reactionTypes" :key="reactionType"
-                            @click.stop="addReaction({ type: reactionType })"
+                            :emoji-before="reaction[0]"
+                            v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
+                            @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
+                            @mouseleave="$tClose"
+                            @click.stop="addReaction({ type: reaction[0] })"
                         >
-                            {{ reaction.length }}
+                            {{ reaction[1].length }}
+                        </button-base>
+
+                        <button-base
+                            icon-before="plus"
+                            class="m-3"
+                            :modifiers="['2xs']"
+                            key="plus"
+                            type="button"
+                            @click.stop="isSeeReactions = true"
+                            v-if="reactionTypes.length - maxDisplayedReactions > 0"
+                        >
+                            {{ reactionTypes.length - maxDisplayedReactions }}
                         </button-base>
                     </transition-group>
                     
@@ -108,7 +122,7 @@
 
         <content-reaction-popin
             :is-active="isSeeReactions"
-            :reactions="reactionsOwners"
+            :reactions="reactionTypes"
             @close="isSeeReactions = false"
         />
     </div>
@@ -142,12 +156,15 @@ export default {
     }),
     computed: {
         reactionTypes () {
-            return this.$groupBy(this.reactions, 'type')
+            return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },
         displayedReplies () {
             let children = this.children ? [ ...this.children ] : []
 
             return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(0, this.max)
+        },
+        maxDisplayedReactions () {
+            return this.$smallerThan('xs') ? 6 : 10
         },
         permaLink () {
             if (this.slug) {

@@ -149,6 +149,10 @@ Vue.mixin({
                 })
             })
         },
+        $getUser (v) {
+            let result = this.$store.getters['user/findOne']({ _id: v })
+            return result ? result : null
+        },
         $tLoad (e, params = {}) {
             this.$store.commit('tooltips/open', {
                 element: e.target, params: { load: true }, ...params
@@ -224,8 +228,8 @@ Vue.mixin({
         $randomColor () {
             return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
         },
-        $groupBy (items, type) {
-            return items.reduce((obj, item) => {
+        $groupBy (items, type, params = {}) {
+            let result = items.reduce((obj, item) => {
                 let newObj = { ...obj }
 
                 if (!newObj[item[type]]) {
@@ -236,6 +240,12 @@ Vue.mixin({
 
                 return newObj
             }, {})
+
+            if (params.orderBy) {
+                result = Object.entries(result).sort((a, b) => b[1].length - a[1].length)
+            }
+
+            return result
         },
         $isFixedPosition(node) {
             while (node && node.nodeName.toLowerCase() !== 'body') {
