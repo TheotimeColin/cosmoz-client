@@ -26,7 +26,7 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel-channelId' }" fa="paper-plane" />
+                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel' }" fa="paper-plane" />
 
                 <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)"
                     :notification="notifications.length" />

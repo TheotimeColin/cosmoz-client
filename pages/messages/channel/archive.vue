@@ -2,7 +2,7 @@
     <div class="Channel">
         <div class="Channel_head">
             <div class="Channel_iconContainer">
-                <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" :to="{ name: 'messages-channel-channelId' }" :replace="true"/>
+                <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" :to="{ name: 'messages-channel' }" :replace="true"/>
             </div>
 
             <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
