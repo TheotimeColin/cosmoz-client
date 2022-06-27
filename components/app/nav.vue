@@ -122,7 +122,7 @@ export default {
         }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         constellations () {
             return this.user ? this.$store.getters['constellation/find']({
                 $or: {

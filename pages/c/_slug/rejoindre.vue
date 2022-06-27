@@ -116,7 +116,7 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         isPending () { return this.$constellation.followers.includes(this.user._id) }
     },
     methods: {

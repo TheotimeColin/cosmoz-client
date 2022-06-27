@@ -17,7 +17,7 @@ export default {
 
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
     },
     methods: {
         async onDelete () {

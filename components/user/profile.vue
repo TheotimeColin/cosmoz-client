@@ -37,7 +37,7 @@ export default {
         theme: 'is-cream'
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         src ()  { return this.profileLarge }
     },
     created () {

@@ -41,7 +41,7 @@ export default {
                 }
             ]
         },
-        user () { return this.$store.getters['user/self'] },
+        
     },
     head () {
         this.$store.commit('page/set', {

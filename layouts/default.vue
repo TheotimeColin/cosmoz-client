@@ -21,7 +21,7 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutDefault',
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         classes () { return this.$store.state.page.body.classes },
         isDisableFooter () { return this.$store.state.page.isDisableFooter },
     },

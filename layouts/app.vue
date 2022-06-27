@@ -30,7 +30,7 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutApp',
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         classes () { return this.$store.state.page.body.classes },
     },
     data: () => ({
@@ -170,6 +170,16 @@ export default {
     
     .Footer {
         display: none;
+    }
+
+    .LayoutApp {
+
+        &.is-transition {
+            
+            .LayoutApp_content {
+                overflow: hidden;
+            }
+        }
     }
 }
 </style>

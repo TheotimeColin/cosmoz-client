@@ -5,8 +5,7 @@
         <div class="AppHeader_wrapper">
             <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
                 <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
-                        v-if="prev.isPanel" />
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" v-if="prev.isPanel" />
                     <fa class="AppHeader_icon" :icon="`far fa-${prev.fa}`" fixed-width v-else-if="prev.fa" />
                 </div>
 
@@ -17,8 +16,7 @@
 
             <div class="AppHeader_left">
                 <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"
-                        @click="onIconClick" v-if="$appMeta.isPanel" />
+                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"  @click="onIconClick" v-if="$appMeta.isPanel" />
                     <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else-if="$appMeta.fa" />
                 </div>
 
@@ -28,7 +26,7 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <button-icon class="AppHeader_button" fa="paper-plane" />
+                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel-channelId' }" fa="paper-plane" />
 
                 <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)"
                     :notification="notifications.length" />
@@ -47,7 +45,7 @@ export default {
         changed: false,
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         $appMeta() { return getMeta(this.$route, this.$store) },
         notifications() {
             return this.user ? this.$store.getters['notification/find']({
@@ -140,7 +138,7 @@ export default {
     background-color: var(--color-bg-strong);
     transition: all 100ms ease;
     overflow: hidden;
-    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
+    @include shadow;
 
     &.is-init {
 

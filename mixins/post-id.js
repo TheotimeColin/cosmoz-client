@@ -19,7 +19,7 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         status () {
             return this.$store.getters['status/findOne']({
                 _id: this.$route.params.replyId ? this.$route.params.replyId : this.$route.params.postId

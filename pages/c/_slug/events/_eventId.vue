@@ -68,7 +68,6 @@ export default {
         isLoading: false,
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
         gathering () {
             return this.$store.getters['gathering/findOne']({
                 id: this.$route.params.eventId,

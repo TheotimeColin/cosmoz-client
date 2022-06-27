@@ -34,7 +34,7 @@ export default {
         min: { type: Boolean, default: false }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         subtitle () { return this.$store.state.page.subtitle },
         fa () { return this.$store.state.page.fa },
     }

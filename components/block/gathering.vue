@@ -67,7 +67,7 @@ export default {
         constellation: { type: String, default: '' },
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },

@@ -62,7 +62,9 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data)
+                commit('updateOne', response.data.channel)
+                
+                if (response.data.message) commit('messages/updateOne', response.data.message, { root: true })
                 
                 return response
             } catch (e) {

@@ -338,6 +338,10 @@ $value in $breakpoints {
         margin-bottom: #{$spacing}px;
       }
 
+      .\+mb-#{$spacing}#{$name} {
+        & + & { margin-bottom: #{$spacing}px; }
+      }
+
       .ml-#{$spacing}#{$name} {
         margin-left: #{$spacing}px;
       }

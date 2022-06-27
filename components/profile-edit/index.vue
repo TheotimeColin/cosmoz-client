@@ -65,7 +65,7 @@ export default {
         inputs: ['picture', 'name', 'alias', 'birthdate']
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         picture () {
             if (this.formData.removePicture) return null
 

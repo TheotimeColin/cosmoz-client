@@ -101,7 +101,7 @@ export default {
         errors: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         sent () {
             return this.$store.getters['mention/find']({
                 gathering: this.gathering,

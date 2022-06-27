@@ -48,7 +48,7 @@ export default {
         join: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         cover () {
             return this.constellation?.cover?.medias ? this.constellation.cover.medias.find(m => m.size == 's')?.src : null
         }

@@ -74,7 +74,7 @@ export default {
         }
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         picture () {
             return this.newPicture ? URL.createObjectURL(this.newPicture) : (this.user.profileLarge ? this.user.profileLarge : this.$bg.holo)
         }

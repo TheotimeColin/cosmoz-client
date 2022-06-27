@@ -71,7 +71,7 @@ export default {
         loading: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         encounters () {
             return this.$store.getters['user/find']({
                 isEncountered: true,

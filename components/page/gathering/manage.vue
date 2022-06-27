@@ -139,7 +139,7 @@ export default {
         selectedUser: null,
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         organizers () {
             return this.$store.getters['user/find']({
                 _id: { $in: this.gathering.organizers }

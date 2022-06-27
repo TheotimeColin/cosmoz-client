@@ -49,7 +49,7 @@ export default {
         errors: { type: Array, default: () => [] }
     },
     computed: {  
-        user () { return this.$store.getters['user/self'] },
+        
         images () {
             return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []
         }

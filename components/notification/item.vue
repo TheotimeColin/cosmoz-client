@@ -17,7 +17,7 @@ export default {
         _id: { type: String },
         state: { type: String },
         type: { type: String },
-        user: { type: String },
+        author: { type: String },
         status: { type: String },
         gathering: { type: String },
         constellation: { type: String },
@@ -42,10 +42,10 @@ export default {
             return null
         },
         userData () {
-            if (!this.user) return null
+            if (!this.author) return null
 
             return this.$store.getters['user/findOne']({
-                _id: this.user
+                _id: this.author
             })
         },
         statusData () {

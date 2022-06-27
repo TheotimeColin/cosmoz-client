@@ -156,7 +156,7 @@ export default {
         }
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         isNew () { return this.$route.params.id == 'new' },
         defaultFormData () {
             return {

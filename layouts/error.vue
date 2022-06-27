@@ -21,7 +21,7 @@ export default {
         error: { type: Object, default: () => {} }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
     }
 }
 </script>

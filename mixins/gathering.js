@@ -3,7 +3,7 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         constellation () {
             return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
                 slug: this.$route.params.slug

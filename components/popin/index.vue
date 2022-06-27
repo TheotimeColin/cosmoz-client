@@ -58,7 +58,7 @@ export default {
                 if (v && this.query) {
                     this.$router.push({ query: { ...query, [this.query]: 'true' } })
                 } else if (!v && this.query) {
-                    this.$router.push({ query: { ...query, [this.query]: undefined } })
+                    this.$router.replace({ query: { ...query, [this.query]: undefined } })
                 }
 
                 if (!this.autoClose) return 
@@ -287,6 +287,14 @@ export default {
 
     &.is-active {
         top: var(--header-height);
+    }
+}
+
+.PopinBase--no-overflow {
+    
+    .PopinBase_body,
+    .PopinBase_content {
+        overflow: visible;
     }
 }
 

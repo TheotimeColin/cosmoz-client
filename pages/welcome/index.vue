@@ -68,7 +68,7 @@ export default {
     middleware: ['loggedIn'],
     layout: 'full',
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
     },
     methods: {
         async onEnd () {

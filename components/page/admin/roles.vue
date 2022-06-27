@@ -68,7 +68,7 @@ export default {
         inputs: ['admins', 'organizers']
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         defaultFormData () {
             return {
                 organizers: [],

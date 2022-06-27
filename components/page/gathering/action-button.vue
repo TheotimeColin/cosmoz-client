@@ -33,7 +33,7 @@ export default {
         isManage: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
     }
 }
 </script>

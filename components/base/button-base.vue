@@ -2,6 +2,7 @@
     <component :is="componentTag" class="ButtonBase"
         :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image } ]" :to="localePath(to)"
         :disabled="disabled || loading"
+        :replace="replace"
         v-bind="computedAttrs"
         v-on="$listeners"
     >
@@ -73,6 +74,7 @@ export default {
         iconBefore: { type: String, default: '' },
         iconAfter: { type: String, default: '' },
         loading: { type: Boolean, default: false },
+        replace: { type: Boolean, default: false },
         iconLoading: { type: String, default: 'spinner-third' },
         attrs: { type: Object, default: () => ({}) }
     },

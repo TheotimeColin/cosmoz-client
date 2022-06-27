@@ -75,7 +75,7 @@ export default {
         isAbsolute: { type: Boolean, default: false }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         gatheringsData () {
             return this.$store.getters['gathering/find']({
                 constellation: this._id,

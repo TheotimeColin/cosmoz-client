@@ -87,7 +87,7 @@ export default {
         this.isLoading = false
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         statuses () {
             let query = { parent: null }
         

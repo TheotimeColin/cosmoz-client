@@ -45,7 +45,7 @@ export default {
         hidden: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         completed () {
             return this.steps.filter(s => this.isHidden(s.id)).reduce((t, c) => t + c.amount, 0) + 10
         },

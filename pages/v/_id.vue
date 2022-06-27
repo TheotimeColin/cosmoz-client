@@ -95,7 +95,7 @@ export default {
         isLoading: true
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         isAttending () {
             if (!this.user) return false
 

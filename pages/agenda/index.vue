@@ -60,7 +60,7 @@ export default {
         format: 'YYYYDDD'
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         gatherings () {
             return this.$store.getters['gathering/find']({
                 date: '$notNull',

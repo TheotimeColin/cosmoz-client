@@ -102,6 +102,7 @@ Vue.mixin({
         setTimeout(() => this.isMounted = true, 200)
     },
     computed: {
+        user () { return this.$store.getters['user/self'] },
         $baseUrl () { return  this.$config.baseUrl },
         $dashboardUrl () { return this.$config.dashboardUrl },
         $blogUrl () { return this.$config.blogUrl },
@@ -111,7 +112,6 @@ Vue.mixin({
         $windowSize () { return this.$store.state.page.breakpoint }
     },
     methods: {
-        user () { return this.$store.getters['user/self'] },
         $randomBetween: (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
         },

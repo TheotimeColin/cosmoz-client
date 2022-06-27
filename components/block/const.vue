@@ -45,7 +45,7 @@ export default {
 
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         defaultLink () {
             return this.localePath({ name: 'c-slug', params: { slug: this.slug } })
         },

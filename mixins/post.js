@@ -8,7 +8,7 @@ export default {
         reactionAction: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         ownerData () {
             return this.$store.getters['user/findOne']({
                 _id: this.owner

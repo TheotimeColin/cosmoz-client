@@ -15,7 +15,7 @@ export default {
     data: () => ({
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         isActive () { return this.$store.state.page.isNotifications }
     },
     methods: {

@@ -1,7 +1,6 @@
 export default {
     computed: {
-        $user () { return this.$store.getters['user/self'] },
-        $isUser () { return this.$user ? true : false },
+        $isUser () { return this.user ? true : false },
         $constellation () {
             return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
                 slug: this.$route.params.slug
@@ -14,24 +13,24 @@ export default {
             }) : null
         },
         $isConsteFollower () {
-            if (!this.$constellation || !this.$user) return false
+            if (!this.$constellation || !this.user) return false
 
-            return this.$constellation.followers.includes(this.$user._id)
+            return this.$constellation.followers.includes(this.user._id)
         },
         $isConsteMember () {
-            if (!this.$constellation || !this.$user) return false
+            if (!this.$constellation || !this.user) return false
 
-            return this.$constellation.members.includes(this.$user._id)
+            return this.$constellation.members.includes(this.user._id)
         },
         $isConsteOrga () {
-            if (!this.$constellation || !this.$user) return false
+            if (!this.$constellation || !this.user) return false
 
-            return this.$user.role == 'admin' || [ ...this.$constellation.organizers, ...this.$constellation.admins ].includes(this.$user._id)
+            return this.user.role == 'admin' || [ ...this.$constellation.organizers, ...this.$constellation.admins ].includes(this.user._id)
         },
         $isConsteAdmin () {
-            if (!this.$constellation || !this.$user) return false
+            if (!this.$constellation || !this.user) return false
 
-            return this.$user.role == 'admin' || this.$constellation.admins.includes(this.$user._id)
+            return this.user.role == 'admin' || this.$constellation.admins.includes(this.user._id)
         }
     },
     methods: {

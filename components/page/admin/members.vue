@@ -77,7 +77,7 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         defaultFormData () {
             return {
                 members: [],

@@ -4,6 +4,7 @@
             v-for="notif in notifications"
             class="Notif_item"
             v-bind="notif"
+            :author="notif.user"
             :key="notif._id"
         />
 
@@ -19,7 +20,7 @@ export default {
     data: () => ({
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         notifications () {
             return this.$store.getters['notification/find']({
                 owner: this.user._id,

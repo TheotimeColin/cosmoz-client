@@ -46,7 +46,6 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
         admins () {
             return this.$store.getters['user/find']({
                 _id: { $in: [ ...this.$constellation.admins, ...this.$constellation.organizers ] }

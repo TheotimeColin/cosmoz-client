@@ -242,7 +242,7 @@ export default {
         this.checkOverflow()
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         reactionTypes () {
             return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },

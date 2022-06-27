@@ -196,7 +196,7 @@ export default {
         isMatch: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         target () { return this.$store.getters['user/findOne']({ id: this.$route.params.userId }) },
         profile () { return this.user && this.$route.params.id == this.user.id ? this.user : this.target },
         isSelf () { return this.user && this.profile && this.user.id == this.profile.id },

@@ -47,7 +47,7 @@ export default {
         type: 'index'
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         gatheringsByDate () {
             return this.$store.getters['gathering/groupBy']('date', {
                 constellation: this.$constellation._id,

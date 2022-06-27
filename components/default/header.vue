@@ -50,7 +50,7 @@ export default {
         nav: []
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         notifications () {
             return this.$store.getters['notification/find']({
                 owner: this.user._id,

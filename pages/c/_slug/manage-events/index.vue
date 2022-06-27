@@ -89,7 +89,7 @@ export default {
         isLoading: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
         gatherings () {
             return this.$store.getters['gathering/find']({
                 constellation: this.$constellation._id
