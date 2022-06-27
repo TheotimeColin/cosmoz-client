@@ -12,7 +12,7 @@
             <div class="Header_right" v-if="user">
                 <button-icon :to="{ name: 'admin' }" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
 
-                <!-- <button-icon class="Header_button" fa="paper-plane" /> -->
+                <button-icon class="Header_button" fa="paper-plane" :to="{ name: 'messages' }" />
 
                 <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
         

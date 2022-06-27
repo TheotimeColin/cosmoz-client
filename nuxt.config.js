@@ -155,7 +155,7 @@ export default {
     },
 
     serverMiddleware: [
-        { path: '/api', handler: '~/api' },
+        // { path: '/api', handler: '~/api' },
         redirectSSL.create({ enabled: process.env.NODE_ENV == 'PRODUCTION' })
     ],
 
