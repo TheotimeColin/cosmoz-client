@@ -1,12 +1,15 @@
 <template>
-    <div class="Placeholder">
+    <div class="Placeholder" :class="[ ...$modifiers ]">
         <div class="Placeholder_content" :style="height ? { height: height + 'px' } : { paddingBottom: ratio + '%' }"></div>
     </div>
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
     name: 'Placeholder',
+    mixins: [ ModifiersMixin ],
     props: {
         ratio: { type: Number, default: 50 },
         height: { type: Number, default: 0 }
@@ -34,10 +37,6 @@ export default {
     }
 }
 
-.Placeholder_content {
-    // padding-bottom: 100%;
-}
-
 @keyframes placeholder {
     0% {
         transform: translateX(-100%) scaleX(50%);
@@ -52,5 +51,9 @@ export default {
         opacity: 0;
         transform: translateX(200%) scaleX(100%);
     }
+}
+
+.Placeholder--full {
+    @include absolute-fill;
 }
 </style>

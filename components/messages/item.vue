@@ -1,5 +1,5 @@
 <template>
-    <div class="Message" :class="{ 'is-right': author._id == user._id }">
+    <div class="Message" :class="{ 'is-right': isSelf }">
         <div class="Message_container">
             <div class="Message_author" v-if="author">
                 <user-icon v-bind="author" />
@@ -7,6 +7,7 @@
             <div class="Message_content">
                 <div class="Message_itemContainer" v-for="message in items" :key="message._id">
                     <div class="Message_item">
+                        <p class="ft-xs-medium mb-3" v-if="isGroup && !isSelf">{{ author.name }}</p>
                         {{ message.content }}
                     </div>
                 </div>
@@ -19,9 +20,13 @@
 export default {
     name: 'Message',
     props: {
-        items: { type: Array, default: () => [] }
+        items: { type: Array, default: () => [] },
+        isGroup: { type: Boolean, default: false }
     },
     computed: {
+        isSelf () {
+            return this.user && this.user._id == this.author._id
+        },
         author () {
             if (!this.items[0]) return null
 
@@ -82,6 +87,7 @@ export default {
     border-radius: 4px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+    word-break: break-all;
 }
 
 .Message_itemContainer {
@@ -103,10 +109,6 @@ export default {
 
     .Message_container {
         max-width: calc(100% - 20px);
-    }
-
-    .Message_item {
-        word-break: break-all;
     }
 
     .Message_author {

@@ -17,8 +17,8 @@
             <input type="text" class="Area_input" :placeholder="placeholder" v-model="search" @focus="isFocused = true" @blur="onBlur" />
         </div>
 
-        <div class="UserSelect_popin" :class="{ 'is-active': isFocused }">
-            <div class="UserSelect_user" v-for="user in displayedUsers.filter(u => !value.includes(u._id))" :key="user._id" @click="() => { $emit('input', [ ...value, user._id ]); search = '' }">
+        <div class="UserSelect_popin" :class="{ 'is-active': isFocused && displayedUsers.length > 0 }">
+            <div class="UserSelect_user" v-for="user in displayedUsers" :key="user._id" @click="() => { $emit('input', [ ...value, user._id ]); search = '' }">
                 <user-icon v-bind="user" :modifiers="['m']" :no-link="true" :display-name="true">
                     <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
                         @{{ user.id }}
@@ -72,7 +72,8 @@ export default {
 
                     if (u.id && u.id.toLowerCase().includes(this.search.toLowerCase())) include = true
                 }
-                
+
+                if (this.value.includes(u._id)) include = false
                 if (this.exclude.includes(u._id)) include = false
 
                 return include
@@ -164,6 +165,13 @@ export default {
     
     &:hover {
         background-color: var(--color-cosmoz);
+    }
+}
+
+@include breakpoint-s {
+
+    .UserSelect_popin {
+        max-height: 50vh;
     }
 }
 </style>

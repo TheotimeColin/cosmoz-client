@@ -12,54 +12,63 @@
             </h1>
         </div>
         
-        <div class="Channel_content">
-            <messages-item
-                class="+mb-20"
-                v-for="group in messagesOrdered"
-                :items="group[1]"
-                :key="group[0]"
-            />
+        <div class="o-hidden p-relative fx-grow" v-if="isLoading && !isInit">
+            <placeholder :modifiers="['full']" />
         </div>
+        <template v-else>
+            <div class="Channel_content">
+                <messages-item
+                    class="+mb-20"
+                    v-for="group in messagesOrdered"
+                    :is-group="channel.users.length > 2"
+                    :items="group[1]"
+                    :key="group[0]"
+                />
+            </div>
 
-        <form @submit.prevent="onSubmit" class="Channel_editor">
-            <input-base type="text" :modifiers="['no-label']" placeholder="Envoyer un message..." v-model="formData.content" />
+            <form @submit.prevent="onSubmit" class="Channel_editor">
+                <input-base type="text" :modifiers="['no-label']" placeholder="Envoyer un message..." v-model="formData.content" />
 
-            <button-base class="ml-10" type="submit" icon-before="paper-plane" v :modifiers="['s', 'round', 'cosmoz']" />
-        </form>
+                <button-base class="ml-10" type="submit" icon-before="paper-plane" :loading="isSubmitLoading" :modifiers="['s', 'round', 'cosmoz']" />
+            </form>
+        </template>
     </div>
 </template>
 
 <script>
-import io from 'socket.io-client'
-const socket = io(process.env.NUXT_ENV_API_URL)
-
 export default {
     name: 'ChannelId',
-    async fetch () {
-        if (this.id) {
-            await this.fetchData()
-        }
-    },
     props: {
         id: { type: String }
     },
-    beforeMount () {
-        socket.on('new-message', (message) => {
-            this.$store.commit('messages/updateOne', message)
-        })
-    },
+    data: () => ({
+        isLoading: true,
+        isInit: false,
+        isSubmitLoading: false,
+        formData: {
+            content: ''
+        }
+    }),
     watch: {
-        ['$route.params.channelId'] (v) {
-            this.fetchData()
+        id: {
+            immediate: true,
+            handler (v) {
+                if (v) this.fetchData(v)
+            }
         }
     },
     computed: {
         authorData () {
-            let mainAuthor = this.channel.users.filter(u => u != this.user._id)
+            if (!this.channel) return null
 
-            if (mainAuthor[0]) return this.$getUser(mainAuthor[0])
+            let users = this.channel.users.filter(u => u != this.user._id).map(u => this.$getUser(u))
 
-            return null
+            if (users.length == 1) return users[0]
+            
+            return {
+                ...users[0],
+                name: this.$pluralize(users.map(u => u.name))
+            }
         },
         channel () {
             if (!this.id) return null
@@ -79,14 +88,24 @@ export default {
             })
         },
         messagesOrdered () {
+            let id = 0
+            let lastUser = null
+            let lastDate = null
+
             let result = this.messages.reduce((obj, item) => {
                 let newObj = { ...obj }
-                let type = this.$moment(item.createdAt).format('YYYMMDDH:mm') + item.owner
+                let diff = lastDate ? this.$moment.duration(this.$moment(lastDate).diff(this.$moment(item.createdAt))) : null
+
+                if (lastUser != item.owner) id += 1
+                if (diff && diff.asHours() > 1) id += 1
+
+                lastDate = item.createdAt
+                lastUser = item.owner
                 
-                if (!newObj[type]) {
-                    newObj[type] = [ item ]
+                if (!newObj[id]) {
+                    newObj[id] = [ item ]
                 } else {
-                    newObj[type].unshift(item)
+                    newObj[id].unshift(item)
                 }
 
                 return newObj
@@ -97,18 +116,14 @@ export default {
             return result
         }
     },
-    data: () => ({
-        formData: {
-            content: ''
-        }
-    }),
     methods: {
         fetchData () {
             return new Promise(async resolve => {
+                this.isLoading = true
 
                 await this.$store.dispatch('channel/softFetch', [ this.id ])
 
-                if (this.channel && this.messages.length <= 0) {
+                if (this.channel) {
                     await this.$store.dispatch('messages/fetch', {
                         softRefresh: true,
                         query: { channel: this.channel._id }
@@ -117,13 +132,14 @@ export default {
                     await this.$store.dispatch('user/softFetch', this.messages.map(m => m.owner))
                 }
 
-                this.init = true
+                this.isInit = true
+                this.isLoading = false
 
                 resolve(true)
             })
         },
         async onSubmit () {
-            this.isLoading = true
+            this.isSubmitLoading = true
 
             const response = await this.$store.dispatch('messages/create', {
                 ...this.formData,
@@ -134,7 +150,7 @@ export default {
                 content: ''
             }
 
-            this.isLoading = false
+            this.isSubmitLoading = false
         }
     }
 }
