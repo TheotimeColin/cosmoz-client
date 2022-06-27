@@ -7,8 +7,7 @@
     "build": "nuxt build --dotenv .env.dev",
     "start": "nuxt start",
     "generate": "nuxt generate --dotenv .env.dev",
-    "heroku-postbuild": "nuxt build && node_modules/.bin/migrate up --md ./migrations --autosync",
-    "test": "& node_modules/.bin/migrate up --md ./migrations --autosync"
+    "heroku-postbuild": "nuxt build"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.16.7",

@@ -251,6 +251,16 @@ export default {
     }
 }
 
+.InputBase--no-label {
+    
+    .InputBase_element {
+
+        &::placeholder {
+            opacity: 1;
+        }
+    }
+}
+
 
 .InputBase--light {
     border-color: var(--color-border);

@@ -80,7 +80,6 @@ export default {
                 }, 0)
                 
                 setTimeout(() => {
-                    
                     this.prev = v
                 }, 200)
             }

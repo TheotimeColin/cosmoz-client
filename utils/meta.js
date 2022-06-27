@@ -90,6 +90,10 @@ export function getMeta ($route, $store) {
             title: 'Mon agenda',
             fa: 'calendar'
         },
+        'messages': {
+            title: 'Mes messages',
+            fa: 'paper-plane'
+        },
         'explore': {
             title: 'Explorer',
             fa: 'compass'

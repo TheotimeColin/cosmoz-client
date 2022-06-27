@@ -8,8 +8,6 @@
             </li>
         </ul>
 
-        <input v-model="message" class="inputMessage" type="text" placeholder="Type here..." @keyup.enter="sendMessage" />
-
         <!-- <div v-for="emoji in emojis.filter(e => e)"  :key="emoji">
             { aliases: [], value: '{{ emoji }}', cat: 'people' }, 
         </div> -->
@@ -21,11 +19,6 @@ import io from 'socket.io-client'
 const socket = io(process.env.NUXT_ENV_API_URL)
 
 export default {
-    asyncData () {
-        return new Promise(resolve =>
-            socket.emit('last-messages', messages => resolve({ messages }))
-        )
-    },
     data: () => ({
         messages: [],
         message: ''
@@ -34,21 +27,6 @@ export default {
         socket.on('new-message', (message) => {
             this.messages.push(message)
         })
-    },
-    methods: {
-        sendMessage () {
-            if (!this.message.trim()) { return }
-
-            const message = {
-                date: new Date().toJSON(),
-                text: this.message.trim()
-            }
-
-            this.messages.push(message)
-            this.message = ''
-
-            socket.emit('send-message', message)
-        }
     },
     computed: {
         emojis () {

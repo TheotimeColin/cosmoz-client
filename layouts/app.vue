@@ -129,7 +129,7 @@ export default {
 }
 
 .LayoutApp_content {
-    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100vh - var(--header-height) - var(--app-height));
     touch-action: pan-y !important;
     user-select: auto !important;
     margin-left: var(--nav-width);

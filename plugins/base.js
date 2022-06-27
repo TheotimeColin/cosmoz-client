@@ -111,6 +111,7 @@ Vue.mixin({
         $windowSize () { return this.$store.state.page.breakpoint }
     },
     methods: {
+        user () { return this.$store.getters['user/self'] },
         $randomBetween: (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
         },
@@ -150,6 +151,8 @@ Vue.mixin({
             })
         },
         $getUser (v) {
+            if (v == this.user._id) return this.user
+
             let result = this.$store.getters['user/findOne']({ _id: v })
             return result ? result : null
         },
