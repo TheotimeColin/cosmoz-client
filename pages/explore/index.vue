@@ -42,7 +42,6 @@ export default {
         user () { this.$store.getters['user/self'] },
         constellations () {
             return this.$store.getters['constellation/find']({
-                isMember: false,
                 type: 'community',
                 featured: true
             })

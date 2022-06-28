@@ -3,7 +3,6 @@
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
-            
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
@@ -80,7 +79,7 @@ export default {
             return thumbnail ? thumbnail.src : ''
         },
         attending () {
-            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed')
+            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(u => this.$getUser(u._id)).filter(u => u)
         },
         waiting () {
             return this.users.filter(u => u.status == 'waiting')

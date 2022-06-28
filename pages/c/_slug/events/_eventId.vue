@@ -58,8 +58,13 @@ export default {
             status: 'active'
         })
 
+
         if (!result) {
             await this.$store.dispatch('gathering/get', { query: { id: this.$route.params.eventId, status: 'active' }})
+        }
+
+        if (this.gathering) {
+            await this.$store.dispatch('user/softFetch', this.gathering.users.map(u => u._id))
         }
 
         this.isLoading = false 

@@ -189,6 +189,7 @@ export default {
     transform: translateX(-100%);
     transition: all 200ms ease;
     z-index: 100;
+    height: calc(100% - var(--header-height));
     
     &.is-desktop:hover,
     &.is-const,
@@ -251,7 +252,7 @@ export default {
 .AppNav_content {
     display: flex;
     width: var(--nav-width);
-    height: calc(100vh - var(--header-height));
+    height: 100%;
     background-color: var(--color-bg-strong);
     box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 }
@@ -469,7 +470,7 @@ export default {
     }
 
     .AppNav_content {
-        height: 100vh;
+        height: 100%;
     }
 
     .AppNav_barLabel {

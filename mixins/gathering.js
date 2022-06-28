@@ -3,7 +3,6 @@ export default {
         isLoading: false
     }),
     computed: {
-        
         constellation () {
             return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
                 slug: this.$route.params.slug
@@ -39,7 +38,7 @@ export default {
                 ...all, [current._id]: current 
             }), {}))
 
-            return users.filter(u => statuses.includes(u.status))
+            return users.filter(u => statuses.includes(u.status)).map(u => this.$getUser(u._id)).filter(u => u)
         },
         async onBookUpdate (status) {
             this.isLoading = true

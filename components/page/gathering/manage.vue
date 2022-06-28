@@ -113,7 +113,7 @@
                     <div class="row-xs">
                         <div class="col-6 pt-10 col-12@xs"
                             v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id">
-                            <user-icon :display-name="true" :modifiers="['m']" v-bind="participant" />
+                                <user-icon :display-name="true" :modifiers="['m']" v-bind="participant" />
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,6 @@ export default {
         selectedUser: null,
     }),
     computed: {
-        
         organizers () {
             return this.$store.getters['user/find']({
                 _id: { $in: this.gathering.organizers }

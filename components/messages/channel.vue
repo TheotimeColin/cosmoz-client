@@ -208,7 +208,8 @@ export default {
 <style lang="scss" scoped>
 .Channel {
     display: flex;
-    height: calc(100vh - var(--app-height) - var(--header-height) - var(--sticky-height));
+    // height: calc(100vh - var(--app-height) - var(--header-height) - var(--sticky-height));
+    height: 100%;
     flex-direction: column;
 }
 
@@ -249,7 +250,7 @@ export default {
 
     .Channel {
         display: flex;
-        height: 100vh;
+        height: 100%;
         flex-direction: column;
     }
 }

@@ -3,7 +3,7 @@
         <form @submit.prevent="onSubmit" class="Page_wrapper Wrapper">
             <div class="d-flex d-block@s">
                 <div class="fx-grow">
-                    <div class="block">
+                    <!-- <div class="block">
                         <p class="ft-title-xs mb-10">Importer l'événement</p>
                         <p class="ft-s color-ft-weak mb-20">Si tu as créé l'événement sur une autre plateforme (Meetup,
                             EventBrite...), tu peux importer les informations grâce au lien.</p>
@@ -21,9 +21,9 @@
                                     ci-dessus pour valider leur participation.</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="block mt-20 mt-40@xs">
+                    <div class="block +mt-20 +mt-40@xs">
                         <p class="ft-title-xs mb-20">De quoi s'agit-il ?</p>
 
                         <input-base class="Form_input" label="Titre de la rencontre *" v-model="formData.title"
@@ -32,14 +32,14 @@
                         <input-date-time class="Form_input" label="Date *" :required="true" v-model="formData.date" />
                     </div>
 
-                    <div class="block mt-20 mt-40@xs">
+                    <div class="block +mt-20 +mt-40@xs">
                         <p class="ft-title-xs mb-20">Où cela va-t-il se passer ?</p>
                         <input-base class="Form_input" label="Nom du lieu *" :required="true"
                             v-model="formData.location" />
                         <input-base class="Form_input" label="Adresse précise" v-model="formData.address" />
                     </div>
 
-                    <div class="block mt-20 mt-40@xs">
+                    <div class="block +mt-20 +mt-40@xs">
                         <block-gathering v-bind="formData" :cover="coverPreview" :no-link="true" :status-only="true"
                             :const-only="true">
                             <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen"
@@ -49,7 +49,7 @@
                         <input-pexels @select="(v) => formData.coverSelect = v" :is-active="options.cover" @close="options.cover = false" />
                     </div>
 
-                    <div class="block mt-20 mt-40@xs">
+                    <div class="block +mt-20 +mt-40@xs">
                         <p class="ft-title-xs mb-20">Quel est le programme ?</p>
                         <input-paper class="Form_input" label="Description générale *" v-model="formData.description"
                             :base="true" />
@@ -57,10 +57,10 @@
                             :base="true" />
                     </div>
 
-                    <div class="block mt-20 mt-40@xs">
+                    <div class="block +mt-20 +mt-40@xs">
                         <p class="ft-title-xs mb-20">Qui organise ?</p>
                         
-                        <input-user :items="members" v-model="formData.organizers" />
+                        <input-user-select placeholder="Chercher un membre..." :items="members" :min="1" v-model="formData.organizers" />
                     </div>
 
                     <div class="block-r mt-20">
@@ -77,7 +77,7 @@
                         </transition>
                     </div>
 
-                    <div class="block-r mt-10">
+                    <!-- <div class="block-r mt-10">
                         <div class="fx-center">
                             <p class="ft-title-2xs">Autoriser les invités</p>
                             <input-toggle v-model="options.plus" />
@@ -91,7 +91,7 @@
                                     :attrs="{ min: 0, max: 5 }" />
                             </div>
                         </transition>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="width-s fx-no-shrink ml-20 ml-0@s mt-15@s width-100@s">
                     <div class="p-sticky" style="--offset: 20px;">
@@ -156,7 +156,6 @@ export default {
         }
     }),
     computed: {
-        
         isNew () { return this.$route.params.id == 'new' },
         defaultFormData () {
             return {
@@ -185,6 +184,12 @@ export default {
         }
     },
     watch: {
+        ['formData.max'] (v) {
+            this.options.max = v
+        },
+        ['options.max'] (v) {
+            if (!v) this.formData.max = 0
+        },
         async ['formData.link'] (v) {
             if (!v || v == this.serverEntity?.link || !v.includes('http')) return
 

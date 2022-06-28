@@ -3,14 +3,15 @@
         <div class="UserSelect_area d-flex">
             <button-base
                 v-for="u in value"
-                :image="$getUser(u).profileSmall"
+                :image="$getUser(u) ? $getUser(u).profileSmall : ''"
                 :modifiers="['s', 'light']"
                 :ellipsis="20"
-                :text="$getUser(u).name"
+                :text="$getUser(u) ? $getUser(u).name : ''"
                 v-bind="$getUser(u)"
-                icon-after="times"
+                :icon-after="!min || value.length > min ? 'times' : ''"
+                type="button"
                 class="m-3"
-                @click="$emit('input', value.filter(v => v != u))"
+                @click="() => { min && value.length <= min ? {} : $emit('input', value.filter(v => v != u)) }"
                 :key="u"
             />
             
@@ -38,6 +39,7 @@ export default {
     props: {
         placeholder: { type: String, default: '' },
         items: { type: [Array, Boolean], default: false },
+        min: { type: [Number, Boolean], default: false },
         exclude: { type: Array, default: () => [] },
         value: { type: Array, default: () => [] }
     },

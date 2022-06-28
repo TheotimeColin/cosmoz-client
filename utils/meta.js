@@ -93,7 +93,6 @@ export function getMeta ($route, $store) {
         'messages': {
             title: 'Mes messages',
             fa: 'paper-plane',
-            isPanel: true,
             children: [
                 {
                     title: 'Conversation avec',

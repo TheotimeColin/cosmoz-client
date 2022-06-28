@@ -197,6 +197,7 @@ export default {
     .Messages {
         display: block;
         height: auto;
+        height: 100%;
     }
     
     .Messages_content {
@@ -214,7 +215,7 @@ export default {
     }
 
     .Messages_list {
-        min-height: calc(100vh - var(--app-height));
+        height: 100%;
         overflow: visible;
         width: auto;
         background-color: var(--color-bg);

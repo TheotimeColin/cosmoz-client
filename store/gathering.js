@@ -142,16 +142,7 @@ export default {
                     isPast: moment(item.date).isBefore(moment()),
                     isExpired: moment(item.date).add(5, 'days').isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
-                    hero,
-                    users: item.users.map(user => {
-                        if (user.picture) {
-                            if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
-                            
-                            if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
-                        }
-
-                        return user
-                    })
+                    hero
                 }
             })
         },
