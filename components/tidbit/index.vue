@@ -30,7 +30,7 @@
                     :options="[
                         { label: 'Tout le monde', value: 'user', disabled: ['socials'].includes(type) },
                         { label: `Mes rencontres`, value: 'encountered' },
-                        { label: 'Ma constellation', value: 'affinity' },
+                        { label: 'Ma constellation', value: 'friends' },
                     ]"
                 />
             </div>
@@ -67,7 +67,7 @@ export default {
         isLoading: false,
         isLocked: false,
         formData: {
-            read: 'affinity',
+            read: 'friends',
             value: {}
         }
     }),
@@ -117,7 +117,7 @@ export default {
 
 <style lang="scss" scoped>
 .Tidbit {
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
     position: relative;
     overflow: hidden;
     border-radius: 10px;

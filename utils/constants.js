@@ -12,6 +12,7 @@ export default {
     ],
     status: [
         { id: 0, label: `Actif`, value: 'active' },
+        { id: 2, label: `Brouillon`, value: 'draft' },
         { id: 1, label: `Désactivé`, value: 'disabled' },
     ],
     bg: { holo, aluminium, bubbleGum, denim, iceCream, plasticBlack, night },

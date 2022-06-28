@@ -1,7 +1,7 @@
 .p-sticky {
     position: sticky;
     z-index: 5;
-    top: calc(var(--header-base) + var(--offset, 0px));
+    top: calc(var(--header-height) + var(--app-height) + var(--offset, 0px));
 }
 
 .br-xs {
@@ -22,7 +22,7 @@
 
 .anchor {
     position: absolute;
-    top: -65px;
+    top: calc(-1 * calc(var(--header-height) + var(--app-height)));
 }
 
 .bg-to-right {
@@ -76,10 +76,6 @@
     }
 }
 
-.page {
-    margin-top: 65px;
-}
-
 .logo-sparkle-a::before {
     top: 10px;
     left: -35px;
@@ -96,11 +92,33 @@
     left: auto;
 }
 
+.ripple {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    position: absolute;
+    margin: -30px 0 0 -30px;
+    opacity: 1;
+    pointer-events: none;
+    transform: scale(0);
+    animation: ripple 300ms linear;
+}
+
+@keyframes ripple {
+    to {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
 .bg-holo { --background: url('./../img/texture/holo.webp'); }
 .bg-plastic-black { --background: url('./../img/texture/plastic-black.webp'); }
 .bg-bubble-gum { --background: url('./../img/texture/bubble-gum.webp'); }
 .bg-ice-cream { --background: url('./../img/texture/ice-cream.webp'); }
 .bg-denim { --background: url('./../img/texture/denim.webp'); }
+.bg-paper { --background: url('./../img/texture/paper.webp'); }
+.bg-paper-s { --background: url('./../img/texture/paper-s.webp'); }
 .bg-denim-s { --background: url('./../img/texture/denim-s.webp'); }
 .bg-aluminium { --background: url('./../img/texture/aluminium.webp'); }
 .bg-aluminium-s { --background: url('./../img/texture/aluminium-s.webp'); }
@@ -114,7 +132,13 @@
 .bgi-aluminium { background-image: url('./../img/texture/aluminium.webp'); }
 .bgi-night { background-image: url('./../img/texture/night.webp'); }
 
+.bgi-cover {
+    background-size: cover;
+    background-position: center;
+}
+
 .bg-cover,
+.bg-cover-10,
 .bg-cover-25,
 .bg-cover-50,
 .bg-cover-75,
@@ -144,12 +168,14 @@
 .bg-cover-75::before { opacity: 0.75; }
 .bg-cover-50::before { opacity: 0.5; }
 .bg-cover-25::before { opacity: 0.25; }
+.bg-cover-10::before { opacity: 0.1; }
 
 .tape {
     display: inline-block;
     text-align: center;
     transform: rotate(-1.5deg);
     color: var(--color-ft);
+    border-radius: 6px;
     padding: 8px 12px;
     background-size: cover;
     background-position: center;
@@ -179,12 +205,12 @@
 
 .tape-strong  {
     color: var(--color-ft-light);
-    background: var(--color-bg-2xstrong);
+    background: var(--color-bg-xstrong);
 }
 
 .tape-1 {
     color: var(--color-ft-light);
-    background: var(--color-bg);
+    background: var(--color-bg-weak);
 }
 
 .tape-2 {
@@ -293,6 +319,19 @@
     }
 }
 
+.transition-list-active {
+    transition: all 250ms;
+}
+
+.transition-list-enter, .transition-list-leave-to {
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.transition-list-leave-active {
+    position: absolute;
+}
+
 // 
 
 .default-enter {
@@ -370,6 +409,32 @@
     line-height: 1;
 }
 
+.shadow {
+    @include shadow;
+}
+
+.shadow-s {
+    @include shadow-s;
+}
+
+.G_cosmoz {
+    position: absolute;
+    top: -5%;
+    right: -5%;
+    width: 110%;
+    height: 110%;
+    opacity: 0.25;
+    transition: all 250ms ease;
+    pointer-events: none;
+
+    background:
+     radial-gradient(farthest-side at bottom right,
+     color-opacity('cosmoz', -20%), transparent 75%),
+
+     radial-gradient(farthest-corner at top right,
+     color-opacity('nebula', -75%), transparent 65%);
+}
+
 @each $color in $main-colors {
 
     .fill-#{$color} {
@@ -410,7 +475,9 @@
 .SeparatorV {
     border: none;
     height: 1px;
-    background-color: var(--color-current-weak, var(--color-border));
+    margin: 0;
+    width: 100%;
+    background-color: var(--color-border);
 }
 
 .SeparatorV {
@@ -471,12 +538,6 @@
 .strike {
     text-decoration: line-through;
 }
-
-@include breakpoint-s {
-    .fx-dir-column-reverse\@s { flex-direction: column-reverse; }
-    .height-auto\@s { height: auto; } 
-}
-
 
 .c-pointer {
     cursor: pointer;
@@ -573,10 +634,53 @@
     }
 }
 
-.block {
+.block,
+.block-r,
+.block-cosmoz {
     padding: 20px;
     border-radius: 10px;
-    background: var(--color-bg);
+    background: var(--color-bg-weak);
+    
+    @include shadow-xs;
+}
+
+.block-cosmoz-p,
+.block-cosmoz {
+    border-radius: 8px;
+    background-color: var(--color-bg-xstrong);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        background-size: cover;
+        background-position: center;
+        background-image: url('./../img/texture/night.webp');
+    }
+
+    &::after {
+        content: "";
+        @extend .G_cosmoz;
+    }
+
+    & > * {
+        position: relative;
+        z-index: 2;
+    }
+}
+
+.Form_input {
+
+    & + & {
+        margin-top: 15px;
+    }
 }
 
 @keyframes vehicle {
@@ -625,7 +729,23 @@
     }
 }
 
+.Page {
+    background-color: var(--color-bg);
+}
+
+.Page_wrapper {
+    padding-top: 40px;
+    padding-bottom: 250px;
+}
+
+
 @include breakpoint-s {
+    .fx-dir-column-reverse\@s { flex-direction: column-reverse; }
+    .height-auto\@s { height: auto; } 
+
+    .Page_wrapper {
+        padding-top: 20px;
+    }
 
     .p-relative\@s {
         top: auto;
@@ -635,9 +755,20 @@
         display: flex;
         flex-direction: column-reverse;
     }
+
+    .is-open-nav {
+    
+        .page {
+            margin-left: 0px;
+        }
+    }
 }
 
 @include breakpoint-xs {
+
+    .Page_wrapper--feed {
+        padding-top: 0px;
+    }
 
     .d-none\@xs {
         display: none !important;
@@ -657,10 +788,11 @@
         margin-left: -20px;
         margin-right: -20px;
         background-color: transparent;
+        box-shadow: none;
 
         .InputBase_label,
         .SelectBase_label {
-            background-color: var(--color-bg-strong) !important;
+            background-color: var(--color-bg) !important;
         }
 
         .strong {

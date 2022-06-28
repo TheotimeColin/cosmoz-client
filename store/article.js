@@ -22,7 +22,7 @@ export default {
     actions: { 
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'article',
                 }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
@@ -36,7 +36,7 @@ export default {
         },
         async get ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'article'
                 }))
    

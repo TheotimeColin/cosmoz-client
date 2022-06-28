@@ -21,7 +21,7 @@ export default {
     actions: { 
         async fetch ({ commit }, params) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query,
                     type: 'mediaCollection'
                 }))
@@ -36,7 +36,7 @@ export default {
         },
         async get ({ commit }, _id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     _id, type: 'mediaCollection'
                 }))
                 
@@ -64,6 +64,22 @@ export default {
                     const response = await this.$axios.$post('/entities', formData, { headers: {
                         'Content-Type': 'application/json'
                     } })
+                    if (response.status == 0) throw Error(response.errors[0])
+                    
+                    resolve(response.data)
+                } catch (e) {
+                    console.warn(e)
+                    resolve(null)
+                }
+            })
+        },
+        async createDirect ({ commit }, params) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await this.$axios.$post('/entities', {
+                        ...params, type: 'mediaCollection'
+                    })
+
                     if (response.status == 0) throw Error(response.errors[0])
                     
                     resolve(response.data)

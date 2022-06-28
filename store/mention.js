@@ -27,7 +27,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.mention)
+                if (response.data.mention) commit('updateOne', response.data.mention)
+                
                 this.$auth.fetchUser()
 
                 return response
@@ -37,7 +38,7 @@ export default {
         },
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'mention',
                 }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 

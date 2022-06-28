@@ -4,9 +4,8 @@ import { parseUser } from '@/utils/parsers'
 export default {
     namespaced: true,
     state: () => ({
+        type: 'user',
         guestId: null,
-        hasSubscription: false,
-        subscription: null,
         items: {}
     }),
     mutations: {
@@ -19,18 +18,18 @@ export default {
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
         },
-        update (state, user) {
-            if (user && user.role == 'guest') state.guestId = user._id
-        },
-        setSubscription (state, data) {
-            state.subscription = data
-            state.hasSubscription = state.subscription ? true : false
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
         }
     },
     actions: {
         async logOut ({ state }) {
             try {
                 await this.$auth.logout()
+                
+                // this.$auth.strategies.local.reset()
+                // this.$cookies.remove('auth._token.local')
+                
                 return null
             } catch (e) {
                 console.error(e)
@@ -39,15 +38,15 @@ export default {
         },
         async fetchOne ({ commit }, id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     id, type: 'user'
                 }))
 
                 let user = null
 
-                if (response.data) {
-                    commit('updateOne', response.data)
-                    user =  parseUser(response.data)
+                if (response.data && response.data[0]) {
+                    commit('updateOne', response.data[0])
+                    user =  parseUser(response.data[0])
                 }
                 
                 return user
@@ -56,15 +55,34 @@ export default {
                 return null
             }
         },
-        async fetch ({ state, commit }, params = {}) {
+        async fetch ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
-                    ...params.query, type: 'user',
-                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                const response = await this.$axios.$post('/entities/get', {
+                    ...params.query, type: 'user'
+                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
 
                 return response.data
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
+        async create ({ commit, rootState }, params) {
+            try {
+                const response = await this.$axios.$post('/entities', {
+                    _id: rootState.auth.user._id,
+                    ...params,
+                    type: 'user'
+                })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                commit('updateOne', response.data)
+                await this.$auth.fetchUser()
+    
+                return response
             } catch (e) {
                 console.error(e)
                 return null
@@ -197,32 +215,8 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
         },
-        async softFetch ({ state, dispatch }, params) {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    let result = []
-                    let users = state.items
-
-                    for (let item of params.items) {
-                        if (!users[item]) {
-                            console.log('====== FETCH USERS =======')
-
-                            let newUsers = await dispatch('fetch', {
-                                query: { _id: '$in' + params.items.join(',') }
-                            })
-
-                            if (newUsers) users = storeUtils.refresh(newUsers)
-                        }
-
-                        if (users[item]) result = [ ...result, parseUser(users[item]) ]
-                    }
-
-                    resolve(result)
-                } catch (e) {
-                    console.error(e)
-                    reject([])
-                }
-            })
+        async softFetch ({ state, dispatch, commit }, items) {
+            return parseUser(await storeUtils.softFetch(items, { state, dispatch, commit }))
         },
         async mapUsers ({ state, dispatch }, params) {
             return new Promise(async (resolve, reject) => {
@@ -255,11 +249,42 @@ export default {
         },
         async unmatch ({ dispatch }, target) {
             try {
-                const response = await this.$axios.$post('/affinities/remove-match', { target: target._id })
+                const response = await this.$axios.$post('/affinities/remove-match', { _id: target._id })
                 
                 if (response.errors.length > 0) throw Error(response.errors[0])
 
                 await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
+                
+                return true
+            } catch (e) {
+                console.error(e)
+                return false
+            }
+        },
+        async createRequest ({ dispatch }, target) {
+            try {
+                const response = await this.$axios.$post('/affinities/create-request', { _id: target._id })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
+                
+                return response.data
+            } catch (e) {
+                console.error(e)
+                return false
+            }
+        },
+        async cancelRequest ({ dispatch }, target) {
+            try {
+                const response = await this.$axios.$post('/affinities/cancel-request', { _id: target._id })
+                
+                if (response.errors.length > 0) throw Error(response.errors[0])
+
+                await dispatch('fetchOne', target.id)
+                await this.$auth.fetchUser()
                 
                 return true
             } catch (e) {

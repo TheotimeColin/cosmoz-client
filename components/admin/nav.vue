@@ -1,7 +1,7 @@
 <template>
     <nav class="NavAdmin" :class="[]">
-        <a :href="$config.baseUrl" class="NavAdmin_logo bg-cover bg-night">
-            <span class="ft-title-m logo-sparkle-p">cosmoz</span>
+        <a :href="$config.baseUrl + '/feed'" class="NavAdmin_logo bg-cover bg-night">
+            <img :src="assets.logo" height="25" class="n-mt-5">
         </a>
 
         <div class="NavAdmin_items">
@@ -22,18 +22,20 @@
 </template>
 
 <script>
+import logo from '@/assets/img/logo/logo_white_sparkles.webp'
 
 export default {
     name: 'NavAdmin',
     data: () => ({
+        assets: { logo },
         items: [
             { label: 'Tableau de bord', icon: 'mug-tea', exact: true, link: '' },
-            { label: 'Gatherings', icon: 'calendar-alt', link: 'gatherings' },
-            { label: 'Utilisateurs', icon: 'users', link: 'users' },
-            { label: 'Groupes', icon: 'sparkles', link: 'organizations' },
-            { label: 'Blog', icon: 'pen-alt', link: 'articles' },
-            { label: 'Bibliothèque de médias', icon: 'image', link: 'other-medias' },
-            { label: 'Emails', icon: 'envelope', link: 'other-mails' },
+            { label: 'Gatherings', icon: 'calendar-alt', link: 'admin-gatherings' },
+            { label: 'Utilisateurs', icon: 'users', link: 'admin-users' },
+            { label: 'Groupes', icon: 'sparkles', link: 'admin-constellations' },
+            { label: 'Blog', icon: 'pen-alt', link: 'admin-articles' },
+            { label: 'Bibliothèque de médias', icon: 'image', link: 'admin-other-medias' },
+            { label: 'Emails', icon: 'envelope', link: 'admin-other-mails' },
         ]
     })
 }

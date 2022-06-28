@@ -12,6 +12,9 @@ export default {
             article: `Article`
         }
     },
+    utils: {
+        users: `{users} | {users} | {users} et {others} autre(s)`
+    },
     mentions: {
         welcome: `Merci pour l'accueil`,
         nice: `Super sympa !`,
@@ -25,6 +28,32 @@ export default {
         socials: {
             title: `Mes réseaux sociaux`
         },
+    },
+    notifications: {
+        'post-reply': {
+            content: '<b>{users}</b> a répondu à ton statut : <i>{status}</i> | <b>{users}</b> a répondu à ton statut : <i>{status}</i> | <b>{users}</b> ont répondu à ton statut : <i>{status}</i>'
+        },
+        'post-react': {
+            content: '<b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> a réagi à ton statut : <i>{status}</i> | <b>{users}</b> ont réagi à ton statut : <i>{status}</i>'
+        },
+        'post-gathering': {
+            content: '<b>{users}</b> a publié dans <b>{gathering}</b> | <b>{users}</b> a publié dans <b>{gathering}</b> | <b>{users}</b> ont publié dans <b>{gathering}</b>'
+        },
+        'gathering-new': {
+            content: `<b>{gathering}</b> a été annoncé dans {constellation} | <b>{gathering}</b> a été annoncé dans <b>{constellation}</b> | {n} nouveaux événements ont été annoncés dans <b>{constellation}</b>`
+        },
+        'gathering-cancelled': {
+            content: `L'événement <b>{content}</b> a dû être annulé.`
+        },
+        'conste-application': {
+            content: `<b>{users}</b> a demandé à rejoindre {constellation} | <b>{users}</b> a demandé à rejoindre <b>{constellation}</b> | {users} ont demandé à rejoindre <b>{constellation}</b>`
+        },
+        'conste-enter': {
+            content: `Ta demande a été approuvée : bienvenue chez <b>{constellation}</b> !`
+        },
+        'friends-new': {
+            content: `<b>{user}</b> a accepté ta demande et a rejoint ta constellation !`
+        }
     },
     permissions: {
         public: {
@@ -45,11 +74,17 @@ export default {
             subtitle: `Visible par les personnes que j'ai rencontrées`,
             error: `Uniquement visible après une rencontre.`
         },
-        affinity: {
+        friends: {
+            icon: 'far fa-sparkles',
+            title: 'Amis uniquement',
+            subtitle: `Visible par mes amis uniquement`,
+            error: `Uniquement visible par ses amis.`
+        },
+        ['g-member']: {
             icon: 'far fa-sparkles',
             title: 'Constellation uniquement',
-            subtitle: `Visible par ma constellation uniquement`,
-            error: `Uniquement visible par sa constellation.`
+            subtitle: `Visible uniquement par les autres membres`,
+            error: `Uniquement visible par les membres.`
         },
         extended: {
             icon: 'far fa-solar-system',
@@ -90,7 +125,9 @@ export default {
             'already-subscribed': `Superbe, tu es déjà abonné à notre newsletter !`,
             'user-not-found': `Ton adresse e-mail n'est pas reconnue.`,
             'token-expired': `Cette demande a expiré, merci de refaire une demande de réinitialisation.`,
-            'slug-taken': `Désolé, ce nom de boutique est déjà pris par un autre utilisateur.`
+            'slug-taken': `Désolé, ce nom de boutique est déjà pris par un autre utilisateur.`,
+            'unauthorized': `Tu n'es pas autorisé à modifier cet élément. Contacte notre support si tu penses que c'est une erreur.`,
+            'no-content': `Cette publication doit avoir du contenu.`
         }
     }
 }

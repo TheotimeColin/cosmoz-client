@@ -5,7 +5,9 @@ moment.tz.setDefault('Europe/Paris')
 export default {
     namespaced: true,
     state: () => ({
-        items: {}
+        type: 'gathering',
+        items: {},
+        queries: []
     }),
     mutations: {
         updateOne (state, value) {
@@ -14,18 +16,40 @@ export default {
         deleteOne (state, id) {
             state.items = storeUtils.deleteOne(state, id)
         },
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
+        },
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
+        },
+        addQuery (state, query) {
+            state.queries = [
+                ...state.queries,
+                { query, fetchedAt: new Date() }
+            ]
+        },
+        removeQuery (state, query) {
+            state.queries = state.queries.filter(q => JSON.stringify(q.query) != JSON.stringify(query))
         }
     },
     actions: { 
-        async fetch ({ state, commit }, params = {}) {
+        async fetch ({ state, commit, getters }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                let prevQuery = state.queries.find(q => JSON.stringify(q.query) == JSON.stringify(params.query))
+
+                if (prevQuery && moment(prevQuery.fetchedAt).add(40, 'seconds') > moment()) {
+                    return getters.items
+                } else {
+                    commit('removeQuery', params.query)
+                }
+                
+                const response = await this.$axios.$post('/entities/get', {
                     ...params.query, type: 'gathering',
-                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
+                
+                commit('addQuery', params.query)
 
                 return response.data
             } catch (e) {
@@ -33,12 +57,15 @@ export default {
                 return null
             }
         },
+        async softFetch({ state, dispatch, commit }, items) {
+            return await storeUtils.softFetch(items, { state, dispatch, commit })
+        },
         async get ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
                     ...params.query, type: 'gathering'
                 }))
-   
+
                 commit('updateOne', Array.isArray(response.data) ? response.data[0] : response.data)
 
                 return response.data
@@ -96,7 +123,7 @@ export default {
         }
     },
     getters: {
-        items: (state) => {
+        items: (state, getters, root) => {
             return Object.values(state.items).map(item => {
                 let thumbnail = ''
                 let hero = ''
@@ -106,23 +133,16 @@ export default {
                     
                     if (item.cover.medias.find(m => m.size == 'm')) hero = item.cover.medias.find(m => m.size == 'm').src
                 }
-
+                
                 return {
                     ...item,
                     thumbnail,
-                    isFull: !item.max || item.users.filter(u => u.status == 'attending' || u.status.status == 'confirmed').length >= item.max,
+                    isAttending: root.auth.user && item.users.find(u => u._id == root.auth.user._id && (u.status == 'attending' || u.status == 'confirmed')) ? true : false,
+                    isFull: item.max != 0 && item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
                     isPast: moment(item.date).isBefore(moment()),
+                    isExpired: moment(item.date).add(5, 'days').isBefore(moment()),
                     display: moment(item.date).isBefore(moment()),
-                    hero,
-                    users: item.users.map(user => {
-                        if (user.picture) {
-                            if (user.picture.medias.find(m => m.size == 's')) user.profileSmall = user.picture.medias.find(m => m.size == 's').src
-                            
-                            if (user.picture.medias.find(m => m.size == 'm')) user.profileLarge = user.picture.medias.find(m => m.size == 'm').src
-                        }
-
-                        return user
-                    })
+                    hero
                 }
             })
         },
@@ -130,26 +150,33 @@ export default {
             let items = raw ? Object.values(state.items) : getters.items
             return search ? storeUtils.searchItems(items, search, root.auth.user) : items
         },
-        groupBy: (state, getters) => (property) => {
-            let items = getters.items
+        groupBy: (state, getters) => (property, search, params) => {
+            let items = search ? getters.find(search) : getters.items
 
-            items = items.reduce((obj, item) => {
-                let newObj = { ...obj }
+            let result = []
+            items = items.forEach(item => {
+                let value = params.asDays ? moment(item[property]).format('YYYYMMDD') : item[property]
 
-                if (!newObj[item[property]]) {
-                    newObj[item[property]] = [ item ]
+                if (result.find(i => i.value == value)) {
+                    result = result.map(v => ({
+                        ...v,
+                        items: v.value == value ? [ ...v.items, item ] : v.items
+                    }))
                 } else {
-                    newObj[item[property]].push(item)
+                    result = [ ...result, { value, items: [ item ]} ]
                 }
 
-                return newObj
-            }, {})
+                // newObj[value] = { value: item[property], items: [ ...(newObj[value] ? newObj[value].items : []), item ] }
 
-            return items
+            })
+
+            return result
         },
-        findOne: (state, getters) => (search, raw = false) => {
-            let items = raw ? Object.values(state.items) : getters.items
-            return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
+        findOne: (state, getters, root) => (search, raw = false) => {
+            let items = raw ? Object.values({ ...state.items }) : getters.items
+
+            let result = storeUtils.searchItems(items, search, root.auth.user)
+            return result[0] ? result[0] : null
         }
     }
 }

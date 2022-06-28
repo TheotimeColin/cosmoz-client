@@ -6,7 +6,7 @@
                     Total : {{ users.length }} inscrits
                 </div>
                 
-                <div class="ft-m p-15 mv-10 bg-bg br-s" v-for="user in users" :key="user._id">
+                <div class="ft-m p-15 mv-10 bg-bg-weak br-s" v-for="user in users" :key="user._id">
                     <div class="d-flex fxa-center">
                         <user-icon class="fx-no-shrink mr-10" v-bind="user" />
 

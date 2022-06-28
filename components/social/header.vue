@@ -72,7 +72,7 @@ export default {
             
             .Header_button.QuickMenu ::v-deep .QuickMenu_button,
             .Header_button:not(.ButtonBase--xweak):not(.QuickMenu) {
-                background-color: var(--color-bg-strong);
+                background-color: var(--color-bg-weak);
             }
         }
 
@@ -187,7 +187,7 @@ export default {
             margin: 0;
             text-align: center;
             padding: 15px;
-            background-color: var(--color-bg-2xstrong);
+            background-color: var(--color-bg-xstrong);
         }
 
         .Header.is-open {

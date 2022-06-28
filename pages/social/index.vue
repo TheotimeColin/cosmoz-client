@@ -203,7 +203,7 @@ export default {
 }
 
 .Homepage_heading {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-weak);
     position: relative;
 
     .Wrapper {

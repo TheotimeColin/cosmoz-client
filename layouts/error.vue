@@ -16,12 +16,12 @@
 <script>
 export default {
     name: 'nuxtError',
-    layout: 'default',
+    layout: 'full',
     props: {
         error: { type: Object, default: () => {} }
     },
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
     }
 }
 </script>

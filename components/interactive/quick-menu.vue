@@ -1,9 +1,9 @@
 <template>
     <div class="QuickMenu" :class="[ { 'is-active': isActive, 'is-large': large }, ...$modifiers ]" v-if="items.filter(i => !i.disabled).length > 0" ref="body">
-        <button-base class="QuickMenu_button" :class="{ 'is-active': isActive }" :icon-before="icon" :modifiers="buttonModifiers" @click="isActive = !isActive" />
+        <button-base class="QuickMenu_button" type="button" :class="{ 'is-active': isActive }" :icon-before="icon" v-bind="button" :modifiers="['round', ...(button && button.modifiers ? button.modifiers : [])]" @click.stop="isActive = !isActive" />
         
-        <div class="QuickMenu_actions">
-            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click="onClick(item)">
+        <div class="QuickMenu_actions shadow">
+            <component :is="item.to ? 'nuxt-link' : 'div'" :to="localePath(item.to)" class="QuickMenu_action" v-for="(item, i) in items.filter(i => !i.disabled)" :key="i" @click.native.stop="onClick(item)" @click.stop="onClick(item)">
                 <fa class="QuickMenu_icon" :icon="`far fa-${item.fa}`" v-if="item.fa" /> {{ item.label }}
             </component>
         </div>
@@ -18,6 +18,7 @@ export default {
     mixins: [ ModifiersMixin ],
     props: {
         items: { type: Array, default: () => [] },
+        button: { type: Object, default: () => {} },
         large: { type: Boolean, default: false },
         icon: { type: String, default: 'ellipsis'}
     },
@@ -27,41 +28,31 @@ export default {
             close: null
         }
     }),
-    computed: {
-        buttonModifiers () {
-            let modifiers = []
-
-            if (this.large) modifiers = ['weak']
-            else if (this.modifiers.includes('strong')) modifiers = [...modifiers, 'xs', 'weak']
-            else modifiers = [...modifiers, 'xs', 'xweak']
-
-            return [...modifiers, 'round']
-        }
-    },
     watch: {
         isActive: {
             handler (v) {
-                if (v && this.$data.listeners.close) {
+                if (v && this.listeners.close) {
                     setTimeout(() => {
-                        document.addEventListener('click', this.$data.listeners.close)
+                        document.addEventListener('click', this.listeners.close)
                     }, 100)
-                } else if (this.$data.listeners.close) {
-                    document.removeEventListener('click', this.$data.listeners.close)
+                } else if (this.listeners.close) {
+                    document.removeEventListener('click', this.listeners.close)
                 }
             }
         }
     },
     beforeDestroy () {
-        document.removeEventListener('click', this.$data.listeners.close)
+        document.removeEventListener('click', this.listeners.close)
     },
     mounted () {
-        this.$data.listeners.close = (e) => {
+        this.listeners.close = (e) => {
             if (!this.$refs.body.contains(e.target)) this.isActive = false
         }
     },
     methods: {
         onClick (item) {
             this.isActive = false
+
             if (item.action) item.action() 
         }
     }
@@ -70,6 +61,7 @@ export default {
 
 <style lang="scss" scoped>
     .QuickMenu {
+        display: inline-block;
         position: relative;
         
         &.is-large {
@@ -84,7 +76,7 @@ export default {
     .QuickMenu_actions {
         width: 250px;
         position: absolute;
-        z-index: 10;
+        z-index: 30;
         bottom: -5px;
         right: 0;
         opacity: 0;
@@ -92,7 +84,7 @@ export default {
         pointer-events: none;
         transform: translateY(calc(100% - 5px));
         background-color: var(--color-bg-2xstrong);
-        border-radius: 5px;
+        border-radius: 8px;
         transition: all 100ms ease;
     }
 
@@ -106,7 +98,7 @@ export default {
         cursor: pointer;
 
         &:hover {
-            background-color: var(--color-bg-xstrong);
+            background-color: var(--color-bg-strong);
 
             .QuickMenu_icon {
                 color: var(--color-ft-light);
@@ -126,6 +118,10 @@ export default {
             opacity: 1;
             transform: translateY(100%);
             pointer-events: all;
+        }
+
+        .QuickMenu_button {
+            background-color: var(--color-bg-2xstrong);
         }
     }
 

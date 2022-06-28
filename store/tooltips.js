@@ -6,7 +6,9 @@ export default {
     mutations: {
         open (state, params) {
             let exists = state.items.find(t => t.id === params.id || t.content === params.content)
+
             let position = params.element.getBoundingClientRect()
+            
             delete params.element
 
             let tooltip = exists ? {

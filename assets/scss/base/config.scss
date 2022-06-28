@@ -1,7 +1,7 @@
 $breakpoints: (
     "": 99999px,
-    "m": 1200px,
-    "s": 900px,
+    "m": 1400px,
+    "s": 1000px,
     "xs": 600px
 );
 
@@ -45,49 +45,21 @@ $gutters: (
 $colors: (
     "ft-strong": #000000,
     "ft": #000000,
-    "ft-weak": #8184a4,
-    "ft-xweak": #51516b,
+    "ft-weak": #adb1dc,
+    "ft-xweak": #77779f,
     "ft-light": #f3f3f3,
 
-    "cosmoz": #2c0cac,
-    "cosmoz-weak": #6c6bcf,
-
-    // "cream-xweak": #F6F4F1,
-    // "cream-weak": #EBEAE8,
-    // "cream": #CAC6BE,
-    // "cream-strong": #aca69a,
-    // "cream-xstrong": #565049,
-
-    // "alpine-xweak": #E4EEE9,
-    // "alpine-weak": #cfded5,
-    // "alpine": #a5c3ae,
-    // "alpine-strong": #649a7a,
-    // "alpine-xstrong": #34684e,
-
-    // "rose-2xstrong": #2a2022,
-    // "rose-xstrong": #44282e,
-
-    // "memo-xweak": #eeece4,
-    // "memo-weak": #ede7d1,
-    // "memo": #d8ccaa,
-    // "memo-strong": #c8bb9b,
-    // "memo-xstrong": #72653b,
+    "cosmoz-strong": #2623ca,
+    "cosmoz": #471ffe,
+    "cosmoz-weak": #6336ff,
+    "cosmoz-xweak": #6c6bcf,
     
-    // "ocean-xweak": #e1e5f3,
-    // "ocean-weak": #e5e6ed,
-    // "ocean": #a9acce,
-    // "ocean-strong": #7a7a92,
-    // "ocean-xstrong": #4f4d6e,
+    "emerald": #38ca8a,
 
-    // "tulip-xweak": #f3e2ee,
-    // "tulip-weak": #eadde6,
-    // "tulip": #c6b5c2,
-    // "tulip-strong": #aa8da6,
-    // "tulip-xstrong": #664b64,
+    "nebula": #ff24e9,
 
-    // "merlot": #a16363,
-    // "merlot-strong": #693737,
-    // "merlot-xstrong": #361313,
+
+    "nitro": #20ffff,
 
     "sticky": #FFEE80,
     "sticky-weak": #FFEE80,
@@ -95,22 +67,26 @@ $colors: (
 
     "black": #000000,
     
-    "bg-2xstrong": #111015,
-    "bg-xstrong": #16151e,
-    "bg-strong": #1d1b27,
-    "bg": #232332,
-    "bg-weak": #2a2a3d,
-    "bg-xweak": #3c3d45,
+    "bg-2xstrong": #16162d,
+    "bg-xstrong": #1b1b2e,
+    "bg-strong": #222238,
+    "bg": #2a2a42,
+    "bg-weak": #333353,
+    "bg-xweak": #404068,
     "bg-2xweak": #e7e6eb,
+    
     "bg-light": #f3f3f3,
 
-    "border": #3d4057,
-    "border-weak": #292738,
+    "border": #4b4b6b,
+    "border-weak": #303046,
+    "border-xweak": #292738,
     "border-strong": #B3B3B3,
 
     "disabled": #d3d4dc,
     "love": #ec2c5d,
-    "error": #FF2D42,
+    
+    "error-strong": #681e26,
+    "error": #c82133,
     "success": #10c773,
 
     "shadow": rgba(207, 215, 231, 0.3)
@@ -120,28 +96,30 @@ $main-colors: ();
 
 $fonts: (
     "ft": (
-        "name": "Roboto Condensed, sans-serif",
+        "name": "'Rubik', sans-serif",
         "sizes": (
-            "2xs": "11px/1.5",
-            "xs": "14px/1.5",
-            "s": "15px/1.5",
-            "m": "17px/1.5",
-            "l": "18px/1.5",
-            "xl": "20px/1.4",
-            "2xl": "24px/1.4",
+            "3xs": "9px/1.45",
+            "2xs": "11px/1.45",
+            "xs": "13px/1.45",
+            "s": "15px/1.45",
+            "m": "16px/1.45",
+            "l": "17px/1.45",
+            "xl": "20px/1.45",
+            "2xl": "24px/1.45",
             "3xl": "34px/1.25",
             "4xl": "40px/0.75",
             "5xl": "70px/0.75",
         ),
         "weights": (
             "regular": 400,
-            "medium": 600,
-            "bold": 700
+            "medium": 440,
+            "bold": 550
         )
     ),
     "ft-title": (
         "name": "'PP Right Grotesk', sans-serif",
         "sizes": (
+            "4xs": "11px/1.2",
             "3xs": "14px/1.2",
             "2xs": "16px/1.2",
             "xs": "18px/1.2",

@@ -1,18 +1,25 @@
 const BREAKPOINTS = [
     { id: 'xs', size: 0 },
     { id: 's', size: 600 },
-    { id: 'm', size: 900 },
-    { id: 'l', size: 1200 },
+    { id: 'm', size: 1000 },
+    { id: 'l', size: 1400 },
 ]
 
 export default {
     namespaced: true,
     state: () => ({
+        subtitle: '',
+        current: '',
+        fa: '',
+        currentConst: '',
+        isOpenNav: false,
         isCartActive: false,
         isNavCompact: false,
         isBodyOverflow: true,
+        isNotifications: false,
         isPWA: false,
         isScrolled: false,
+        isDisableFooter: false,
         breakpoint: 'l',
         body: {
             classes: [ 'is-fill' ],
@@ -26,17 +33,36 @@ export default {
             title: ''
         },
         popins: {
-            register: null
+            register: null,
+            constellationCreate: null,
+            confirm: null,
+            emojis: null
         },
         meta: {
             title: ''
         }
     }),
     mutations: {
+        set (state, v) {
+            let data = Object.entries(v)
+            
+            data.forEach(key => {
+                state[key[0]] = key[1]
+            })
+        },
+        setCurrent (state, v) {
+            state.current = v
+        },
         register (state, v) {
             state.popins = {
                 ...state.popins,
                 register: v
+            }
+        },
+        popin (state, v) {
+            state.popins = {
+                ...state.popins,
+                ...v
             }
         },
         setMode (state, v) {
@@ -60,8 +86,8 @@ export default {
             state.isNavCompact = params.force !== undefined ? params.force : !state.isNavCompact
             if (params.save) this.$cookies.set('nav-compact', JSON.stringify(state.isNavCompact))
         },
-        toggleCart (state) {
-            state.isCartActive = !state.isCartActive
+        toggleNotifs (state, v) {
+            state.isNotifications = v
         },
         setBanner (state, banner ) {
             state.banner = { ...state.banner, ...banner  }

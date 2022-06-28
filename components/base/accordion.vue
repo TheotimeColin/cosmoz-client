@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .Accordion {
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
     overflow: hidden;
     border-radius: 3px;
     position: relative;

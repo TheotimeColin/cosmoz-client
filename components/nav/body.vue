@@ -1,6 +1,6 @@
 <template>
     <div class="NavBody">
-        <div class="mb-30">
+        <div class="mb-20">
             <div>
                 <slot></slot>
             </div>
@@ -12,8 +12,6 @@
             class="NavContent"
             :class="{ 'is-reset': panReset }"
             :style="pan != 0 ? { transform: `translateX(${pan}px` } : {}"
-            v-hammer:pan.horizontal="onPan"
-            v-hammer:panend="onPanEnd"
             ref="container"
         >
             <transition :name="`fade-${panAnimation}`" mode="out-in">
@@ -83,16 +81,10 @@ export default {
         }, 100)
     },
     methods: {
-        isFixedPosition(node) {
-            while (node && node.nodeName.toLowerCase() !== 'body') {
-                if (window.getComputedStyle(node).getPropertyValue('position').toLowerCase() === 'fixed')
-                    { return true; }
-                node = node.parentNode;
-            }
-            return false
-        },
         onPan (v) {
-            if (this.isFixedPosition(v.target)) return
+            return 
+            
+            if (this.$isFixedPosition(v.target)) return
 
             let max = this.$refs.container.offsetWidth
             let force = Math.max(1 - (Math.abs(v.deltaX * 0.1) / max), 0)
@@ -100,7 +92,7 @@ export default {
             this.pan += v.velocityX * force
         },
         onPanEnd (v) {
-            if (this.isFixedPosition(v.target)) return
+            return 
             
             this.pan = 0
 

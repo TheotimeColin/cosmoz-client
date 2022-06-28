@@ -1,10 +1,6 @@
 :root {
     @each $colorName, $color in $colors {
       --color-#{$colorName}: #{$color};
-      --color-#{$colorName}-75: #{scale-color($color, $alpha: -25%)};
-      --color-#{$colorName}-50: #{scale-color($color, $alpha: -50%)};
-      --color-#{$colorName}-25: #{scale-color($color, $alpha: -75%)};
-      --color-#{$colorName}-0: #{scale-color($color, $alpha: -100%)};
     }
   
     @each $fontName, $font in $fonts {

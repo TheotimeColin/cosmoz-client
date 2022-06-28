@@ -7,7 +7,7 @@
                         <block-article
                             v-bind="article"
                             class="bg-bg-light"
-                            :link="localePath({ name: 'articles-id', params: { id: article._id } })"
+                            :link="localePath({ name: 'admin-articles-id', params: { id: article._id } })"
                         />
                     </div>
                 </div>
@@ -17,7 +17,7 @@
                 <button-base
                     :modifiers="['light']"
                     icon-before="plus"
-                    :to="{ name: 'articles-id', params: { id: 'new' } }"
+                    :to="{ name: 'admin-articles-id', params: { id: 'new' } }"
                 >
                     Créer un nouvel article
                 </button-base>

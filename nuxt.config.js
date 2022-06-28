@@ -11,13 +11,15 @@ export default {
             { hid: 'description', name: 'description', content: 'Fais des rencontres amicales ou amoureuses sur Paris en participant à nos expériences insolites dans nos lieux partenaires. Groupes mixtes, seulement entre filles ou entre LGBTQ : découvre la rencontre sans applis.' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+            { rel: 'icon', type: 'image/x-icon', href: process.env.NODE_ENV == 'PRODUCTION' ? '/favicon.png?02' : '/favicon_local.png?test' }
         ],
         script: [
             { src: 'sib.js', type: 'text/javascript', async: true },
             { src: 'https://accounts.google.com/gsi/client', async: true, defer: true }
         ]
     },
+
+    ssr: false,
     
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
@@ -49,11 +51,7 @@ export default {
     buildModules: [
         '@nuxtjs/moment',
         '@nuxtjs/pwa',
-        [ '@nuxtjs/router', {
-            path: 'router',
-            fileName: 'index.js',
-            keepDefaultRouter: true,
-        } ]
+        '@nuxtjs/router'
     ],
 
     modules: [
@@ -61,7 +59,7 @@ export default {
         '@nuxtjs/gtm',
         'cookie-universal-nuxt',
         'nuxt-i18n',
-        '@nuxtjs/auth',
+        '@nuxtjs/auth-next',
         '@nuxtjs/moment',
         '@nuxtjs/style-resources',
         '@nuxtjs/sitemap',
@@ -76,6 +74,16 @@ export default {
     ],
 
     sitemap: sitemap,
+
+    loading: {
+        color: '#471ffe'
+    },
+
+    loadingIndicator: {
+        name: 'chasing-dots',
+        color: '#471ffe',
+        background: '#1d1b27'
+    },
     
     pwa: {
         meta: {
@@ -85,8 +93,8 @@ export default {
         manifest: {
             name: 'Cosmoz',
             short_name: 'Cosmoz',
-            background_color: '#1d1b27',
-            theme_color: '#1d1b27',
+            background_color: '#2a2a42',
+            theme_color: '#2a2a42',
             lang: 'fr',
             display: 'standalone',
             start_url: '/feed'
@@ -118,6 +126,7 @@ export default {
         adminUrl: process.env.ADMIN_URL,
         blogUrl: process.env.BLOG_URL,
         dashboardUrl: process.env.DASHBOARD_URL,
+        isDev: process.env.NODE_ENV != 'PRODUCTION',
 
         PEXELS: process.env.PEXELS,
         gtm: {
@@ -131,7 +140,7 @@ export default {
     gtm: {
         id: process.env.GTM_ID,
         enabled: process.env.NODE_ENV == 'PRODUCTION',
-        debug: process.env.NODE_ENV != 'PRODUCTION',
+        // debug: process.env.NODE_ENV != 'PRODUCTION',
         pageTracking: true,
         respectDoNotTrack: false
     },
@@ -146,11 +155,9 @@ export default {
     },
 
     serverMiddleware: [
-        { path: '/api', handler: '~/api' },
+        // { path: '/api', handler: '~/api' },
         redirectSSL.create({ enabled: process.env.NODE_ENV == 'PRODUCTION' })
     ],
-
-    server: {},
 
     auth: {
         cookie: {
@@ -176,6 +183,7 @@ export default {
     },
 
     build: {
+        publicPath: '/nuxt/',
         extend (config) {
             config.module.rules.push({
                 test: /\.svg.html$/,

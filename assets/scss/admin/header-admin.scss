@@ -33,7 +33,7 @@
 }
 
 .HeaderAdmin_profile {
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-weak);
     position: fixed;
     z-index: 200;
     top: 0;
@@ -91,7 +91,7 @@
 .is-scroll-layout {
     
     .HeaderAdmin {
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-weak);
         border-color: var(--color-border);
     }
 

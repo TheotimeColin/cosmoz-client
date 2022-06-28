@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import moment from 'moment-timezone'
 moment.tz.setDefault('Europe/Paris')
-import Validators from '@/utils/validators'
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
+import striptags from 'striptags'
 
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { far } from '@fortawesome/pro-regular-svg-icons'
-import { faHeart, faLock } from '@fortawesome/pro-solid-svg-icons'
+
+import { faHeart, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faFaceGrinSquintTears, faUserHelmetSafety, faBurgerCheese, faCat, faTree, faBasketball, faUsers } from '@fortawesome/pro-solid-svg-icons'
+
+import { faMapMarkerAlt, faCalendarLines, faHeart as falHeart, faComments as falComments } from '@fortawesome/pro-light-svg-icons'
+
 import { faDiscord, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 config.autoAddCss = false
-library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock)
+library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock, faBell, faPaperPlane, faCompass, faStar, faCalendar, faHandWave, faHome, faCalendarStar, faComments, faMessageLines, faCrown, faSparkles, faMapMarkerAlt, faCalendarLines, falHeart, falComments, faFaceGrinSquintTears, faUserHelmetSafety, faBurgerCheese, faCat, faTree, faBasketball, faUsers)
 
 Vue.component('fa', FontAwesomeIcon)
 
@@ -32,7 +36,7 @@ Vue.mixin({
             return value
         },
         striptags: (value) => {
-            return value ? value.replace(/(<([^>]+)>)/gi, '') : ''
+            return value ? striptags(value) : ''
         },
         verticalize: (value) => {
             if (!value || process.server) return ''
@@ -83,9 +87,10 @@ Vue.mixin({
         },
         fixed: (value) => {
             return ('0' + value).slice(-2)
-        }
+        },
     },
     data: () => ({
+        isMounted: false,
         $categories: {
             news: { color: 'gum', fa: 'fa-thumbtack', slug: 'actualite' },
             seo: { color: 'pond', fa: 'fa-search', slug: 'referencement-seo' },
@@ -93,14 +98,18 @@ Vue.mixin({
             value: { color: 'duck', fa: 'fa-gem', slug: 'valeur-percue' }
         },
     }),
+    mounted () {
+        setTimeout(() => this.isMounted = true, 200)
+    },
     computed: {
+        user () { return this.$store.getters['user/self'] },
         $baseUrl () { return  this.$config.baseUrl },
         $dashboardUrl () { return this.$config.dashboardUrl },
         $blogUrl () { return this.$config.blogUrl },
         $shopUrl () { return this.$config.shopUrl },
         $bg () { return CONSTANTS.bg },
         $const () { return CONSTANTS },
-        $windowSize () { return this.$store.state.page.breakpoint },
+        $windowSize () { return this.$store.state.page.breakpoint }
     },
     methods: {
         $randomBetween: (min, max) => {
@@ -128,6 +137,8 @@ Vue.mixin({
                     type: 'success'
                 })
 
+                console.log('Copié dans le presse-papier ' + text)
+
                 return 
             }
 
@@ -138,6 +149,12 @@ Vue.mixin({
                     type: 'success'
                 })
             })
+        },
+        $getUser (v) {
+            if (this.user && v == this.user._id) return this.user
+
+            let result = this.$store.getters['user/findOne']({ _id: v })
+            return result ? result : null
         },
         $tLoad (e, params = {}) {
             this.$store.commit('tooltips/open', {
@@ -205,9 +222,6 @@ Vue.mixin({
         $onPopinClose () {
             this.$store.commit('page/toggleOverflow', true)
         },
-        $validator (type) {
-            return Validators[type]
-        },
         $smallerThan (v) {
             return this.$store.getters['page/smallerThan'](v)
         },
@@ -217,8 +231,8 @@ Vue.mixin({
         $randomColor () {
             return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
         },
-        $groupBy (items, type) {
-            return items.reduce((obj, item) => {
+        $groupBy (items, type, params = {}) {
+            let result = items.reduce((obj, item) => {
                 let newObj = { ...obj }
 
                 if (!newObj[item[type]]) {
@@ -229,6 +243,40 @@ Vue.mixin({
 
                 return newObj
             }, {})
+
+            if (params.orderBy) {
+                result = Object.entries(result).sort((a, b) => b[1].length - a[1].length)
+            }
+
+            return result
+        },
+        $isFixedPosition(node) {
+            while (node && node.nodeName.toLowerCase() !== 'body') {
+                if (window.getComputedStyle(node).getPropertyValue('position').toLowerCase() === 'fixed')  {          
+                    return true
+                }
+
+                if (window.getComputedStyle(node).getPropertyValue('overflow').toLowerCase() === 'auto') {
+                    return true
+                }
+                
+                node = node.parentNode
+            }
+
+            return false
+        },
+        $pluralize (users) {
+            return this.$tc(`utils.users`, users.length == 1 ? 0 : users.length - 1, {
+                users: users.length == 2 ? users.join(' et ') : users.slice(0, 2).join(', '),
+                others: users.length - 2
+            })
+        },
+        $ellipsis (str, maxLength) {
+            if (str.length > maxLength) {
+                return str.slice(0, maxLength - 3) + '...';
+            }
+            
+            return str
         }
     }
 })

@@ -1,15 +1,17 @@
 <template>
-    <div class="Layout LayoutDefault" :class="[ classes ]">
+    <div class="Layout LayoutDefault" :class="[ classes, { 'is-transparent': $store.state.page.header.transparent } ]">
         <default-header />
-        
-        <div class="LayoutDefault_content">
+
+        <div
+            class="LayoutDefault_content"
+        >
             <Nuxt />
-
-            <popin-register />
-            <tooltip-manager />
         </div>
-
-        <default-footer class="Footer" />
+        
+        <popin-register />
+        <tooltip-manager />
+        
+        <default-footer class="Footer" v-if="!isDisableFooter" />
     </div>
 </template>
 
@@ -19,11 +21,10 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutDefault',
     computed: {
-        classes () { return this.$store.state.page.body.classes }
+        
+        classes () { return this.$store.state.page.body.classes },
+        isDisableFooter () { return this.$store.state.page.isDisableFooter },
     },
-    data: () => ({
-        countdown: ''
-    }),
     async mounted () {
         try {
             await this.$recaptcha.init()
@@ -60,9 +61,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.LayoutDefault {
+
+    &.is-transparent {
+        
+        .LayoutDefault_content {
+            margin-top: 0;
+            min-height: 100vh;
+        }
+    }
+}
+
 .LayoutDefault_content {
-    min-height: calc(100vh - 65px);
-    // padding-top: 65px;
+    margin-top: var(--default-header-height);
+    min-height: calc(100vh - var(--default-header-height));
+    contain: paint;
 }
 
 .page-enter-active,
@@ -88,20 +101,5 @@ export default {
 .layout-enter, .layout-leave-active {
   opacity: 0;
   transform: translateY(3px);
-}
-
-@include breakpoint-xs {
-
-    .LayoutDefault {
-        padding-bottom: 72px;
-    }
-
-    .LayoutDefault_content {
-        padding-bottom: 100px;
-    }
-
-    .Footer {
-        display: none;
-    }
 }
 </style>

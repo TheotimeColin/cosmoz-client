@@ -6,59 +6,36 @@
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <div class="d-flex fxa-center mr-10" v-if="!statusOnly && organization">
-                        <orga-icon class="mr-10" v-bind="organization" /> {{ orgaShort ? '' : 'Organisé par'}} {{ organization.name }}
-                    </div>
-                    <div class="BlockGathering_status d-none@xs" v-if="!orgaOnly">
-                        <div>
-                            <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
-                            </template>
-                            <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span> 
-                            </template>
-                            <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
-                            </template>
-
-                            {{ tagline }}
-                        </div>
-                    </div>
+                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" />
                 </div>
 
                 <div>
-                    <div class="BlockGathering_status mb-15 d-none d-block@xs" v-if="!orgaOnly">
-                        <div>
-                            <template v-if="hasBooked">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
+                    <user-list class="fx-grow mb-5" :modifiers="['transparent', 's']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
+                    
+                    <div class="BlockGathering_details fx-center">
+                        <p v-if="date || location">
+                            <template v-if="date">
+                                {{ $moment(date).fromNow() }}
                             </template>
-                            <template v-else-if="hasConfirmed">
-                                <span class="round-s bg-success mr-5"><fa icon="far fa-check" /></span>
-                            </template>
-                            <template v-else-if="hasGhosted">
-                                <span class="round-s bg-bg-xweak mr-5"><fa icon="far fa-warning" /></span>
-                            </template>
-
-                            {{ tagline }}
-                        </div>
-                    </div>
-
-                    <div class="BlockGathering_location fx-center">
-                        <p class="">
-                            {{ $moment(date).fromNow() }} <span class="loc">· {{ location }}</span>
+                            
+                            <span class="BlockGathering_location">
+                                <span class="loc">·</span> {{ location ? location : '' }}
+                            </span>
                         </p>
                     </div>
 
                     <h3 class="BlockGathering_title ellipsis-2">
                         {{ title|specials }}
                     </h3>
-
-                    <p class="ft-l mt-10 ellipsis-2" v-if="displayIntro">{{ intro|specials }}</p>
                 </div>
+            </div>
+
+            <div class="BlockGathering_actions">
+                <slot></slot>
             </div>
         </div>
 
-        <nuxt-link class="BlockGathering_link" :to="link ? link : defaultLink"></nuxt-link>
+        <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link>
     </div>
 </template>
 
@@ -78,31 +55,31 @@ export default {
         location: { type: String },
         date: { type: [Date, String] },
         cover: { type: Object, default: () => ({}) },
-        link: { type: [Object, Boolean], default: false },
+        replaceLink: { type: [Object, Boolean, String], default: false },
+        link: { type: [Object, Boolean, String], default: false },
         statusOnly: { type: Boolean, default: false },
+        noLink: { type: Boolean, default: false },
         isPast: { type: Boolean, default: false },
-        orgaOnly: { type: Boolean, default: false },
-        orgaShort: { type: Boolean, default: false },
+        constOnly: { type: Boolean, default: false },
+        constShort: { type: Boolean, default: false },
         displayIntro: { type: Boolean, default: false },
-        organization: { type: [Object, Boolean], default: false },
+        constellation: { type: String, default: '' },
     },
-    data: () => ({
-
-    }),
     computed: {
-        user () { return this.$store.getters['user/self'] },
+        
+        constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.localePath({ name: 'o-slug-id', params: { id: this.id, slug: this.organization ? this.organization.slug : 'event' } })
+            return this.constellationData ? this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.id, slug: this.constellationData.slug } }) : ''
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')
             return thumbnail ? thumbnail.src : ''
         },
         attending () {
-            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed')
+            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(u => this.$getUser(u._id)).filter(u => u)
         },
         waiting () {
             return this.users.filter(u => u.status == 'waiting')
@@ -116,6 +93,8 @@ export default {
                 return tagline
             } else if (this.attending.length == 0 && this.max > 0) {
                 tagline = `${this.max} places restantes`
+            } else if (!this.max) {
+                tagline = ''
             } else if (this.max <= this.attending.length) {
                 tagline = `Événement complet`
             } else if (this.max - this.attending.length <= 5) {
@@ -149,10 +128,18 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.2;
+    opacity: 0.25;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
+}
+
+.BlockGathering_actions {
+    position: absolute;
+    z-index: 7;
+    top: 0;
+    right: 0;
+    padding: 15px;
 }
 
 .BlockGathering_favs {
@@ -165,7 +152,7 @@ export default {
     overflow: hidden;
     font: var(--ft-title-l);
     line-height: 1;
-    background-color: var(--color-black);
+    background-color: var(--color-bg-2xstrong);
     text-align: left;
     position: relative;
     
@@ -194,15 +181,13 @@ export default {
 }
 
 .BlockGathering_title {
-    font: var(--ft-title-s);
+    font: var(--ft-title-xs);
     transition: all 150ms ease; 
 }
 
-.BlockGathering_location {
+.BlockGathering_details {
     margin-bottom: 5px;
-    font: var(--ft-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font: var(--ft-s-medium);
 }
 
 .BlockGathering_header {
@@ -218,20 +203,20 @@ export default {
     .BlockGathering_content {
         padding: 15px;
     }
-
+    
     .BlockGathering_cover {
 
         &::before {
-            @include ratio(100);
+            @include ratio(130);
         }
     }
 
-    .loc {
+    .BlockGathering_location {
         display: none;
     }
 
-    .BlockGathering_location {
-        font: var(--ft-2xs);
+    .BlockGathering_details {
+        font: var(--ft-xs-medium);
     }
 
     .BlockGathering_title {
@@ -240,12 +225,20 @@ export default {
 }
 
 @include breakpoint-xs {
+
+    .BlockGathering_content {
+        padding: 15px;
+    }
         
     .BlockGathering_cover {
         
         &::before {
-            @include ratio(100);
+            @include ratio(70);
         }
+    }
+
+    .BlockGathering_location {
+        display: none;
     }
 
     .BlockGathering_header {

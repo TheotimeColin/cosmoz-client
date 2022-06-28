@@ -180,7 +180,7 @@ export default {
     z-index: 5;
     width: 100%;
     min-width: 300px;
-    background-color: var(--color-bg-2xstrong);
+    background-color: var(--color-bg-xstrong);
     padding: 8px;
     opacity: 0;
     transform: translateY(calc(100% + 5px));
@@ -210,7 +210,7 @@ export default {
     }
 
     &:hover {
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg-weak);
 
         &.is-selected {
             background-color: var(--color-bg-light);

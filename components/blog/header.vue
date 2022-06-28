@@ -38,6 +38,18 @@ export default {
 }
 </script>
 
+<style lang="scss">
+    :root {
+        --header-height: 65px;
+    }
+
+    @include breakpoint-s {
+        :root {
+            --header-height: 0px;
+        }
+    }
+</style>
+
 <style lang="scss" scoped>
     .BlogHeader {
         position: absolute;
@@ -111,7 +123,7 @@ export default {
             transform: translateY(100%);
             z-index: 100;
             display: none;
-            background-color: var(--color-bg-2xstrong);
+            background-color: var(--color-bg-xstrong);
             border-top: 1px solid var(--color-border);
             transition: all 200ms ease;
         }

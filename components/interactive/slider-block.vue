@@ -1,24 +1,28 @@
 <template>
-    <div class="SliderBlock" :style="{ '--step': step, paddingBottom: offsetV + 'px' }">
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', '--margin': margin + 'px', '--height': (offsetV + height) + 'px' }">
         <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
             <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
                 <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in 5" :key="i" v-show="isLoading">
-                    <placeholder :ratio="ratio" />
+                    <placeholder :height="height" :ratio="ratio" />
                 </div>
 
-                <div
-                    class="SliderBlock_item"
-                    v-for="slotId in slots"
-                    :class="[ itemClass ]"
-                    :key="slotId"
-                >
-                    <slot :name="slotId"></slot>
-                </div>
+                <transition-group name="fade">
+                    <div
+                        class="SliderBlock_item"
+                        v-for="slotId in slots"
+                        :class="[ itemClass ]"
+                        :style="isInit && autoHeight ? { height: height + 'px' } : {}"
+                        :key="slotId"
+                        ref="item"
+                    >
+                        <slot :name="slotId"></slot>
+                    </div>
+                </transition-group>
             </div>
 
-            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round']" @click="prev" v-if="step > 0 && !isLoading" />
+            <button-base class="SliderBlock_left" icon-before="angle-left" :modifiers="['light', 'round', 'xs']" @click="prev" v-if="step > 0 && !isLoading" />
 
             <button-base class="SliderBlock_right" icon-before="angle-right" :modifiers="['light', 'round']" @click="next" v-if="step < maxSteps && !isLoading" />
         </div>
@@ -31,10 +35,12 @@ export default {
     props: {
         slots: { type: Array, default: () => [] },
         itemClass: { type: String, default: '' },
+        margin: { type: Number, default: 15 },
         offset: { type: Number, default: 0 },
-        offsetV: { type: Number, default: 0 },
+        offsetV: { type: Number, default: 20 },
         ratio: { type: Number, default: 0 },
-        isLoading: { type: Boolean, default: false }
+        autoHeight: { type: Boolean, default: false },
+        isLoading: { type: Boolean, default: false },
     },
     computed: {
         breakpoint () {
@@ -43,12 +49,18 @@ export default {
     },
     data: () => ({
         step: 0,
-        maxSteps: 0
+        maxSteps: 0,
+        height: 0,
+        isInit: false,
+        isSlidable: true
     }),
     mounted () {
         this.checkDimensions()
     },
     watch: {
+        slots () {
+            this.$nextTick(() => this.checkDimensions())
+        },
         isLoading (v) {
             if (!v) this.$nextTick(() => this.checkDimensions())
         },
@@ -58,11 +70,25 @@ export default {
     },
     methods: {
         checkDimensions () {
-            if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
-                this.maxSteps = 0
-            } else {
-                this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / this.$refs.rail.clientWidth)
-            }
+            this.isInit = false
+
+            this.$nextTick(() => {
+                if (this.$refs.container) {
+                    if (this.$refs.container.scrollWidth == this.$refs.rail.clientWidth) {
+                        this.maxSteps = 0
+                    } else {
+                        this.maxSteps = Math.ceil(this.$refs.container.scrollWidth / (this.$refs.rail.clientWidth * 0.5))
+                    }
+                }
+
+                if (this.$refs.item) {
+                    this.$refs.item.forEach(item => {
+                        this.height = this.height < item.offsetHeight ? item.offsetHeight : this.height
+                    })
+                }
+
+                this.isInit = true
+            })
         },
         next () {
             this.step += 1
@@ -77,6 +103,7 @@ export default {
 <style lang="scss" scoped>
     .SliderBlock {
         position: relative;
+        height: var(--height, 0px);
     }
 
     .SliderBlock_container {
@@ -97,7 +124,7 @@ export default {
         white-space: normal;
         display: inline-block;
         vertical-align: top;
-        margin-right: 10px;
+        margin-right: var(--margin, 10px);
 
         &:last-child {
             margin-right: 0;
@@ -122,8 +149,11 @@ export default {
 
     @include breakpoint-xs {
         
-        .SliderBlock_container {
-            overflow: auto;
+        .SliderBlock.is-slideable {
+        
+            .SliderBlock_container {
+                overflow: auto;
+            }
         }
 
         .SliderBlock_left,

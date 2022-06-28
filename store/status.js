@@ -7,6 +7,7 @@ import { parseUser } from '@/utils/parsers'
 export default {
     namespaced: true,
     state: () => ({
+        type: 'status',
         items: {}
     }),
     mutations: {
@@ -15,6 +16,9 @@ export default {
         },
         deleteOne (state, id) {
             state.items = storeUtils.deleteOne(state, id)
+        },
+        softRefresh (state, values) {
+            state.items = storeUtils.softRefresh(state, values)
         },
         refresh (state, values) {
             state.items = storeUtils.refresh(values)
@@ -35,9 +39,9 @@ export default {
         },
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities', {
+                const response = await this.$axios.$post('/entities/get', {
                     ...params.query, type: 'status',
-                }), { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
 
                 if (params.refresh !== false) commit('refresh', response.data)
 
@@ -47,13 +51,49 @@ export default {
                 return null
             }
         },
+        async get ({ commit }, _id) {
+            try {
+                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                    _id, type: 'status'
+                }))
+
+                let result = Array.isArray(response.data) ? response.data[0] : response.data
+   
+                if (result) commit('updateOne', result)
+
+                return result
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
+        async softFetch ({ state, dispatch, commit }, items) {
+            return await storeUtils.softFetch(items, { state, dispatch, commit })
+        },
         async create ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$post('/status/post', params)
+                let formData = new FormData()
+                
+                Object.keys(params).forEach(key => {
+                    if (Array.isArray(params[key])) {
+                        const arrayKey = `${key}`
+
+                        params[key].forEach(v => {
+                            formData.append(arrayKey, v)
+                        })
+                    } else {
+                        formData.append(key, params[key])
+                    }
+                })
+
+                const response = await this.$axios.$post('/status/post', formData, { headers: {
+                    'Content-Type': 'multipart/undefined'
+                }})
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.parent ? response.data.parent : response.data)
+                if (response.data.origin) commit('updateOne', response.data.origin)
+                commit('updateOne', response.data)
                 
                 return response
             } catch (e) {
@@ -66,7 +106,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
                 
-                commit('updateOne', response.data.parent ? response.data.parent : response.data)
+                if (response.data.origin) commit('updateOne', response.data.origin)
+                commit('updateOne', response.data)
                 
                 return response
             } catch (e) {
@@ -98,7 +139,7 @@ export default {
             return Object.values(state.items).map(item => {
                 return {
                     ...item,
-                    owner: item.owner.name ? parseUser(item.owner) : item.owner
+                    owner: (item.owner && item.owner.name) ? parseUser(item.owner) : item.owner
                 }
             })
         },
@@ -138,9 +179,11 @@ export default {
 
             return items
         },
-        findOne: (state, getters) => (search, raw = false) => {
-            let items = raw ? Object.values(state.items) : getters.items
-            return items.find(item => item[Object.keys(search)[0]] == Object.values(search)[0])
+        findOne: (state, getters, root) => (search, raw = false) => {
+            let items = raw ? Object.values({ ...state.items }) : getters.items
+
+            let result = storeUtils.searchItems(items, search, root.auth.user)
+            return result[0] ? result[0] : null
         }
     }
 }

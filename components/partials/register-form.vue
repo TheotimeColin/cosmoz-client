@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mb-30">
+        <div class="mb-30" v-if="title">
             <p class="ft-title-m">
                 {{ formType == 'register' ? `Créer mon compte Cosmoz` : `Se connecter` }}
             </p>
@@ -41,7 +41,7 @@
                 label="Choisis un mot de passe"
                 type="password"
                 :helpers="['reveal']"
-                :validator="$validator('password')"
+                validator="password"
                 :attrs="{ required: true, autocomplete: 'password' }"
                 v-model="formData.password"
             />
@@ -49,7 +49,7 @@
             <form-errors :items="errors" class="mt-20" />
 
             <div class="fx-center mt-20">
-                <div class="mr-20">
+                <div class="mr-20 text-left">
                     <link-base @click="formType = 'login'" v-if="formType == 'register'">Me connecter</link-base>
 
                     <link-base @click="formType = 'register'" v-if="formType == 'login'">Créer un compte</link-base>
@@ -68,7 +68,7 @@
 
         <popin :modifiers="['s', 'absolute-header']" :is-active="isReset" @close="isReset = false" v-show="isReset">
             <template slot="content">
-                <form @submit.prevent="resetPassword" class="strong p-30">
+                <form @submit.prevent="resetPassword" class="p-30">
                     <p class="ft-title-2xs">Réinitialiser mon mot de passe</p>
                     
                     <input-base label="Ton adresse e-mail" class="mv-20" type="email" v-model="formData.email" :attrs="{ required: true }" v-show="!resetSuccess" />
@@ -88,12 +88,13 @@
 
 <script>
 
-import { InputBase, SelectBase, ToggleBase } from 'instant-coffee-core'
+import { SelectBase, ToggleBase } from 'instant-coffee-core'
 
 export default {
     name: 'RegisterForm',
-    components: { InputBase, SelectBase, ToggleBase },
+    components: { SelectBase, ToggleBase },
     props: {
+        title: { type: Boolean, default: true },
         type: { type: String },
         redirect: { type: Boolean, default: true },
         reference: { type: String, default: 'unknown' },
@@ -127,7 +128,7 @@ export default {
         }
     },
     mounted () {
-        if (process.server && !window.google) return
+        if (process.server || !window.google) return
 
         window.google.accounts.id.initialize({
             client_id: "322716061919-7io9tjlk3pbfqrl9akdrq03q5rqk3kdc.apps.googleusercontent.com",
@@ -160,11 +161,11 @@ export default {
         },
         async onSubmit (googleCred = null) {
             try {
-
                 this.errors = []
                 this.isLoading = true
 
                 const token = await this.$recaptcha.execute('login')
+
                 const response = await this.$auth.loginWith('local', { 
                     data: {
                         ...(googleCred ? googleCred : this.formData),
@@ -177,11 +178,15 @@ export default {
                     this.errors = response.data.errors
                     this.isLoading = false
                 } else {
-                    if (this.redirect) window.location = this.localePath({ name: 'feed' })
+                    if (this.redirect) this.$router.push(this.localePath({ name: 'feed' }))
+
+                    this.$emit('success')
                 }
             } catch (e) {
                 console.log(e)
             }
+
+            this.isLoading = false
         }
     }
 }

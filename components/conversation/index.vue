@@ -81,7 +81,7 @@ export default {
 .Conversation_content {
     max-width: 75%;
     padding: 20px;
-    background: var(--color-bg-2xstrong);
+    background: var(--color-bg-xstrong);
     border-radius: 4px;
 }
 

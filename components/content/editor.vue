@@ -1,64 +1,113 @@
 <template>
-    <div class="Editor" :class="{ 'is-tiny': tiny }">
-        <user-icon class="Editor_icon fx-no-shrink" :modifiers="tiny || $smallerThan('s') ? ['s'] : ['m']" :no-link="true" :display-name="$smallerThan('xs')" v-bind="user" />
+    <popin :is-active="isActive" :modifiers="['s']" query="publish" @close="$emit('close')" @open="$emit('open')" v-if="user">
+        <div class="Editor_content" slot="content">
+            <div class="fx-center p-15">
+                <user-icon :display-name="true" :no-link="true" v-bind="user" />
 
-        <form @submit.prevent="onSubmit" class="Editor_main">
-            <input-area class="Editor_input" :placeholder="placeholder" :adaptable-text="!tiny" v-model="formData.content" @focus="isFocused = true" @blur="onBlur" ref="input" />
+                <div></div>
+            </div>
+            
+            <hr class="Separator bg-bg-weak" />
 
-            <transition name="fade">
-                <div class="Editor_secondary" v-show="isFocused">
-                    <div class="fx-grow pr-20">
-                        <p class="ft-s color-ft-weak line-2" v-if="read">
-                            <fa :icon="$t(`permissions.${read}.icon`)" class="mr-5" /> {{ $t(`permissions.${read}.subtitle`) }}.
-                        </p>
+            <form @submit.prevent="onSubmit" class="Editor_main">
+                <input-area class="fx-grow" :placeholder="placeholder" v-model="formData.content" ref="input" />
+            </form>
+
+            <div>
+                <div class="mt-15 p-20 bg-bg-xstrong" v-if="images.length > 0">
+                    <content-type-images :images="images" :is-editor="true" @delete="onImageDelete" />
+                </div>
+
+                <form-errors class="mt-15" :items="errors" />
+            </div>
+        </div>
+        <template slot="footer">
+            <div class="fx-grow p-15">
+                <div class="mb-5 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
+                    <p class="ft-s-medium mr-10">Ajouter à la publication</p>
+
+                    <div>
+                        <input-file icon="images" :multiple="true" @input="addImages" :disabled="images.length > 3" />
                     </div>
-                    <div class="fx-no-shrink">
-                        <link-base class="color-ft-weak mr-10" @click="onBlur">Annuler</link-base>
-                        <button-base :modifiers="['s', 'light']" icon-before="paper-plane" type="submit" :loading="isLoading">
-                            Envoyer
+                </div>
+
+                <div class="mb-15 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
+                    <p class="ft-s-medium mr-10">Visible par :</p>
+
+                    <div>
+                        <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />
+
+                        <button-base :modifiers="['s']" icon-before="earth" v-else-if="read == 'public'">
+                            Tout le monde
+                        </button-base>
+
+                        <button-base :modifiers="['s']" :image="user.profileSmall" v-else>
+                            Mes amis
                         </button-base>
                     </div>
                 </div>
-            </transition>
-        </form>
-    </div>
+            
+                <div class="p-5">
+                    <button-base :modifiers="['cosmoz', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
+                        Envoyer
+                    </button-base>
+                </div>
+            </div>
+        </template>
+    </popin>
 </template>
 
 <script>
 export default {
     name: 'Editor',
     props: {
+        isActive: { type: Boolean, default: false },
         isLoading: { type: Boolean, default: false },
         placeholder: { type: String },
-        tiny: { type: Boolean, default: false },
-        read: { type: String }
+        read: { type: String, default: 'public' },
+        constellation: { type: String },
+        errors: { type: Array, default: () => [] }
     },
     computed: {  
-        user () { return this.$store.getters['user/self'] },
+        
+        images () {
+            return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []
+        },
+        consteData () {
+            if (!this.constellation) return null
+
+            return this.$store.getters['constellation/findOne']({ _id: this.constellation })
+        }
     },
     data: () => ({
-        isFocused: false,
         formData: {
-            content: ''
+            content: '',
+            images: []
         }
     }),
+    watch: {
+        isActive (v) {
+            if (v && this.$refs.input) this.$refs.input.focus()
+        }
+    },
     methods: {
-        focus () {
-            this.$refs.input.focus()
-        },
-        onBlur () {
-            setTimeout(() => {
-                this.$emit('blur')
-                this.isFocused = false
-            }, 150)
-        },
         reset () {
             this.formData = {
-                content: ''
+                content: '',
+                images: []
             }
         },
         onSubmit () {
             this.$emit('submit', this.formData)
+        },
+        addImages (v) {
+            this.formData.images = [
+                ...this.formData.images,
+                ...v
+            ].slice(0, 4)
+        },
+        onImageDelete (index) {
+            this.formData.images = this.formData.images.filter((c, i) => i != index)
         }
     }
 }
@@ -66,68 +115,24 @@ export default {
 
 <style lang="scss" scoped>
 .Editor {
+
+}
+
+.Editor_content {
     display: flex;
-    align-items: flex-start;
-
-    &.is-tiny {
-        
-        .Editor_main {
-            margin-left: 10px;
-        }
-
-        .Editor_input {
-            background-color: var(--color-bg-strong);
-        }
-
-        .Editor_secondary {
-            border: none;
-            padding-top: 10px;
-        }
-    }
+    flex-direction: column;
+    min-height: 100%;
 }
 
 .Editor_main {
+    padding: 10px;
     flex-grow: 1;
-    margin-left: 15px;
-}
-
-.Editor_secondary {
     display: flex;
-    align-items: center;
-    padding: 15px 0 0 0;
 }
 
-.Editor_input {
-    background-color: var(--color-bg-strong);
-}
+
 
 @include breakpoint-xs {
 
-    .Editor {
-        display: block;
-
-        &.is-tiny {
-
-            .Editor_icon {
-                display: none;
-            }
-            
-            .Editor_main {
-                margin: 0;
-            }
-
-            .Editor_input {
-                background-color: var(--color-bg-xstrong);
-            }
-        }
-    }
-
-    .Editor_main {
-        margin: 15px 0 0 0;
-    }
-
-    .Editor_secondary {
-        background-color: transparent;
-    }
 }
 </style>
