@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
-const socket = io(process.env.NUXT_ENV_API_URL)
 
 export default {
     data: () => ({
@@ -24,9 +22,6 @@ export default {
         message: ''
     }),
     beforeMount () {
-        socket.on('new-message', (message) => {
-            this.messages.push(message)
-        })
     },
     computed: {
         emojis () {

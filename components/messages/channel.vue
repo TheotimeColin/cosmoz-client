@@ -28,7 +28,7 @@
             </transition-group>
 
             <transition name="fade">
-                <div v-show="isWriting" class="Channel_indicator" key="writing">Quelqu'un est en train d'écrire</div>
+                <div v-show="isWriting" class="Channel_indicator" key="writing">{{ isWriting }}</div>
             </transition>
 
             <form @submit.prevent="onSubmit" class="Channel_editor">
@@ -42,8 +42,6 @@
 
 <script>
 import debounce from 'lodash.debounce'
-import io from 'socket.io-client'
-const socket = io(process.env.NUXT_ENV_API_URL)
 
 export default {
     name: 'ChannelId',
@@ -53,7 +51,6 @@ export default {
     data: () => ({
         isLoading: true,
         isInit: false,
-        isWriting: false,
         isSubmitLoading: false,
         formData: {
             content: ''
@@ -72,22 +69,23 @@ export default {
                             params: { $addToSet: { readBy: this.user._id } }
                         })
                     }
+
+                    this.formData = {
+                        content: ''
+                    }
+
+                    this.$store.commit('channel/setCurrent', v)
                 }
             }
         },
         ['formData.content'] (v) {
-            if (v) socket.emit('channel-writing')
+            if (v) this.$store.commit('channel/setCurrentWriting', true)
+
             this.stopWriting()
         }
     },
-    beforeMount () {
-        socket.on('channel-writing', () => {
-            this.isWriting = true
-        })
-
-        socket.on('channel-writing-stop', () => {
-            this.isWriting = false
-        })
+    beforeDestroy () {
+        this.$store.commit('channel/setCurrent', null)
     },
     computed: {
         authorData () {
@@ -150,11 +148,20 @@ export default {
             result = Object.entries(result).sort((a, b) => a[0] - b[0])
 
             return result
+        },
+        isWriting () {
+            let users = this.$store.state.channel.isWriting.filter(i => i.channel == this.id && i.user != this.user._id)
+
+            if (users.length > 0) {
+                return this.$pluralize(users.map(u => this.$getUser(u.user).name)) + (users.length > 1 ? ` sont en train d'écrire...` : ` est en train d'écrire...`)
+            }
+
+            return false
         }
     },
     methods: {
         stopWriting: debounce(function () {
-            socket.emit('channel-writing-stop')
+            this.$store.commit('channel/setCurrentWriting', false)
         }, 3000),
         fetchData () {
             return new Promise(async resolve => {
@@ -181,13 +188,13 @@ export default {
         async onSubmit () {
             this.isSubmitLoading = true
 
+            this.$store.commit('channel/setCurrentWriting', false)
+
             const response = await this.$store.dispatch('messages/create', {
                 ...this.formData,
                 channel: this.channel._id
             })
 
-            socket.emit('channel-writing-stop')
-            
             this.formData = {
                 content: ''
             }

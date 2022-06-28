@@ -27,9 +27,11 @@
 
 <script>
 import Debounce from 'lodash.debounce'
+import ioMixin from '@/mixins/io'
 
 export default {
     name: 'LayoutApp',
+    mixins: [ ioMixin ],
     computed: {
         classes () { return this.$store.state.page.body.classes },
     },

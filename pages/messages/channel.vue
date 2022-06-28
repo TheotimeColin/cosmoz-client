@@ -16,7 +16,7 @@
 
                     <div class="ml-3">
                         <div class="ft-title-2xs ellipsis-1 ellipsis-break">
-                            {{ $pluralize(channel.users.filter(u => u != user._id).map(u => $getUser(u).name)) }}
+                            {{ $pluralize(channel.users.filter(u => u != user._id).map(u => $getUser(u) ? $getUser(u).name : null)) }}
                         </div>
                         <div class="Messages_channelPreview ft-s ellipsis-1 ellipsis-break" v-if="channel.lastMessage">
                             <fa icon="far fa-check" v-if="channel.lastMessage.owner == user._id" />
@@ -53,9 +53,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
-const socket = io(process.env.NUXT_ENV_API_URL)
-
 export default {
     name: 'MessagesIndex',
     layout: 'app',
@@ -65,15 +62,6 @@ export default {
         } else if (from) {
             return { name: 'slide-out', mode: 'in-out' }
         }
-    },
-    beforeMount () {
-        socket.on('new-message', (message) => {
-            this.$store.commit('messages/updateOne', message)
-        })
-
-        socket.on('new-channel', (channel) => {
-            this.$store.commit('channel/updateOne', channel)
-        })
     },
     async fetch () {
         this.isLoading = true
@@ -111,17 +99,35 @@ export default {
     methods: {
         async onSubmit () {
             this.isNewLoading = true
+            let exists = false
 
-            const response = await this.$store.dispatch('channel/create', {
-                users: [ this.user._id, ...this.formData.users ],
-                content: this.formData.content
+            exists = this.channels.find(c => {
+                return c.users.length == this.formData.users.length + 1 && this.formData.users.every(u => c.users.includes(u))
             })
+            
+            
+            if (!exists) {
+                const response = await this.$store.dispatch('channel/create', {
+                    users: [ this.user._id, ...this.formData.users ],
+                    content: this.formData.content
+                })
 
-            if (response.status != 1) {
-                
+                if (response.status == 1) exists = response.data.channel
             } else {
-                this.$router.push({ query: { channelId: response.data.channel._id }})
+                await this.$store.dispatch('messages/create', {
+                    channel: exists._id,
+                    content: this.formData.content
+                })
+            }
+
+            if (exists) {
+                this.$router.push({ query: { channelId: exists._id }})
                 this.isNew = false
+
+                this.formData = {
+                    content: '',
+                    users: []
+                }
             }
 
             this.isNewLoading = false

@@ -6,9 +6,25 @@ export default {
     namespaced: true,
     state: () => ({
         type: 'channel',
+        current: null,
+        currentWriting: false,
+        isWriting: [],
         items: {}
     }),
     mutations: {
+        setCurrent (state, _id) {
+            state.current = _id
+        },
+        setWriting (state, params) {
+            if (params.action && !state.isWriting.find(r => r.user == params.value.user && r.channel == params.value.channel)) {
+                state.isWriting = [ ...state.isWriting, params.value ]
+            } else if (params.action === false) {
+                state.isWriting = state.isWriting.filter(r => r.user != params.value.user && r.channel != params.value.channel)
+            }
+        },
+        setCurrentWriting (state, action) {
+            state.currentWriting = action
+        },
         updateOne (state, value) {
             state.items = storeUtils.updateOne(state, value)
         },
