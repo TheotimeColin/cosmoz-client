@@ -9,7 +9,7 @@
                     <button-base icon-before="plus" @click="isNew = true">Nouvelle conversation</button-base>
                 </div>
                 
-                <nuxt-link v-for="channel in channels" :to="{ query: { channelId: channel._id } }" :class="{ 'is-current': $route.query.channelId && $route.query.channelId == channel._id }" class="+mt-5 Messages_channel" :key="channel._id">
+                <nuxt-link v-for="channel in channels" :to="{ query: { channelId: channel._id } }" :class="{ 'is-current': $route.query.channelId && $route.query.channelId == channel._id, 'is-unread': channel.unread }" class="+mt-5 Messages_channel" :key="channel._id">
                     <div class="mr-10">
                         <user-icon v-bind="$getUser(channel.users.filter(u => u != user._id)[0])" :modifiers="['m']" :no-link="true" />
                     </div>
@@ -18,10 +18,10 @@
                         <div class="ft-title-2xs ellipsis-1 ellipsis-break">
                             {{ $pluralize(channel.users.filter(u => u != user._id).map(u => $getUser(u).name)) }}
                         </div>
-                        <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break" v-if="getLastMessage(channel._id)">
-                            <fa icon="far fa-check" v-if="getLastMessage(channel._id).owner == user._id" />
+                        <div class="Messages_channelPreview ft-s ellipsis-1 ellipsis-break" v-if="channel.lastMessage">
+                            <fa icon="far fa-check" v-if="channel.lastMessage.owner == user._id" />
 
-                            {{ getLastMessage(channel._id).content }}
+                            {{ channel.lastMessage.content }}
                         </div>
                     </div>
                 </nuxt-link>
@@ -77,14 +77,6 @@ export default {
     },
     async fetch () {
         this.isLoading = true
-
-        await this.$store.dispatch('channel/fetch', {
-            query: { users: this.user._id }
-        })
-
-        await this.$store.dispatch('messages/fetch', {
-            query: {channel: { $in : this.channels.map(c => c._id) } }
-        })
         
         await this.$store.dispatch('user/softFetch', [
             ...this.user.friends,
@@ -95,6 +87,7 @@ export default {
     },
     data: () => ({
         isLoading: false,
+        isWriting: false,
         isNew: false,
         isNewLoading: false,
         formData: {
@@ -110,17 +103,12 @@ export default {
         },
         channels () {
             return this.$store.getters['channel/find']({
-                users: { $contains: this.user._id }
+                users: { $contains: this.user._id },
+                sort: { lastUpdate: 'asc' }
             })
         }
     },
     methods: {
-        getLastMessage (_id) {
-            return this.$store.getters['messages/findOne']({
-                channel: _id,
-                sort: { createdAt: 'asc' }
-            })
-        },
         async onSubmit () {
             this.isNewLoading = true
 
@@ -147,6 +135,7 @@ export default {
     display: flex;
     overflow: hidden;
     height: calc(100vh - var(--app-height) - var(--header-height));
+    background-color: var(--color-bg);
 }
 
 .Messages_list {
@@ -173,6 +162,11 @@ export default {
         }
     }
 
+    &.is-unread {
+        font: var(--ft-s-medium);
+        color: var(--color-ft-light);
+    }
+
     &:hover {
         background-color: var(--color-bg-xweak);
     }
@@ -180,6 +174,10 @@ export default {
 
 .Messages_content {
     flex-grow: 1;
+}
+
+.Messages_channel {
+    color: var(--color-ft-weak);
 }
 
 .Messages_form {

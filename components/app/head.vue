@@ -26,10 +26,9 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel' }" fa="paper-plane" />
+                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel' }" fa="paper-plane" :notification="channels.length" />
 
-                <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)"
-                    :notification="notifications.length" />
+                <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
             </div>
         </div>
     </div>
@@ -45,8 +44,13 @@ export default {
         changed: false,
     }),
     computed: {
-        
         $appMeta() { return getMeta(this.$route, this.$store) },
+        channels () {
+            return this.$store.getters['channel/find']({
+                users: { $contains: this.user._id },
+                unread: true
+            })
+        },
         notifications() {
             return this.user ? this.$store.getters['notification/find']({
                 owner: this.user._id,

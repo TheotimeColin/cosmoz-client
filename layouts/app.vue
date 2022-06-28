@@ -2,6 +2,7 @@
     <div class="Layout LayoutApp" :class="[ classes, { 'is-open-nav': isOpenNav, 'is-transition': isTransition } ]">
         <app-header @navOpen="onNavOpen" />
         <app-head />
+        
         <app-notifications v-if="user" />
 
         <div
@@ -30,8 +31,14 @@ import Debounce from 'lodash.debounce'
 export default {
     name: 'LayoutApp',
     computed: {
-        
         classes () { return this.$store.state.page.body.classes },
+    },
+    async fetch () {
+        if (this.user) {
+            await this.$store.dispatch('channel/fetch', {
+                query: { users: this.user._id }
+            })
+        }
     },
     data: () => ({
         pan: 0,

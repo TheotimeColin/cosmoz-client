@@ -62,8 +62,9 @@ export default {
                 }})
                 
                 if (response.status == 0) throw Error(response.errors[0])
-                
-                commit('updateOne', response.data)
+
+                commit('updateOne', response.data.message)
+                if (response.data.channel) commit('channel/updateOne', response.data.channel, { root: true })
                 
                 return response
             } catch (e) {

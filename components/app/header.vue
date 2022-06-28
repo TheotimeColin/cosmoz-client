@@ -12,7 +12,7 @@
             <div class="Header_right" v-if="user">
                 <button-icon :to="{ name: 'admin' }" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
 
-                <button-icon class="Header_button" fa="paper-plane" :to="{ name: 'messages-channel' }" />
+                <button-icon class="Header_button" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
                 <button-icon class="Header_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
         
@@ -55,7 +55,12 @@ export default {
         nav: []
     }),
     computed: {
-        
+        channels () {
+            return this.$store.getters['channel/find']({
+                users: { $contains: this.user._id },
+                unread: true
+            })
+        },
         notifications () {
             return this.$store.getters['notification/find']({
                 owner: this.user._id,

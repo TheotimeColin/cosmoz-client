@@ -4,14 +4,14 @@
             <div class="Message_author" v-if="author">
                 <user-icon v-bind="author" />
             </div>
-            <div class="Message_content">
+            <transition-group tag="div" class="Message_content">
                 <div class="Message_itemContainer" v-for="message in items" :key="message._id">
                     <div class="Message_item">
                         <p class="ft-xs-medium mb-3" v-if="isGroup && !isSelf">{{ author.name }}</p>
                         {{ message.content }}
                     </div>
                 </div>
-            </div>
+            </transition-group>
         </div>
     </div>
 </template>
@@ -39,6 +39,7 @@ export default {
 <style lang="scss">
 .Message {
     display: flex;
+    transition: all 150ms ease;
 
     &.is-right {
         justify-content: flex-end;
@@ -91,6 +92,7 @@ export default {
 }
 
 .Message_itemContainer {
+    transition: all 150ms ease;
 
     & + & {
         margin-top: 3px;

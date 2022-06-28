@@ -12,19 +12,24 @@
             </h1>
         </div>
         
-        <div class="o-hidden p-relative fx-grow" v-if="isLoading && !isInit">
+        <div class="o-hidden p-relative fx-grow" v-if="isLoading">
             <placeholder :modifiers="['full']" />
         </div>
         <template v-else>
-            <div class="Channel_content">
+            <transition-group tag="div" class="Channel_content">
                 <messages-item
                     class="+mb-20"
                     v-for="group in messagesOrdered"
                     :is-group="channel.users.length > 2"
                     :items="group[1]"
+                    :test="group[0]"
                     :key="group[0]"
                 />
-            </div>
+            </transition-group>
+
+            <transition name="fade">
+                <div v-show="isWriting" class="Channel_indicator" key="writing">Quelqu'un est en train d'écrire</div>
+            </transition>
 
             <form @submit.prevent="onSubmit" class="Channel_editor">
                 <input-base type="text" :modifiers="['no-label']" placeholder="Envoyer un message..." v-model="formData.content" />
@@ -36,6 +41,10 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce'
+import io from 'socket.io-client'
+const socket = io(process.env.NUXT_ENV_API_URL)
+
 export default {
     name: 'ChannelId',
     props: {
@@ -44,6 +53,7 @@ export default {
     data: () => ({
         isLoading: true,
         isInit: false,
+        isWriting: false,
         isSubmitLoading: false,
         formData: {
             content: ''
@@ -52,23 +62,49 @@ export default {
     watch: {
         id: {
             immediate: true,
-            handler (v) {
-                if (v) this.fetchData(v)
+            async handler (v) {
+                if (v) {
+                    await this.fetchData(v)
+                    
+                    if (this.channel && this.channel.unread) {
+                        this.$store.dispatch('channel/update', {
+                            _id: this.channel._id,
+                            params: { $addToSet: { readBy: this.user._id } }
+                        })
+                    }
+                }
             }
+        },
+        ['formData.content'] (v) {
+            if (v) socket.emit('channel-writing')
+            this.stopWriting()
         }
+    },
+    beforeMount () {
+        socket.on('channel-writing', () => {
+            this.isWriting = true
+        })
+
+        socket.on('channel-writing-stop', () => {
+            this.isWriting = false
+        })
     },
     computed: {
         authorData () {
             if (!this.channel) return null
 
-            let users = this.channel.users.filter(u => u != this.user._id).map(u => this.$getUser(u))
+            let users = this.channel.users.filter(u => u != this.user._id).map(u => this.$getUser(u)).filter(u => u)
 
-            if (users.length == 1) return users[0]
-            
-            return {
-                ...users[0],
-                name: this.$pluralize(users.map(u => u.name))
+            if (users.length == 1) {
+                return users[0]
+            } else if (users.length > 0) {
+                return {
+                    ...users[0],
+                    name: this.$pluralize(users.map(u => u.name))
+                }
             }
+            
+            return null
         },
         channel () {
             if (!this.id) return null
@@ -83,12 +119,12 @@ export default {
             return this.$store.getters['messages/find']({
                 channel: this.channel._id,
                 sort: {
-                    createdAt: 'asc'
+                    createdAt: 'desc'
                 }
             })
         },
         messagesOrdered () {
-            let id = 0
+            let id = 9999999
             let lastUser = null
             let lastDate = null
 
@@ -96,8 +132,8 @@ export default {
                 let newObj = { ...obj }
                 let diff = lastDate ? this.$moment.duration(this.$moment(lastDate).diff(this.$moment(item.createdAt))) : null
 
-                if (lastUser != item.owner) id += 1
-                if (diff && diff.asHours() > 1) id += 1
+                if (lastUser != item.owner) id -= 1
+                if (diff && diff.asHours() > 1) id -= 1
 
                 lastDate = item.createdAt
                 lastUser = item.owner
@@ -105,18 +141,21 @@ export default {
                 if (!newObj[id]) {
                     newObj[id] = [ item ]
                 } else {
-                    newObj[id].unshift(item)
+                    newObj[id].push(item)
                 }
 
                 return newObj
             }, {})
 
-            result = Object.entries(result)
+            result = Object.entries(result).sort((a, b) => a[0] - b[0])
 
             return result
         }
     },
     methods: {
+        stopWriting: debounce(function () {
+            socket.emit('channel-writing-stop')
+        }, 3000),
         fetchData () {
             return new Promise(async resolve => {
                 this.isLoading = true
@@ -133,7 +172,8 @@ export default {
                 }
 
                 this.isInit = true
-                this.isLoading = false
+                
+                setTimeout(() => this.isLoading = false, 100)
 
                 resolve(true)
             })
@@ -145,6 +185,8 @@ export default {
                 ...this.formData,
                 channel: this.channel._id
             })
+
+            socket.emit('channel-writing-stop')
             
             this.formData = {
                 content: ''
@@ -185,6 +227,12 @@ export default {
     align-items: center;
     padding: 10px 10px;
     background-color: var(--color-bg-weak);
+}
+
+.Channel_indicator {
+    padding: 10px;
+    background-color: var(--color-bg-strong);
+    transition: all 150ms ease;
 }
 
 @include breakpoint-s {

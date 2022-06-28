@@ -56,6 +56,21 @@ export default {
         async softFetch ({ state, dispatch, commit }, items) {
             return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
+        async update ({ commit }, params = {}) {
+            try {
+                const response = await this.$axios.$post('/entities', {
+                    ...params, type: 'channel'
+                })
+                
+                if (response.status == 0) throw Error(response.errors[0])
+
+                commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async create ({ commit }, params = {}) {
             try {
                 const response = await this.$axios.$post('/messages/create-channel', params)
@@ -92,8 +107,15 @@ export default {
         }
     },
     getters: {
-        items: (state) => {
-            return Object.values(state.items)
+        items: (state, getters, root) => {
+            return Object.values(state.items).map(item => {
+
+                return {
+                    ...item,
+                    unread: root.auth.user && !item.readBy.includes(root.auth.user._id),
+                    lastUpdate: item.lastMessage ? item.lastMessage.createdAt : null
+                }
+            })
         },
         find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items

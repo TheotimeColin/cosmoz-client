@@ -12,10 +12,7 @@
 <script>
 export default {
     name: 'Notifications',
-    data: () => ({
-    }),
     computed: {
-        
         isActive () { return this.$store.state.page.isNotifications }
     },
     methods: {

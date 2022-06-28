@@ -318,6 +318,10 @@
     }
 }
 
+.transition-list-active {
+    transition: all 250ms;
+}
+
 .transition-list-enter, .transition-list-leave-to {
     opacity: 0;
     transform: translateY(5px);
