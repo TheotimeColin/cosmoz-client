@@ -34,7 +34,7 @@ export default {
         })
 
         await this.$store.dispatch('gathering/fetch', {
-            query: { status: 'active' }
+            query: { status: 'active', visibility: 'public' }
         })
 
         this.isLoading = false
@@ -47,6 +47,7 @@ export default {
         gatherings () {
             return this.$store.getters['gathering/find']({
                 status: 'active',
+                visibility: 'public',
                 isPast: false,
                 sort: { date: 'desc' }
             })

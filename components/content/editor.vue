@@ -37,6 +37,10 @@
                     <div>
                         <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />
 
+                        <button-base :modifiers="['s']" icon-before="earth" v-else-if="read == 'public'">
+                            Tout le monde
+                        </button-base>
+
                         <button-base :modifiers="['s']" :image="user.profileSmall" v-else>
                             Mes amis
                         </button-base>

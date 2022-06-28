@@ -40,10 +40,9 @@
                     </div>
 
                     <div class="block +mt-20 +mt-40@xs">
-                        <block-gathering v-bind="formData" :cover="coverPreview" :no-link="true" :status-only="true"
+                        <block-gathering v-bind="formData" :cover="coverPreview" :no-link="true" :constellation="$constellation ? $constellation._id : ''" :status-only="true"
                             :const-only="true">
-                            <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen"
-                                @click="options.cover = !options.cover" />
+                            <button-base type="button" :modifiers="['round', 's', 'weak']" icon-before="pen" @click="options.cover = !options.cover" />
                         </block-gathering>
 
                         <input-pexels @select="(v) => formData.coverSelect = v" :is-active="options.cover" @close="options.cover = false" />
@@ -57,13 +56,7 @@
                             :base="true" />
                     </div>
 
-                    <div class="block +mt-20 +mt-40@xs">
-                        <p class="ft-title-xs mb-20">Qui organise ?</p>
-                        
-                        <input-user-select placeholder="Chercher un membre..." :items="members" :min="1" v-model="formData.organizers" />
-                    </div>
-
-                    <div class="block-r mt-20">
+                    <div class="block-r +mt-20 +mt-40@xs">
                         <div class="fx-center">
                             <p class="ft-title-2xs">Limiter le nombre de places</p>
                             <input-toggle v-model="options.max" />
@@ -75,6 +68,21 @@
                                     :attrs="{ min: 5, max: 999 }" />
                             </div>
                         </transition>
+                    </div>
+
+                    <div class="block +mt-20 +mt-40@xs">
+                        <p class="ft-title-xs mb-20">Qui organise ?</p>
+                        
+                        <input-user-select placeholder="Chercher un membre..." :items="members" :min="1" v-model="formData.organizers" />
+                    </div>
+
+                    <div class="block +mt-20 +mt-40@xs" v-if="$constellation">
+                        <p class="ft-title-xs mb-15">Qui peut participer ?</p>
+                        
+                        <input-radio-group v-model="formData.visibility" :options="[
+                            { label: 'Seulement les membres de ' + $constellation.name, value: 'group' },
+                            { label: 'Tout le monde', value: 'public' }
+                        ]" />
                     </div>
 
                     <!-- <div class="block-r mt-10">
@@ -146,7 +154,7 @@ export default {
     },
     data: () => ({
         entityType: 'gathering',
-        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation', 'linkRegister', 'organizers'],
+        inputs: ['cover', 'link', 'date', 'description', 'important', 'information', 'intro', 'location', 'address', 'max', 'status', 'subtitle', 'tags', 'title', 'venue', 'constellation', 'linkRegister', 'organizers', 'visibility'],
         metaLoading: false,
         options: {
             max: false,

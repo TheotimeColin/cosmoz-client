@@ -54,6 +54,10 @@ export default {
         opacity: 0.33;
         pointer-events: none;
     }
+
+    & + & {
+        margin-top: 5px;
+    }
 }
 
 .InputRadioGroup_input {

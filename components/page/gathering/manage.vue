@@ -4,7 +4,7 @@
             <div class="p-20" v-if="!gathering.isPast || (gathering.isPast && !hasConfirmed)">
                 <h1 class="ft-title-s d-none mb-20 mt-5 d-block@xs">{{ gathering.title }}</h1>
 
-                <div class="d-flex fxa-center" v-if="gathering.date">
+                <div class="d-flex fxa-start" v-if="gathering.date">
                     <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                     <div>
@@ -13,12 +13,12 @@
                     </div>
                 </div>
 
-                <div class="d-flex fxa-center mt-10" v-if="gathering.location">
-                    <fa icon="fal fa-map-marker-alt" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
+                <div class="d-flex fxa-start mt-10" v-if="gathering.location">
+                    <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 mr-15 fx-no-shrink" fixed-width />
 
                     <div>
                         <p class="ft-l-bold">{{ gathering.location }}</p>
-                        <p>{{ gathering.address }}</p>
+                        <p v-if="gathering.address">{{ gathering.address }}</p>
                     </div>
                 </div>
 

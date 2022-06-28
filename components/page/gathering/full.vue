@@ -6,7 +6,7 @@
                 <transition name="fade">
                     <div v-show="!isManage">
                         <div class="+mt-30">
-                            <div class="d-flex fxa-center">
+                            <div class="d-flex fxa-start">
                                 <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
 
                                 <div>
@@ -15,8 +15,8 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex fxa-center mt-15">
-                                <fa icon="fal fa-map-marker-alt" size="lg" class="mt-5 mr-15 fx-no-shrink" fixed-width />
+                            <div class="d-flex fxa-start mt-15">
+                                <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 mr-15 fx-no-shrink" fixed-width />
 
                                 <div>
                                     <p class="ft-l-bold">{{ gathering.location }}</p>

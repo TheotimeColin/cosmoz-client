@@ -11,7 +11,7 @@
             
                 <content-feed
                     class="mt-20 mt-10@xs"
-                    read="user"
+                    read="public"
                     :max="3"
                     :gathering="gathering._id"
                     v-if="user"
