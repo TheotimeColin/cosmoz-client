@@ -1,4 +1,5 @@
 import storeUtils from '@/utils/store'
+import axios from 'axios'
 
 export default {
     namespaced: true,
@@ -12,14 +13,14 @@ export default {
                 if (!params.query.per_page) params.query.per_page = 15
                 if (!params.query.locale) params.query.locale = 'fr-FR'
 
-                const response = await this.$axios.$get(storeUtils.getQuery(url, {
+                const response = await axios.get(storeUtils.getQuery(url, {
                     ...params.query,
                     orientation: 'landscape'
                 }), { headers: { Authorization: this.$config.PEXELS }})
 
-                if (!response.photos) throw Error('pexels-error')
+                if (!response.data?.photos) throw Error('pexels-error')
 
-                return response.photos
+                return response.data.photos
             } catch (e) {
                 return storeUtils.handleErrors(e, commit, 'Erreur de connexion à Pexels')
             }
