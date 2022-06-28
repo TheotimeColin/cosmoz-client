@@ -44,13 +44,19 @@ export default {
     }),
     computed: {
         user () { this.$store.getters['user/self'] },
+        constellations () {
+            return this.$store.getters['constellation/find']({
+                type: 'community',
+                featured: true
+            })
+        },
         gatherings () {
             return this.$store.getters['gathering/find']({
                 status: 'active',
                 visibility: 'public',
                 isPast: false,
                 sort: { date: 'desc' }
-            })
+            }).filter(g => this.constellations.find(c => c._id == g.constellation))
         },
     }
 }

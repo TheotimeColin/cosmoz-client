@@ -19,7 +19,7 @@
                     <fa icon="far fa-home" />
                 </div>
 
-                <app-sticky-item v-for="item in items" v-bind="item" :key="item.fa" />
+                <app-sticky-item v-for="item in items.filter(i => !i.disabled)" v-bind="item" :key="item.fa" />
             </div>
         </div>
     </div>
@@ -43,10 +43,22 @@ export default {
         },
         items () {
             return this.selectConst ? [
-                { label: 'Activité', fa: 'message-lines', to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }} },
-                { label: 'Événements',  fa: 'calendar-star', to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }} },
-                { label: 'Sorties',  fa: 'hand-wave', to: { name: 'c-slug-hangouts', params: { slug: this.selectConst.slug }} },
-                { label: 'Discussions',  fa: 'comments', to: { name: 'c-slug-discussions', params: { slug: this.selectConst.slug }} }
+                {
+                    label: 'Activité', fa: 'message-lines',
+                    to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }}
+                }, {
+                    label: 'Événements', disabled: this.selectConst.type == 'group', fa: 'calendar-star',
+                    to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }}
+                }, {
+                    label: 'Sorties',  fa: 'hand-wave',
+                    to: { name: 'c-slug-hangouts', params: { slug: this.selectConst.slug }}
+                }, {
+                    label: 'Discussions',  fa: 'comments',
+                    to: { name: 'c-slug-discussions', params: { slug: this.selectConst.slug }}
+                }, {
+                    label: 'Membres', disabled: this.selectConst.type == 'community', fa: 'users',
+                    to: { name: 'c-slug-members', params: { slug: this.selectConst.slug }}
+                },
             ] : [
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
                 { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },

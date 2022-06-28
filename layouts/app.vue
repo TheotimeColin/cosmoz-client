@@ -144,6 +144,7 @@ export default {
     margin-left: var(--nav-width);
     margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
     position: relative;
+    user-select: auto !important;
 }
 
 .page-enter-active,

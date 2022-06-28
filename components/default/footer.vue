@@ -13,13 +13,10 @@
 
                             <link-base class="Footer_navItem" :href="$config.baseUrl + '/faq'">Foire aux Questions</link-base>
 
-                            <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base>
-
-                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/cgu'">CGU</link-base>
+                            <!-- <link-base class="Footer_navItem" :href="$config.blogUrl">Le super blog</link-base> -->
                         </div>
                         <div class="col-6 col-12@xs mt-15@xs">
-                            <link-base class="Footer_navItem" :href="$config.baseUrl">Cosmoz Events</link-base>
-                            <link-base class="Footer_navItem" :href="$config.socialUrl">Cosmoz Social</link-base>
+                            <link-base class="Footer_navItem" :href="$config.baseUrl + '/cgu'">CGU</link-base>
                         </div>
                     </div>
                 </div>

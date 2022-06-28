@@ -146,9 +146,7 @@ export function getMeta ($route, $store) {
                 },
                 'members': {
                     title: 'Membres de ' + constellation?.name,
-                    fa: 'user-astronaut',
-                    back: { name: 'c-slug-feed', params: { slug: constellation?.slug } },
-                    isPanel: true
+                    fa: 'user-astronaut'
                 },
                 'hangouts': {
                     title: 'Sorties',

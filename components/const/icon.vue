@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed ? 'c-slug-feed' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed || type == 'group' ? 'c-slug-feed' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
 
         <client-only>
             <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
@@ -26,6 +26,7 @@ export default {
     props: {
         slug: { type: String },
         name: { type: String },
+        type: { type: String },
         badge: { type: String },
         pictureSrc: { type: String },
         feed: { type: Boolean, default: false },

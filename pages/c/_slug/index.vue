@@ -93,6 +93,8 @@ export default {
     async fetch() {
         await this.$preFetch()
 
+        if (this.$constellation.type == 'group') this.$router.push(this.localePath({ name: 'c-slug-feed', params: { slug: this.$constellation.slug } }))
+
         if (this.$constellation) {
             await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
 
@@ -104,7 +106,6 @@ export default {
         showFull: false
     }),
     computed: {
-        
         admins () {
             return this.$store.getters['user/find']({
                 _id: { $in: [ ...this.$constellation.admins, ...this.$constellation.organizers ] }

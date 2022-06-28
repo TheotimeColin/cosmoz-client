@@ -3,7 +3,7 @@
         <div>
             <div class="Nav_cover bg-cover-25" :style="{ '--background': `url(${hero ? hero : $bg.night })`}" v-if="!isHome">
                 <div class="fx-grow">
-                    <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :logo="logo" />
+                    <const-icon :modifiers="['m']" :slug="slug" :display-name="true" :name="name" :type="type" :logo="logo" />
                 </div>
 
                 <quick-menu
@@ -117,8 +117,14 @@ export default {
                 },
                 {
                     label: `Sorties`,
-                    disabled: true,
+                    fa: 'party-horn',
                     to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
+                },
+                {
+                    label: `Membres`,
+                    fa: 'users',
+                    to: { name: 'c-slug-members', params: { slug: this.slug } },
+                    disabled: this.type == 'community'
                 },
             ]
         }
