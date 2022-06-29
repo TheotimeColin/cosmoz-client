@@ -34,11 +34,13 @@
 
 <script>
 import PostMixin from '@/mixins/post'
+import PostReactionsMixin from '@/mixins/post-reactions'
 
 export default {
     name: 'PostFooter',
-    mixins: [ PostMixin ],
+    mixins: [ PostMixin, PostReactionsMixin ],
     props: {
+        _id: { type: String },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
         forbidden: { type: Array, default: () => [] },

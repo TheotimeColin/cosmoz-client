@@ -25,13 +25,8 @@
         />
 
         <transition-group name="fade">
-            <content-post
-                class="Feed_item"
-                :key="'status._id'"
-                ref="posts"
-            />
-
-            <content-post
+            <component
+                :is="'content-' + status.type"
                 v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
@@ -75,7 +70,8 @@ export default {
         author: { type: String },
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
-        disableCreate: { type: Boolean, default: false }
+        disableCreate: { type: Boolean, default: false },
+        autoStatuses: { type: Array, default: () => [] }
     },
     data: () => ({
         isEditorActive: false,
@@ -94,14 +90,24 @@ export default {
     },
     computed: {
         statuses () {
+            let statuses = []
             let query = { parent: null }
         
             if (this.gathering) query.gathering = this.gathering
             if (this.constellation) query.constellation = this.constellation
             if (this.author) query = { ...query, owner: this.author, constellation: null, gathering: null }
 
-            return this.$store.getters['status/find']({
+            let userPosts = this.$store.getters['status/find']({
                 ...query
+            }).map(s => ({ ...s, type: 'post' }))
+
+            statuses = [
+                ...userPosts,
+                ...this.autoStatuses
+            ]
+
+            return statuses.sort((a, b) => {
+                return this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()
             })
         },
         displayedStatuses () {

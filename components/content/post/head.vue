@@ -31,7 +31,7 @@
                     </link-base>
                 </template>
 
-                <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break">
+                <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break" v-if="ownerData">
                     @{{ ownerData.id }} · {{ subtitle }}
                 </div>
             </div>

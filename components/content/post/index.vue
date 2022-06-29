@@ -22,31 +22,11 @@
 
                     <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
 
-                    <transition-group name="transition-list" tag="div" class="Post_block Post_reactions p-relative" :class="{ 'is-reactions': reactions.length }">
-                        <button-base
-                            :modifiers="['2xs', 'no-s', isReacted(reaction[0]) ? (images && images.length > 0 ? 'highlight-strong' : 'highlight') : '']"
-                            class="m-3"
-                            :emoji-before="reaction[0]"
-                            v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
-                            @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
-                            @mouseleave="$tClose"
-                            @click.stop="addReaction({ type: reaction[0] })"
-                        >
-                            {{ reaction[1].length }}
-                        </button-base>
-
-                        <button-base
-                            icon-before="plus"
-                            class="m-3"
-                            :modifiers="['2xs']"
-                            key="plus"
-                            type="button"
-                            @click.stop="isSeeReactions = true"
-                            v-if="reactionTypes.length - maxDisplayedReactions > 0"
-                        >
-                            {{ reactionTypes.length - maxDisplayedReactions }}
-                        </button-base>
-                    </transition-group>
+                    <content-reactions
+                        class="Post_block Post_reactions"
+                        :class="{ 'is-reactions': reactions.length > 0 }"
+                        v-bind="$props"
+                    />
                 </div>
 
                 <content-post-footer
@@ -214,7 +194,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .Post {
         border-radius: 10px;
         background-color: var(--color-bg-weak);

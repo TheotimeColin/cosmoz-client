@@ -13,6 +13,7 @@
                     class="mt-20 mt-10@xs"
                     read="public"
                     :max="3"
+                    :auto-statuses="autoStatuses"
                     :gathering="gathering._id"
                     v-if="user"
                 />
@@ -89,6 +90,17 @@ export default {
         },
         hasBooked () {
             return this.gathering.users.find(s => s.status == 'confirmed' && s._id == this.user._id)
+        },
+        autoStatuses () {
+            if (!this.gathering) return []
+
+            return [
+                {
+                    _id: 'status-1',
+                    type: 'status',
+                    createdAt: this.$moment(this.gathering.date).add(3, 'hours')
+                }
+            ]
         }
     },
     head () {
