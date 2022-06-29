@@ -30,8 +30,8 @@ export default {
 
 <style lang="scss" scoped>
 .Tooltip {
-    font: var(--ft-m);
-    color: var(--color-ft);
+    font: var(--ft-m-medium);
+    color: var(--color-ft-light);
     background-color: color-opacity('bg-2xstrong', -10%);
     backdrop-filter: blur(4px);
     pointer-events: none;
@@ -53,7 +53,6 @@ export default {
 .Tooltip.is-active {
     opacity: 1;
     transform: scale(1) translateY(0);
-    color: var(--color-ft-light);
     pointer-events: all;
 }
 

@@ -4,44 +4,10 @@
             <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" >
                 <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
-                <div class="Post_head" @click="onClick">
-                    <div class="d-flex fxa-center fx-grow">
-                        <div class="Post_icon fx-no-shrink" @click.stop>
-                            <user-icon class="Post_user" :modifiers="['m']" v-bind="ownerData"  v-if="ownerData" />
-
-                            <const-icon class="Post_conste" v-bind="consteData" :modifiers="['xs']" v-if="consteData" />
-                        </div>
-
-                        <div class="ml-10 ft-xs line-1" @click.stop>
-                            <component :is="titleLink ? 'nuxt-link' : 'div'" :to="titleLink" class="ft-title-2xs subtitle">
-                                {{ title }}
-                            </component>
-
-                            <template v-if="parentData">
-                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                                <link-base :to="consteData ? { name: 'c-slug-,postId', params: { slug: consteData.slug, postId: parentData._id } } : { name: 'post-postId', params: { postId: parentData._id } }" :modifiers="['l']">
-                                    {{ $ellipsis(parentData.content, 40) }}
-                                </link-base>
-                            </template>
-                            <template v-else-if="gatheringData && !isCurrent">
-                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                                <link-base :to="gatheringLink" :modifiers="['l']">
-                                    {{ $ellipsis(gatheringData.title, 40) }}
-                                </link-base>
-                            </template>
-                            <template v-else-if="consteData && !isCurrent">
-                                <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
-                                <link-base :to="gatheringLink" :modifiers="['l']">
-                                    {{ $ellipsis(consteData.name, 40) }}
-                                </link-base>
-                            </template>
-
-                            <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break" v-if="!isForbidden">
-                                @{{ ownerData.id }} · {{ subtitle }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <content-post-head
+                    v-bind="$props"
+                    @delete="pendingDelete = true"
+                />
 
                 <div class="Post_main" @click="onClick">
                     <div class="Post_text Post_block" v-if="content">
@@ -83,63 +49,11 @@
                     </transition-group>
                 </div>
 
-                <div class="Post_footer" @click="onClick">
-                    <div class="Post_action" @click.stop>
-                        <quick-menu
-                            :modifiers="['right']"
-                            :button="{ modifiers: ['s', 'xweak'] }"
-                            :items="actions"
-                        />
-                    </div>
-                    <div class="Post_action" @click.stop>
-                        <button-base
-                            icon-before="comments"
-                            :modifiers="['s', 'xweak']"
-                            :to="permaLink"
-                            class="mr-3"
-                            :text="replyCount ? replyCount : ''"
-                        />
-
-                        <button-base
-                            icon-before="face-smile"
-                            :modifiers="['s', 'round', isShowEmojis ? 'light' : 'xweak']"
-                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : {}"
-                            @mouseenter="isShowEmojis = true"
-                            @mouseleave="isShowEmojis = null"
-                        />
-
-                        <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseenter="isShowEmojis = true" @mouseleave="isShowEmojis = null" v-if="$biggerThan('s')">
-                            <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
-                                <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
-                                    isShowEmojis = false;
-                                    addReaction({ type: v, action: true });
-                                }" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="Post_forbidden" v-if="isForbidden && consteData">
-                    <nuxt-link :to="localePath({ name: 'c-slug-rejoindre', params: { slug: consteData.slug } })" class="Post_forbiddenMessage fx-center ft-s p-15 br-xs">
-                        <ripples :size="300" />
-
-                        <p class="mr-10">Ce contenu n'est visible que par les membres de {{ consteData.name }}.</p>
-
-                        <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
-                    </nuxt-link>
-                </div>
-                <div class="Post_forbidden" v-else-if="isForbidden && ownerData">
-                    <div class="Post_forbiddenMessage Post_forbiddenMessage--user ft-s p-15 br-xs">
-                        <p>Ce contenu n'est visible que par les amis de {{ ownerData.name }}.</p>
-                    </div>
-                </div>
-
-                <content-reaction-popin
-                    :is-active="isSeeReactions"
-                    :reactions="reactionTypes"
-                    @close="isSeeReactions = false"
-                    v-if="!isForbidden"
+                <content-post-footer
+                    v-bind="$props"
                 />
+
+                <content-post-forbidden v-bind="$props" />
 
                 <div class="Post_delete" v-show="pendingDelete">
                     <div class="max-width-s">
@@ -229,20 +143,14 @@ export default {
     },
     data: () => ({
         isLoading: false,
-        max: 2,
         isAdd: false,
-        reacted: null,
         isOverflow: false,
-        showAll: false,
-        isShowEmojis: false
+        showAll: false
     }),
     mounted () {
-        this.max = this.maxComments
-
         this.checkOverflow()
     },
     computed: {
-        
         reactionTypes () {
             return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },
@@ -254,57 +162,8 @@ export default {
 
             return children.sort((a, b) => this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()).slice(0, this.max)
         },
-        gatheringData () {
-            return this.gathering ? this.$store.getters['gathering/findOne']({ _id: this.gathering }) : null
-        },
-        parentData () {
-            return this.origin ? this.$store.getters['status/findOne']({ _id: this.origin }) : null
-        },
-        consteData () {
-            return this.constellation || this.gatheringData?.constellation ? this.$store.getters['constellation/findOne']({ _id: (this.gatheringData?.constellation || this.constellation) }) : null
-        },
-        title () {
-            return this.ownerData ? this.ownerData.name : ''
-        },
-        subtitle () {
-            let subtitle = this.$moment(this.createdAt).fromNow()
-            return subtitle
-        },
-        titleLink () {
-            return this.ownerData ? this.localePath({ name: 'p-userId', params: { userId: this.ownerData.id } }) : null
-        },
-        replyCount () {
-            return this.children.length + this.children.reduce((total, c) => total += c.children.length, 0)
-        },
-        gatheringLink () {
-            let link = null
-
-            if (this.gatheringData && this.consteData) {
-                link = this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.gatheringData.id, slug: this.consteData.slug } })
-            } else if (this.consteData) {
-                link = this.localePath({ name: 'c-slug-feed', params: { slug: this.consteData.slug } })
-            }
-
-            return link
-        },
-        isForbidden () {
-            return !this.user || this.forbidden.includes('content')
-        },
         placeholderText () {
             return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor nec justo ac pellentesque. Hé non, ce contenu est vraiment caché, petit malin ! Vestibulum euismod, sapien ultrices blandit scelerisque, risus diam lacinia nisi, id lobortis urna erat a nulla. Curabitur vel cursus risus.`.slice(this.$randomBetween(0, 20), this.$randomBetween(20, 230))
-        },
-        permaLink () {
-            if (this.consteData) {
-                return {
-                    name: 'c-slug-post-postId',
-                    params: { slug: this.consteData.slug, postId: this._id }
-                }
-            } else {
-                return {
-                    name: 'post-postId',
-                    params: { postId: this._id }
-                }
-            }
         }
     },
     watch: {
@@ -398,14 +257,6 @@ export default {
 
     .Post_block.Post_gallery {
         padding-bottom: 0;
-
-        // & + .Post_reactions.is-reactions {
-        //     position: absolute;
-        //     bottom: 6px;
-        //     left: 3px;
-        //     margin: 0;
-        //     padding: 0;
-        // }
         
         & + .Post_reactions.is-reactions {
             margin: -18px 0 0px 0;
@@ -424,68 +275,6 @@ export default {
         padding-bottom: 20px;
     }
 
-    .Post_forbidden {
-        padding: 25px;
-        position: absolute;
-        z-index: 15;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: color-opacity('bg-2xstrong', -50%);;
-        backdrop-filter: blur(5px);
-        border-radius: 10px;
-    }
-
-    .Post_forbiddenMessage {
-        max-width: 400px;
-        background-color: var(--color-bg-xweak);
-        box-shadow: 0 3px 6px 0 color-opacity('bg-xstrong', -25%);
-        overflow: hidden;
-        position: relative;
-        transition: all 200ms ease;
-
-        &:hover {
-            background-color: var(--color-cosmoz);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px 0 color-opacity('bg-xstrong', -10%);
-        }
-    }
-
-    .Post_forbiddenMessage--user {
-        text-align: center;
-        pointer-events: none;
-    }
-
-    .Post_icon {
-        display: block;
-        flex-shrink: 0;
-        flex-grow: 0;
-        position: relative;
-    }
-
-    .Post_conste {
-        position: absolute;
-        bottom: -5px;
-        right: -5px;
-        border-radius: 50%;
-        border: 2px solid var(--color-bg-weak);
-    }
-
-    .Post_gathering {
-        width: 25px;
-        height: 25px;
-        position: absolute;
-        bottom: -8px;
-        right: -5px;
-        border-radius: 4px;
-        background-size: cover;
-        background-position: center;
-    }
-
     .Post_delete {
         @include absolute-fill;
         font: var(--ft-m);
@@ -496,70 +285,6 @@ export default {
         justify-content: center;
         z-index: 10;
         background-color: rgba(0, 0, 0, 0.75);
-    }
-
-
-    .Post_head {
-        padding: 15px 15px 20px;
-        position: relative;
-    }
-
-    .Post_menu {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-    }
-
-    .Post_footer {
-        background-color: var(--color-bg);
-        background-color: color-opacity('bg', -65%);
-        display: flex;
-        justify-content: space-between;
-        padding: 5px;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-
-    .Post_action {
-        font: var(--ft-title-3xs);
-        position: relative;
-        
-        svg {
-            font-size: 17px;
-            cursor: pointer;
-        }
-        
-        & + & {
-            margin-left: 20px;
-        }
-    }
-
-    .Post_emojiSelector {
-        pointer-events: none;
-        opacity: 0;
-
-        position: absolute;
-        box-sizing: content-box;
-        border: 20px solid transparent;
-        z-index: 50;
-        bottom: 20px;
-        right: 0;
-        transform: translateY(calc(100% + 5px));
-        transition: all 100ms ease;
-
-        &.is-active,
-        &:hover:not(.is-disabled) {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(100%);
-        }
-    }
-
-    .Post_emojiSelectorContainer {
-        width: 400px;
-        overflow: hidden;
-        height: 350px;
-        display: flex;
     }
 
     .Post_comments {
@@ -586,10 +311,6 @@ export default {
             border-radius: 0;
         }
 
-        .Post_forbidden {
-            border-radius: 0;
-        }
-
         .Post_comments {
             margin: 20px -15px 0;
             padding: 0 10px 10px;
@@ -605,8 +326,7 @@ export default {
             margin-right: -15px;
         }
 
-        .Post_text,
-        .Post_head {
+        .Post_text {
             padding-left: 0;
             padding-right: 0;
         }
@@ -628,18 +348,6 @@ export default {
                 padding: 0 10% 0px 0;
                 background-color: transparent;
             }
-        }
-
-        .Post_head {
-            padding-top: 0;
-            padding-bottom: 20px;
-            display: flex;
-        }
-
-        .Post_menu  {
-            position: relative;
-            top: auto;
-            left: auto;
         }
     }
 

@@ -26,6 +26,12 @@
 
         <transition-group name="fade">
             <content-post
+                class="Feed_item"
+                :key="'status._id'"
+                ref="posts"
+            />
+
+            <content-post
                 v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
@@ -87,7 +93,6 @@ export default {
         this.isLoading = false
     },
     computed: {
-        
         statuses () {
             let query = { parent: null }
         
