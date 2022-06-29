@@ -23,6 +23,9 @@ export default {
     data: () => ({
         isLoading: false
     }),
+    mounted () {
+        this.$store.dispatch('user/updateNotification', { id: 'home-menu', type: 'onboarding' })
+    },
     computed: {
         user () { return this.$store.getters['user/self'] }
     }

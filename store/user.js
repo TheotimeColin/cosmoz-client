@@ -297,6 +297,9 @@ export default {
         self: (state, getters, root) => {
             return parseUser(root.auth.user)
         },
+        notif: (state, getters, root) => (id, type) => {
+            return getters.self ? getters.self.notifications.find(n => n.type == type && n.id == id) : null
+        },
         items: (state) => {
             return Object.values(state.items).map(item => parseUser(item))
         },

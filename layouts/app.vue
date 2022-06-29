@@ -14,7 +14,7 @@
             <Nuxt />
         </div>
 
-        <app-nav :pan="pan" :is-panning="isPanning" ref="nav" />
+        <app-nav :pan="pan" :is-panning="isPanning" @open="onPanEnd" ref="nav" />
 
         <popin-register />
         <popin-constellation-create />

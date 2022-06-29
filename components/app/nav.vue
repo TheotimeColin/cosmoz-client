@@ -12,23 +12,31 @@
         >
             <div class="AppNav_content">
                 <div class="AppNav_primary">
-                    <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" 
-                    @mouseenter.native="(e) => $tOpen('Mon espace', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"
-                    :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
+                    <div class="+mt-10 p-relative">
+                        <div class="Att_ripples" v-if="!$store.getters['user/notif']('home-menu', 'onboarding')"></div>
+                        
+                        <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" 
+                        @mouseenter.native="(e) => $tOpen('Mon espace', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"
+                        :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
+                    </div>
 
-                    <hr class="Separator mt-10 bg-bg">
+                    <hr class="+mt-10 Separator bg-bg" v-if="constellations.length > 0 || selectConst">
 
-                    <div class="AppNav_constellations">
+                    <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
                         <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == constellation.slug }" :modifiers="['m']" :feed="true" v-for="constellation in constellations" @mouseenter.native="(e) => $tOpen(constellation.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="constellation" :key="constellation._id" />
 
                         <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == selectConst.slug }" :modifiers="['m']" :feed="true"  @mouseenter.native="(e) => $tOpen(selectConst.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
                     </div>
 
-                    <hr class="Separator mb-10 bg-bg">
-
-                    <button-base class="AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" @mouseenter.native="(e) => $tOpen('Créer une constellation', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"  v-if="user" />
+                    <hr class="+mt-10 Separator bg-bg">
                     
-                    <button-base class="AppNav_icon AppNav_icon--explore" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" @mouseenter.native="(e) => $tOpen('Explorer', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" />
+                    <div class="+mt-10 p-relative" @click="$store.dispatch('user/updateNotification', { id: 'explore-menu', type: 'onboarding' })">
+                        <div class="Att_ripples" v-if="!$store.getters['user/notif']('explore-menu', 'onboarding')"></div>
+                    
+                        <button-base class="AppNav_icon AppNav_icon--explore" :attention="true" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" @mouseenter.native="(e) => $tOpen('Explorer', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" />
+                    </div>
+                    
+                    <button-base class="+mt-10 AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" @mouseenter.native="(e) => $tOpen('Créer une constellation', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"  v-if="user" />
                 </div>
                 <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
@@ -75,11 +83,16 @@
             <div class="AppNav_hider" :style="{ opacity: translate }" @click="isActive = false"></div>
         </nav>
 
+        
+        <div class="AppNav_swipe Att_swipe" v-if="!$store.getters['user/notif']('left-menu', 'onboarding')">
+            Faire glisser vers la droite
+        </div>
+
         <app-sticky
             :translate="translate"
             :is-active="isActive"
             :is-panning="isPanning || isClosePanning"
-            @open="isActive = true"
+            @open="() => { isActive = true; $emit('open') }"
         />
     </div>
 </template>
@@ -112,7 +125,10 @@ export default {
             this.isActive = false
         },
         isPanning (v) {
-            if (!v && this.pan > 100) this.isActive = true
+            if (!v && this.pan > 100) {
+                if (this.user && !this.$store.getters['user/notif']('left-menu', 'onboarding')) this.$store.dispatch('user/updateNotification', { id: 'left-menu', type: 'onboarding' })
+                this.isActive = true
+            }
         },
         isClosePanning (v) {
             if (!v && this.closePan < -25) this.isActive = false
@@ -122,7 +138,6 @@ export default {
         }
     },
     computed: {
-        
         constellations () {
             return this.user ? this.$store.getters['constellation/find']({
                 $or: {
@@ -161,6 +176,8 @@ export default {
     methods: {
         open () {
             this.isActive = true
+            this.isClosePanning = false
+            this.closePan = 0
         },
         onPan (v) {
             this.isClosePanning = true
@@ -285,10 +302,6 @@ export default {
         pointer-events: none;
         transform: scale(0.95);
     }
-
-    & + & {
-        margin-top: 10px;
-    }
 }
 
 .AppNav_const {
@@ -303,7 +316,7 @@ export default {
     flex-direction: column;
     align-items: center;
     overflow: scroll;
-    padding: 10px 0;
+    padding: 0;
     @include hide-scrollbars;
 }
 
@@ -416,6 +429,13 @@ export default {
 
 .AppNav_navBar {
     display: none;
+}
+
+.AppNav_swipe {
+    position: fixed;
+    z-index: 20;
+    left: 10px;
+    bottom: calc(var(--sticky-height) + 10px);
 }
 
 @include breakpoint-s {

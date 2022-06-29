@@ -15,9 +15,6 @@
         <div>
             <div class="Sticky_wrapper">
                 <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
-                <div class="Sticky_current round ft-xs bg-cosmoz" @click="onOpen" v-else>
-                    <fa icon="far fa-home" />
-                </div>
 
                 <app-sticky-item v-for="item in items.filter(i => !i.disabled)" v-bind="item" :key="item.fa" />
             </div>
@@ -60,6 +57,7 @@ export default {
                     to: { name: 'c-slug-members', params: { slug: this.selectConst.slug }}
                 },
             ] : [
+                { label: 'Menu', fa: 'bars', onClick: this.onOpen },
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
                 { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
                 { label: 'Ma constellation', fa: 'sparkles', to: { name: 'constellation' } },

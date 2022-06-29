@@ -1,5 +1,5 @@
 <template>
-    <component :is="to ? 'nuxt-link' : 'div'" class="Sticky_item" :to="localePath(to)">
+    <component :is="to ? 'nuxt-link' : 'div'" class="Sticky_item" :to="localePath(to)" @click="onClick ? onClick() : {}">
         <ripples />
 
         <fa class="Sticky_reg" :icon="`far fa-${fa}`" />
@@ -15,6 +15,7 @@ export default {
         to: { type: Object },
         label: { type: String },
         fa: { type: String },
+        onClick: { type: Function, default: () => {} },
     }
 }
 </script>
