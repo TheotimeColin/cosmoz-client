@@ -84,7 +84,7 @@ export function getMeta ($route, $store) {
         },
         'feed': {
             title: 'Mon activité',
-            fa: 'home'
+            fa: 'message-lines'
         },
         'agenda': {
             title: 'Mon agenda',
@@ -114,7 +114,7 @@ export function getMeta ($route, $store) {
         },
         'c-slug': {
             title: constellation?.name,
-            fa: 'home',
+            fa: 'message-lines',
 
             children: {
                 'post': {
