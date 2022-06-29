@@ -4,7 +4,7 @@
 
         <div class="SliderBlock_container" ref="container">
             <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
-                <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in 5" :key="i" v-show="isLoading">
+                <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in (isLoading ? 5 : 0)" :key="i">
                     <placeholder :height="height" :ratio="ratio" />
                 </div>
 
@@ -162,6 +162,8 @@ export default {
         }
 
         .SliderBlock_rail {
+            transition: none;
+            transform: none;
 
             &::after {
                 content: "";

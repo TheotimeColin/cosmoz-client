@@ -183,4 +183,17 @@ export default {
         }
     }
 }
+
+@include breakpoint-xs {
+
+    .Images.is-1 {
+
+        .Images_image {
+
+            img {
+                max-height: 80vh;
+            }
+        }
+    }
+}
 </style>

@@ -91,7 +91,7 @@ export default {
     mixins: [ ConstellationMixin ],
     layout: 'app',
     async fetch() {
-        await this.$preFetch()
+        await this.$preFetch(true)
 
         if (this.$constellation.type == 'group') this.$router.push(this.localePath({ name: 'c-slug-feed', params: { slug: this.$constellation.slug } }))
 

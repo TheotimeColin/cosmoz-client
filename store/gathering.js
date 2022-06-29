@@ -114,7 +114,8 @@ export default {
                 
                 if (response.status == 0) throw Error(response.errors[0])
 
-                commit('updateOne', response.data)
+                if (response.data.gathering) commit('updateOne', response.data.gathering)
+                if (response.data.constellation) commit('constellation/updateOne', response.data.constellation, { root: true })
                 
                 return response
             } catch (e) {

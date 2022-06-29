@@ -7,7 +7,7 @@ export default {
         },
     },
     methods: {
-        $preFetch () {
+        $preFetch (force = false) {
             if (!this.$route.params.slug) return null
             
             return new Promise(async (resolve) => {
@@ -15,7 +15,7 @@ export default {
                     slug: this.$route.params.slug
                 })
         
-                if (!result) {
+                if (!result || force) {
                     await this.$store.dispatch('constellation/get', {
                         query: { slug: this.$route.params.slug }
                     })
