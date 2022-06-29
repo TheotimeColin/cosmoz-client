@@ -35,15 +35,19 @@ export default {
 
             let query = {}
 
-            if ((params.id || this._id) && !this.staticId) query._id = params.id ? params.id : this._id
+            if (params.status) query.status = params.status
+            if (params.id) query.id = params.id
 
-            if (this.staticId) query.id = this.staticId
-
-            await this.$store.dispatch('status/react', {
-                ...query, type,
-                action: this.reactionAction
-            })
-
+            if (this.reactionAction) {
+                await this.$store.dispatch('reaction/create', {
+                    ...query, type
+                })
+            } else {
+                await this.$store.dispatch('reaction/delete', {
+                    ...query, type
+                })
+            }
+            
             this.isReactionLoading = false
         },
         isReacted (type = '') {

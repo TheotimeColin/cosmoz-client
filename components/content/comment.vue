@@ -25,7 +25,7 @@
                         <content-type-images class="Post_block Post_gallery" :modifiers="['s']" :images="images" v-if="images && images.length > 0" />
                     </div>
 
-                    <content-reactions class="Comment_reactions" v-bind="$props" />
+                    <content-reactions class="Comment_reactions" v-bind="$props" id="" :status="$props._id" />
                     
                     <div class="Comment_delete" v-show="pendingDelete">
                         <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
@@ -43,14 +43,14 @@
                         <button-base
                             icon-before="face-smile"
                             :modifiers="['2xs', 'round', isShowEmojis ? 'light' : 'xweak']"
-                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : isShowEmojis = true"
+                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, status: _id, action: true }) } }) : isShowEmojis = true"
                         />
 
                         <div class="Comment_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseleave="isShowEmojis = false" v-if="$biggerThan('s')">
                             <div class="Comment_emojiSelectorContainer bg-bg-strong br-s shadow">
                                 <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
                                     isShowEmojis = false;
-                                    addReaction({ type: v, action: true });
+                                    addReaction({ type: v, status: _id, action: true });
                                 }" />
                             </div>
                         </div>

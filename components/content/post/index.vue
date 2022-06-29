@@ -26,6 +26,7 @@
                         class="Post_block Post_reactions"
                         :class="{ 'is-reactions': reactions.length > 0 }"
                         v-bind="$props"
+                        id="" :status="$props._id"
                     />
                 </div>
 

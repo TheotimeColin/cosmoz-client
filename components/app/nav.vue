@@ -115,7 +115,6 @@ export default {
     },
     data: () => ({
         isActive: false,
-        nav: [],
         exploreNav: [],
         isClosePanning: false,
         closePan: 0
@@ -159,15 +158,18 @@ export default {
         isExplore () { return this.$route.name.includes('explore') },
         translate () {
             return Math.max(this.isClosePanning ? 1 + (this.closePan / 340) : (this.pan / 340), 0)
-        }
+        },
+        nav () {
+            return [
+                { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
+                { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true, number: this.$store.getters['gathering/find']({
+                    status: 'active', isPast: false, isAttending: true
+                }).length },
+                { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
+            ]
+        },
     },
     created () {
-        this.nav = [
-            { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
-            { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true },
-            { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
-        ]
-
         this.exploreNav = [
             { label: `Suggestions`, fa: 'wand-magic-sparkles', to: { name: 'explore' } },
             { label: `Événements à venir`, fa: 'calendar-star', to: { name: 'explore-events' } }

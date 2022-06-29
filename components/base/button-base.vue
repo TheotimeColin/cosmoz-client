@@ -234,7 +234,12 @@ export default {
     font: var(--ft-title-3xs);
 
     .ButtonBase_emoji {
-        font-size: 20px;
+        font-size: 18px;
+    }
+    
+    .ButtonBase_iconBefore + .ButtonBase_text,
+    .ButtonBase_text + .ButtonBase_iconAfter {
+        margin-left: 4px;
     }
 }
 

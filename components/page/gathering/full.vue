@@ -27,35 +27,28 @@
 
                         <hr class="Separator mv-30">
 
-                        <template v-if="user">
-                            <div class="+mt-30" v-if="gathering.description && gathering.description != '<p></p>'">
-                                <h2 class="ft-title-xs mb-5">Détails</h2>
-                                <text-body :modifiers="['gathering']" :value="gathering.description" />
-                            </div>
+                        <div class="+mt-30" v-if="gathering.description && gathering.description != '<p></p>'">
+                            <h2 class="ft-title-xs mb-5">Détails</h2>
+                            <text-body :modifiers="['gathering']" :value="gathering.description" />
+                        </div>
 
-                            <div class="+mt-30 p-20 bg-bg-weak br-s"
-                                v-if="gathering.important && gathering.important != '<p></p>'">
-                                <h2 class="ft-title-2xs mb-15 tape">Important</h2>
-                                <text-body :modifiers="['gathering']" :value="gathering.important" />
-                            </div>
+                        <div class="+mt-30 p-20 bg-bg-weak br-s"
+                            v-if="gathering.important && gathering.important != '<p></p>'">
+                            <h2 class="ft-title-2xs mb-15 tape">Important</h2>
+                            <text-body :modifiers="['gathering']" :value="gathering.important" />
+                        </div>
 
-                            <div class="+mt-30 block-r" v-if="organizers && organizers.length > 0">
-                                <h2 class="ft-title-xs mb-10">Équipe d'organisation</h2>
+                        <div class="+mt-30 block-r" v-if="organizers && organizers.length > 0">
+                            <h2 class="ft-title-xs mb-10">Équipe d'organisation</h2>
 
-                                <div class="row-xs">
-                                    <div class="col-6 col-12@xs mt-10" v-for="user in organizers" :key="user._id">
-                                        <user-icon v-bind="user" :display-name="true" class="mr-10 fx-no-shrink"
-                                            :modifiers="['m']" />
-                                    </div>
+                            <div class="row-xs">
+                                <div class="col-6 col-12@xs mt-10" v-for="user in organizers" :key="user._id">
+                                    <user-icon v-bind="user" :display-name="true" class="mr-10 fx-no-shrink"
+                                        :modifiers="['m']" />
                                 </div>
                             </div>
-                        </template>
-                        <template v-else>
-                            <p class="ft-bold mv-20">Le reste des informations est accessible aux membres.</p>
-
-                            <insert-register />
-                        </template>
-
+                        </div>
+                        
                         <div class="+mt-30 pv-20 fx-center bg-bg b-top" style="position: sticky; bottom: 0;"
                             v-if="user && !hasWaitingList && !gathering.isPast">
                             <div></div>

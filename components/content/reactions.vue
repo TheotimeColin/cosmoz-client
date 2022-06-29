@@ -6,10 +6,10 @@
                 class="m-3"
                 :emoji-before="reaction[0]"
                 v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
-                :text="isDefaultReaction(reaction[1]) ? '' : reaction[1].length"
+                :text="isDefaultReaction(reaction[1]) && reaction[1].length < 1 ? '' : reaction[1].length - (isDefaultReaction(reaction[1]) ? 1 : 0)"
                 @mouseenter="(e) => onMouseEnter(e, reaction)"
                 @mouseleave="$tClose"
-                @click.stop="addReaction({ type: reaction[0] })"
+                @click.stop="addReaction({ type: reaction[0], status, id })"
             />
 
             <button-base
@@ -23,7 +23,13 @@
             >
                 {{ reactionTypes.length - maxDisplayedReactions }}
             </button-base>
-        </transition-group>
+
+            <emoji-button
+                @input="(v) => addReaction({ type: v, status, id, action: true })"
+                key="new"
+                v-if="add"
+            />
+        </transition-group >
     </div>
 </template>
 
@@ -35,15 +41,14 @@ export default {
     name: 'Post',
     mixins: [ PostMixin, PostReactionsMixin ],
     props: {
-        _id: { type: String },
+        id: { type: String },
+        status: { type: String },
         staticId: { type: String },
         size: { type: String },
+        add: { type: Boolean, default: false },
         defaultReactions: { type: Array, default: () => [] },
         reactions: { type: Array, default: () => [] },
     },
-    data: () => ({
-
-    }),
     computed: {
         reactionTypes () {
             return this.$groupBy([ ...this.defaultReactions, ...this.reactions], 'type', { orderBy: true })
@@ -54,7 +59,7 @@ export default {
     },
     methods: {
         isDefaultReaction (reactions) {
-            return !reactions.find(r => !r.default)
+            return reactions.find(r => r.default)
         },
         onMouseEnter (e, reaction) {
             if (this.isDefaultReaction(reaction[1])) return

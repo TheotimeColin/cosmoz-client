@@ -10,23 +10,10 @@
                     :text="replyCount ? replyCount + ' commentaires': 'Commenter'"
                 />
 
-                <button-base
-                    icon-before="face-smile"
-                    :modifiers="['s', isShowEmojis ? 'light' : 'xweak']"
-                    @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : {}"
+                <emoji-button
+                    @input="(v) => addReaction({ type: v, status: _id, action: true })"
                     text="Réagir"
-                    @mouseenter="isShowEmojis = true"
-                    @mouseleave="isShowEmojis = null"
                 />
-
-                <div class="Post_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseenter="isShowEmojis = true" @mouseleave="isShowEmojis = null" v-if="$biggerThan('s')">
-                    <div class="Post_emojiSelectorContainer bg-bg-strong br-s shadow">
-                        <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
-                            isShowEmojis = false;
-                            addReaction({ type: v, action: true });
-                        }" />
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -79,34 +66,6 @@ export default {
         & + & {
             margin-left: 20px;
         }
-    }
-
-    .Post_emojiSelector {
-        pointer-events: none;
-        opacity: 0;
-
-        position: absolute;
-        box-sizing: content-box;
-        border: 20px solid transparent;
-        z-index: 50;
-        bottom: 20px;
-        right: 0;
-        transform: translateY(calc(100% + 5px));
-        transition: all 100ms ease;
-
-        &.is-active,
-        &:hover:not(.is-disabled) {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(100%);
-        }
-    }
-
-    .Post_emojiSelectorContainer {
-        width: 400px;
-        overflow: hidden;
-        height: 350px;
-        display: flex;
     }
 
     .Post_comments {

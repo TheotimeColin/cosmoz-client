@@ -104,7 +104,7 @@ export default {
             statuses = [
                 ...userPosts,
                 ...this.autoStatuses
-            ]
+            ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment()))
 
             return statuses.sort((a, b) => {
                 return this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()
@@ -115,6 +115,9 @@ export default {
         }
     },
     methods: {
+        openEditor () {
+            this.isEditorActive = true
+        },
         async refresh () {
             return new Promise(async resolve => {
                 try {

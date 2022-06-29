@@ -1,43 +1,67 @@
 <template>
     <div class="Status">
         <div class="Status_content">
-            <p class="ft-xs color-ft-weak mb-10">Il y a 2 heures</p>
+            <div class="+mt-20">
+                <p class="ft-xs color-ft-weak mb-10">{{ $moment(createdAt).fromNow() }}</p>
 
-            <p class="ft-title-xs">
-                C'est terminé !
-            </p>
-            <p class="ft-m-medium mt-5">Merci d'avoir participé à l'événement.</p>
-
+                <p class="ft-title-xs" v-if="title">
+                    {{ title }}
+                </p>
+                <p class="ft-m-medium mt-5" v-if="subtitle">{{ subtitle }} </p>
+            </div>
+            
             <content-reactions
+                class="+mt-20"
+                :add="true"
                 :size="'m'"
-                :static-id="_id"
+                :id="_id"
+                :reactions="reactions"
                 :default-reactions="[
                     { type: '❤️', default: true },
                     { type: '👏', default: true },
                     { type: '🍻', default: true }
                 ]"
+                v-if="enableReactions"
             />
-        </div>
 
-        <div class="fx-center mt-60">
-            <hr class="Separator">
-            <p class="ft-xs color-ft-weak mh-10 fx-no-shrink">Fin de l'événement.</p>
-            <hr class="Separator">
+            <div class="+mt-20" v-if="actions.length > 0">
+                <button-base
+                    v-for="(action, i) in actions"
+                    type="button"
+                    class="m-3"
+                    v-bind="action"
+                    v-on="action.on"
+                    :key="i"
+                />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    async fetch () {
+        await this.$store.dispatch('reaction/fetch', {
+            query: { id: this._id }
+        })
+    },
     props: {
         _id: { type: String },
-        content: { type: String },
+        title: { type: String },
+        subtitle: { type: String },
+        createdAt: { type: [Date, Object] },
+        enableReactions: { type: Boolean, default: false },
+        actions: { type: Array, default: () => [] }
     },
     data: () => ({
       
     }),
     computed: {
-
+        reactions () {
+            return this.$store.getters['reaction/find']({
+                id: this._id
+            })
+        }
     },
     methods: {
         
@@ -54,5 +78,15 @@ export default {
         padding: 20px;
         border-radius: 10px;
         background-color: color-opacity('bg-strong', -50%);
+    }
+
+    @include breakpoint-xs {
+        .Status {
+            margin: 0 -20px;
+            
+            .Status_content {
+                border-radius: 0;
+            }
+        }
     }
 </style>
