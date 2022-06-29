@@ -38,11 +38,8 @@
 </template>
 
 <script>
-import { InputBase, SelectBase } from 'instant-coffee-core'
-
 export default {
     name: 'ResetPasswordPage',
-    components: { InputBase, SelectBase },
     layout: 'default',
     middleware: 'loggedIn',
     data: () => ({

@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="InputBase_reveal">
-            <i class="fal fa-eye-slash" v-if="isRevealed"></i>
-            <i class="fal fa-eye" v-else></i>
+            <fa icon="far fa-eye-slash" v-if="isRevealed" />
+            <fa icon="far fa-eye" v-else />
         </div>
     </div>
 </template>
