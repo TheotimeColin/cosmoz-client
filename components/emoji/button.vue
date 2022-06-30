@@ -11,7 +11,7 @@
 
         <div class="EmojiButton_popin" :class="{ 'is-active': isActive, 'is-disabled': isActive === false }" @mouseenter="isActive = true" @mouseleave="isActive = null" v-if="$biggerThan('s')">
             <div class="EmojiButton_popinContainer bg-bg-strong br-s shadow">
-                <reaction-emoji-selector :is-active="isActive" @input="(v) => $emit('input', v)" />
+                <reaction-emoji-selector :is-active="isActive" @input="(v) => { $emit('input', v); isActive = false }" />
             </div>
         </div>
     </div>

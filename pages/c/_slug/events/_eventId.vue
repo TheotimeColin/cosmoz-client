@@ -69,6 +69,17 @@ export default {
 
         if (this.gathering) {
             await this.$store.dispatch('user/softFetch', this.gathering.users.map(u => u._id))
+
+            if (this.user && this.gathering.isPast) {
+                await this.$store.dispatch('mention/fetch', { query: {
+                    target: this.user._id,
+                    gathering: this.gathering._id
+                }})
+            }
+
+            await this.$store.dispatch('reaction/fetch', {
+                query: { id: { '$includes': this.gathering._id } }
+            })
         }
 
         this.isLoading = false 

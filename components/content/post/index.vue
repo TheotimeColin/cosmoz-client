@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!isLoading && ownerData">
-            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" >
+            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden, 'is-gallery': images && images.length > 0 }" ref="container" >
                 <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
                 <content-post-head
@@ -217,11 +217,17 @@ export default {
         &.is-forbidden {
             cursor: default;
         }
+
+        &.is-gallery {
+
+            .Post_footer {
+                background-color: transparent;
+            }
+        }
     }
 
     .Post_main {
         position: relative;
-        background-color: color-opacity('bg', -65%);
     }
 
     .Post_block.Post_reactions {
@@ -249,7 +255,6 @@ export default {
     .Post_text {
         font: var(--ft-m);
         padding: 0 20px;
-        background-color: var(--color-bg-weak);
     }
 
     .Post_block {

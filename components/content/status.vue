@@ -40,11 +40,6 @@
 
 <script>
 export default {
-    async fetch () {
-        await this.$store.dispatch('reaction/fetch', {
-            query: { id: this._id }
-        })
-    },
     props: {
         _id: { type: String },
         title: { type: String },
@@ -53,18 +48,12 @@ export default {
         enableReactions: { type: Boolean, default: false },
         actions: { type: Array, default: () => [] }
     },
-    data: () => ({
-      
-    }),
     computed: {
         reactions () {
             return this.$store.getters['reaction/find']({
                 id: this._id
             })
         }
-    },
-    methods: {
-        
     }
 }
 </script>
