@@ -25,7 +25,8 @@
         />
 
         <transition-group name="fade">
-            <content-post
+            <component
+                :is="'content-' + status.type"
                 v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
@@ -69,7 +70,8 @@ export default {
         author: { type: String },
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
-        disableCreate: { type: Boolean, default: false }
+        disableCreate: { type: Boolean, default: false },
+        autoStatuses: { type: Array, default: () => [] }
     },
     data: () => ({
         isEditorActive: false,
@@ -87,16 +89,25 @@ export default {
         this.isLoading = false
     },
     computed: {
-        
         statuses () {
+            let statuses = []
             let query = { parent: null }
         
             if (this.gathering) query.gathering = this.gathering
             if (this.constellation) query.constellation = this.constellation
             if (this.author) query = { ...query, owner: this.author, constellation: null, gathering: null }
 
-            return this.$store.getters['status/find']({
+            let userPosts = this.$store.getters['status/find']({
                 ...query
+            }).map(s => ({ ...s, type: 'post' }))
+
+            statuses = [
+                ...userPosts,
+                ...this.autoStatuses
+            ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment()))
+
+            return statuses.sort((a, b) => {
+                return this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()
             })
         },
         displayedStatuses () {
@@ -104,6 +115,9 @@ export default {
         }
     },
     methods: {
+        openEditor () {
+            this.isEditorActive = true
+        },
         async refresh () {
             return new Promise(async resolve => {
                 try {

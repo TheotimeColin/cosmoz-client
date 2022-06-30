@@ -147,6 +147,11 @@ export default {
     },
     mounted () {
         this.isInit = true
+    },
+    methods: {
+        openFull () {
+            this.isFull = true
+        }
     }
 }
 </script>

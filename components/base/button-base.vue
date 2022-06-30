@@ -1,6 +1,6 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image } ]" :to="localePath(to)"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image, 'is-no-text': !text } ]" :to="localePath(to)"
         :disabled="disabled || loading"
         :replace="replace"
         v-bind="computedAttrs"
@@ -232,6 +232,15 @@ export default {
     min-width: 39px;
     min-height: 39px;
     font: var(--ft-title-3xs);
+
+    .ButtonBase_emoji {
+        font-size: 18px;
+    }
+    
+    .ButtonBase_iconBefore + .ButtonBase_text,
+    .ButtonBase_text + .ButtonBase_iconAfter {
+        margin-left: 4px;
+    }
 }
 
 .ButtonBase--2xs {
@@ -240,6 +249,10 @@ export default {
     min-height: 28px;
     font: var(--ft-title-3xs);
     font-size: 12px;
+
+    &.is-no-text {
+        padding-right: 8px;
+    }
 
     .ButtonBase_emoji {
         font-size: 15px;

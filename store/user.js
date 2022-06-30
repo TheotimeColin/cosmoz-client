@@ -216,7 +216,7 @@ export default {
             }
         },
         async softFetch ({ state, dispatch, commit }, items) {
-            return parseUser(await storeUtils.softFetch(items, { state, dispatch, commit }))
+            return await storeUtils.softFetch(items, { state, dispatch, commit })
         },
         async mapUsers ({ state, dispatch }, params) {
             return new Promise(async (resolve, reject) => {
@@ -298,7 +298,7 @@ export default {
             return parseUser(root.auth.user)
         },
         notif: (state, getters, root) => (id, type) => {
-            return getters.self ? getters.self.notifications.find(n => n.type == type && n.id == id) : null
+            return getters.self ? getters.self.notifications.find(n => n.type == type && n.id == id) : true
         },
         items: (state) => {
             return Object.values(state.items).map(item => parseUser(item))

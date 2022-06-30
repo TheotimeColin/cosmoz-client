@@ -104,7 +104,6 @@ export default {
                 {
                     label: `Discussions`,
                     fa: 'comments',
-                    disabled: !this.user,
                     to: { name: 'c-slug-discussions', params: { slug: this.slug } }
                 },
                 {

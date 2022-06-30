@@ -1,38 +1,35 @@
 <template>
-    <div class="bg-gum-xweak o-hidden">
-        <div class="Wrapper Wrapper--xs">
-            
-            <div class="mv-150 bg-bg-weak br-s p-30">
-                <p class="ft-title-s">Créer un nouveau mot de passe</p>
+    <div class="Page_wrapper Wrapper Wrapper--2xs">
+        <div class="block-r">
+            <p class="ft-title-xs">Créer un nouveau mot de passe</p>
 
-                <div class="text-center" v-if="isSuccess">
-                    <p class="mv-20">Mot de passe modifié avec succès. Tu peux maintenant retenter de te connecter :</p>
+            <div class="text-center" v-if="isSuccess">
+                <p class="mv-20">Mot de passe modifié avec succès. Tu peux maintenant retenter de te connecter :</p>
 
-                    <button-base :to="{ name: 'compte-login' }">
-                        Se connecter
+                <button-base :to="{ name: 'compte-login' }">
+                    Se connecter
+                </button-base>
+            </div>
+
+            <form @submit.prevent="submitForm()" v-else>
+                <input-base
+                    label="Nouveau mot de passe" 
+                    class="mv-20"
+                    type="password"
+                    :helpers="['reveal']"
+                    validator="password"
+                    :attrs="{ autocomplete: 'new-password' }"
+                    v-model="formData.password"
+                />
+
+                <form-errors :items="errors" class="mb-20" />
+
+                <div class="text-right">
+                    <button-base type="submit" :modifiers="['light']" :disabled="!formData.password" :loading="isLoading">
+                        Confirmer
                     </button-base>
                 </div>
-
-                <form @submit.prevent="submitForm()" v-else>
-                    <input-base
-                        label="Nouveau mot de passe" 
-                        class="mv-20"
-                        type="password"
-                        :helpers="['reveal']"
-                        validator="password"
-                        :attrs="{ autocomplete: 'new-password' }"
-                        v-model="formData.password"
-                    />
-
-                    <form-errors :items="errors" class="mb-20" />
-
-                    <div class="text-right">
-                        <button-base type="submit" :modifiers="['light']" :class="{ 'is-loading': isLoading, 'is-disabled': !formData.password }">
-                            Confirmer
-                        </button-base>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </template>
