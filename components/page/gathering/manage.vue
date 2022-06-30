@@ -78,7 +78,7 @@
                     </div>
                 </slider-block>
 
-                <div class="p-20 bg-bg-xstrong br-s" v-if="mentions.length > 0">
+                <div class="p-20 bg-bg-xstrong br-s br-none@xs" v-if="mentions.length > 0">
                     <p class="ft-title-2xs mb-15">
                         Tu as reçu des remerciements ! 
                     </p>

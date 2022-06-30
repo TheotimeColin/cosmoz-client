@@ -16,7 +16,6 @@
                 </div>
 
                 <div class="Comment_child">
-
                     <content-post
                         v-bind="status"
                         :no-link="true"

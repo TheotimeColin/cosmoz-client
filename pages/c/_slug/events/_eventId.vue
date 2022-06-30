@@ -12,7 +12,7 @@
                 <content-feed
                     class="mt-20 mt-10@xs"
                     read="public"
-                    :max="3"
+                    :max="8"
                     :auto-statuses="autoStatuses"
                     :gathering="gathering._id"
                     ref="feed"

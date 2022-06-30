@@ -1,6 +1,6 @@
 <template>
-    <div class="Layout LayoutDefault" :class="[ classes ]">
-        <div class="LayoutDefault_content">
+    <div class="Layout LayoutFull" :class="[ classes ]">
+        <div class="LayoutFull_content">
             <Nuxt />
             <tooltip-manager />
         </div>
@@ -11,7 +11,7 @@
 import Debounce from 'lodash.debounce'
 
 export default {
-    name: 'LayoutDefault',
+    name: 'LayoutFull',
     computed: {
         classes () { return this.$store.state.page.body.classes }
     },
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.LayoutDefault_content {
+.LayoutFull_content {
     min-height: calc(100vh - var(--header-height));
 }
 
@@ -84,15 +84,6 @@ export default {
 }
 
 @include breakpoint-xs {
-
-    .LayoutDefault {
-        padding-bottom: 72px;
-    }
-
-    .LayoutDefault_content {
-        padding-bottom: 100px;
-    }
-
     .Footer {
         display: none;
     }

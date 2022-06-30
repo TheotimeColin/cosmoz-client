@@ -1,6 +1,6 @@
 <template>
     <div class="Page">
-        <div class="Page_wrapper Wrapper Wrapper--xs">
+        <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
             <content-post
                 v-bind="status"
                 :no-link="true"
