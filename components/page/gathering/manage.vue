@@ -78,7 +78,19 @@
                     </div>
                 </slider-block>
 
-                <div class="p-20 bg-bg-xstrong br-s br-none@xs" v-if="mentions.length > 0">
+                <div class="+mt-20 mh-20 block-cosmoz" v-if="user && !user.picture">
+                    <p class="ft-title-xs mb-10">
+                        😥 Ne rate pas une belle amitié...
+                    </p>
+
+                    <div>Ajoute une photo de profil pour que les autres puissent te reconnaître !</div>
+
+                    <button-base class="mt-10" :to="{ name: 'p-userId', params: { userId: user.id }, query: { edit: 'true' }}" :modifiers="['s', 'cosmoz']" icon-before="image">
+                        Ajouter une photo
+                    </button-base>
+                </div>
+
+                <div class="+mt-20 p-20 bg-bg-xstrong br-s br-none@xs" v-if="mentions.length > 0">
                     <p class="ft-title-2xs mb-15">
                         Tu as reçu des remerciements ! 
                     </p>
