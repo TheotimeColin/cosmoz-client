@@ -85,6 +85,21 @@
                         ]" />
                     </div>
 
+                    <div class="+mt-20 +mt-40@xs d-flex block-r fxa-center" v-if="serverEntity">
+                        <div class="width-3xs fx-no-shrink">
+                            <qr-code :data="$config.baseUrl + localePath({ name: 'v-id', params: { id: serverEntity._id } })" v-if="isInit" />
+                        </div>
+                        
+                        <div class="pl-20">
+                            Fais scanner ce QR sur place pour que les participants puissent :
+                            <div class="ft-m-medium pl-10 mt-5">
+                                <p><fa icon="far fa-check" class="mr-5" /> Créer un compte en un clic</p>
+                                <p><fa icon="far fa-check" class="mr-5" /> Rejoindre le groupe automatiquement</p>
+                                <p><fa icon="far fa-check" class="mr-5" /> Obtenir le statut de Membre vérifié</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- <div class="block-r mt-10">
                         <div class="fx-center">
                             <p class="ft-title-2xs">Autoriser les invités</p>

@@ -219,6 +219,10 @@ export default {
     padding: 10px 15px;
     font: var(--ft-title-3xs);
     box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
+
+    .ButtonBase_emoji {
+        font-size: 16px;
+    }
     
     .ButtonBase_image {
         width: 30px;

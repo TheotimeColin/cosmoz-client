@@ -1,6 +1,6 @@
 <template>
     <div class="Page" v-if="$constellation">
-        <div class="Page_wrapper Wrapper Wrapper--xs">
+        <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
             <div v-if="originPost">
                 <content-post
                     v-bind="originPost"
