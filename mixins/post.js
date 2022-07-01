@@ -2,7 +2,6 @@ export default {
     data: () => ({
         isDeleted: false,
         isDeleteLoading: false,
-        isSeeReactions: false,
         pendingDelete: false
     }),
     computed: {
@@ -18,8 +17,8 @@ export default {
         },
         actions () {
             return [
-                { fa: 'heart', label: 'Voir les réactions', disabled: !this.reactions.length, action: () => this.isSeeReactions = true },
-                { fa: 'copy', label: 'Copier le lien', action: () => this.$copy(this.$config.baseUrl + this.permaLink) },
+                { fa: 'heart', label: 'Voir les réactions', disabled: !this.reactions.length, action: () => this.$emit('seeReactions') },
+                { fa: 'copy', label: 'Copier le lien', action: () => this.$copy(this.$config.baseUrl + this.localePath(this.permaLink)) },
                 { fa: 'trash', label: 'Supprimer', disabled: !this.isOwner, action: () => this.$emit('delete') }
             ]
         },

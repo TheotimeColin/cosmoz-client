@@ -438,7 +438,8 @@ export default {
     align-items: center;
 }
 
-.ButtonBase--round {
+.ButtonBase--round,
+.ButtonBase--round.is-no-text {
     padding: 0;
     flex-shrink: 0;
     font-size: 16px;

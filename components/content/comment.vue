@@ -62,7 +62,8 @@
                         :items="[
                             { label: 'Répondre', fa: 'reply', action: onAddReply },
                             { label: 'Voir le fil', fa: 'arrow-up-right-from-square', disabled: !isParent, to: permaLink },
-                            ...actions
+                            { fa: 'heart', label: 'Voir les réactions', disabled: !this.reactions.length, action: () => isSeeReactions = true },
+                            { fa: 'trash', label: 'Supprimer', disabled: !this.isOwner, action: () => pendingDelete = true }
                         ]"
                     />
                 </div>
@@ -126,6 +127,7 @@ export default {
         isLoading: { type: Boolean }
     },
     data: () => ({
+        isSeeReactions: false,
         isDeleted: false,
         isShowEmojis: false,
         addReply: false,

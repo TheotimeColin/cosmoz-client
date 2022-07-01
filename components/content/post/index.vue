@@ -6,6 +6,7 @@
 
                 <content-post-head
                     v-bind="$props"
+                    @seeReactions="isSeeReactions = true"
                     @delete="pendingDelete = true"
                 />
 
@@ -26,6 +27,7 @@
                         class="Post_block Post_reactions"
                         :class="{ 'is-reactions': reactions.length > 0 }"
                         v-bind="$props"
+                        @seeReactions="isSeeReactions = true"
                         id="" :status="$props._id"
                     />
 
@@ -91,6 +93,13 @@
                     <button-base icon-before="arrow-down" :modifiers="['light']" class=" d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires suivants</button-base>
                 </div>
             </div>
+
+            <content-reaction-popin
+                :is-active="isSeeReactions"
+                :reactions="reactionTypes"
+                @close="isSeeReactions = false"
+                v-if="!isForbidden"
+            />
         </div>
         <div v-else>
             <placeholder class="Post_placeholder" :ratio="$randomBetween(40, 60)" />
@@ -136,6 +145,7 @@ export default {
         displayComments: { type: Boolean, default: false },
     },
     data: () => ({
+        isSeeReactions: false,
         isLoading: false,
         isAdd: false,
         isOverflow: false,
