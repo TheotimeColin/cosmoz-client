@@ -1,15 +1,18 @@
 <template>
     <div>
         <div v-if="!isLoading && ownerData">
-            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden, 'is-gallery': images && images.length > 0 }" ref="container" >
+            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" >
                 <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
                 <content-post-head
                     v-bind="$props"
+                    @seeReactions="isSeeReactions = true"
                     @delete="pendingDelete = true"
                 />
 
                 <div class="Post_main" @click="onClick">
+                    <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
+
                     <div class="Post_text Post_block" v-if="content">
                         <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
 
@@ -20,14 +23,25 @@
                         {{ placeholderText }}
                     </div>
 
-                    <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
-
                     <content-reactions
                         class="Post_block Post_reactions"
                         :class="{ 'is-reactions': reactions.length > 0 }"
                         v-bind="$props"
+                        @seeReactions="isSeeReactions = true"
                         id="" :status="$props._id"
                     />
+
+                    <div class="Post_tags Post_block" v-if="tags.length > 0 && consteData">
+                        <button-base
+                            :modifiers="['2xs']"
+                            class="m-3"
+                            icon-before="hashtag"
+                            v-for="tag in tags"
+                            :text="tag"
+                            @click.stop="() => $router.push(localePath({ name: 'c-slug-discussions-tag-tagId', params: { slug: consteData.slug, tagId: tag } }))"
+                            :key="tag"
+                        />
+                    </div>
                 </div>
 
                 <content-post-footer
@@ -79,6 +93,13 @@
                     <button-base icon-before="arrow-down" :modifiers="['light']" class=" d-block n-mt-5 mb-10" @click="max += 3" v-if="displayedComments.length < children.length">Commentaires suivants</button-base>
                 </div>
             </div>
+
+            <content-reaction-popin
+                :is-active="isSeeReactions"
+                :reactions="reactionTypes"
+                @close="isSeeReactions = false"
+                v-if="!isForbidden"
+            />
         </div>
         <div v-else>
             <placeholder class="Post_placeholder" :ratio="$randomBetween(40, 60)" />
@@ -110,6 +131,7 @@ export default {
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
         forbidden: { type: Array, default: () => [] },
+        tags: { type: Array, default: () => [] },
         disableCreate: { type: Boolean, default: false },
         createdAt: { type: [String, Date] },
         gathering: { type: String },
@@ -123,6 +145,7 @@ export default {
         displayComments: { type: Boolean, default: false },
     },
     data: () => ({
+        isSeeReactions: false,
         isLoading: false,
         isAdd: false,
         isOverflow: false,
@@ -242,19 +265,23 @@ export default {
         }
     }
 
-    .Post_block.Post_gallery {
-        padding-bottom: 0;
+    // .Post_block.Post_gallery {
+    //     padding-bottom: 0;
         
-        & + .Post_reactions.is-reactions {
-            margin: -18px 0 0px 0;
-            padding: 0 20% 0px 10px;
-            background-color: transparent;
-        }
-    }
+    //     & + .Post_reactions.is-reactions {
+    //         margin: -18px 0 0px 0;
+    //         padding: 0 20% 0px 10px;
+    //         background-color: transparent;
+    //     }
+    // }
 
     .Post_text {
         font: var(--ft-m);
         padding: 0 20px;
+    }
+
+    .Post_tags {
+        padding: 0 15px;
     }
 
     .Post_block {
@@ -317,6 +344,13 @@ export default {
             padding-right: 0;
         }
 
+        .Post_tags {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+
         .Post_block.Post_reactions {
             padding: 0 10% 0 0;
             margin: 0 -5px;
@@ -326,15 +360,15 @@ export default {
             }
         }
 
-        .Post_block.Post_gallery {
-            padding-bottom: 0;
+        // .Post_block.Post_gallery {
+        //     padding-bottom: 0;
             
-            & + .Post_reactions.is-reactions {
-                margin: -18px 0 0px -10px;
-                padding: 0 10% 0px 0;
-                background-color: transparent;
-            }
-        }
+        //     & + .Post_reactions.is-reactions {
+        //         margin: -18px 0 0px -10px;
+        //         padding: 0 10% 0px 0;
+        //         background-color: transparent;
+        //     }
+        // }
     }
 
 </style>

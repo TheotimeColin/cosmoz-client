@@ -88,7 +88,7 @@ export default {
     border-radius: 4px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 .Message_itemContainer {

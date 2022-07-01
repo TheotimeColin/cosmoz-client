@@ -154,7 +154,16 @@ export function getMeta ($route, $store) {
                 },
                 'discussions': {
                     title: 'Discussions',
-                    fa: 'comments'
+                    fa: 'comments',
+
+                    children: {
+
+                        'tag': {
+                            title: $route.params.tagId,
+                            fa: 'hashtag',
+                            back: { name: 'c-slug-discussions', params: { slug: constellation?.slug } }
+                        }
+                    }
                 },
                 'events': {
                     title: 'Événements',

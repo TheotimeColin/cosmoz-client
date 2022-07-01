@@ -22,35 +22,49 @@
             </div>
         </div>
         <template slot="footer">
-            <div class="fx-grow p-15">
-                <div class="mb-5 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
-                    <p class="ft-s-medium mr-10">Ajouter à la publication</p>
-
-                    <div>
-                        <input-file icon="images" :multiple="true" @input="addImages" :disabled="images.length > 3" />
-                    </div>
+            <div class="fx-grow">
+                <div class="p-15 bg-bg-xstrong" v-if="enableTags">
+                    <input-tag-select
+                        :value="formData.tags"
+                        :dyn="dynTags"
+                        :tags="availableTags"
+                        @exclude="(v) => excludedTags = [ ...excludedTags, v]"
+                        @input="(v) => formData.tags = v"
+                        @focused="(v) => isTagFocused = v"
+                        placeholder="Ajouter des tags..."
+                    />
                 </div>
 
-                <div class="mb-15 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
-                    <p class="ft-s-medium mr-10">Visible par :</p>
+                <div class="p-15" v-if="!isTagFocused || $biggerThan('s')">
+                    <div class="mb-5 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
+                        <p class="ft-s-medium mr-10">Ajouter :</p>
 
-                    <div>
-                        <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />
+                        <div>
+                            <input-file icon="images" :multiple="true" @input="addImages" :disabled="images.length > 3" />
+                        </div>
+                    </div>
 
-                        <button-base :modifiers="['s']" icon-before="earth" v-else-if="read == 'public'">
-                            Tout le monde
-                        </button-base>
+                    <div class="mb-15 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
+                        <p class="ft-s-medium mr-10">Visible par :</p>
 
-                        <button-base :modifiers="['s']" :image="user.profileSmall" v-else>
-                            Mes amis
+                        <div>
+                            <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />
+
+                            <button-base :modifiers="['s']" icon-before="earth" v-else-if="read == 'public'">
+                                Tout le monde
+                            </button-base>
+
+                            <button-base :modifiers="['s']" :image="user.profileSmall" v-else>
+                                Mes amis
+                            </button-base>
+                        </div>
+                    </div>
+
+                    <div class="pv-5">
+                        <button-base :modifiers="['cosmoz', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
+                            Envoyer
                         </button-base>
                     </div>
-                </div>
-            
-                <div class="p-5">
-                    <button-base :modifiers="['cosmoz', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
-                        Envoyer
-                    </button-base>
                 </div>
             </div>
         </template>
@@ -61,15 +75,17 @@
 export default {
     name: 'Editor',
     props: {
+        constellation: { type: String },
         isActive: { type: Boolean, default: false },
         isLoading: { type: Boolean, default: false },
         placeholder: { type: String },
         read: { type: String, default: 'public' },
         constellation: { type: String },
+        defaultTags: { type: Array, default: () => ['présentations'] },
+        enableTags: { type: Boolean, default: false },
         errors: { type: Array, default: () => [] }
     },
     computed: {  
-        
         images () {
             return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []
         },
@@ -77,27 +93,51 @@ export default {
             if (!this.constellation) return null
 
             return this.$store.getters['constellation/findOne']({ _id: this.constellation })
+        },
+        availableTags () {
+            return this.$store.getters['tag/find']({
+                constellation: this.constellation,
+                sort: { count: 'asc' }
+            })
+        },
+        dynTags () {
+            return []
+            
+            let matches = this.formData.content.match(/#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+/g)
+
+            return matches ? matches.map(m => m.replace(/[-'`~!@#$%^&*()_|+=?;: '",.<>\{\}\[\]\\\/]/gi, '')).filter(m => !this.excludedTags.includes(m)) : []
         }
     },
     data: () => ({
+        excludedTags: [],
+        isTagFocused: false,
         formData: {
             content: '',
-            images: []
+            images: [],
+            tags: []
         }
     }),
     watch: {
         isActive (v) {
             if (v && this.$refs.input) this.$refs.input.focus()
+        },
+        defaultTags: {
+            immediate: true,
+            handler (v) {
+                this.formData.tags = v
+            }
         }
     },
     methods: {
         reset () {
             this.formData = {
                 content: '',
+                tags: this.defaultTags,
                 images: []
             }
         },
         onSubmit () {
+            this.formData.tags = [ ...this.formData.tags, ...this.dynTags ]
             this.$emit('submit', this.formData)
         },
         addImages (v) {

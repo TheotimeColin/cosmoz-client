@@ -40,15 +40,9 @@
                 class="ml-10"
                 :button="{ modifiers: ['s', 'xweak'] }"
                 :items="actions"
+                @seeReactions="$emit('seeReactions')"
             />
         </div>
-
-        <content-reaction-popin
-            :is-active="isSeeReactions"
-            :reactions="reactionTypes"
-            @close="isSeeReactions = false"
-            v-if="!isForbidden"
-        />
     </div>
 </template>
 
@@ -68,13 +62,7 @@ export default {
         constellation: { type: String },
         noLink: { type: Boolean, default: false },
     },
-    data: () => ({
-        isSeeReactions: false
-    }),
     computed: {
-        reactionTypes () {
-            return this.$groupBy(this.reactions, 'type', { orderBy: true })
-        },
         title () {
             return this.ownerData ? this.ownerData.name : ''
         },

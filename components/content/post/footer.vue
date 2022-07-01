@@ -28,6 +28,7 @@ export default {
     mixins: [ PostMixin, PostReactionsMixin ],
     props: {
         _id: { type: String },
+        constellation: { type: String },
         reactions: { type: Array, default: () => [] },
         children: { type: Array, default: () => [] },
         forbidden: { type: Array, default: () => [] },

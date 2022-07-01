@@ -722,7 +722,8 @@
 
 .block,
 .block-r,
-.block-cosmoz {
+.block-cosmoz,
+.block-cosmoz-r {
     padding: 20px;
     border-radius: 10px;
     background: var(--color-bg-weak);
@@ -730,6 +731,7 @@
     @include shadow-xs;
 }
 
+.block-cosmoz-r,
 .block-cosmoz-p,
 .block-cosmoz {
     border-radius: 8px;
@@ -867,6 +869,13 @@
 
     .p-relative\@xs {
         top: auto;
+    }
+
+    .block-cosmoz-r {
+        margin-left: -20px;
+        margin-right: -20px;
+        box-shadow: none;
+        border-radius: 0;
     }
 
     .block {

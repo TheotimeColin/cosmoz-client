@@ -18,7 +18,7 @@
                 :modifiers="[size == 'm' ? 'xs' : '2xs']"
                 key="plus"
                 type="button"
-                @click.stop="isSeeReactions = true"
+                @click.stop="$emit('seeReactions')"
                 v-if="reactionTypes.length - maxDisplayedReactions > 0"
             >
                 {{ reactionTypes.length - maxDisplayedReactions }}

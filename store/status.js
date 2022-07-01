@@ -129,8 +129,10 @@ export default {
                 }
             })
         },
-        find: (state, getters) => (search, raw = false) => {
+        find: (state, getters, root) => (search = {}, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
+
+            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
 
             if (search) {
                 Object.keys(search).forEach(key => {

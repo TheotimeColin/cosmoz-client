@@ -102,9 +102,9 @@ export default {
 
         const searchField = function (search, items) {
             let result = [ ...items ]
-
+            
             Object.keys(search).forEach(key => {
-                if (typeof search[key] === 'object') {
+                if (typeof search[key] === 'object' && !Array.isArray(search[key]) && search[key] !== null) {
                     let entries = Object.entries(search[key])[0]
                     
                     if (entries[0] == '$in') {
@@ -115,11 +115,19 @@ export default {
                         result = result.filter(item => {
                             return item[key].find(u => u == entries[1])
                         })
+                    } else if (entries[0] == '$containsBroad') {
+                        result = result.filter(item => {
+                            return item[key].find(u => u.toLowerCase() == entries[1].toLowerCase())
+                        })
+                    } else if (entries[0] == '$gte') {
+                        result = result.filter(item => item[key] >= entries[1])
                     }
                 } else if (key == '$in') {
                     result = result.filter(item => search[key].includes(item._id))
                 } else if (search[key] == '$notNull') {
                     result = result.filter(item => item[key])
+                } else if (search[key] === null || search[key] == '$null') {
+                    result = result.filter(item => !item[key])
                 } else if (search[key] == '$notSelf') {
                     result = result.filter(item => user && item[key] != user._id)
                 } else {

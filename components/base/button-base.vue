@@ -236,6 +236,7 @@ export default {
     min-width: 39px;
     min-height: 39px;
     font: var(--ft-title-3xs);
+    box-shadow: none;
 
     .ButtonBase_emoji {
         font-size: 18px;
@@ -253,6 +254,7 @@ export default {
     min-height: 28px;
     font: var(--ft-title-3xs);
     font-size: 12px;
+    box-shadow: none;
 
     &.is-no-text {
         padding-right: 8px;
@@ -436,7 +438,8 @@ export default {
     align-items: center;
 }
 
-.ButtonBase--round {
+.ButtonBase--round,
+.ButtonBase--round.is-no-text {
     padding: 0;
     flex-shrink: 0;
     font-size: 16px;
