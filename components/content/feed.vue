@@ -191,6 +191,10 @@ export default {
                     throw Error(response.error)
                 }
 
+                if (formData.tags && formData.tags.includes('présentations')) {
+                    this.$emit('introduced')
+                }
+
                 if (this.$refs.editor) this.$refs.editor.reset()
                 this.isEditorActive = false
                 

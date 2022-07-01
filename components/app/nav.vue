@@ -85,7 +85,7 @@
 
         
         <div class="AppNav_swipe Att_swipe" v-if="!$store.getters['user/notif']('left-menu', 'onboarding')">
-            Faire glisser vers la droite
+            Glisse vers la droite
         </div>
 
         <app-sticky
