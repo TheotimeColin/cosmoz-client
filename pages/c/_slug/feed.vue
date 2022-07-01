@@ -1,7 +1,7 @@
 <template>
     <div class="page" v-if="!isLoading">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-            <div class="block-cosmoz-r mb-15 mb-10@xs" v-if="!$store.getters['user/notif']('introduced', $constellation._id)">
+            <div class="block-cosmoz-r mb-15 mb-10@xs" v-if="$constellation.type == 'community' && !$store.getters['user/notif']('introduced', $constellation._id)">
                 <p class="ft-title-xs">Bienvenue dans la communauté 👋</p>
                 <p class="mt-10">Prends quelques instants pour te présenter aux autres membres !</p>
 
