@@ -22,8 +22,8 @@
                         <ripples :size="300" :modifiers="['weak']" />
 
                         <div class="Nav_itemMain">
+                            <fa class="Nav_corner" icon="far fa-corner" flip="both" />
                             <fa :icon="`far fa-${item.fa}`" flip="both" v-if="item.fa" />
-                            <fa icon="far fa-corner" flip="both" v-else />
                             
                             <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
 
@@ -133,11 +133,15 @@ export default {
     .Nav_item--sub {
         margin-left: 10px;
         padding-left: 10px;
-        font: var(--ft-s-medium);
+        // font: var(--ft-s-medium);
 
         svg {
             color: var(--color-ft-xweak);
         }
+    }
+
+    svg.Nav_corner {
+        color: var(--color-bg-xweak);
     }
 
     .Nav_showMore {
