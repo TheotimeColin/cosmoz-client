@@ -17,6 +17,7 @@
             :constellation="constellation"
             :is-loading="isSubmitLoading"
             :errors="errors"
+            :enable-tags="enableTags"
             :default-tags="tags"
             @submit="onSubmit"
             @open="isEditorActive = true"
@@ -70,6 +71,7 @@ export default {
         tag: { type: String },
         constellation: { type: String },
         author: { type: String },
+        enableTags: { type: Boolean, default: false },
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false },

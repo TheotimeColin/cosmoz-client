@@ -343,6 +343,7 @@ export default {
 .AppNav_sub {
     overflow: auto;
     touch-action: pan-y !important;
+    @include mini-scrollbar;
 }
 
 .AppNav_subContent {

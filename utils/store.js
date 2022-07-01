@@ -119,6 +119,8 @@ export default {
                         result = result.filter(item => {
                             return item[key].find(u => u.toLowerCase() == entries[1].toLowerCase())
                         })
+                    } else if (entries[0] == '$gte') {
+                        result = result.filter(item => item[key] >= entries[1])
                     }
                 } else if (key == '$in') {
                     result = result.filter(item => search[key].includes(item._id))

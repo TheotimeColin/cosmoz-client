@@ -23,10 +23,11 @@
         </div>
         <template slot="footer">
             <div class="fx-grow">
-                <div class="p-15 bg-bg-xstrong">
+                <div class="p-15 bg-bg-xstrong" v-if="enableTags">
                     <input-tag-select
                         :value="formData.tags"
                         :dyn="dynTags"
+                        :tags="availableTags"
                         @exclude="(v) => excludedTags = [ ...excludedTags, v]"
                         @input="(v) => formData.tags = v"
                         placeholder="Ajouter des tags..."
@@ -73,12 +74,14 @@
 export default {
     name: 'Editor',
     props: {
+        constellation: { type: String },
         isActive: { type: Boolean, default: false },
         isLoading: { type: Boolean, default: false },
         placeholder: { type: String },
         read: { type: String, default: 'public' },
         constellation: { type: String },
         defaultTags: { type: Array, default: () => ['présentations'] },
+        enableTags: { type: Boolean, default: false },
         errors: { type: Array, default: () => [] }
     },
     computed: {  
@@ -89,6 +92,12 @@ export default {
             if (!this.constellation) return null
 
             return this.$store.getters['constellation/findOne']({ _id: this.constellation })
+        },
+        availableTags () {
+            return this.$store.getters['tag/find']({
+                constellation: this.constellation,
+                sort: { count: 'asc' }
+            })
         },
         dynTags () {
             return []

@@ -4,6 +4,7 @@
             <content-feed
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
+                :enable-tags="true"
                 :tag="$route.params.tagId.toLowerCase()"
                 read="g-member"
             />

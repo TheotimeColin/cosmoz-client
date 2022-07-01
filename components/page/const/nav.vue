@@ -59,7 +59,7 @@ export default {
     async fetch () {
         await this.$store.dispatch('gathering/softFetch', this.gatherings)
         await this.$store.dispatch('tag/fetch', {
-            query: { constellation: this._id }
+            query: { constellation: this._id, count: { $gte: 2 } }
         })
     },
     props: {
@@ -88,6 +88,7 @@ export default {
         tags () {
             return this.$store.getters['tag/find']({
                 constellation: this._id,
+                count: { $gte: 2 },
                 sort: { count: 'asc' }
             }).map(t => ({
                 label: t.id,

@@ -109,7 +109,17 @@ Vue.mixin({
         $shopUrl () { return this.$config.shopUrl },
         $bg () { return CONSTANTS.bg },
         $const () { return CONSTANTS },
-        $windowSize () { return this.$store.state.page.breakpoint }
+        $windowSize () { return this.$store.state.page.breakpoint },
+        $isIntroduced () {
+            if (!this.user || !this.$route.params.slug) return false
+
+            let constellation = this.$store.getters['constellation/findOne']({ slug: this.$route.params.slug })
+
+            if (!constellation) return false
+            if (constellation.type == 'group') return true
+
+            return this.$store.getters['user/notif']('introduced', constellation._id)
+        }
     },
     methods: {
         $randomBetween: (min, max) => {
