@@ -80,7 +80,7 @@
 
                 <div class="+mt-20 mh-20 block-cosmoz" v-if="user && !user.picture">
                     <p class="ft-title-xs mb-10">
-                        😥 Ne rate pas une belle amitié...
+                        Ne rate pas une belle amitié... 😥
                     </p>
 
                     <div>Ajoute une photo de profil pour que les autres puissent te reconnaître !</div>

@@ -1,10 +1,20 @@
 <template>
     <div class="page" v-if="!isLoading">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+            <div class="block-cosmoz-r mb-15 mb-10@xs">
+                <p class="ft-title-xs">Bienvenue dans la communauté 👋</p>
+                <p class="mt-10">Prends quelques instants pour te présenter aux autres membres !</p>
+
+                <button-base class="mt-15" :modifiers="['cosmoz']" icon-before="plus" @click="openEditor">
+                    Je me présente
+                </button-base>
+            </div>
+
             <content-feed
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
                 read="g-member"
+                ref="feed"
             />
         </div>
     </div>
@@ -30,6 +40,13 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] }
+    },
+    methods: {
+        openEditor () {
+            if (this.$refs.feed) this.$refs.feed.openEditor({
+                tags: ['présentations']
+            })
+        }
     }
 }
 </script>

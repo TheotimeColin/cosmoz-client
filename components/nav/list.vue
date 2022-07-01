@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="Nav_cat" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
+        <div class="Nav_cat" :class="{ 'is-open-parent': cat.children && cat.children.length > 0 }" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
             <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item" v-if="cat.label">
                 <ripples :size="300" :modifiers="['weak']" />
                 <div class="G_cosmoz"></div>
@@ -17,12 +17,13 @@
             </component>
 
             <template v-if="cat.children && cat.children.length > 0">
-                <div v-for="item in cat.children.filter(c => !c.disabled)" :key="item.label">
+                <div v-for="item in cat.children.filter(c => !c.disabled).slice(0, cat.showMore ? cat.max + (cat.showMore * showMore.reduce((t, id) => t + (id == i ? 1 : 0), 0)) : 9999)" :key="item.label">
                     <nuxt-link class="Nav_item Nav_item--sub" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
                         <ripples :size="300" :modifiers="['weak']" />
 
                         <div class="Nav_itemMain">
-                            <fa icon="far fa-corner" flip="both" />
+                            <fa :icon="`far fa-${item.fa}`" flip="both" v-if="item.fa" />
+                            <fa icon="far fa-corner" flip="both" v-else />
                             
                             <span class="round-xs bg-bg-xstrong" style="margin: -5px 3px 0 2px;" v-if="item.number">{{ item.number }}</span>
 
@@ -31,6 +32,9 @@
                             </div>
                         </div>
                     </nuxt-link>
+                </div>
+                <div class="Nav_showMore" v-if="cat.showMore && cat.children.length > cat.max + (cat.showMore * showMore.reduce((t, id) => t + (id == i ? 1 : 0), 0))" @click="showMore = [ ...showMore, i]">
+                    Montrer plus...
                 </div>
             </template>
         </div>
@@ -41,11 +45,25 @@
 export default {
     props: {
         items: { type: Array, default: () => ([]) }
-    }
+    },
+    data: () => ({
+        showMore: []
+    })
 }
 </script>
 
 <style lang="scss" scoped>
+    .Nav_cat {
+
+        &.is-open-parent + & {
+            margin-top: 10px;
+        }
+
+        &:not(.is-open-parent) + &.is-open-parent {
+            margin-top: 10px;
+        }
+    }
+
     .Nav_item {
         font: var(--ft-m-medium);
         cursor: pointer;
@@ -113,10 +131,27 @@ export default {
     }
 
     .Nav_item--sub {
-        padding-left: 15px;
+        margin-left: 10px;
+        padding-left: 10px;
+        font: var(--ft-s-medium);
 
         svg {
             color: var(--color-ft-xweak);
+        }
+    }
+
+    .Nav_showMore {
+        cursor: pointer;
+        color: var(--color-ft-weak);
+        height: 36px;
+        margin-left: 10px;
+        padding-left: 10px;
+        font: var(--ft-s-medium);
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 
