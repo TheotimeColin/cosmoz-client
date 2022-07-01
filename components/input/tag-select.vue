@@ -114,6 +114,9 @@ export default {
             handler (v) {
                 if (this.changesMade) this.$emit('input', v)
             }
+        },
+        isFocused (v) {
+            this.$emit('focused', v)
         }
     },
     methods: {
@@ -229,7 +232,7 @@ export default {
         transform: none;
         border-radius: 0;
         box-shadow: 0;
-        height: 30vh;
+        min-height: 50vh;
     }
 
     .TagSelect_popin.is-active {

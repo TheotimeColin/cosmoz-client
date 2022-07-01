@@ -30,11 +30,12 @@
                         :tags="availableTags"
                         @exclude="(v) => excludedTags = [ ...excludedTags, v]"
                         @input="(v) => formData.tags = v"
+                        @focused="(v) => isTagFocused = v"
                         placeholder="Ajouter des tags..."
                     />
                 </div>
 
-                <div class="p-15">
+                <div class="p-15" v-if="!isTagFocused || $biggerThan('s')">
                     <div class="mb-5 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
                         <p class="ft-s-medium mr-10">Ajouter :</p>
 
@@ -109,6 +110,7 @@ export default {
     },
     data: () => ({
         excludedTags: [],
+        isTagFocused: false,
         formData: {
             content: '',
             images: [],
