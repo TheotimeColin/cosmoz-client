@@ -130,9 +130,11 @@ export default {
 .LayoutApp {
 
     &.is-transition {
+        overflow-x: hidden;
         
         .LayoutApp_content {
             contain: paint;
+            overflow-x: hidden;
         }
     }
 }

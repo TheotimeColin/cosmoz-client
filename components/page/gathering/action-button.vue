@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <template v-if="user && gathering.visibility == 'group' && !constellation.isMember">
+        <template v-if="user && gathering.visibility == 'group' && constellation && !constellation.isMember">
             <button-base class="fx-grow" icon-before="star" :modifiers="['cosmoz']" :to="{ name: 'c-slug-rejoindre', params: { slug: constellation.slug }}">
                 Réservé aux membres
             </button-base>

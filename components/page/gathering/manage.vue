@@ -57,9 +57,15 @@
                 </div>
             </div>
             <div v-else-if="hasConfirmed">
-                <p class="ft-title-xs mb-20 pt-20 ph-20">
-                    Tu les as rencontrés
-                </p>
+                <div class="pt-20 ph-20 mb-20">
+                    <p class="ft-title-xs">
+                        Tu les as rencontrés
+                    </p>
+
+                    <p class="mt-5">
+                        Clique sur les profils si tu veux les remercier et garder le contact.
+                    </p>
+                </div>
 
                 <slider-block
                     :slots="usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id).map(u => u._id)"
@@ -72,24 +78,33 @@
                     </div>
                 </slider-block>
 
+                <div class="+mt-20 mh-20 block-cosmoz" v-if="user && !user.picture">
+                    <p class="ft-title-xs mb-10">
+                        Ne rate pas une belle amitié... 😥
+                    </p>
+
+                    <div>Ajoute une photo de profil pour que les autres puissent te reconnaître !</div>
+
+                    <button-base class="mt-10" :to="{ name: 'p-userId', params: { userId: user.id }, query: { edit: 'true' }}" :modifiers="['s', 'cosmoz']" icon-before="image">
+                        Ajouter une photo
+                    </button-base>
+                </div>
+
+                <div class="+mt-20 p-20 bg-bg-xstrong br-s br-none@xs" v-if="mentions.length > 0">
+                    <p class="ft-title-2xs mb-15">
+                        Tu as reçu des remerciements ! 
+                    </p>
+
+                    <div class="ft-title-3xs subtitle tape tape-s m-3" v-for="mentionType in Object.entries($groupBy(mentions, 'type')).sort((a, b) => b[1].length - a[1].length)" :key="mentionType[0]">
+                        {{ $const.mentions.find(m => m.value == mentionType[0]).emoji }} 
+                        
+                        {{ mentionType[1].length }} x {{ $t('mentions.' + (mentionType[0])) }}
+                    </div>
+                </div>
+
                 <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id"
                     @close="selectedUser = null" />
             </div>
-
-            <div class="d-flex p-20 bg-bg-xstrong fxa-center" v-if="$isConsteOrga">
-                <div class="width-3xs fx-no-shrink">
-                    <qr-code :data="$config.baseUrl + localePath({ name: 'v-id', params: { id: gathering._id } })" v-if="isInit" />
-                </div>
-                
-                <div class="pl-20">
-                    Fais scanner ce QR sur place pour que les participants puissent :
-                    <div class="ft-m-medium pl-10 mt-5">
-                        <p><fa icon="far fa-check" class="mr-5" /> Créer un compte en un clic</p>
-                        <p><fa icon="far fa-check" class="mr-5" /> Rejoindre le groupe automatiquement</p>
-                        <p><fa icon="far fa-check" class="mr-5" /> Obtenir le statut de Membre vérifié</p>
-                    </div>
-                </div>
-            </div> 
         </div>
 
         <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" @open="isFull = true" />
@@ -143,10 +158,23 @@ export default {
             return this.$store.getters['user/find']({
                 _id: { $in: this.gathering.organizers }
             })
+        },
+        mentions () {
+            if (!this.user) return []
+
+            return this.$store.getters['mention/find']({
+                target: this.user._id,
+                gathering: this.gathering._id
+            })
         }
     },
     mounted () {
         this.isInit = true
+    },
+    methods: {
+        openFull () {
+            this.isFull = true
+        }
     }
 }
 </script>

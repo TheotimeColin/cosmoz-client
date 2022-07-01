@@ -17,6 +17,8 @@
             :constellation="constellation"
             :is-loading="isSubmitLoading"
             :errors="errors"
+            :enable-tags="enableTags"
+            :default-tags="tags"
             @submit="onSubmit"
             @open="isEditorActive = true"
             @close="isEditorActive = false"
@@ -25,7 +27,8 @@
         />
 
         <transition-group name="fade">
-            <content-post
+            <component
+                :is="'content-' + status.type"
                 v-for="status in displayedStatuses.filter(c => !isLoading)"
                 class="Feed_item"
                 v-bind="status"
@@ -65,16 +68,20 @@ export default {
         read: { type: String, default: 'friends' },
         max: { type: Number, default: 10 },
         gathering: { type: String },
+        tag: { type: String },
         constellation: { type: String },
         author: { type: String },
+        enableTags: { type: Boolean, default: false },
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
-        disableCreate: { type: Boolean, default: false }
+        disableCreate: { type: Boolean, default: false },
+        autoStatuses: { type: Array, default: () => [] }
     },
     data: () => ({
         isEditorActive: false,
         statusesData: [],
         errors: [],
+        tags: [],
         isSubmitLoading: false,
         isLoading: true,
         page: 0
@@ -84,19 +91,31 @@ export default {
 
         await this.refresh()
 
+        if (this.tag) this.tags = [ this.tag ]
+
         this.isLoading = false
     },
     computed: {
-        
         statuses () {
+            let statuses = []
             let query = { parent: null }
         
+            if (this.tag) query.tags = { $containsBroad: this.tag }
             if (this.gathering) query.gathering = this.gathering
             if (this.constellation) query.constellation = this.constellation
             if (this.author) query = { ...query, owner: this.author, constellation: null, gathering: null }
 
-            return this.$store.getters['status/find']({
+            let userPosts = this.$store.getters['status/find']({
                 ...query
+            }).map(s => ({ ...s, type: 'post' }))
+
+            statuses = [
+                ...userPosts,
+                ...this.autoStatuses
+            ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment()))
+
+            return statuses.sort((a, b) => {
+                return this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()
             })
         },
         displayedStatuses () {
@@ -104,10 +123,17 @@ export default {
         }
     },
     methods: {
+        openEditor (params) {
+            if (params.tags) this.tags = params.tags
+            
+            this.isEditorActive = true
+        },
         async refresh () {
             return new Promise(async resolve => {
                 try {
                     let query = { parent: '$null' }
+
+                    if (this.tag) query.tags = { $broad: this.tag }
 
                     if (this.gathering) {
                         query.gathering = this.gathering
@@ -146,6 +172,7 @@ export default {
         },
         async onSubmit (formData) {
             this.isSubmitLoading = true
+            this.errors = []
 
             try {
                 let data = { ...formData, read: this.read }
@@ -164,6 +191,10 @@ export default {
                 if (response.status == 0) {
                     this.errors = [ response.error ]
                     throw Error(response.error)
+                }
+
+                if (formData.tags && formData.tags.includes('présentations')) {
+                    this.$emit('introduced')
                 }
 
                 if (this.$refs.editor) this.$refs.editor.reset()

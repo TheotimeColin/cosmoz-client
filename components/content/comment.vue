@@ -25,31 +25,7 @@
                         <content-type-images class="Post_block Post_gallery" :modifiers="['s']" :images="images" v-if="images && images.length > 0" />
                     </div>
 
-                    <transition-group name="transition-list" tag="div" class="Comment_reactions" v-if="reactions.length > 0">
-                        <button-base
-                            :modifiers="['2xs', 'no-s', isReacted(reaction[0]) ? 'highlight' : '']"
-                            class="m-3"
-                            :emoji-before="reaction[0]"
-                            v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
-                            @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
-                            @mouseleave="$tClose"
-                            @click.stop="addReaction({ type: reaction[0] })"
-                        >
-                            {{ reaction[1].length }}
-                        </button-base>
-
-                        <button-base
-                            icon-before="plus"
-                            class="m-3"
-                            :modifiers="['2xs']"
-                            key="plus"
-                            type="button"
-                            @click.stop="isSeeReactions = true"
-                            v-if="reactionTypes.length - maxDisplayedReactions > 0"
-                        >
-                            {{ reactionTypes.length - maxDisplayedReactions }}
-                        </button-base>
-                    </transition-group>
+                    <content-reactions class="Comment_reactions" v-bind="$props" id="" :status="$props._id" />
                     
                     <div class="Comment_delete" v-show="pendingDelete">
                         <button-base :modifiers="['s']" class="mr-5" @click="pendingDelete = false">
@@ -67,14 +43,14 @@
                         <button-base
                             icon-before="face-smile"
                             :modifiers="['2xs', 'round', isShowEmojis ? 'light' : 'xweak']"
-                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, action: true }) } }) : isShowEmojis = true"
+                            @click="$smallerThan('s') ? $store.commit('page/popin', { emojis: { action: (v) => addReaction({ type: v, status: _id, action: true }) } }) : isShowEmojis = true"
                         />
 
                         <div class="Comment_emojiSelector" :class="{ 'is-active': isShowEmojis, 'is-disabled': isShowEmojis === false }" @mouseleave="isShowEmojis = false" v-if="$biggerThan('s')">
                             <div class="Comment_emojiSelectorContainer bg-bg-strong br-s shadow">
                                 <reaction-emoji-selector :is-active="isShowEmojis" @input="(v) => {
                                     isShowEmojis = false;
-                                    addReaction({ type: v, action: true });
+                                    addReaction({ type: v, status: _id, action: true });
                                 }" />
                             </div>
                         </div>
@@ -86,7 +62,8 @@
                         :items="[
                             { label: 'Répondre', fa: 'reply', action: onAddReply },
                             { label: 'Voir le fil', fa: 'arrow-up-right-from-square', disabled: !isParent, to: permaLink },
-                            ...actions
+                            { fa: 'heart', label: 'Voir les réactions', disabled: !this.reactions.length, action: () => isSeeReactions = true },
+                            { fa: 'trash', label: 'Supprimer', disabled: !this.isOwner, action: () => pendingDelete = true }
                         ]"
                     />
                 </div>
@@ -130,10 +107,11 @@
 
 <script>
 import PostMixin from '@/mixins/post'
+import PostReactionsMixin from '@/mixins/post-reactions'
 
 export default {
     name: 'Comment',
-    mixins: [ PostMixin ],
+    mixins: [ PostMixin, PostReactionsMixin ],
     props: {
         _id: { type: String },
         parentId: { type: String },
@@ -149,6 +127,7 @@ export default {
         isLoading: { type: Boolean }
     },
     data: () => ({
+        isSeeReactions: false,
         isDeleted: false,
         isShowEmojis: false,
         addReply: false,

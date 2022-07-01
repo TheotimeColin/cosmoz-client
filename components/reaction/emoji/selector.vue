@@ -194,6 +194,10 @@ export default {
     }
 
     .EmojiSelector_featured {
+        min-height: 15vh;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
         box-shadow: 0 -3px 8px 0px color-opacity('bg-2xstrong', -60%);
     }
 

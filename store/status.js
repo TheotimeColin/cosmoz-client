@@ -100,20 +100,6 @@ export default {
                 return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
-        async react ({ commit }, params = {}) {
-            try {
-                const response = await this.$axios.$post('/status/react', params)
-                
-                if (response.status == 0) throw Error(response.errors[0])
-                
-                if (response.data.origin) commit('updateOne', response.data.origin)
-                commit('updateOne', response.data)
-                
-                return response
-            } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
-            }
-        },
         async delete ({ commit }, _id) {
             try {
                 const response = await this.$axios.$delete('/entities', {
@@ -143,8 +129,10 @@ export default {
                 }
             })
         },
-        find: (state, getters) => (search, raw = false) => {
+        find: (state, getters, root) => (search = {}, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
+
+            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
 
             if (search) {
                 Object.keys(search).forEach(key => {

@@ -27,7 +27,7 @@
                             <p class="ft-m-medium mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
 
                             <div class="ft-title-2xs subtitle tape mr-5" v-for="(mention, i) in (isSuccess ? mentions : sent)" :key="i">
-                                {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
+                                {{ $const.mentions.find(m => m.value == (mention.type ? mention.type : mention)).emoji }} {{ $t('mentions.' + (mention.type ? mention.type : mention)) }}
                             </div>
                         </div>
                         
@@ -41,17 +41,17 @@
                     </div>
                 </div>
                 <div v-else>
-                    <p>Tu peux remercier {{ selectedUser.name }} pour sa présence lors de l'événement ! C'est anonyme.</p>
+                    <p class="mt-10">Tu peux remercier {{ selectedUser.name }} pour sa présence lors de l'événement ! C'est anonyme.</p>
 
                     <div class="mt-10">
-                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'cosmoz'] : ['s']" :icon-before="mention.icon" v-for="mention in $const.mentions" @click="toggleMention(mention.value)"  :disabled="mentions.length >= 2 && !mentions.includes(mention.value)" :key="mention.id">
+                        <button-base class="mr-5 mt-5" :modifiers="mentions.includes(mention.value) ? ['s', 'cosmoz'] : ['s']" :emoji-before="mention.emoji" v-for="mention in $const.mentions" @click="toggleMention(mention.value)"  :disabled="mentions.length >= 2 && !mentions.includes(mention.value)" :key="mention.id">
                             {{ mention.label }}
                         </button-base>
                     </div>
 
-                    <div class="mt-30 block-cosmoz">
+                    <div class="mt-20 block-cosmoz">
                         <p class="ft-title-xs">
-                            <fa icon="far fa-sparkles" class="mr-5" /> Ajouter en ami ?
+                            <fa icon="far fa-sparkles" class="mr-5" /> Garder le contact ?
                         </p>
                         <p class="mt-10">{{ selectedUser.name }} ne verra pas ta demande. Vous deviendriez amis seulement si la demande est réciproque. </p>
 
@@ -72,7 +72,7 @@
                     </button-base>
                 </template>
                 <template v-else>
-                    <button-base :modifiers="['light']" :disabled="mentions.length <= 0 && !requestFriend" @click="onSubmit" icon-before="paper-plane">
+                    <button-base :modifiers="mentions.length <= 0 && !requestFriend ? ['light'] : ['cosmoz']" :disabled="mentions.length <= 0 && !requestFriend" @click="onSubmit" icon-before="paper-plane">
                         Envoyer
                     </button-base>
                 </template>

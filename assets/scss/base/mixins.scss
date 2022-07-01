@@ -52,6 +52,27 @@
   }
 }
 
+@mixin mini-scrollbar {
+  overflow-y: overlay;
+    
+  &::-webkit-scrollbar {
+      width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: color-opacity('bg-2xweak', -85%);
+      border-radius: 20px;
+
+      &:hover {
+        background-color: color-opacity('bg-2xweak', -50%);
+      }
+  }
+}
+
 @mixin img-cover($overflow: 100) {
     position: absolute;
     top: #{(100 - $overflow) / 2 +'%'};

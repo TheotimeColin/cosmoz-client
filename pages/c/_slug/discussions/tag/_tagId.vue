@@ -5,6 +5,7 @@
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
                 :enable-tags="true"
+                :tag="$route.params.tagId.toLowerCase()"
                 read="g-member"
             />
         </div>
@@ -20,12 +21,6 @@ export default {
     layout: 'app',
     async fetch () {
         await this.$preFetch()
-    },
-    data: () => ({
-        isLoading: false
-    }),
-    computed: {
-        user () { return this.$store.getters['user/self'] }
     }
 }
 </script>

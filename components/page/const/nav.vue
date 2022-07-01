@@ -58,6 +58,9 @@ export default {
     mixins: [ Permissions ],
     async fetch () {
         await this.$store.dispatch('gathering/softFetch', this.gatherings)
+        await this.$store.dispatch('tag/fetch', {
+            query: { constellation: this._id, count: { $gte: 2 } }
+        })
     },
     props: {
         _id: { type: String },
@@ -75,7 +78,6 @@ export default {
         isAbsolute: { type: Boolean, default: false }
     },
     computed: {
-        
         gatheringsData () {
             return this.$store.getters['gathering/find']({
                 constellation: this._id,
@@ -83,14 +85,24 @@ export default {
                 sort: { date: 'desc' }
             })
         },
+        tags () {
+            return this.$store.getters['tag/find']({
+                constellation: this._id,
+                count: { $gte: 2 },
+                sort: { count: 'asc' }
+            }).map(t => ({
+                label: t.id,
+                to: { name: 'c-slug-discussions-tag-tagId', params: { slug: this.slug, tagId: t.id } }, fa: 'hashtag'
+            }))
+        },
         events () {
             return this.gatheringsData.filter(g => !g.isPast).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: g.isAttending ? 'calendar-check' : 'calendar'
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }
             }))
         },
         pastEvents () {
             return this.gatheringsData.filter(g => g.isPast && g.isAttending && !g.isExpired).map(g => ({
-                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }, fa: 'calendar-heart', hasAttended: g.isAttending
+                label: g.title, to: { name: 'c-slug-events-eventId', params: { slug: this.slug, eventId: g.id } }
             }))
         },
         items () {
@@ -102,18 +114,14 @@ export default {
                     to: { name: 'c-slug-feed', params: { slug: this.slug } }
                 },
                 {
-                    label: `Discussions`,
-                    fa: 'comments',
-                    disabled: !this.user,
-                    to: { name: 'c-slug-discussions', params: { slug: this.slug } }
-                },
-                {
                     label: `Événements`,
                     fa: 'calendar',
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
                     number: this.events.length,
                     disabled: this.type == 'group',
-                    children: [ ...this.events.slice(0, 3), ...this.pastEvents ]
+                    children: [ ...this.pastEvents, ...this.events ],
+                    max: 3,
+                    showMore: 6
                 },
                 {
                     label: `Sorties`,
@@ -125,6 +133,14 @@ export default {
                     fa: 'users',
                     to: { name: 'c-slug-members', params: { slug: this.slug } },
                     disabled: this.type == 'community'
+                },
+                {
+                    label: `Discussions`,
+                    fa: 'comments',
+                    to: { name: 'c-slug-discussions', params: { slug: this.slug } },
+                    children: this.tags,
+                    max: 3,
+                    showMore: 6
                 },
             ]
         }

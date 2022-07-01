@@ -22,6 +22,12 @@
     max-width: 550px;
 }
 
+.Wrapper--2xs {
+    margin: 0 auto;
+    width: 70%;
+    max-width: 450px;
+}
+
 .Wrapper--l {
     width: 90%;
     max-width: 1200px;
@@ -89,6 +95,7 @@
 
     .Wrapper,
     .Wrapper--s,
+    .Wrapper--xs,
     .Wrapper--m {
         width: 100%;
         padding-left: 20px;
