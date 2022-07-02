@@ -1,7 +1,7 @@
 <template>
     <popin :is-active="selectedUser ? true : false" :modifiers="['m']" @close="onClose" >
         <template slot="content" v-if="selectedUser">
-            <div class="bg-cover bg-night text-center p-40 height-100 o-hidden" v-if="isFriend && isSent">
+            <div class="bg-cover bg-night text-center p-40 height-100 o-hidden" v-if="isMatch && isSent">
                 <div class="G_cosmoz" style="opacity: 0.2"></div>
 
                 <div class="d-flex fxa-center fxj-center">
@@ -21,7 +21,7 @@
             <div class="p-20" v-else>
                 <user-icon :modifiers="['l']" :display-name="true" v-bind="selectedUser" />
 
-                <div v-if="isSent.length > 0 || isSuccess">
+                <div v-if="isSent|| isSuccess">
                     <div class="mt-20 block-cosmoz">
                         <div class="+mt-20" v-if="sent.length > 0">
                             <p class="ft-m-medium mb-15">Tu as envoyé les mentions suivantes à {{ selectedUser.name }} :</p>
@@ -49,7 +49,7 @@
                         </button-base>
                     </div>
 
-                    <div class="mt-20 block-cosmoz">
+                    <div class="mt-20 block-cosmoz" v-if="!isFriend">
                         <p class="ft-title-xs">
                             <fa icon="far fa-sparkles" class="mr-5" /> Garder le contact ?
                         </p>
@@ -101,7 +101,6 @@ export default {
         errors: []
     }),
     computed: {
-        
         sent () {
             return this.$store.getters['mention/find']({
                 gathering: this.gathering,
@@ -114,7 +113,7 @@ export default {
                 gathering: this.gathering,
                 target: this.selectedUser._id,
                 owner: this.user._id
-            }, true)
+            }, true).length > 0
         },
         isFriend () { return this.isMatch || this.selectedUser.isFriend },
         isRequested () { return this.user.affinities.find(u => u == this.selectedUser._id )}
