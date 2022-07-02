@@ -42,6 +42,12 @@ export default {
         'gathering-new': {
             content: `<b>{gathering}</b> a été annoncé dans {constellation} | <b>{gathering}</b> a été annoncé dans <b>{constellation}</b> | {n} nouveaux événements ont été annoncés dans <b>{constellation}</b>`
         },
+        'gathering-mention': {
+            content: `Tu as reçu un remerciement pour ta présence ! | Tu as reçu un remerciement pour ta présence ! | Tu as reçu {n} remerciements pour ta présence !</b>`
+        },
+        'gathering-confirmed': {
+            content: `Ta présence à été confirmée ! Il est temps de créer de nouvelles connexions ✨`
+        },
         'gathering-cancelled': {
             content: `L'événement <b>{content}</b> a dû être annulé.`
         },

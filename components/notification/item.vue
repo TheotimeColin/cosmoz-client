@@ -1,5 +1,5 @@
 <template>
-    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read', 'is-gathering': gatherings[0] }" @click="$store.dispatch('notification/read', _id)" @click.native="$store.dispatch('notification/read', _id)">
+    <component :is="link ? 'nuxt-link' : 'div'" :to="localePath(link)" class="NotifItem" :class="{ 'is-read': state == 'read', 'is-gathering': gatherings[0] || type == 'gathering-mention' }" @click="$store.dispatch('notification/read', _id)" @click.native="$store.dispatch('notification/read', _id)">
         <div class="NotifItem_image" :style="{ backgroundImage: `url(${cover})` }">
             <div class="NotifItem_imageSecondary" :style="{ backgroundImage: `url(${constellationCover})` }" v-if="constellationCover"></div>
         </div>
@@ -28,7 +28,9 @@ export default {
     computed: {
         self () { return this.$store.getters['user/self'] },
         cover () {
-            if (this.gatherings[0]?.hero ) return this.gatherings[0].hero
+            if (this.gatheringData && this.type == 'gathering-mention') return this.gatheringData.thumbnail
+            
+            if (this.gatherings[0]?.thumbnail) return this.gatherings[0].thumbnail
             if (this.userData?.profileLarge) return this.userData.profileLarge
             if (this.users[0]?.profileLarge) return this.users[0].profileLarge
             if (this.constellationData?.logoSmall) return this.constellationData.logoSmall
@@ -134,6 +136,7 @@ export default {
             let count = this.users.length
 
             if (this.type.includes('gathering')) count = this.gatherings.length
+            if (this.type.includes('gathering-mention')) count = this.origins.length
             if (this.type.includes('event')) count = this.gatherings.lengthh
             if (this.type.includes('post')) count = this.users.length
             
@@ -201,6 +204,7 @@ export default {
         transition: all 100ms ease;
         opacity: 1;
         position: relative;
+        background-color: var(--color-bg-strong);
     }
 
     .NotifItem_imageSecondary {

@@ -34,14 +34,17 @@
 export default {
     name: 'InputUser',
     async fetch () {
-        if (!this.items) await this.$store.dispatch('user/fetch')
+        if (!this.items) await this.$store.dispatch('user/fetch', {
+            query: this.query
+        })
     },
     props: {
         placeholder: { type: String, default: '' },
         items: { type: [Array, Boolean], default: false },
         min: { type: [Number, Boolean], default: false },
         exclude: { type: Array, default: () => [] },
-        value: { type: Array, default: () => [] }
+        value: { type: Array, default: () => [] },
+        query: { type: Array, default: () => ({}) }
     },
     data: () => ({
         localValue: [],
@@ -55,8 +58,7 @@ export default {
             })
         },
         users () {
-            return this.items ? this.items : this.$store.getters['user/find']({
-            })
+            return this.items ? this.items : this.$store.getters['user/find'](this.query)
         },
         changesMade () {
             return JSON.stringify(this.value) != JSON.stringify(this.localValue)

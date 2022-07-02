@@ -33,12 +33,26 @@ export default {
         }
     },
     methods: {
-        usersByStatus (statuses) {
+        usersByStatus (statuses = ['attending', 'confirmed', 'cancelled', 'ghosted']) {
             let users = Object.values(this.gathering.users.reduce((all, current) => ({
                 ...all, [current._id]: current 
             }), {}))
 
             return users.filter(u => statuses.includes(u.status)).map(u => this.$getUser(u._id)).filter(u => u)
+        },
+        async onBookManage (status) {
+            this.isLoading = true
+
+            try {
+                await this.$store.dispatch('gathering/updateBookStatus', {
+                    _id: this.gathering._id,
+                    users: [ status ]
+                })
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
         },
         async onBookUpdate (status) {
             this.isLoading = true

@@ -105,6 +105,13 @@
                 <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id"
                     @close="selectedUser = null" />
             </div>
+
+            
+            <div class="p-20 text-center bg-bg-xweak" v-if="$isConsteOrga">
+                <button-base @click="isManage = true">Gérer les participants</button-base>
+
+                <page-gathering-manage-users :is-active="isManage" :gathering="gathering" @close="isManage = false" />
+            </div>
         </div>
 
         <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" @open="isFull = true" />
@@ -151,6 +158,7 @@ export default {
         isInit: false,
         isFull: false,
         isList: false,
+        isManage: false,
         selectedUser: null,
     }),
     computed: {
