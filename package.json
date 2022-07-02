@@ -7,6 +7,7 @@
     "build": "nuxt build --dotenv .env.dev",
     "start": "nuxt start",
     "generate": "nuxt generate --dotenv .env.dev",
+    "android": "npm run build && npm run generate && npx cap copy android && npx cap sync && npx cap open android",
     "heroku-postbuild": "nuxt build"
   },
   "dependencies": {

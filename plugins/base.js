@@ -30,7 +30,8 @@ Vue.mixin({
             let characters = ['?', '!', ':']
             
             characters.forEach(char => {
-                value = value.replaceAll(' ' + char, ' ' + char)
+                value = value.replace(`/ ${char}/g`, ' ' + char);
+                // value = value.replaceAll(' ' + char, ' ' + char)
             })
 
             return value
@@ -52,7 +53,8 @@ Vue.mixin({
                 if (done) return
                  
                 if (value.includes(char.char)) done = true
-                value = value.replaceAll(char.char, char.replace)
+                // value = value.replaceAll(char.char, char.replace)
+                value = value.replace(`/${char.char}/g`, char.replace);
             })
 
             return value
@@ -80,7 +82,8 @@ Vue.mixin({
             let characters = ['?', '!', ':']
             
             characters.forEach(char => {
-                value = value.replaceAll(' ' + char, ' ' + char)
+                value = value.replace(`/ ${char}/g`, ' ' + char);
+                // value = value.toString().replaceAll(' ' + char, ' ' + char)
             })
 
             return value
