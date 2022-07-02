@@ -61,6 +61,8 @@ export default {
     font: var(--ft-m);
     height: 100%;
     padding: 10px;
+    -webkit-user-select: text;
+    user-select: text;
 
     &:focus {
         outline: none;
