@@ -15,6 +15,8 @@
                 <slot name="name"></slot>
             </div>
 
+            <p class="ft-xs-medium color-ft-weak" v-if="displayId">@{{ id }}</p>
+
             <slot></slot>
         </div>
 
@@ -41,6 +43,7 @@ export default {
         id: { type: String },
         name: { type: String },
         displayName: { type: Boolean, default: false },
+        displayId: { type: Boolean, default: false },
         hidePicture: { type: Boolean, default: false },
         profileLarge: { type: String },
         pictureSrc: { type: String },
