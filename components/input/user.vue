@@ -47,7 +47,9 @@
 export default {
     name: 'InputUser',
     async fetch () {
-        if (!this.items) await this.$store.dispatch('user/fetch')
+        if (!this.items) await this.$store.dispatch('user/fetch', {
+            softRefresh: true
+        })
     },
     props: {
         auto: { type: Boolean, default: true },

@@ -35,7 +35,8 @@ export default {
     name: 'InputUser',
     async fetch () {
         if (!this.items) await this.$store.dispatch('user/fetch', {
-            query: this.query
+            query: this.query,
+            softRefresh: true
         })
     },
     props: {
