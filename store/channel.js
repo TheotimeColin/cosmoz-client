@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 import moment from 'moment-timezone'
 moment.tz.setDefault('Europe/Paris')
 
@@ -12,6 +12,8 @@ export default {
         items: {}
     }),
     mutations: {
+        ...baseMutations,
+        
         setCurrent (state, _id) {
             state.current = _id
         },
@@ -24,18 +26,6 @@ export default {
         },
         setCurrentWriting (state, action) {
             state.currentWriting = action
-        },
-        updateOne (state, value) {
-            state.items = storeUtils.updateOne(state, value)
-        },
-        deleteOne (state, id) {
-            state.items = storeUtils.deleteOne(state, id)
-        },
-        softRefresh (state, values) {
-            state.items = storeUtils.softRefresh(state, values)
-        },
-        refresh (state, values) {
-            state.items = storeUtils.refresh(values)
         }
     },
     actions: {
@@ -55,7 +45,7 @@ export default {
         },
         async get ({ commit }, _id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$get(getQuery('/entities/get', {
                     _id, type: 'channel'
                 }))
 
@@ -70,7 +60,7 @@ export default {
             }
         },
         async softFetch ({ state, dispatch, commit }, items) {
-            return await storeUtils.softFetch(items, { state, dispatch, commit })
+            return await softFetch(items, { state, dispatch, commit })
         },
         async update ({ commit }, params = {}) {
             try {
@@ -84,7 +74,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async create ({ commit }, params = {}) {
@@ -99,7 +89,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async delete ({ commit }, _id) {
@@ -118,7 +108,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         }
     },
@@ -135,12 +125,12 @@ export default {
         },
         find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
+            return search ? searchItems(items, search, root.auth.user) : items
         },
         findOne: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values({ ...state.items }) : getters.items
 
-            let result = storeUtils.searchItems(items, search, root.auth.user)
+            let result = searchItems(items, search, root.auth.user)
             return result[0] ? result[0] : null
         }
     }

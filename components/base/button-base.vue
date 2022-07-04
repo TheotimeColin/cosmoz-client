@@ -383,6 +383,10 @@ export default {
     border: 1px solid var(--color-border);
     box-shadow: none;
 
+    .ButtonBase_text {
+        font: var(--ft-title-xs);
+    }
+
     .G_cosmoz {
         width: 40%;
         opacity: 0.15;

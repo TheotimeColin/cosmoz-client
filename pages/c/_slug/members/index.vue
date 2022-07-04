@@ -1,5 +1,5 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--s" v-if="$constellation">
+    <div class="Page_wrapper Wrapper Wrapper--xs" v-if="$constellation">
         <div class="pt-20 mb-30 bg-bg-weak br-s" v-if="$constellation.type == 'community'">
             <h2 class="ft-title-xs mb-20 mh-20">L'équipe</h2>
             <slider-block
@@ -24,15 +24,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="block-cosmoz p-20 mt-20" v-if="$isConsteOrga">
+            <page-admin-invite-links :constellation="$constellation" />
+        </div>
     </div>
 </template>
 
 <script>
 import ConstellationMixin from '@/mixins/constellation'
+import PermissionsMixin from '@/mixins/permissions'
 
 export default {
     name: 'ConsteMembers',
-    mixins: [ ConstellationMixin ],
+    mixins: [ ConstellationMixin, PermissionsMixin ],
     layout: 'app',
     async fetch () {
         await this.$preFetch()

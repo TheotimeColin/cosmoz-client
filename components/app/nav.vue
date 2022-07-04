@@ -165,7 +165,7 @@ export default {
                 { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true, number: this.$store.getters['gathering/find']({
                     status: 'active', isPast: false, isAttending: true
                 }).length },
-                { label: `Ma constellation`, fa: 'sparkles', to: { name: 'constellation' } },
+                { label: `Mes constellations`, fa: 'sparkles', to: { name: 'constellation' } },
             ]
         },
     },

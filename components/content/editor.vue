@@ -13,9 +13,16 @@
                 <input-area class="fx-grow" :placeholder="placeholder" v-model="formData.content" ref="input" />
             </form>
 
-            <div>
-                <div class="mt-15 p-20 bg-bg-xstrong" v-if="images.length > 0">
+            <div class="bg-bg-strong p-20" v-if="images.length > 0 || formData.embed || isEmbedLoading">
+                <div class="+mt-10" v-if="images.length > 0">
                     <content-type-images :images="images" :is-editor="true" @delete="onImageDelete" />
+                </div>
+
+                <placeholder class="+mt-10" :height="140" v-if="isEmbedLoading" />
+                <div class="+mt-10" v-else-if="formData.embed">
+                    <content-type-embed v-bind="formData.embed" :disable-link="true">
+                        <button-base type="button" :modifiers="['xs', 'round', 'weak']" icon-before="times" @click="onDeleteEmbed" />
+                    </content-type-embed>
                 </div>
 
                 <form-errors class="mt-15" :items="errors" />
@@ -72,6 +79,8 @@
 </template>
 
 <script>
+import * as linkify from 'linkifyjs'
+
 export default {
     name: 'Editor',
     props: {
@@ -110,11 +119,14 @@ export default {
     },
     data: () => ({
         excludedTags: [],
+        excludedLinks: [],
         isTagFocused: false,
+        isEmbedLoading: false,
         formData: {
             content: '',
             images: [],
-            tags: []
+            tags: [],
+            embed: null
         }
     }),
     watch: {
@@ -126,6 +138,29 @@ export default {
             handler (v) {
                 this.formData.tags = v
             }
+        },
+        async ['formData.content'] (v) {
+            let links = linkify.find(v).filter(l => !this.excludedLinks.includes(l.href))
+            
+            if (links[0]) {
+                this.isEmbedLoading = true
+
+                const response = await this.$store.dispatch('scraper/scrape', links[0].href)
+
+                if (response && response.title) {
+                    this.formData = { 
+                        ...this.formData,
+                        embed: {
+                            href: links[0].href,
+                            title: response.title,
+                            image: response.image,
+                            description: response.description,
+                        }
+                    }
+                }
+
+                this.isEmbedLoading = false
+            }
         }
     },
     methods: {
@@ -133,8 +168,12 @@ export default {
             this.formData = {
                 content: '',
                 tags: this.defaultTags,
-                images: []
+                images: [],
+                embed: null
             }
+
+            this.excludedLinks = []
+            this.excludedTags = []
         },
         onSubmit () {
             this.formData.tags = [ ...this.formData.tags, ...this.dynTags ]
@@ -148,6 +187,14 @@ export default {
         },
         onImageDelete (index) {
             this.formData.images = this.formData.images.filter((c, i) => i != index)
+        },
+        onDeleteEmbed () {
+            this.excludedLinks = [
+                ...this.excludedLinks,
+                this.formData.embed.href
+            ]
+
+            this.formData.embed = null
         }
     }
 }

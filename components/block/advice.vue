@@ -18,7 +18,7 @@
                         <p class="color-ft-weak ft-xs mb-5" v-if="step.completed">Terminé !</p>
 
                         <button-base :modifiers="['s', 'cosmoz']" icon-before="check" @click="hide(step.id)" v-if="step.completed">{{ step.amount}} points</button-base>
-                        <button-base :modifiers="['s', 'light']" :to="step.to" v-bind="step.cta" v-else />
+                        <button-base :modifiers="['s', 'light']" :to="step.to" v-bind="step.cta" @click="() => step.action ? step.action() : {}" v-else />
                     </div>
                 </div>
             </slider-block>
@@ -62,7 +62,7 @@ export default {
                 {
                     id: 'register',
                     title: `Inscrit(e) sur Cosmoz`,
-                    text: `Bienvenue parmi nous !`,
+                    text: `Bienvenue parmi nous ! Voici un petit guide de la plateforme.`,
                     amount: 20,
                     completed: true
                 }, {
@@ -75,29 +75,21 @@ export default {
                     to: { name: 'p-userId', params: { userId: this.user.id } }
                 }, {
                     id: 'group',
-                    title: `Rejoins un groupe`,
-                    text: `Cosmoz, c'est une histoire de communautés. Il est temps d'en rejoindre une.`,
+                    title: `Voir ce qu'il se passe`,
+                    text: `Il y a sûrement des groupes et événements intéressants autour de toi !`,
                     amount: 80,
                     cta: { text: 'Explorer', iconBefore: 'compass' },
-                    completed: this.user.constellations.length > 0,
+                    completed: this.$store.getters['user/notif']('explore-page', 'onboarding'),
                     to: { name: 'explore' }
                 },
-                // {
-                //     id: 'friends',
-                //     title: `Invite tes amis`,
-                //     text: `Plus on est de fous, plus on rit ! Invite tes amis à rejoindre la plateforme.`,
-                //     amount: 40,
-                //     cta: { text: 'Inviter', iconBefore: 'paper-plane' },
-                //     to: { name: 'constellation' }
-                // },
                 {
-                    id: 'publish',
-                    title: `Dis bonjour !`,
-                    text: `Publie un petit message ou une image drôle. C'est uniquement visible par tes amis.`,
-                    completed: this.statuses.length > 0,
+                    id: 'create',
+                    title: `Créer une constellation`,
+                    text: `N'oublie pas d'y inviter tes amis. Ce sera votre espace privé rien qu'à vous !`,
                     amount: 30,
-                    cta: { text: 'Publier', iconBefore: 'plus' },
-                    to: { name: 'feed', query: { publish: true } }
+                    completed: this.user.createdConstellations.length > 0,
+                    cta: { text: 'Créer', iconBefore: 'plus' },
+                    action: () => this.$store.commit('page/popin', { constellationCreate: true })
                 }
             ]
         }

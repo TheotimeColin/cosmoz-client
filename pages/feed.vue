@@ -2,7 +2,10 @@
     <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <block-advice class="mv-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
     
-        <content-feed placeholder="Publier quelque chose..." />
+        <content-feed
+            placeholder="Publier quelque chose..."
+            :disable-create="true"
+        />
     </div>
 </template>
 

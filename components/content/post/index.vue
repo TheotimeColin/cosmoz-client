@@ -10,11 +10,12 @@
                     @delete="pendingDelete = true"
                 />
 
-                <div class="Post_main" @click="onClick">
+                <div class="Post_main">
                     <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
 
-                    <div class="Post_text Post_block" v-if="content">
-                        <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
+
+                    <div class="Post_text Post_block" v-if="parsedContent">
+                        <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(parsedContent)" ref="text"></div>
 
                         <link-base class="mt-20" v-if="isOverflow && !showAll" @click.native.stop="showAll = true">Voir plus</link-base>
                     </div>
@@ -23,16 +24,8 @@
                         {{ placeholderText }}
                     </div>
 
-                    <content-reactions
-                        class="Post_block Post_reactions"
-                        :class="{ 'is-reactions': reactions.length > 0 }"
-                        v-bind="$props"
-                        @seeReactions="isSeeReactions = true"
-                        id="" :status="$props._id"
-                    />
-
                     <div class="Post_tags Post_block" v-if="tags.length > 0 && consteData">
-                        <button-base
+                        <!-- <button-base
                             :modifiers="['2xs']"
                             class="m-3"
                             icon-before="hashtag"
@@ -40,8 +33,29 @@
                             :text="tag"
                             @click.stop="() => $router.push(localePath({ name: 'c-slug-discussions-tag-tagId', params: { slug: consteData.slug, tagId: tag } }))"
                             :key="tag"
-                        />
+                        /> -->
+                        
+                        <span
+                            class="Post_tag ft-s-medium color-ft-weak m-3"
+                            icon-before="hashtag"
+                            v-for="tag in tags"
+                            :text="tag"
+                            @click.stop="() => $router.push(localePath({ name: 'c-slug-discussions-tag-tagId', params: { slug: consteData.slug, tagId: tag } }))"
+                            :key="tag"
+                        >
+                            #{{ tag }}
+                        </span>
                     </div>
+                    <content-type-embed class="Post_block Post_embed" v-bind="embed" v-if="embed && embed.title && embed.href" />
+
+                    <content-reactions
+                        class="Post_block Post_reactions"
+                        :class="{ 'is-reactions': reactions.length > 0 }"
+                        v-bind="$props"
+                        @seeReactions="isSeeReactions = true"
+                        id="" :status="$props._id"
+                        v-if="reactions.length > 0"
+                    />
                 </div>
 
                 <content-post-footer
@@ -126,6 +140,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         read: { type: String },
+        embed: { type: [Object, Boolean], default: false },
         images: { type: Array, default: () => [] },
         owner: { type: String },
         reactions: { type: Array, default: () => [] },
@@ -155,6 +170,10 @@ export default {
         this.checkOverflow()
     },
     computed: {
+        parsedContent () {
+            
+            return this.content
+        },
         reactionTypes () {
             return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },
@@ -223,7 +242,6 @@ export default {
         border-radius: 10px;
         background-color: var(--color-bg-weak);
         position: relative;
-        cursor: pointer;
         @include shadow-s;
 
         &.is-reacted {
@@ -240,13 +258,6 @@ export default {
         &.is-forbidden {
             cursor: default;
         }
-
-        &.is-gallery {
-
-            .Post_footer {
-                background-color: transparent;
-            }
-        }
     }
 
     .Post_main {
@@ -259,33 +270,50 @@ export default {
         margin: 0;
         padding: 0 20% 0 15px;
         background-color: var(--color-bg-weak);
-
-        &.is-reactions {
-            padding-bottom: 20px;
-        }
+        margin-top: 20px;
     }
-
-    // .Post_block.Post_gallery {
-    //     padding-bottom: 0;
-        
-    //     & + .Post_reactions.is-reactions {
-    //         margin: -18px 0 0px 0;
-    //         padding: 0 20% 0px 10px;
-    //         background-color: transparent;
-    //     }
-    // }
 
     .Post_text {
         font: var(--ft-m);
         padding: 0 20px;
+
+        a {
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 
     .Post_tags {
         padding: 0 15px;
     }
 
+    .Post_embed {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .Post_tag {
+        cursor: pointer;
+
+        &:hover {
+            color: var(--color-ft-light);
+            text-decoration: underline;
+        }
+    }
+
     .Post_block {
-        padding-bottom: 20px;
+        margin-top: 20px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .Post_text + .Post_tags {
+        margin-top: 5px;
     }
 
     .Post_delete {
@@ -330,10 +358,6 @@ export default {
             border: none;
         }
 
-        .Post_footer {
-            margin: 0 -15px 0;
-        }
-
         .Post_gallery {
             margin-left: -15px;
             margin-right: -15px;
@@ -342,6 +366,11 @@ export default {
         .Post_text {
             padding-left: 0;
             padding-right: 0;
+        }
+
+        .Post_embed {
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .Post_tags {
@@ -353,22 +382,8 @@ export default {
 
         .Post_block.Post_reactions {
             padding: 0 10% 0 0;
-            margin: 0 -5px;
-
-            &.is-reactions {
-                padding-bottom: 20px;
-            }
+            margin: 15px -5px 0;
         }
-
-        // .Post_block.Post_gallery {
-        //     padding-bottom: 0;
-            
-        //     & + .Post_reactions.is-reactions {
-        //         margin: -18px 0 0px -10px;
-        //         padding: 0 10% 0px 0;
-        //         background-color: transparent;
-        //     }
-        // }
     }
 
 </style>

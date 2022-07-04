@@ -43,12 +43,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="ml-40 text-right fx-grow ml-0@xs mt-20@xs text-left@xs" v-if="mentions.length > 0">
-                        <div class="ft-title-3xs tape tape-strong m-3" v-for="(items, type) in $groupBy(mentions, 'type')" :key="type">
-                            {{ $t('mentions.' + type) }} <span class="round round-s bg-bg-weak ml-5">{{ items.length }}</span>
-                        </div>
-                    </div> -->
-
                     <div>
                         <button-base class="mt-20@xs" :modifiers="['s']" icon-before="check" v-if="!profile.isFriend && user.affinities.includes(profile._id)" @click="cancelFriendRequest" :loading="isLoading">
                             Demande envoyée
@@ -140,11 +134,13 @@
             </popin>
 
             <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-                <content-feed
-                    :author="profile._id"
-                    :disable-create="true"
-                    ref="feed"
-                />
+                <div class="block-r text-center fx-grow" v-if="mentions.length > 0">
+                    <p class="ft-title-2xs text-left mb-15">Remerciements reçus par {{ profile.name }}</p>
+
+                    <div class="ft-title-3xs tape m-3" v-for="mention in $groupBy(mentions, 'type', { orderBy: true })" :key="mention[0]">
+                        {{ $const.mentions.find(m => m.value == mention[0]).emoji }} {{ $t('mentions.' + mention[0]) }} <span class="round round-s bg-bg-light ml-5">{{ mention[1].length }}</span>
+                    </div>
+                </div>
             </div>
 
             <profile-edit :is-active="editSection ? true : false" @close="editSection = null" @open="editSection = 'picture'" v-if="isSelf" />
@@ -182,11 +178,11 @@ export default {
     async fetch () {
         await this.$store.dispatch('user/fetchOne', this.$route.params.userId)
 
-        // if (this.target) {
-        //     await this.$store.dispatch('mention/fetch', { query: {
-        //         target: this.target._id
-        //     }})
-        // }
+        if (this.target) {
+            await this.$store.dispatch('mention/fetch', { query: {
+                target: this.target._id
+            }})
+        }
     },
     data: () => ({
         TIDBITS,

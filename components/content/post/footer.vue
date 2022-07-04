@@ -51,6 +51,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         padding: 5px;
+        margin-top: 20px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
     }
@@ -89,16 +90,7 @@ export default {
         }
 
         .Post_footer {
-            margin: 0 -15px 0;
-        }
-
-        .Post_block.Post_reactions {
-            padding: 0 10% 0 0;
-            margin: 0 -5px;
-
-            &.is-reactions {
-                padding-bottom: 20px;
-            }
+            margin: 15px -15px 0;
         }
     }
 

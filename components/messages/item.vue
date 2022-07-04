@@ -8,7 +8,7 @@
                 <div class="Message_itemContainer" v-for="message in items" :key="message._id">
                     <div class="Message_item">
                         <p class="ft-xs-medium mb-3" v-if="isGroup && !isSelf">{{ author.name }}</p>
-                        {{ message.content }}
+                        <div v-html="message.content"></div>
                     </div>
                 </div>
             </transition-group>
@@ -89,6 +89,14 @@ export default {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
     overflow-wrap: break-word;
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
 
 .Message_itemContainer {

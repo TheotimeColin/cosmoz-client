@@ -41,7 +41,7 @@ export default {
         items () {
             return this.selectConst ? [
                 {
-                    label: 'Activité', fa: 'message-lines',
+                    label: 'Activité', fa: 'home',
                     to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }}
                 }, {
                     label: 'Événements', disabled: this.selectConst.type == 'group', fa: 'calendar-star',
@@ -60,7 +60,7 @@ export default {
                 { label: 'Menu', fa: 'bars', onClick: this.onOpen },
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
                 { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
-                { label: 'Ma constellation', fa: 'sparkles', to: { name: 'constellation' } },
+                { label: 'Mes constellations', fa: 'sparkles', to: { name: 'constellation' } },
                 { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
             ]
         }

@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 import { parseUser } from '@/utils/parsers'
 
 export default {
@@ -9,18 +9,7 @@ export default {
         items: {}
     }),
     mutations: {
-        updateOne (state, value) {
-            state.items = storeUtils.updateOne(state, value)
-        },
-        deleteOne (state, id) {
-            state.items = storeUtils.deleteOne(state, id)
-        },
-        refresh (state, values) {
-            state.items = storeUtils.refresh(values)
-        },
-        softRefresh (state, values) {
-            state.items = storeUtils.softRefresh(state, values)
-        }
+        ...baseMutations
     },
     actions: {
         async logOut ({ state }) {
@@ -38,7 +27,7 @@ export default {
         },
         async fetchOne ({ commit }, id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$get(getQuery('/entities/get', {
                     id, type: 'user'
                 }))
 
@@ -203,7 +192,7 @@ export default {
 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Échec de l'envoi du mot de passe`, this)
+                return handleErrors(e, commit, `Échec de l'envoi du mot de passe`, this)
             }
         },
         async resetPassword ({ commit }, data) {
@@ -216,11 +205,11 @@ export default {
 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
+                return handleErrors(e, commit, `Échec de la modification du mot de passe`, this)
             }
         },
         async softFetch ({ state, dispatch, commit }, items) {
-            return await storeUtils.softFetch(items, { state, dispatch, commit })
+            return await softFetch(items, { state, dispatch, commit })
         },
         async mapUsers ({ state, dispatch }, params) {
             return new Promise(async (resolve, reject) => {
@@ -233,7 +222,7 @@ export default {
                             console.log('====== FETCH USERS =======')
 
                             let newUsers = await dispatch('fetch')
-                            if (newUsers) users = storeUtils.refresh(newUsers)
+                            if (newUsers) users = refresh(newUsers)
                         }
 
                         let user = users[params.property ? item[params.property] : item]
@@ -309,7 +298,7 @@ export default {
         },
         find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
+            return search ? searchItems(items, search, root.auth.user) : items
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items
