@@ -13,7 +13,7 @@
                 </button-base>
             </div>
             <div v-else key="info">
-                <p class="ft-title-s mb-30">Personnalise ta communauté</p>
+                <p class="ft-title-s mb-30">Personnalise ta constellation</p>
 
                 <div class="block-r fx-center">
                     <label class="c-pointer" for="image-edit">

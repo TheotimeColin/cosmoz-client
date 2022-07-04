@@ -33,6 +33,10 @@ export default {
             softRefresh: true
         })
 
+        if (!this.$store.getters['user/notif']('explore-page', 'onboarding')) {
+            this.$store.dispatch('user/updateNotification', { id: 'explore-page', type: 'onboarding' })
+        }
+
         this.isLoading = false
     },
     data: () => ({

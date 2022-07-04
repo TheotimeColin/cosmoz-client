@@ -109,7 +109,7 @@ const searchItems = function (items, search, user) {
         Object.keys(search).forEach(key => {
             if (typeof search[key] === 'object' && !Array.isArray(search[key]) && search[key] !== null) {
                 let entries = Object.entries(search[key])[0]
-                
+
                 if (entries[0] == '$in') {
                     let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
                     
@@ -118,9 +118,13 @@ const searchItems = function (items, search, user) {
                     result = result.filter(item => {
                         return item[key].find(u => u == entries[1])
                     })
-                } else if (entries[0] == '$containsBroad') {
+                } else if (entries[0] == '$containsBroad' || entries[0] == '$broad') {
                     result = result.filter(item => {
-                        return item[key].find(u => u.toLowerCase() == entries[1].toLowerCase())
+                        if (Array.isArray(item[key]) && item[key] !== null) {
+                            return item[key].find(u => u.toLowerCase() == entries[1].toLowerCase())
+                        } else {
+                            return item[key].toLowerCase() == entries[1].toLowerCase()
+                        }
                     })
                 } else if (entries[0] == '$gte') {
                     result = result.filter(item => item[key] >= entries[1])

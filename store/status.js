@@ -31,7 +31,7 @@ export default {
             try {
                 let response = null
 
-                if (params.query.feed) {
+                if (params.isFeed) {
                     response = await this.$axios.$post('/status/feed', {
                         ...params.query, options: params.options
                     }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })

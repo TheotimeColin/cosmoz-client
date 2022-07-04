@@ -44,7 +44,9 @@ export default {
 <style lang="scss" scoped>
 .Embed {
     display: flex;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-bg-xweak);
+    background-color: var(--color-bg-xweak);
+    @include shadow;
     border-radius: 6px;
     position: relative;
     overflow: hidden;

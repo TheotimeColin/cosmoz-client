@@ -86,7 +86,8 @@ export default {
         isLoading: true,
         page: 0,
         checkedNext: false,
-        checkingNext: false
+        checkingNext: false,
+        isFeed: false
     }),
     async fetch () {
         if (this.tag) this.tags = [ this.tag ]
@@ -105,16 +106,11 @@ export default {
     },
     computed: {
         statuses () {
+            console.log('compute statuses')
             let statuses = []
-            let query = { parent: null }
-        
-            if (this.tag) query.tags = { $containsBroad: this.tag }
-            if (this.gathering) query.gathering = this.gathering
-            if (this.constellation) query.constellation = this.constellation
-            if (this.author) query = { ...query, owner: this.author, constellation: null, gathering: null }
 
             let userPosts = this.$store.getters['status/find']({
-                ...query
+                ...this.query
             }).map(s => ({ ...s, type: 'post' }))
 
             statuses = [
@@ -145,7 +141,7 @@ export default {
                 query.constellation = this.constellation
                 query.gathering = '$null'
             } else {
-                query.feed = true
+                this.isFeed = true
             }
 
             return query
@@ -178,6 +174,7 @@ export default {
         },
         async softRefresh () {
             await this.$store.dispatch('status/fetch', {
+                isFeed: this.isFeed,
                 type: this.feedType, query: this.query, softRefresh: true,
                 options: {
                     sort: { createdAt: 'desc' },
@@ -189,6 +186,7 @@ export default {
             return new Promise(async resolve => {
                 try {
                     await this.$store.dispatch('status/fetch', {
+                        isFeed: this.isFeed,
                         type: this.feedType, query: this.query,
                         options: {
                             sort: { createdAt: 'desc' },
