@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 
 export default {
     namespaced: true,
@@ -6,11 +6,11 @@ export default {
         async scrape ({ commit }, url) {
             try {
 
-                const response = await this.$axios.$get(storeUtils.getQuery('/scraper', { url }))
+                const response = await this.$axios.$get(getQuery('/scraper', { url }))
 
                 return response.data
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, 'Erreur de scraping')
+                return handleErrors(e, commit, 'Erreur de scraping')
             }
         }
     }

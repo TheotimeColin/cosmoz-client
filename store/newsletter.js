@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 
 export default {
     namespaced: true,
@@ -14,7 +14,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`, this)
+                return handleErrors(e, commit, `Une erreur est survenue`, this)
             }
         },
     }

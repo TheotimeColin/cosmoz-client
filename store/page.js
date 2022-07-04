@@ -19,6 +19,7 @@ export default {
         isNotifications: false,
         isPWA: false,
         isScrolled: false,
+        isEnd: false,
         isDisableFooter: false,
         breakpoint: 'l',
         body: {

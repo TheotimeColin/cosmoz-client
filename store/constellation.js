@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 import moment from 'moment-timezone'
 moment.tz.setDefault('Europe/Paris')
 
@@ -9,18 +9,7 @@ export default {
         items: {}
     }),
     mutations: {
-        updateOne (state, value) {
-            state.items = storeUtils.updateOne(state, value)
-        },
-        deleteOne (state, id) {
-            state.items = storeUtils.deleteOne(state, id)
-        },
-        softRefresh (state, values) {
-            state.items = storeUtils.softRefresh(state, values)
-        },
-        refresh (state, values) {
-            state.items = storeUtils.refresh(values)
-        }
+        ...baseMutations
     },
     actions: { 
         async fetch ({ state, commit }, params = {}) {
@@ -40,11 +29,11 @@ export default {
             }
         },
         async softFetch ({ state, dispatch, commit }, items) {
-            return await storeUtils.softFetch(items, { state, dispatch, commit })
+            return await softFetch(items, { state, dispatch, commit })
         },
         async get ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$get(getQuery('/entities/get', {
                     ...params.query, type: 'constellation'
                 }))
 
@@ -65,7 +54,7 @@ export default {
                 
                 return response.data
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async deleteInvite ({ commit }, id) {
@@ -76,7 +65,7 @@ export default {
                 
                 return response.data
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async apply ({ commit }, id) {
@@ -89,7 +78,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async accept ({ commit }, params) {
@@ -102,7 +91,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async leave ({ commit }, id) {
@@ -115,7 +104,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async create ({ commit }, params = {}) {
@@ -130,7 +119,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async createNew ({ commit }, params = {}) {
@@ -159,7 +148,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async delete ({ commit }, _id) {
@@ -179,7 +168,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         }
     },
@@ -209,7 +198,7 @@ export default {
         },
         find: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
-            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
+            return search ? searchItems(items, search, root.auth.user) : items
         },
         findOne: (state, getters) => (search, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items

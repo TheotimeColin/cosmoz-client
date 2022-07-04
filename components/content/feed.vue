@@ -51,9 +51,9 @@
                 <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
             </button-base>
         </div>
-        
-        <div class="text-center mt-20" v-if="displayedStatuses.length < statuses.length">
-            <button-base :modifiers="['light']" icon-before="arrow-down" @click="page++">Afficher la suite</button-base>
+
+        <div class="text-center mt-20" v-if="checkingNext">
+            <button-base :modifiers="['light']" :loading="true">Chargement</button-base>
         </div>
         <div class="text-center color-ft-xweak mt-20" v-else-if="displayedStatuses.length > 0">
             <p>Fin du fil.</p>
@@ -84,16 +84,24 @@ export default {
         tags: [],
         isSubmitLoading: false,
         isLoading: true,
-        page: 0
+        page: 0,
+        checkedNext: false,
+        checkingNext: false
     }),
     async fetch () {
-        this.isLoading = true
-
-        await this.refresh()
-
         if (this.tag) this.tags = [ this.tag ]
+        
+        if (this.$store.getters['status/isFetched'](this.feedType)) {
+            this.isLoading = false
 
-        this.isLoading = false
+            this.softRefresh()
+        } else {
+            this.isLoading = true
+
+            await this.refresh()
+
+            this.isLoading = false
+        }
     },
     computed: {
         statuses () {
@@ -120,6 +128,46 @@ export default {
         },
         displayedStatuses () {
             return this.statuses.slice(0, this.max * (this.page + 1))
+        },
+        feedType () {
+            if (this.gathering) return 'gathering'
+            if (this.constellation) return 'constellation'
+            return 'feed'
+        },
+        query () {
+            let query = { parent: '$null' }
+
+            if (this.tag) query.tags = { $broad: this.tag }
+
+            if (this.gathering) {
+                query.gathering = this.gathering
+            } else if (this.constellation) {
+                query.constellation = this.constellation
+                query.gathering = '$null'
+            } else {
+                query.feed = true
+            }
+
+            return query
+        }
+    },
+    watch: {
+        async ['$store.state.page.isEnd'] (v) {
+            if (v && !this.checkingNext) {
+                this.checkingNext = true
+
+                await this.$store.dispatch('status/fetch', {
+                    type: this.feedType,
+                    query: this.query, softRefresh: true,
+                    options: { sort: { createdAt: 'desc' }, limit: this.max * (this.page + 2), skip: this.max * (this.page + 1) }
+                })
+
+                this.page += 1
+                this.checkingNext = false
+            }
+        },
+        page (v) {
+            this.checkedNext = false
         }
     },
     methods: {
@@ -128,28 +176,25 @@ export default {
             
             this.isEditorActive = true
         },
+        async softRefresh () {
+            await this.$store.dispatch('status/fetch', {
+                type: this.feedType, query: this.query, softRefresh: true,
+                options: {
+                    sort: { createdAt: 'desc' },
+                    limit: this.max * (this.page + 1), skip: this.max * this.page
+                }
+            })
+        },
         async refresh () {
             return new Promise(async resolve => {
                 try {
-                    let query = { parent: '$null' }
-
-                    if (this.tag) query.tags = { $broad: this.tag }
-
-                    if (this.gathering) {
-                        query.gathering = this.gathering
-                        await this.$store.dispatch('status/fetch', { query })
-                    } else if (this.constellation) {
-                        query.constellation = this.constellation
-                        query.gathering = '$null'
-                        await this.$store.dispatch('status/fetch', { query })
-                    } else if (this.author) {
-                        query.owner = this.author
-                        query.gathering = '$null'
-                        query.constellation = '$null'
-                        await this.$store.dispatch('status/fetch', { query })
-                    } else {
-                        await this.$store.dispatch('status/fetchFeed')
-                    }
+                    await this.$store.dispatch('status/fetch', {
+                        type: this.feedType, query: this.query,
+                        options: {
+                            sort: { createdAt: 'desc' },
+                            limit: this.max * (this.page + 1), skip: this.max * this.page
+                        }
+                    })
 
                     if (this.statuses) {
                         await this.$store.dispatch('user/softFetch', 

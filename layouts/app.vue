@@ -80,21 +80,27 @@ export default {
         window.addEventListener('resize', this.onWindowResize)
 
         this.$store.commit('page/setScrolled', window.scrollY > 5)
-        window.addEventListener('scroll', () => {
-            let action = window.scrollY > 5
-            
-            if (this.$store.state.page.isScrolled != action) this.$store.commit('page/setScrolled', action)
-        })
+
+        window.addEventListener('scroll', this.onScroll)
 
         window.addEventListener('beforeinstallprompt', e => e.preventDefault())
     },
     beforeDestroy() {
-       this.$recaptcha.destroy()
-       window.removeEventListener('resize', this.onWindowResize)
+        this.$recaptcha.destroy()
+        window.removeEventListener('resize', this.onWindowResize)
+        window.removeEventListener('scroll', this.onScroll)
     },
     methods: {
         onNavOpen () {
             if (this.$refs.nav) this.$refs.nav.open()
+        },
+        onScroll () {
+            let action = window.scrollY > 5
+            let isEnd = (window.innerHeight + window.scrollY) >= document.body.offsetHeight * 0.8
+            
+            if (this.$store.state.page.isScrolled != action) this.$store.commit('page/setScrolled', action)
+
+            if (this.$store.state.page.isEnd != isEnd) this.$store.commit('page/set', { isEnd })
         },
         windowResize () {
             this.$store.commit('page/setBreakpoint', window.innerWidth)

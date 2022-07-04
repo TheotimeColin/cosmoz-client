@@ -1,4 +1,4 @@
-import storeUtils from '@/utils/store'
+import { baseMutations, getQuery, updateOne, deleteOne, softRefresh, refresh, softFetch, handleErrors, searchItems } from '@/utils/store'
 import moment from 'moment-timezone'
 moment.tz.setDefault('Europe/Paris')
 import CONSTANTS from '@/utils/constants'
@@ -8,42 +8,48 @@ export default {
     namespaced: true,
     state: () => ({
         type: 'status',
+        fetched: [],
         items: {}
     }),
     mutations: {
-        updateOne (state, value) {
-            state.items = storeUtils.updateOne(state, value)
-        },
-        deleteOne (state, id) {
-            state.items = storeUtils.deleteOne(state, id)
-        },
-        softRefresh (state, values) {
-            state.items = storeUtils.softRefresh(state, values)
-        },
-        refresh (state, values) {
-            state.items = storeUtils.refresh(values)
+        ...baseMutations,
+        addFetchType (state, type) {
+            if (state.fetched.find(f => f.type == type)) {
+                state.fetched = state.fetched.map(s => ({
+                    ...s,
+                    updatedAt: s.type == type ? new Date() : s.updatedAt
+                }))
+            } else {
+                state.fetched = [ ...state.fetched, {
+                    type, updatedAt: new Date()
+                }]
+            }
         }
     },
     actions: {
-        async fetchFeed ({ state, commit }, params = {}) {
-            try {
-                const response = await this.$axios.$get('/status/feed', { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
-
-                if (params.refresh !== false) commit('refresh', response.data)
-
-                return response.data
-            } catch (e) {
-                console.error(e)
-                return null
-            }
-        },
         async fetch ({ state, commit }, params = {}) {
             try {
-                const response = await this.$axios.$post('/entities/get', {
-                    ...params.query, type: 'status',
-                }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                let response = null
 
-                if (params.refresh !== false) commit('refresh', response.data)
+                if (params.query.feed) {
+                    response = await this.$axios.$post('/status/feed', {
+                        ...params.query, options: params.options
+                    }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                } else {
+                    response = await this.$axios.$post('/entities/get', {
+                        ...params.query, options: params.options, type: 'status',
+                    }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+                }
+
+                if (!response) throw Error('no-response')
+                
+                if (params.softRefresh == true) {
+                    commit('softRefresh', response.data)
+                } else if (params.refresh !== false) {
+                    commit('refresh', response.data)
+                }
+
+                if (params.type) commit('addFetchType', params.type)
 
                 return response.data
             } catch (e) {
@@ -53,7 +59,7 @@ export default {
         },
         async get ({ commit }, _id) {
             try {
-                const response = await this.$axios.$get(storeUtils.getQuery('/entities/get', {
+                const response = await this.$axios.$get(getQuery('/entities/get', {
                     _id, type: 'status'
                 }))
 
@@ -68,7 +74,7 @@ export default {
             }
         },
         async softFetch ({ state, dispatch, commit }, items) {
-            return await storeUtils.softFetch(items, { state, dispatch, commit })
+            return await softFetch(items, { state, dispatch, commit })
         },
         async create ({ commit }, params = {}) {
             try {
@@ -97,7 +103,7 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
         async delete ({ commit }, _id) {
@@ -116,11 +122,14 @@ export default {
                 
                 return response
             } catch (e) {
-                return storeUtils.handleErrors(e, commit, `Une erreur est survenue`)
+                return handleErrors(e, commit, `Une erreur est survenue`)
             }
         }
     },
     getters: {
+        isFetched: (state) => (type) => {
+            return state.fetched.find(f => f.type == type)
+        },
         items: (state) => {
             return Object.values(state.items).map(item => {
                 return {
@@ -132,23 +141,7 @@ export default {
         find: (state, getters, root) => (search = {}, raw = false) => {
             let items = raw ? Object.values(state.items) : getters.items
 
-            return search ? storeUtils.searchItems(items, search, root.auth.user) : items
-
-            if (search) {
-                Object.keys(search).forEach(key => {
-                    if (search[key] == '$notNull') {
-                        items = items.filter(item => item[key])
-                    } else if (search[key] == '$isNull') {
-                        items = items.filter(item => !item[key])
-                    } else if (key == '$in') {
-                        items = items.filter(item => search[key].find(i => i == item._id))
-                    } else {
-                        items = items.filter(item => item[key] == search[key])
-                    }
-                })
-            }
-
-            return items.sort((a, b) => a.createdAt && b.createdAt ? moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf() : false)
+            return search ? searchItems(items, search, root.auth.user) : items
         },
         groupBy: (state, getters) => (property) => {
             let items = getters.items
@@ -170,7 +163,7 @@ export default {
         findOne: (state, getters, root) => (search, raw = false) => {
             let items = raw ? Object.values({ ...state.items }) : getters.items
 
-            let result = storeUtils.searchItems(items, search, root.auth.user)
+            let result = searchItems(items, search, root.auth.user)
             return result[0] ? result[0] : null
         }
     }
