@@ -109,7 +109,7 @@ export function getMeta ($route, $store) {
             fa: 'cog'
         },
         'constellation': {
-            title: 'Ma constellation',
+            title: 'Mes constellations',
             fa: 'sparkles'
         },
         'c-slug': {

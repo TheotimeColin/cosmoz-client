@@ -30,7 +30,7 @@
                     :options="[
                         { label: 'Tout le monde', value: 'user', disabled: ['socials'].includes(type) },
                         { label: `Mes rencontres`, value: 'encountered' },
-                        { label: 'Ma constellation', value: 'friends' },
+                        { label: 'Mes constellations', value: 'friends' },
                     ]"
                 />
             </div>
