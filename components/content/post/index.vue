@@ -296,6 +296,7 @@ export default {
     }
 
     .Post_tag {
+        cursor: pointer;
 
         &:hover {
             color: var(--color-ft-light);

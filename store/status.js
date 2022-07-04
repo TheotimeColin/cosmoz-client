@@ -104,6 +104,9 @@ export default {
                 
                 if (response.data.origin) commit('updateOne', response.data.origin)
                 commit('updateOne', response.data)
+
+                console.log('new status')
+                console.log(response.data)
                 
                 return response
             } catch (e) {

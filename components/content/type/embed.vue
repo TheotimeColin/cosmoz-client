@@ -1,5 +1,5 @@
 <template>
-    <component :is="disableLink ? 'div' : 'a'" class="Embed" :class="[ ...$modifiers ]" :href="href">
+    <component :is="disableLink ? 'div' : 'a'" class="Embed" :class="[ ...$modifiers ]" :href="href" target="_blank">
         <div class="Embed_main">
             <div>
                 <p class="ft-title-2xs ellipsis-2">
