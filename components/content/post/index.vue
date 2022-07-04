@@ -10,11 +10,12 @@
                     @delete="pendingDelete = true"
                 />
 
-                <div class="Post_main" @click="onClick">
+                <div class="Post_main">
                     <content-type-images class="Post_block Post_gallery" :images="images" v-if="images && images.length > 0" />
 
-                    <div class="Post_text Post_block" v-if="content">
-                        <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(content)" ref="text"></div>
+
+                    <div class="Post_text Post_block" v-if="parsedContent">
+                        <div :class="{ 'ellipsis-4': !showAll }" v-html="$options.filters.specials(parsedContent)" ref="text"></div>
 
                         <link-base class="mt-20" v-if="isOverflow && !showAll" @click.native.stop="showAll = true">Voir plus</link-base>
                     </div>
@@ -45,6 +46,7 @@
                             #{{ tag }}
                         </span>
                     </div>
+                    <content-type-embed class="Post_block Post_embed" v-bind="embed" v-if="embed && embed.title && embed.href" />
 
                     <content-reactions
                         class="Post_block Post_reactions"
@@ -52,6 +54,7 @@
                         v-bind="$props"
                         @seeReactions="isSeeReactions = true"
                         id="" :status="$props._id"
+                        v-if="reactions.length > 0"
                     />
                 </div>
 
@@ -137,6 +140,7 @@ export default {
         _id: { type: String },
         content: { type: String },
         read: { type: String },
+        embed: { type: [Object, Boolean], default: false },
         images: { type: Array, default: () => [] },
         owner: { type: String },
         reactions: { type: Array, default: () => [] },
@@ -166,6 +170,10 @@ export default {
         this.checkOverflow()
     },
     computed: {
+        parsedContent () {
+            
+            return this.content
+        },
         reactionTypes () {
             return this.$groupBy(this.reactions, 'type', { orderBy: true })
         },
@@ -234,7 +242,6 @@ export default {
         border-radius: 10px;
         background-color: var(--color-bg-weak);
         position: relative;
-        cursor: pointer;
         @include shadow-s;
 
         &.is-reacted {
@@ -251,13 +258,6 @@ export default {
         &.is-forbidden {
             cursor: default;
         }
-
-        &.is-gallery {
-
-            .Post_footer {
-                background-color: transparent;
-            }
-        }
     }
 
     .Post_main {
@@ -270,20 +270,29 @@ export default {
         margin: 0;
         padding: 0 20% 0 15px;
         background-color: var(--color-bg-weak);
-        padding-top: 20px;
-
-        &.is-reactions {
-            padding-bottom: 20px;
-        }
+        margin-top: 20px;
     }
 
     .Post_text {
         font: var(--ft-m);
         padding: 0 20px;
+
+        a {
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 
     .Post_tags {
         padding: 0 15px;
+    }
+
+    .Post_embed {
+        margin-left: 20px;
+        margin-right: 20px;
     }
 
     .Post_tag {
@@ -295,15 +304,15 @@ export default {
     }
 
     .Post_block {
-        padding-top: 20px;
+        margin-top: 20px;
 
         &:first-child {
-            padding-top: 0;
+            margin-top: 0;
         }
     }
 
     .Post_text + .Post_tags {
-        padding-top: 5px;
+        margin-top: 5px;
     }
 
     .Post_delete {
@@ -348,10 +357,6 @@ export default {
             border: none;
         }
 
-        .Post_footer {
-            margin: 0 -15px 0;
-        }
-
         .Post_gallery {
             margin-left: -15px;
             margin-right: -15px;
@@ -362,6 +367,11 @@ export default {
             padding-right: 0;
         }
 
+        .Post_embed {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
         .Post_tags {
             padding-left: 0;
             padding-right: 0;
@@ -370,23 +380,9 @@ export default {
         }
 
         .Post_block.Post_reactions {
-            padding: 20px 10% 0 0;
-            margin: 0 -5px;
-
-            &.is-reactions {
-                padding-bottom: 20px;
-            }
+            padding: 0 10% 0 0;
+            margin: 15px -5px 0;
         }
-
-        // .Post_block.Post_gallery {
-        //     padding-bottom: 0;
-            
-        //     & + .Post_reactions.is-reactions {
-        //         margin: -18px 0 0px -10px;
-        //         padding: 0 10% 0px 0;
-        //         background-color: transparent;
-        //     }
-        // }
     }
 
 </style>

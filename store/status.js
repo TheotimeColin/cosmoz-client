@@ -87,6 +87,10 @@ export default {
                         params[key].forEach(v => {
                             formData.append(arrayKey, v)
                         })
+                    } else if (typeof params[key] === 'object' &&
+                    !Array.isArray(params[key]) &&
+                    params[key] !== null) {
+                        formData.append(key, JSON.stringify(params[key]))
                     } else {
                         formData.append(key, params[key])
                     }

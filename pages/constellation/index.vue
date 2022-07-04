@@ -9,7 +9,7 @@
                 <link-base class="ft-title-xs" @click="displayPending = true" v-if="pending.length > 0">{{ pending.length }} demandes en attente</link-base>
             </div>
 
-            <div class="row-xs" v-if="false && friends.length > 0">
+            <div class="row-xs" v-if="friends.length > 0">
                 <div class="col-3 col-4@xs mt-10" v-for="user in friends" :key="user._id">
                     <user-profile v-bind="user" />
                 </div>
