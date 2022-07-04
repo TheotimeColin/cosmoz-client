@@ -86,13 +86,13 @@ export default {
             })
         },
         tags () {
-            return this.$store.getters['tag/find']({
+            return [ ...this.$const.hashtags, ...this.$store.getters['tag/find']({
                 constellation: this._id,
                 count: { $gte: 2 },
                 sort: { count: 'asc' }
-            }).map(t => ({
+            }).filter(h => !this.$const.hashtags.find(t => t.id == h.id))].map(t => ({
                 label: t.id,
-                to: { name: 'c-slug-discussions-tag-tagId', params: { slug: this.slug, tagId: t.id } }, fa: 'hashtag'
+                to: { name: 'c-slug-discussions-tag-tagId', params: { slug: this.slug, tagId: t.id } }, fa: t.icon ? t.icon : 'hashtag'
             }))
         },
         events () {
@@ -139,7 +139,7 @@ export default {
                     fa: 'comments',
                     to: { name: 'c-slug-discussions', params: { slug: this.slug } },
                     children: this.tags,
-                    max: 3,
+                    max: 6,
                     showMore: 6
                 },
             ]

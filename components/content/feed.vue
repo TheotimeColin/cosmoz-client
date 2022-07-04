@@ -171,7 +171,7 @@ export default {
         }
     },
     methods: {
-        openEditor (params) {
+        openEditor (params = {}) {
             if (params.tags) this.tags = params.tags
             
             this.isEditorActive = true
