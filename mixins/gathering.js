@@ -38,7 +38,7 @@ export default {
                 ...all, [current._id]: current 
             }), {}))
 
-            return users.filter(u => statuses.includes(u.status)).map(u => this.$getUser(u._id)).filter(u => u)
+            return users.filter(u => statuses.includes(u.status)).map(u => this.$getUser(u._id)).filter(u => u).sort((a, b) => (a.picture ? 0 : 999) - (b.picture ? 0 : 999))
         },
         async onBookManage (status) {
             this.isLoading = true

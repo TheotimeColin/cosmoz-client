@@ -160,6 +160,7 @@ export default {
         isList: false,
         isManage: false,
         selectedUser: null,
+        random: Math.random()
     }),
     computed: {
         organizers () {

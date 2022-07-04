@@ -105,7 +105,6 @@ export default {
     },
     computed: {
         statuses () {
-            console.log('compute statuses')
             let statuses = []
 
             let userPosts = this.$store.getters['status/find']({
@@ -115,7 +114,7 @@ export default {
             statuses = [
                 ...userPosts,
                 ...this.autoStatuses
-            ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment()))
+            ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment().add(30, 'seconds')))
 
             return statuses.sort((a, b) => {
                 return this.$moment(b.createdAt).valueOf() - this.$moment(a.createdAt).valueOf()
