@@ -86,8 +86,7 @@ export default {
         isLoading: true,
         page: 0,
         checkedNext: false,
-        checkingNext: false,
-        isFeed: false
+        checkingNext: false
     }),
     async fetch () {
         if (this.tag) this.tags = [ this.tag ]
@@ -140,8 +139,6 @@ export default {
             } else if (this.constellation) {
                 query.constellation = this.constellation
                 query.gathering = '$null'
-            } else {
-                this.isFeed = true
             }
 
             return query
@@ -174,7 +171,6 @@ export default {
         },
         async softRefresh () {
             await this.$store.dispatch('status/fetch', {
-                isFeed: this.isFeed,
                 type: this.feedType, query: this.query, softRefresh: true,
                 options: {
                     sort: { createdAt: 'desc' },
@@ -186,7 +182,6 @@ export default {
             return new Promise(async resolve => {
                 try {
                     await this.$store.dispatch('status/fetch', {
-                        isFeed: this.isFeed,
                         type: this.feedType, query: this.query,
                         options: {
                             sort: { createdAt: 'desc' },

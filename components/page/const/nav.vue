@@ -114,6 +114,12 @@ export default {
                     to: { name: 'c-slug-feed', params: { slug: this.slug } }
                 },
                 {
+                    label: `Membres`,
+                    isParent: true,
+                    fa: 'users',
+                    to: { name: 'c-slug-members', params: { slug: this.slug } }
+                },
+                {
                     label: `Événements`,
                     fa: 'calendar',
                     to: { name: 'c-slug-events', params: { slug: this.slug } },
@@ -127,12 +133,6 @@ export default {
                     label: `Sorties`,
                     fa: 'party-horn',
                     to: { name: 'c-slug-hangouts', params: { slug: this.slug } }
-                },
-                {
-                    label: `Membres`,
-                    fa: 'users',
-                    to: { name: 'c-slug-members', params: { slug: this.slug } },
-                    disabled: this.type == 'community'
                 },
                 {
                     label: `Discussions`,

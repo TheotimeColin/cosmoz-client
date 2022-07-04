@@ -31,9 +31,9 @@ export default {
             try {
                 let response = null
 
-                if (params.isFeed) {
+                if (params.type == 'feed') {
                     response = await this.$axios.$post('/status/feed', {
-                        ...params.query, options: params.options
+                        options: params.options
                     }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
                 } else {
                     response = await this.$axios.$post('/entities/get', {
