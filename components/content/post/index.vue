@@ -23,16 +23,8 @@
                         {{ placeholderText }}
                     </div>
 
-                    <content-reactions
-                        class="Post_block Post_reactions"
-                        :class="{ 'is-reactions': reactions.length > 0 }"
-                        v-bind="$props"
-                        @seeReactions="isSeeReactions = true"
-                        id="" :status="$props._id"
-                    />
-
                     <div class="Post_tags Post_block" v-if="tags.length > 0 && consteData">
-                        <button-base
+                        <!-- <button-base
                             :modifiers="['2xs']"
                             class="m-3"
                             icon-before="hashtag"
@@ -40,8 +32,27 @@
                             :text="tag"
                             @click.stop="() => $router.push(localePath({ name: 'c-slug-discussions-tag-tagId', params: { slug: consteData.slug, tagId: tag } }))"
                             :key="tag"
-                        />
+                        /> -->
+                        
+                        <span
+                            class="Post_tag ft-s-medium color-ft-weak m-3"
+                            icon-before="hashtag"
+                            v-for="tag in tags"
+                            :text="tag"
+                            @click.stop="() => $router.push(localePath({ name: 'c-slug-discussions-tag-tagId', params: { slug: consteData.slug, tagId: tag } }))"
+                            :key="tag"
+                        >
+                            #{{ tag }}
+                        </span>
                     </div>
+
+                    <content-reactions
+                        class="Post_block Post_reactions"
+                        :class="{ 'is-reactions': reactions.length > 0 }"
+                        v-bind="$props"
+                        @seeReactions="isSeeReactions = true"
+                        id="" :status="$props._id"
+                    />
                 </div>
 
                 <content-post-footer
@@ -259,21 +270,12 @@ export default {
         margin: 0;
         padding: 0 20% 0 15px;
         background-color: var(--color-bg-weak);
+        padding-top: 20px;
 
         &.is-reactions {
             padding-bottom: 20px;
         }
     }
-
-    // .Post_block.Post_gallery {
-    //     padding-bottom: 0;
-        
-    //     & + .Post_reactions.is-reactions {
-    //         margin: -18px 0 0px 0;
-    //         padding: 0 20% 0px 10px;
-    //         background-color: transparent;
-    //     }
-    // }
 
     .Post_text {
         font: var(--ft-m);
@@ -284,8 +286,24 @@ export default {
         padding: 0 15px;
     }
 
+    .Post_tag {
+
+        &:hover {
+            color: var(--color-ft-light);
+            text-decoration: underline;
+        }
+    }
+
     .Post_block {
-        padding-bottom: 20px;
+        padding-top: 20px;
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+    .Post_text + .Post_tags {
+        padding-top: 5px;
     }
 
     .Post_delete {
@@ -352,7 +370,7 @@ export default {
         }
 
         .Post_block.Post_reactions {
-            padding: 0 10% 0 0;
+            padding: 20px 10% 0 0;
             margin: 0 -5px;
 
             &.is-reactions {
