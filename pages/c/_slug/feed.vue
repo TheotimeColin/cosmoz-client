@@ -14,6 +14,7 @@
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
                 :enable-tags="true"
+                :placeholder="`Publier dans ${$constellation.name}...`"
                 @introduced="onIntroduced"
                 read="g-member"
                 ref="feed"
