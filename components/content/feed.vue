@@ -108,9 +108,12 @@ export default {
     computed: {
         statuses () {
             let statuses = []
+            let query = { ...this.query }
+            
+            delete query.$updateUser
 
             let userPosts = this.$store.getters['status/find']({
-                ...this.query
+                ...query
             }).map(s => ({ ...s, type: 'post' }))
 
             statuses = [
@@ -131,7 +134,7 @@ export default {
             return 'feed'
         },
         query () {
-            let query = { parent: '$null' }
+            let query = { parent: '$null', $updateUser: true }
 
             if (this.tag) query.tags = { $broad: this.tag }
 

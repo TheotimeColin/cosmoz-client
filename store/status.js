@@ -35,20 +35,25 @@ export default {
                     response = await this.$axios.$post('/status/feed', {
                         options: params.options
                     }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
+
+                    if (!response) throw Error('no-response')
+
+                    commit('softRefresh', response.data.statuses)
+                    commit('gathering/softRefresh', response.data.gatherings, { root: true })
+
                 } else {
                     response = await this.$axios.$post('/entities/get', {
                         ...params.query, options: params.options, type: 'status',
                     }, { cancelToken: params.cancelToken ? params.cancelToken.token : undefined })
-                }
 
-                if (!response) throw Error('no-response')
+                    if (!response) throw Error('no-response')
                 
-                if (params.softRefresh == true) {
-                    commit('softRefresh', response.data)
-                } else if (params.refresh !== false) {
-                    commit('refresh', response.data)
+                    if (params.softRefresh == true) {
+                        commit('softRefresh', response.data)
+                    } else if (params.refresh !== false) {
+                        commit('refresh', response.data)
+                    }
                 }
-
                 if (params.type) commit('addFetchType', params.type)
 
                 return response.data

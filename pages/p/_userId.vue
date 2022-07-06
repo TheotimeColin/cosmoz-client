@@ -133,12 +133,12 @@
                 </template>
             </popin>
 
-            <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+            <div class="Page_wrapper Wrapper Wrapper--xs">
                 <div class="block-r text-center fx-grow" v-if="mentions.length > 0">
                     <p class="ft-title-2xs text-left mb-15">Remerciements reçus par {{ profile.name }}</p>
 
                     <div class="ft-title-3xs tape m-3" v-for="mention in $groupBy(mentions, 'type', { orderBy: true })" :key="mention[0]">
-                        {{ $const.mentions.find(m => m.value == mention[0]).emoji }} {{ $t('mentions.' + mention[0]) }} <span class="round round-s bg-bg-light ml-5">{{ mention[1].length }}</span>
+                        {{ $const.mentions.find(m => m.value == mention[0]).emoji }} {{ $t('mentions.' + mention[0]) }} <span class="round round-s bg-bg-light ml-5">{{ mention[1].items.length }}</span>
                     </div>
                 </div>
             </div>

@@ -244,21 +244,61 @@ Vue.mixin({
         $randomColor () {
             return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
         },
-        $groupBy (items, type, params = {}) {
-            let result = items.reduce((obj, item) => {
-                let newObj = { ...obj }
+        $groupBy (items, types, params = {}) {
+            if (!Array.isArray(types)) types = [ types ]
 
-                if (!newObj[item[type]]) {
-                    newObj[item[type]] = [ item ]
+            let startDate = this.$moment()
+
+            let result = items.reduce((obj, item) => {
+                let $groupData = {}
+                let id = ''
+                let newObj = { ...obj }
+                
+                types.forEach(type => {
+                    if (typeof type === 'object') {
+                        let key = Object.keys(type)[0]
+                        let value = item[key]
+
+                        $groupData[key] = item[Object.keys(type)[0]]
+                        
+                        if (Object.values(type)[0] == '$week') {
+                            id += this.$moment(value).format('YYYYMM')
+                        } else if (Object.values(type)[0].startsWith('$days')) {
+                            let max = parseInt(Object.values(type)[0].match(/\d+/)[0])
+                            
+                            let result = Object.entries(obj).find(o => {
+                                return this.$moment(value).isBetween(
+                                    this.$moment(o[1].$groupData[key]).subtract(max, 'days'),
+                                    this.$moment(o[1].$groupData[key])
+                                )
+                            })
+
+                            if (result) {
+                                id += this.$moment(result[1].$groupData[type]).format('YYYYMMDD')
+                            } else {
+                                id += this.$moment(value).format('YYYYMMDD')
+                            }
+                        } 
+                    } else {
+                        $groupData[type] = item[type]
+                        id += item[type]
+                    }
+                })
+
+                if (!newObj[id]) {
+                    newObj[id] = { $groupData, items: [ item ] }
                 } else {
-                    newObj[item[type]].push(item)
+                    newObj[id] = {
+                        ...newObj[id],
+                        items: [ ...newObj[id].items, item ]
+                    }
                 }
 
                 return newObj
             }, {})
 
             if (params.orderBy) {
-                result = Object.entries(result).sort((a, b) => b[1].length - a[1].length)
+                result = Object.entries(result).sort((a, b) => b[1].items.length - a[1].items.length)
             }
 
             return result

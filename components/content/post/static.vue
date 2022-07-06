@@ -19,7 +19,7 @@
                         class="m-3"
                         :emoji-before="reaction[0]"
                         v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
-                        @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
+                        @mouseenter="(e) => $tOpen(reaction[0] + ' : ' + $pluralize(reaction[1].items.map(r => $getUser(r.owner) ? $getUser(r.owner).name : null).filter(v => v)), e)"
                         @mouseleave="$tClose"
                         @click.stop="addReaction({ type: reaction[0] })"
                     >

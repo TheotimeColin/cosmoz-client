@@ -128,6 +128,14 @@ const searchItems = function (items, search, user) {
                     })
                 } else if (entries[0] == '$gte') {
                     result = result.filter(item => item[key] >= entries[1])
+                } else if (entries[0] == '$lte') {
+                    result = result.filter(item => {
+                        if (moment(item[key]).isValid()) {
+                            return moment(item[key]).isBefore(moment(entries[1]))
+                        } else {
+                            return item[key] <= entries[1]
+                        }
+                    })
                 }
             } else if (key == '$in') {
                 result = result.filter(item => search[key].includes(item._id))

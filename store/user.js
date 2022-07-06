@@ -152,6 +152,8 @@ export default {
         },
         async updateNotification ({ rootState }, notification) {
             try {
+                let response = null
+
                 let notifications = rootState.auth.user.notifications.slice()
 
                 if (!notification.status) notification.status == 'read'
@@ -167,7 +169,7 @@ export default {
                 if (!found) {
                     notifications = [ ...notifications, notification ]
 
-                    const response = await this.$axios.$post('/entities', {
+                    response = await this.$axios.$post('/entities', {
                         _id: rootState.auth.user._id, params: {
                             notifications
                         }, type: 'user'

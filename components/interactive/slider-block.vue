@@ -1,11 +1,12 @@
 <template>
-    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + height) + 'px' }">
-        <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 
+    , 'is-height': height, 'is-init': isInit }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + (height ? height : computedHeight)) + 'px' }">
+        <placeholder :ratio="ratio" :height="height" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
             <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', }" ref="rail">
                 <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in (isLoading ? 5 : 0)" :key="i">
-                    <placeholder :height="height" :ratio="ratio" />
+                    <placeholder :height="height ? height : computedHeight" :ratio="ratio" />
                 </div>
 
                 <transition-group name="fade">
@@ -13,7 +14,7 @@
                         class="SliderBlock_item"
                         v-for="slotId in slots"
                         :class="[ itemClass ]"
-                        :style="isInit && autoHeight ? { height: height + 'px' } : {}"
+                        :style="height || (isInit && autoHeight) ? { height: height ? height : computedHeight + 'px' } : {}"
                         :key="slotId"
                         ref="item"
                     >
@@ -38,6 +39,7 @@ export default {
         margin: { type: Number, default: 15 },
         offset: { type: Number, default: 0 },
         offsetV: { type: Number, default: 20 },
+        height: { type: Number, default: 0 },
         paddingT: { type: Number, default: 0 },
         ratio: { type: Number, default: 0 },
         autoHeight: { type: Boolean, default: false },
@@ -51,7 +53,7 @@ export default {
     data: () => ({
         step: 0,
         maxSteps: 0,
-        height: 0,
+        computedHeight: 0,
         isInit: false,
         isSlidable: true
     }),
@@ -60,13 +62,13 @@ export default {
     },
     watch: {
         slots () {
-            this.$nextTick(() => this.checkDimensions())
+            setTimeout(() => this.checkDimensions(), 100)
         },
         isLoading (v) {
-            if (!v) this.$nextTick(() => this.checkDimensions())
+            if (!v) setTimeout(() => this.checkDimensions(), 100)
         },
         breakpoint () {
-            this.$nextTick(() => this.checkDimensions())
+            setTimeout(() => this.checkDimensions(), 100)
         }
     },
     methods: {
@@ -84,11 +86,11 @@ export default {
 
                 if (this.$refs.item) {
                     this.$refs.item.forEach(item => {
-                        this.height = this.height < (item.offsetHeight + this.paddingT) ? (item.offsetHeight + this.paddingT) : this.height
+                        this.computedHeight = this.computedHeight < (item.offsetHeight + this.paddingT) ? (item.offsetHeight + this.paddingT) : this.computedHeight
                     })
                 }
 
-                this.isInit = true
+                // this.isInit = true
             })
         },
         next () {
@@ -104,7 +106,20 @@ export default {
 <style lang="scss" scoped>
     .SliderBlock {
         position: relative;
-        height: var(--height, 0px);
+        
+
+        &.is-height {
+
+            .SliderBlock_container,
+            .SliderBlock_rail,
+            .SliderBlock_item {
+                height: 100%;
+            }
+        }
+
+        &.is-init {
+            height: var(--height, 0px);
+        }
     }
 
     .SliderBlock_container {

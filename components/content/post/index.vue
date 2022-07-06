@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!isLoading && ownerData">
-            <div class="Post" :class="{ 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden }" ref="container" >
+            <div class="Post" :class="[ $modifiers, { 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden, 'is-no-footer': noFooter } ]" ref="container" >
                 <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
                 <content-post-head
@@ -60,6 +60,7 @@
 
                 <content-post-footer
                     v-bind="$props"
+                    v-if="!noFooter"
                 />
 
                 <content-post-forbidden v-bind="$props" />
@@ -82,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="Post_comments" v-if="displayComments">
+            <div class="Post_comments" v-if="displayComments && !noFooter">
                 <div class="fx-center mb-15">
                     <p class="ft-title-2xs">
                         <span class="round-s bg-bg-strong mr-3">{{ children.length }}</span> Commentaires
@@ -123,10 +124,11 @@
 
 <script>
 import PostMixin from '@/mixins/post'
+import { ModifiersMixin } from 'instant-coffee-core'
 
 export default {
     name: 'Post',
-    mixins: [ PostMixin ],
+    mixins: [ ModifiersMixin, PostMixin ],
     async fetch () {
         await this.$store.dispatch('user/softFetch', [
             this.owner,
@@ -157,6 +159,7 @@ export default {
         maxComments: { type: Number, default: 2 },
         noLink: { type: Boolean, default: false },
         isChild: { type: Boolean, default: false },
+        noFooter: { type: Boolean, default: false },
         displayComments: { type: Boolean, default: false },
     },
     data: () => ({
@@ -258,6 +261,13 @@ export default {
         &.is-forbidden {
             cursor: default;
         }
+
+        &.is-no-footer {
+
+            .Post_main {
+                padding-bottom: 20px;
+            }
+        }
     }
 
     .Post_main {
@@ -337,6 +347,10 @@ export default {
         & + & {
             margin-top: 15px;
         }
+    }
+
+    .Post--weak {
+        background-color: var(--color-bg-xweak);
     }
 
     @include breakpoint-xs {

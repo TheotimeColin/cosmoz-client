@@ -25,7 +25,6 @@ export default {
     props: {
         _id: { type: String },
         id: { type: String },
-        gathering: { type: String },
         name: { type: String },
         overlay: { type: String },
         mentions: { type: Array, default: () => [] },
