@@ -164,18 +164,20 @@ export default {
                     return { ...n, ...(existing ? notification : {}) }
                 })
 
-                if (!found) notifications = [ ...notifications, notification ]
+                if (!found) {
+                    notifications = [ ...notifications, notification ]
 
-                const response = await this.$axios.$post('/entities', {
-                    _id: rootState.auth.user._id, params: {
-                        notifications
-                    }, type: 'user'
-                })
+                    const response = await this.$axios.$post('/entities', {
+                        _id: rootState.auth.user._id, params: {
+                            notifications
+                        }, type: 'user'
+                    })
+                    
+                    if (response.errors.length > 0) throw Error(response.errors[0])
+
+                    await this.$auth.fetchUser()
+                }
                 
-                if (response.errors.length > 0) throw Error(response.errors[0])
-
-                await this.$auth.fetchUser()
-    
                 return response
             } catch (e) {
                 console.error(e)

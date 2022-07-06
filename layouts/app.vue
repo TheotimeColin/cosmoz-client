@@ -40,6 +40,12 @@ export default {
             await this.$store.dispatch('channel/fetch', {
                 query: { users: this.user._id }
             })
+            
+            await this.$store.dispatch('constellation/softFetch', [
+                ...this.user.followedConstellations,
+                ...this.user.constellations,
+                ...this.user.createdConstellations
+            ])
         }
     },
     data: () => ({

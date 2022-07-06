@@ -10,21 +10,23 @@
             v-if="!disableCreate"
         />
 
-        <content-editor
-            :is-active="isEditorActive"
-            :placeholder="placeholder"
-            :read="read"
-            :constellation="constellation"
-            :is-loading="isSubmitLoading"
-            :errors="errors"
-            :enable-tags="enableTags"
-            :default-tags="tags"
-            @submit="onSubmit"
-            @open="isEditorActive = true"
-            @close="isEditorActive = false"
-            v-if="!disableCreate"
-            ref="editor"
-        />
+        <client-only>
+            <content-editor
+                :is-active="isEditorActive"
+                :placeholder="placeholder"
+                :read="read"
+                :constellation="constellation"
+                :is-loading="isSubmitLoading"
+                :errors="errors"
+                :enable-tags="enableTags"
+                :default-tags="tags"
+                @submit="onSubmit"
+                @open="isEditorActive = true"
+                @close="isEditorActive = false"
+                v-if="!disableCreate"
+                ref="editor"
+            />
+        </client-only>
 
         <transition-group name="fade">
             <component

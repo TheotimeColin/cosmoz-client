@@ -103,8 +103,7 @@ export default {
         loading: [],
         displayPending: false
     }),
-    computed: {
-        
+    computed: {       
         encounters () {
             return this.$store.getters['user/find']({
                 isEncountered: true,

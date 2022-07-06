@@ -99,15 +99,6 @@
 
 <script>
 export default {
-    async fetch () {
-        if (this.user) {
-            await this.$store.dispatch('constellation/softFetch', [
-                ...this.user.followedConstellations,
-                ...this.user.constellations,
-                ...this.user.createdConstellations
-            ])
-        }
-    },
     name: 'AppNav',
     props: {
         pan: { type: Number, default: 0 },

@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div v-else-if="hasConfirmed">
-                <div class="pt-20 ph-20 mb-20">
+                <div class="pt-20 ph-20">
                     <p class="ft-title-xs">
                         Tu les as rencontrés
                     </p>
@@ -70,11 +70,13 @@
                 <slider-block
                     :slots="usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id).map(u => u._id)"
                     :ratio="150" item-class="width-2xss" :margin="8" :offset="$smallerThan('xs') ? 15 : 20"
-                    :offset-v="20">
-                    <div v-for="user in usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id)"
-                        :slot="user._id" :key="user._id">
-                        <user-profile v-bind="user" :no-link="true" :gathering="gathering._id"
-                            @click.native="() => selectedUser = user" />
+                    :offset-v="20"
+                    :padding-t="20"
+                >
+                    <div class="p-relative" v-for="(user, i) in usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id)" :slot="user._id" :key="user._id" @click="$store.dispatch('user/updateNotification', { id: 'affinity-popin', type: 'onboarding' })">
+                        <user-profile v-bind="user" :no-link="true" :gathering="gathering._id" @click.native="() => selectedUser = user" />
+
+                        <div class="Att_abs" v-if="i == 0 && !$store.getters['user/notif']('affinity-popin', 'onboarding')"></div>
                     </div>
                 </slider-block>
 

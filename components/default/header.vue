@@ -46,8 +46,7 @@ export default {
         assets: { logo },
         isLoading: true,
         isOpen: false,
-        isNavOpen: false,
-        nav: []
+        isNavOpen: false
     }),
     computed: {
         
@@ -60,28 +59,6 @@ export default {
     },
     mounted () {
         this.isLoading = false
-
-        this.nav = [
-            {
-                label: `Activité`,
-                fa: 'home',
-                to: this.localePath({ name: 'feed' }),
-            },
-            {
-                label: `Sortir`,
-                fa: 'calendar',
-                to: this.localePath({ name: 'g' }),
-                items: [
-                    {
-                        label: `Participer à une rencontre`,
-                        to: this.localePath({ name: 'g' })
-                    }, {
-                        label: `Mes rencontres passées`,
-                        to: this.localePath({ name: 'g-past' })
-                    }
-                ]
-            }
-        ]
     }
 }
 </script>
