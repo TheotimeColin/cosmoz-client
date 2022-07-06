@@ -62,7 +62,7 @@ export default {
             return reactions.find(r => r.default)
         },
         onMouseEnter (e, reaction) {
-            if (this.isDefaultReaction(reaction[1]) && reaction[1].length == 1) return
+            if (this.isDefaultReaction(reaction[1].items) && reaction[1].items.length == 1) return
 
             let text = reaction[0]
             let users = this.$pluralize(reaction[1].map(r => this.$getUser(r.owner) ? this.$getUser(r.owner).name : null).filter(v => v))
