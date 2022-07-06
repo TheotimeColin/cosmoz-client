@@ -90,7 +90,7 @@ export default {
                     })
                 }
 
-                // this.isInit = true
+                this.isInit = true
             })
         },
         next () {

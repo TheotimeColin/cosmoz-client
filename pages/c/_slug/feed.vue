@@ -51,18 +51,38 @@ export default {
                 sortDate: g.isPast ? g.date : this.$moment(g.date).subtract(2, 'days').toDate()
             }))
         },
-        statuses () {
+        mainStatus () {
             let statuses = this.$store.getters['status/find']({
                 constellation: this.$constellation._id,
-                sort: { date: 'asc' },
-                date: { $gte: this.$moment().subtract(15, 'days').toDate() }
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(3, 'days').toDate() }
+            })
+
+            if (!statuses || statuses.length <= 0) return null
+
+            let posts = statuses.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+            let photos = statuses.filter(i => i.images.length > 0).slice(0, 5)
+
+            return {
+                all: [ ...photos.map(s => s._id), ...posts.map(s => s._id) ],
+                statuses: { photos, posts },
+                type: 'content-conste-tag',
+                sortDate: this.$moment(statuses[0].createdAt).add(2, 'minutes').toDate()
+            }
+        },
+        tagStatuses () {
+            let statuses = this.$store.getters['status/find']({
+                _id: { $notIn: (this.mainStatus ? this.mainStatus.all : []) },
+                constellation: this.$constellation._id,
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(15, 'days').toDate() }
             })
 
             let byTags = Object.entries(this.$groupBy(statuses, 'tags'))
 
             return byTags.map(s => {
-                let posts = s[1].items.filter(i => i.content && i.images.length <= 0)
-                let photos = s[1].items.filter(i => i.images.length > 0)
+                let posts = s[1].items.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+                let photos = s[1].items.filter(i => i.images.length > 0).slice(0, 5)
 
                 return s[1].items.length >= 3 ? {
                     statuses: { photos, posts },
@@ -76,9 +96,10 @@ export default {
             let statuses = []
 
             statuses = [
+                this.mainStatus,
                 ...this.gatherings,
-                ...this.statuses
-            ].filter(s => s.sortDate)
+                ...this.tagStatuses,
+            ].filter(s => s && s.sortDate)
 
             return statuses.sort((a, b) => {
                 return this.$moment(b.sortDate).valueOf() - this.$moment(a.sortDate).valueOf()

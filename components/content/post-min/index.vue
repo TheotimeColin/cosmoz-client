@@ -3,15 +3,22 @@
         <nuxt-link :to="localePath(permaLink)" v-if="!isLoading && ownerData">
             <div class="PostMin" :class="[ $modifiers ]" ref="container" >
                 <div class="PostMin_icon fx-no-shrink">
-                    <user-icon class="PostMin_user" :modifiers="['']" v-bind="ownerData" v-if="ownerData" />
+                    <user-icon class="PostMin_user" :modifiers="['m']" v-bind="ownerData" v-if="ownerData" />
                 </div>
                 
-                <div class="PostMin_text ellipsis-2" v-if="parsedContent">
-                    <div v-html="$options.filters.specials(parsedContent)" ref="text"></div>
+                <div class="pl-10 pr-20 fx-grow">
+                    <div class="PostMin_text ellipsis-2" v-if="parsedContent">
+                        <div v-html="$options.filters.specials(parsedContent)" ref="text"></div>
+                    </div>
+
+                    <div class="ft-xs color-ft-weak">
+                        {{ $moment(createdAt).fromNow() }}
+                    </div>
                 </div>
 
                 <content-reactions-min
                     :reactions="reactions"
+                    class="ml-10"
                     v-if="reactions.length > 0"
                 />
             </div>
@@ -50,7 +57,6 @@ export default {
         createdAt: { type: [String, Date] },
         gathering: { type: String },
         constellation: { type: String },
-        origin: { type: String },
         noLink: { type: Boolean, default: false },
     },
     data: () => ({
@@ -100,7 +106,6 @@ export default {
 
     .PostMin_text {
         font: var(--ft-m);
-        padding: 0 20px 0 10px;
         flex-grow: 1;
 
         a {

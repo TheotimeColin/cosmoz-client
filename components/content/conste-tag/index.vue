@@ -1,7 +1,15 @@
 <template>
     <div class="ConsteTag">
         <div class="pt-20 ph-20 fx-center">
-            <link-base :invert="true" :modifiers="['l']" :to="{ name: 'c-slug-discussions-tag-tagId', params: { slug: $constellation.slug, tagId: hashtag } }">#{{ hashtag }}</link-base>
+            <div v-if="hashtag">
+                <span class="color-ft-weak">Publications dans</span> <link-base :invert="true" :modifiers="['l']" :to="{ name: 'c-slug-discussions-tag-tagId', params: { slug: $constellation.slug, tagId: hashtag } }">#{{ hashtag }}</link-base>
+            </div>
+            <div v-else>
+                <link-base :invert="true" :modifiers="['l']" :to="{ name: 'c-slug-discussions', params: { slug: $constellation.slug } }">
+                    Dernières publications
+                </link-base>
+            </div>
+            
         </div>
 
         <div class="p-20" v-if="statuses.posts && statuses.posts.length > 0">

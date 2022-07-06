@@ -1,7 +1,9 @@
 <template>
     <div class="ConsteUpdate" v-if="constellation">
         <div class="pt-20 ph-20 fx-center">
-            <const-icon v-bind="constellation" :display-name="true">
+            <const-icon v-bind="constellation" :display-name="true" :modifiers="['m']">
+                <p class="ft-s color-ft-weak" v-if="$moment(endDate).isBefore($moment().subtract(3, 'days'))">{{ $moment(endDate).fromNow() }}</p>
+                <p class="ft-s" v-else>Dernières publications 🔥</p>
             </const-icon>
 
             <button-base :modifiers="['s']" class="ml-15"  icon-after="arrow-right" :to="{ name: 'c-slug-discussions', params: { slug: constellation.slug } }">
@@ -9,10 +11,9 @@
             </button-base>
         </div>
 
-        <p class="ph-20 mt-15 ft-m" v-if="getNewPosts() > 0">{{ getNewPosts() }} nouvelles publications 🔥</p>
 
         <div class="p-20" v-if="statuses.posts && statuses.posts.length > 0">
-            <div class="+mt-10" v-for="post in statuses.posts.slice(0, 3)" :key="post._id">
+            <div class="+mt-5" v-for="post in statuses.posts.slice(0, 3)" :key="post._id">
                 <content-post-min
                     v-bind="post"
                     :modifiers="['weak']"

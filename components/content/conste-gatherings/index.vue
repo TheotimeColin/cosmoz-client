@@ -1,8 +1,7 @@
 <template>
     <div class="ConsteGatherings" v-if="constellation">
         <div class="pt-20 ph-20 fx-center">
-            <const-icon v-bind="constellation" :display-name="true">
-            </const-icon>
+            <const-icon v-bind="constellation" :display-name="true" :modifiers="['m']" />
 
             <button-base :modifiers="['s']" class="ml-15" icon-after="arrow-right" :to="{ name: 'c-slug-events', params: { slug: constellation.slug } }">
                 Voir l'agenda

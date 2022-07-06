@@ -111,7 +111,8 @@ export default {
 .ConstIcon_name {
     font: var(--ft-title-2xs);
     display: flex;
-    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     font-size: 15px;
     margin-left: 10px;
 
@@ -148,6 +149,10 @@ export default {
         width: 45px;
         height: 45px;
         font-size: 22px;
+    }
+
+    .ConstIcon_name .LinkBase {
+        font: var(--ft-title-xs);
     }
 }
 

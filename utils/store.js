@@ -120,6 +120,10 @@ const searchItems = function (items, search, user) {
                     let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
                     
                     result = result.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
+                } else if (entries[0] == '$notIn') {
+                    let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
+                    
+                    result = result.filter(item => !entries[1].find(i => (isString ? i : i[key]) == item[key]))
                 } else if (entries[0] == '$contains') {
                     result = result.filter(item => {
                         return item[key].find(u => u == entries[1])

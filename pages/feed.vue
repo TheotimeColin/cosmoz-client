@@ -99,7 +99,7 @@ export default {
                 constellation: { $in: this.user.constellations }
             })
 
-            result = Object.entries(this.$groupBy(result, ['constellation', { createdAt: '$days5' }]))
+            result = Object.entries(this.$groupBy(result, ['constellation', { createdAt: '$days7' }]))
 
             result = result.map(r => {
                 let posts = r[1].items.filter(s => s.content && s.images.length <= 0)

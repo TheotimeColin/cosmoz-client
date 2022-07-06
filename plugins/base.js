@@ -278,29 +278,28 @@ Vue.mixin({
                             let max = parseInt(Object.values(type)[0].match(/\d+/)[0])
                             
                             let result = Object.entries(total).find(o => {
-                                
-                                return moment(value).isBetween(
+                                return moment(value).startOf('day').isBetween(
                                     moment(o[1].$groupData[key]).subtract(max, 'days'),
                                     moment(o[1].$groupData[key])
                                 )
                             })
-                            
+
                             if (result) {
                                 $groupData = {
                                     ...$groupData,
-                                    startDate: moment(result[1].$groupData[type]).subtract(max, 'days').toDate(),
-                                    endDate: moment(result[1].$groupData[type]).toDate()
+                                    startDate: moment(value).startOf('day').subtract(max, 'days').toDate(),
+                                    endDate: moment(value).startOf('day').toDate()
                                 }
                                 
-                                id += moment(result[1].$groupData[type]).format('YYYYMMDD')
+                                id += moment(result[1].$groupData.startDate).startOf('day').format('YYYYMMDD')
                             } else {
                                 $groupData = {
                                     ...$groupData,
-                                    startDate: moment(value).subtract(max, 'days').toDate(),
-                                    endDate: moment(value).toDate()
+                                    startDate: moment(value).startOf('day').subtract(max, 'days').toDate(),
+                                    endDate: moment(value).startOf('day').toDate()
                                 }
                                 
-                                id += moment(value).format('YYYYMMDD')
+                                id += moment(value).startOf('day').subtract(max, 'days').format('YYYYMMDD')
                             }
                         } 
                     } else {
@@ -308,7 +307,7 @@ Vue.mixin({
                         id += item[type]
                     }
                 })
-                
+
                 if (!stop) {
                     if (!total[id]) {
                         total[id] = { $groupData, items: [ item ] }
