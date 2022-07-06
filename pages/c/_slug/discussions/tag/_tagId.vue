@@ -14,7 +14,7 @@
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
                 :enable-tags="true"
-                
+                @introduced="onIntroduced"
                 :placeholder="`Publier dans #${$route.params.tagId.toLowerCase()}...`"
                 :tag="$route.params.tagId.toLowerCase()"
                 read="g-member"

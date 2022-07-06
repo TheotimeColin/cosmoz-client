@@ -14,6 +14,7 @@
                 :constellation="$constellation._id"
                 :disable-create="!$isConsteMember"
                 :enable-tags="true"
+                @introduced="onIntroduced"
                 read="g-member"
                 ref="feed"
             />
