@@ -19,7 +19,7 @@ export default {
         ]
     },
 
-    // ssr: false,
+    ssr: false,
     
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
