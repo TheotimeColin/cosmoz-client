@@ -106,6 +106,7 @@ export default {
                 let photos = r[1].items.filter(s => s.images.length > 0)
                 
                 return {
+                    ...r[1].$groupData,
                     _id: 'posts-' + r[0],
                     constellation: this.$store.getters['constellation/findOne']({ _id: r[1].$groupData.constellation }),
                     statuses: { photos, posts },

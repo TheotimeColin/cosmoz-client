@@ -115,8 +115,6 @@ const searchItems = function (items, search, user) {
                         return searchField({ [key]: obj }, t)
                     }, result)
 
-                    console.log(results)
-
                     result = results
                 } else if (entries[0] == '$in') {
                     let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'

@@ -34,18 +34,30 @@
 export default {
     name: 'ContentConsteUpdate',
     props: {
+        startDate: { type: [String, Date] },
+        endDate: { type: [String, Date] },
         constellation: { type: Object },
         statuses: { type: Object }
     },
     methods: {
         getNewPosts () {
-            let query = { parent: '$null', constellation: this.constellation._id }
+            let query = {
+                parent: '$null',
+                constellation: this.constellation._id,
+                createdAt: { $and: [
+                    { $gte: this.startDate },
+                    { $lte: this.endDate },
+                ] }
+            }
 
             if (this.user && this.user.constellationData) {
                 let constellationData = this.user.constellationData[this.constellation._id]
 
                 if (constellationData && constellationData.lastVisit) {
-                    query.createdAt = { $gte: constellationData.lastVisit }
+                    query.createdAt.$and = [
+                        ...query.createdAt.$and,
+                        { $gte: constellationData.lastVisit }
+                    ]
                 }
             }
 
@@ -64,7 +76,6 @@ export default {
     position: relative;
     @include shadow-s;
 }
-
 
 @include breakpoint-xs {
 

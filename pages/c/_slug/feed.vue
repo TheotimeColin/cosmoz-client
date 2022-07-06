@@ -36,6 +36,7 @@ export default {
         gatherings () {
             let gatherings = this.$store.getters['gathering/find']({
                 constellation: this.$constellation._id,
+                isAttending: true,
                 status: 'active',
                 sort: { date: 'asc' },
                 date: { $and: [
