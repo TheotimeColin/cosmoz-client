@@ -103,8 +103,8 @@ export default {
 
             result = result.map(r => {
                 let posts = r[1].items.filter(s => s.content && s.images.length <= 0)
-
                 let photos = r[1].items.filter(s => s.images.length > 0)
+                
                 return {
                     _id: 'posts-' + r[0],
                     constellation: this.$store.getters['constellation/findOne']({ _id: r[1].$groupData.constellation }),

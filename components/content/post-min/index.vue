@@ -101,6 +101,7 @@ export default {
     .PostMin_text {
         font: var(--ft-m);
         padding: 0 20px 0 10px;
+        flex-grow: 1;
 
         a {
             text-decoration: underline;

@@ -247,36 +247,47 @@ Vue.mixin({
         $groupBy (items, types, params = {}) {
             if (!Array.isArray(types)) types = [ types ]
 
-            let startDate = this.$moment()
-
-            let result = items.reduce((obj, item) => {
+            const groupItem = function (item, types, total) {
                 let $groupData = {}
+                let stop = false
                 let id = ''
-                let newObj = { ...obj }
-                
+
                 types.forEach(type => {
-                    if (typeof type === 'object') {
+                    if (item[type] instanceof Array) {
+                        item[type].forEach(id => {
+                            if (!total[id]) {
+                                total[id] = { $groupData, items: [ item ] }
+                            } else {
+                                total[id] = {
+                                    ...total[id],
+                                    items: [ ...total[id].items, item ]
+                                }
+                            }
+                        })
+
+                        stop = true
+                    } else if (typeof type === 'object') {
                         let key = Object.keys(type)[0]
                         let value = item[key]
 
                         $groupData[key] = item[Object.keys(type)[0]]
                         
                         if (Object.values(type)[0] == '$week') {
-                            id += this.$moment(value).format('YYYYMM')
+                            id += moment(value).format('YYYYMM')
                         } else if (Object.values(type)[0].startsWith('$days')) {
                             let max = parseInt(Object.values(type)[0].match(/\d+/)[0])
                             
-                            let result = Object.entries(obj).find(o => {
-                                return this.$moment(value).isBetween(
-                                    this.$moment(o[1].$groupData[key]).subtract(max, 'days'),
-                                    this.$moment(o[1].$groupData[key])
+                            let result = Object.entries(total).find(o => {
+                                return moment(value).isBetween(
+                                    moment(o[1].$groupData[key]).subtract(max, 'days'),
+                                    moment(o[1].$groupData[key])
                                 )
                             })
 
                             if (result) {
-                                id += this.$moment(result[1].$groupData[type]).format('YYYYMMDD')
+                                id += moment(result[1].$groupData[type]).format('YYYYMMDD')
                             } else {
-                                id += this.$moment(value).format('YYYYMMDD')
+                                id += moment(value).format('YYYYMMDD')
                             }
                         } 
                     } else {
@@ -284,18 +295,26 @@ Vue.mixin({
                         id += item[type]
                     }
                 })
-
-                if (!newObj[id]) {
-                    newObj[id] = { $groupData, items: [ item ] }
-                } else {
-                    newObj[id] = {
-                        ...newObj[id],
-                        items: [ ...newObj[id].items, item ]
+                
+                if (!stop) {
+                    if (!total[id]) {
+                        total[id] = { $groupData, items: [ item ] }
+                    } else {
+                        total[id] = {
+                            ...total[id],
+                            items: [ ...total[id].items, item ]
+                        }
                     }
                 }
 
-                return newObj
-            }, {})
+                return total
+            }
+
+            let result = {}
+            
+            items.forEach(item => {
+                result = groupItem(item, types, result)
+            })
 
             if (params.orderBy) {
                 result = Object.entries(result).sort((a, b) => b[1].items.length - a[1].items.length)
