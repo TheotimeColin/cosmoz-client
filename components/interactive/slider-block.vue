@@ -1,9 +1,9 @@
 <template>
-    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', '--margin': margin + 'px', '--height': (offsetV + height) + 'px' }">
+    <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + height) + 'px' }">
         <placeholder :ratio="ratio" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">
-            <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px' }" ref="rail">
+            <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', }" ref="rail">
                 <div class="SliderBlock_item" :class="[ itemClass ]" v-for="i in (isLoading ? 5 : 0)" :key="i">
                     <placeholder :height="height" :ratio="ratio" />
                 </div>
@@ -38,6 +38,7 @@ export default {
         margin: { type: Number, default: 15 },
         offset: { type: Number, default: 0 },
         offsetV: { type: Number, default: 20 },
+        paddingT: { type: Number, default: 0 },
         ratio: { type: Number, default: 0 },
         autoHeight: { type: Boolean, default: false },
         isLoading: { type: Boolean, default: false },
@@ -83,7 +84,7 @@ export default {
 
                 if (this.$refs.item) {
                     this.$refs.item.forEach(item => {
-                        this.height = this.height < item.offsetHeight ? item.offsetHeight : this.height
+                        this.height = this.height < (item.offsetHeight + this.paddingT) ? (item.offsetHeight + this.paddingT) : this.height
                     })
                 }
 

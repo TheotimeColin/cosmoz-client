@@ -45,7 +45,7 @@ export default {
         min: { type: [Number, Boolean], default: false },
         exclude: { type: Array, default: () => [] },
         value: { type: Array, default: () => [] },
-        query: { type: Array, default: () => ({}) }
+        query: { type: Object, default: () => ({}) }
     },
     data: () => ({
         localValue: [],

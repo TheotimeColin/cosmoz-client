@@ -180,7 +180,6 @@
     margin: -30px 0 0 -30px;
 }
 
-
 @keyframes att-ripples {
     0% {
         opacity: 0;
@@ -197,6 +196,37 @@
         transform: scale(0.75);
     }
 }
+
+.Att_abs {
+    width: 110%;
+    height: 110%;
+    border-radius: 10px;
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    background: color-opacity('bg-light', -90%);
+    transform-origin: center;
+    animation: att-abs 800ms ease-in-out 0ms infinite;
+    pointer-events: none;
+}
+
+@keyframes att-abs {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
 
 .bg-holo { --background: url('./../img/texture/holo.webp'); }
 .bg-plastic-black { --background: url('./../img/texture/plastic-black.webp'); }

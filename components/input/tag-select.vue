@@ -22,10 +22,10 @@
         <div class="TagSelect_popin" :class="{ 'is-active': isFocused }">
             <template v-if="search == '' && filterFeatured($const.hashtags).length > 0">
                 <div class="TagSelect_tag" v-for="tag in filterFeatured($const.hashtags)" :key="tag._id" @click="() => { $emit('input', [ ...value, tag.id ]); search = '' }">
-                <fa :icon="`far fa-${tag.icon}`" class="mr-10 fx-no-shrink" fixed-width></fa> 
-                <div class="fx-grow">
-                        <p class="ft-title-2xs">{{ tag.id }}</p>
-                        <p class="ft-xs color-ft-weak">{{ tag.description }}</p>
+                    <fa :icon="`far fa-${tag.icon}`" class="mr-10 fx-no-shrink" fixed-width></fa> 
+                    <div class="fx-grow">
+                        <div class="ft-title-2xs">{{ tag.id }}</div>
+                        <div class="ft-xs color-ft-weak">{{ tag.description }}</div>
                     </div>
                     <div class="ml-10 fx-no-shrink">
                         <fa icon="far fa-plus"></fa> 
@@ -33,27 +33,27 @@
                 </div>
                 
                 <div class="fx-center p-5 mt-20">
-                    <p class="fx-no-shrink ft-xs-medium color-ft-weak">Tendances</p>
+                    <div class="fx-no-shrink ft-xs-medium color-ft-weak">Tendances</div>
                     <hr class="Separator fx-grow ml-10">
                 </div>
             </template>
 
-
             <div class="TagSelect_tag" v-for="tag in displayedTags" :key="tag._id" @click="() => { $emit('input', [ ...value, tag.id ]); search = '' }">
                <fa :icon="`far fa-${tag.icon ? tag.icon : 'hashtag'}`" class="mr-10 fx-no-shrink" fixed-width></fa> 
                <div class="fx-grow">
-                    <p class="ft-title-2xs">{{ tag.id }}</p>
-                    <p class="ft-xs color-ft-weak">{{ tag.description ? tag.description : tag.count + ' publications' }}</p>
+                    <div class="ft-title-2xs">{{ tag.id }}</div>
+                    <div class="ft-xs color-ft-weak">{{ tag.description ? tag.description : tag.count + ' publications' }}</div>
                 </div>
                 <div class="ml-10 fx-no-shrink">
                     <fa icon="far fa-plus"></fa> 
                 </div>
             </div>
+
             <div class="TagSelect_tag" @click="() => { $emit('input', [ ...value, search ]); search = '' }" v-if="search.length > 0 && !displayedTags.find(t => t.id == search)">
                <fa icon="far fa-hashtag" class="mr-10 fx-no-shrink" fixed-width></fa> 
                <div class="fx-grow">
-                    <p class="ft-title-2xs">{{ search }}</p>
-                    <p class="ft-xs color-ft-weak">Nouveau hashtag</p>
+                    <div class="ft-title-2xs">{{ search }}</div>
+                    <div class="ft-xs color-ft-weak">Nouveau hashtag</div>
                 </div>
                 <div class="ml-10 fx-no-shrink">
                     <fa icon="far fa-plus"></fa> 

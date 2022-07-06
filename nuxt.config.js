@@ -19,7 +19,7 @@ export default {
         ]
     },
 
-    ssr: false,
+    // ssr: false,
     
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
@@ -185,6 +185,7 @@ export default {
     build: {
         publicPath: '/nuxt/',
         extend (config) {
+            config.resolve.symlinks = false
             config.module.rules.push({
                 test: /\.svg.html$/,
                 loader: 'raw-loader'
