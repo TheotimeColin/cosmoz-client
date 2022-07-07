@@ -16,12 +16,10 @@ export default {
                 })
         
                 if (!result || force) {
-                    await this.$store.dispatch('constellation/get', {
+                    result = await this.$store.dispatch('constellation/get', {
                         query: { slug: this.$route.params.slug }
                     })
-                }
 
-                if (result) {
                     await this.$store.dispatch('user/softFetch', [
                         ...result.members,
                         ...result.organizers,

@@ -6,7 +6,7 @@
                 class="m-3"
                 :emoji-before="reaction[0]"
                 v-for="reaction in reactionTypes.slice(0, maxDisplayedReactions)" :key="reaction[0]"
-                :text="isDefaultReaction(reaction[1]) && reaction[1].length < 1 ? '' : reaction[1].length - (isDefaultReaction(reaction[1]) ? 1 : 0)"
+                :text="isDefaultReaction(reaction[1].items) && reaction[1].items.length < 1 ? '' : reaction[1].items.length - (isDefaultReaction(reaction[1].items) ? 1 : 0)"
                 @mouseenter="(e) => onMouseEnter(e, reaction)"
                 @mouseleave="$tClose"
                 @click.stop="addReaction({ type: reaction[0], status, id })"
@@ -62,10 +62,10 @@ export default {
             return reactions.find(r => r.default)
         },
         onMouseEnter (e, reaction) {
-            if (this.isDefaultReaction(reaction[1]) && reaction[1].length == 1) return
+            if (this.isDefaultReaction(reaction[1].items) && reaction[1].items.length == 1) return
 
             let text = reaction[0]
-            let users = this.$pluralize(reaction[1].map(r => this.$getUser(r.owner) ? this.$getUser(r.owner).name : null).filter(v => v))
+            let users = this.$pluralize(reaction[1].items.map(r => this.$getUser(r.owner) ? this.$getUser(r.owner).name : null).filter(v => v))
 
             if (users.length > 0) text += ' : ' + users
 

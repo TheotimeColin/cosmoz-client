@@ -13,7 +13,10 @@
             </div>
         </client-only>
 
-        <link-base :invert="true" class="ConstIcon_name ellipsis-1" v-if="displayName">{{ name ? name : '' }}</link-base>
+        <div class="ConstIcon_name" v-if="displayName">
+            <link-base :invert="true" class="ellipsis-1">{{ name ? name : '' }}</link-base>
+            <slot></slot>
+        </div>
     </component>
 </template>
 
@@ -107,8 +110,19 @@ export default {
 
 .ConstIcon_name {
     font: var(--ft-title-2xs);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     font-size: 15px;
     margin-left: 10px;
+
+    & > * {
+        display: block;
+    }
+
+    .LinkBase  {
+        line-height: 1.2;
+    }
 }
 
 .ConstIcon--xs {
@@ -135,6 +149,10 @@ export default {
         width: 45px;
         height: 45px;
         font-size: 22px;
+    }
+
+    .ConstIcon_name .LinkBase {
+        font-size: 16px;
     }
 }
 

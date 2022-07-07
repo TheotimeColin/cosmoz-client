@@ -46,6 +46,7 @@ export default {
     display: flex;
     border: 1px solid var(--color-bg-xweak);
     background-color: var(--color-bg-xweak);
+    border: 1px solid var(--color-border);
     @include shadow;
     border-radius: 6px;
     position: relative;

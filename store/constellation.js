@@ -28,6 +28,18 @@ export default {
                 return null
             }
         },
+        async fetchFeed ({ state, commit }, _id) {
+            try {
+                const response = await this.$axios.$post('/constellation/feed', { _id })
+
+                commit('status/softRefresh', response.data, { root: true })
+
+                return response.data
+            } catch (e) {
+                console.error(e)
+                return null
+            }
+        },
         async softFetch ({ state, dispatch, commit }, items) {
             return await softFetch(items, { state, dispatch, commit })
         },

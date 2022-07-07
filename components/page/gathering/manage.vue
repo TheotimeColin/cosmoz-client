@@ -74,7 +74,7 @@
                     :padding-t="20"
                 >
                     <div class="p-relative" v-for="(user, i) in usersByStatus(['confirmed', 'attending']).filter(u => u._id != user._id)" :slot="user._id" :key="user._id" @click="$store.dispatch('user/updateNotification', { id: 'affinity-popin', type: 'onboarding' })">
-                        <user-profile v-bind="user" :no-link="true" :gathering="gathering._id" @click.native="() => selectedUser = user" />
+                        <user-profile v-bind="user" :no-link="true" @click.native="() => selectedUser = user" />
 
                         <div class="Att_abs" v-if="i == 0 && !$store.getters['user/notif']('affinity-popin', 'onboarding')"></div>
                     </div>
@@ -97,15 +97,14 @@
                         Tu as reçu des remerciements ! 
                     </p>
 
-                    <div class="ft-title-3xs subtitle tape tape-s m-3" v-for="mentionType in Object.entries($groupBy(mentions, 'type')).sort((a, b) => b[1].length - a[1].length)" :key="mentionType[0]">
+                    <div class="ft-title-3xs subtitle tape tape-s m-3" v-for="mentionType in Object.entries($groupBy(mentions, 'type', { sortBy: true })).sort((a, b) => b[1].items.length - a[1].items.length)" :key="mentionType[0]">
                         {{ $const.mentions.find(m => m.value == mentionType[0]).emoji }} 
                         
-                        {{ mentionType[1].length }} x {{ $t('mentions.' + (mentionType[0])) }}
+                        {{ mentionType[1].items.length }} x {{ $t('mentions.' + (mentionType[0])) }}
                     </div>
                 </div>
 
-                <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id"
-                    @close="selectedUser = null" />
+                <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
             </div>
 
             

@@ -752,6 +752,7 @@
 
 .block,
 .block-r,
+.block-f,
 .block-cosmoz,
 .block-cosmoz-r {
     padding: 20px;
@@ -908,11 +909,11 @@
         border-radius: 0;
     }
 
-    .block {
+    .block,
+    .block-f {
         padding: 0 20px;
         margin-left: -20px;
         margin-right: -20px;
-        background-color: transparent;
         box-shadow: none;
 
         .InputBase_label,
@@ -927,5 +928,13 @@
                 background-color: var(--color-bg-xstrong) !important;
             }
         }
+    }
+
+    .block {
+        background-color: transparent;
+    }
+
+    .block-f {
+        border-radius: 0;
     }
 }

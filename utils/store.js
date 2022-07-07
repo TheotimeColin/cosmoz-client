@@ -105,15 +105,25 @@ const searchItems = function (items, search, user) {
 
     const searchField = function (search, items) {
         let result = [ ...items ]
-        
+
         Object.keys(search).forEach(key => {
             if (typeof search[key] === 'object' && !Array.isArray(search[key]) && search[key] !== null) {
                 let entries = Object.entries(search[key])[0]
 
-                if (entries[0] == '$in') {
+                if (entries[0] == '$and') {
+                    let results = entries[1].reduce((t, obj) => {
+                        return searchField({ [key]: obj }, t)
+                    }, result)
+
+                    result = results
+                } else if (entries[0] == '$in') {
                     let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
                     
                     result = result.filter(item => entries[1].find(i => (isString ? i : i[key]) == item[key]))
+                } else if (entries[0] == '$notIn') {
+                    let isString = entries[1] && entries[1][0] && typeof entries[1][0] === 'string'
+                    
+                    result = result.filter(item => !entries[1].find(i => (isString ? i : i[key]) == item[key]))
                 } else if (entries[0] == '$contains') {
                     result = result.filter(item => {
                         return item[key].find(u => u == entries[1])
@@ -127,7 +137,21 @@ const searchItems = function (items, search, user) {
                         }
                     })
                 } else if (entries[0] == '$gte') {
-                    result = result.filter(item => item[key] >= entries[1])
+                    result = result.filter(item => {
+                        if (moment(item[key]).isValid()) {
+                            return moment(item[key]).isAfter(moment(entries[1]))
+                        } else {
+                            return item[key] >= entries[1]
+                        }
+                    })
+                } else if (entries[0] == '$lte') {
+                    result = result.filter(item => {
+                        if (moment(item[key]).isValid()) {
+                            return moment(item[key]).isBefore(moment(entries[1]))
+                        } else {
+                            return item[key] <= entries[1]
+                        }
+                    })
                 }
             } else if (key == '$in') {
                 result = result.filter(item => search[key].includes(item._id))

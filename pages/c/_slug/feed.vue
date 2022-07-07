@@ -1,23 +1,40 @@
 <template>
     <div class="page" v-if="!isLoading">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-            <div class="block-cosmoz-r mb-15 mb-10@xs" v-if="$constellation.type == 'community' && !$store.getters['user/notif']('introduced', $constellation._id)">
-                <p class="ft-title-xs">Bienvenue dans la communauté 👋</p>
-                <p class="mt-10">Prends quelques instants pour te présenter aux autres membres !</p>
+            <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
+                <div class="ph-20 pt-20">
+                    <h2 class="ft-title-xs">
+                        <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
+                        venir
+                    </h2>
 
-                <button-base class="mt-15" :modifiers="['cosmoz']" icon-before="plus" @click="openEditor">
-                    Je me présente
-                </button-base>
+                    <block-gathering
+                        class="mt-20"
+                        v-bind="upcomingEvents[0]"
+                    />
+                </div>
+
+                <slider-block class="mt-20 " :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
+                    <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
+                        <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                    </div>
+                </slider-block>
+            </div>
+            <div class="block-f p-20 text-center bg-bg-strong" v-else>
+                Pas encore d'événements à venir
             </div>
 
-            <content-feed
-                :constellation="$constellation._id"
-                :disable-create="!$isConsteMember"
-                :enable-tags="true"
-                :placeholder="`Publier dans ${$constellation.name}...`"
-                @introduced="onIntroduced"
-                read="g-member"
-                ref="feed"
+            <div class="fx-center mv-40">
+                <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
+                <hr class="Separator">
+            </div>
+
+            <component
+                v-for="feedItem in feed"
+                :is="feedItem.type"
+                class="+mt-20 +mt-10@s"
+                v-bind="feedItem"
+                :key="feedItem._id"
             />
         </div>
     </div>
@@ -34,6 +51,7 @@ export default {
         this.isLoading = true
 
         await this.$preFetch()
+        await this.$store.dispatch('constellation/fetchFeed', this.$constellation._id)
 
         this.isLoading = false
     },
@@ -42,19 +60,70 @@ export default {
         showFull: false
     }),
     computed: {
-        user () { return this.$store.getters['user/self'] }
-    },
-    methods: {
-        openEditor () {
-            if (this.$refs.feed) this.$refs.feed.openEditor({
-                tags: ['présentations']
+        user () { return this.$store.getters['user/self'] },
+        upcomingEvents () {
+            let gatherings = this.$store.getters['gathering/find']({
+                constellation: this.$constellation._id,
+                status: 'active',
+                isPast: false,
+                sort: { date: 'desc' }
             })
+
+            return gatherings
         },
-        onIntroduced () {
-            if (this.user && !this.$store.getters['user/notif']('introduced', this.$constellation._id)) {
-                this.$store.dispatch('user/updateNotification', { id: 'introduced', type: this.$constellation._id })
+        mainStatus () {
+            let statuses = this.$store.getters['status/find']({
+                constellation: this.$constellation._id,
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(3, 'days').toDate() }
+            })
+
+            if (!statuses || statuses.length <= 0) return null
+
+            let posts = statuses.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+            let photos = statuses.filter(i => i.images.length > 0).slice(0, 5)
+
+            return {
+                all: [ ...photos.map(s => s._id), ...posts.map(s => s._id) ],
+                statuses: { photos, posts },
+                type: 'content-conste-tag',
+                sortDate: this.$moment(statuses[0].createdAt).add(2, 'minutes').toDate()
             }
+        },
+        tagStatuses () {
+            let statuses = this.$store.getters['status/find']({
+                _id: { $notIn: (this.mainStatus ? this.mainStatus.all : []) },
+                constellation: this.$constellation._id,
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(15, 'days').toDate() }
+            })
+
+            let byTags = Object.entries(this.$groupBy(statuses, 'tags'))
+
+            return byTags.map(s => {
+                let posts = s[1].items.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+                let photos = s[1].items.filter(i => i.images.length > 0).slice(0, 5)
+
+                return s[1].items.length >= 3 ? {
+                    statuses: { photos, posts },
+                    hashtag: s[0],
+                    type: 'content-conste-tag',
+                    sortDate: s[1].items ? s[1].items[0].createdAt : null
+                } : null
+            }).filter(t => t)
+        },
+        feed () {
+            let statuses = []
+
+            statuses = [
+                this.mainStatus,
+                ...this.tagStatuses,
+            ].filter(s => s && s.sortDate)
+
+            return statuses.sort((a, b) => {
+                return this.$moment(b.sortDate).valueOf() - this.$moment(a.sortDate).valueOf()
+            })
         }
-    }
+    },
 }
 </script>

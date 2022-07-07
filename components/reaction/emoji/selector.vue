@@ -16,7 +16,7 @@
                     </div>
 
                     <div class="EmojiSelector_grid">
-                        <div class="EmojiSelector_item" v-for="emoji in value" @click="$emit('input', emoji.value)" :key="emoji.value">
+                        <div class="EmojiSelector_item" v-for="emoji in value.items" @click="$emit('input', emoji.value)" :key="emoji.value">
                             <span>{{ emoji.value }}</span>
                         </div>
                     </div>

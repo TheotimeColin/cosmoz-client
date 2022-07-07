@@ -244,21 +244,92 @@ Vue.mixin({
         $randomColor () {
             return ['cream', 'alpine', 'memo', 'ocean', 'tulip'][Math.floor(Math.random() * (5))]
         },
-        $groupBy (items, type, params = {}) {
-            let result = items.reduce((obj, item) => {
-                let newObj = { ...obj }
+        $groupBy (items, types, params = {}) {
+            if (!Array.isArray(types)) types = [ types ]
 
-                if (!newObj[item[type]]) {
-                    newObj[item[type]] = [ item ]
-                } else {
-                    newObj[item[type]].push(item)
+            const groupItem = function (item, types, total) {
+                let $groupData = {}
+                let stop = false
+                let id = ''
+
+                types.forEach(type => {
+                    if (item[type] instanceof Array) {
+                        item[type].forEach(id => {
+                            if (!total[id]) {
+                                total[id] = { $groupData, items: [ item ] }
+                            } else {
+                                total[id] = {
+                                    ...total[id],
+                                    items: [ ...total[id].items, item ]
+                                }
+                            }
+                        })
+
+                        stop = true
+                    } else if (typeof type === 'object') {
+                        let key = Object.keys(type)[0]
+                        let value = item[key]
+
+                        $groupData[key] = item[Object.keys(type)[0]]
+                        
+                        if (Object.values(type)[0] == '$week') {
+                            id += moment(value).format('YYYYMM')
+                        } else if (Object.values(type)[0].startsWith('$days')) {
+                            let max = parseInt(Object.values(type)[0].match(/\d+/)[0])
+                            
+                            let result = Object.entries(total).find(o => {
+                                return moment(value).startOf('day').isBetween(
+                                    moment(o[1].$groupData[key]).subtract(max, 'days'),
+                                    moment(o[1].$groupData[key])
+                                )
+                            })
+
+                            if (result) {
+                                $groupData = {
+                                    ...$groupData,
+                                    startDate: moment(value).startOf('day').subtract(max, 'days').toDate(),
+                                    endDate: moment(value).startOf('day').toDate()
+                                }
+                                
+                                id += moment(result[1].$groupData.startDate).startOf('day').format('YYYYMMDD')
+                            } else {
+                                $groupData = {
+                                    ...$groupData,
+                                    startDate: moment(value).startOf('day').subtract(max, 'days').toDate(),
+                                    endDate: moment(value).startOf('day').toDate()
+                                }
+                                
+                                id += moment(value).startOf('day').subtract(max, 'days').format('YYYYMMDD')
+                            }
+                        } 
+                    } else {
+                        $groupData[type] = item[type]
+                        id += item[type]
+                    }
+                })
+
+                if (!stop) {
+                    if (!total[id]) {
+                        total[id] = { $groupData, items: [ item ] }
+                    } else {
+                        total[id] = {
+                            ...total[id],
+                            items: [ ...total[id].items, item ]
+                        }
+                    }
                 }
 
-                return newObj
-            }, {})
+                return total
+            }
+
+            let result = {}
+            
+            items.forEach(item => {
+                result = groupItem(item, types, result)
+            })
 
             if (params.orderBy) {
-                result = Object.entries(result).sort((a, b) => b[1].length - a[1].length)
+                result = Object.entries(result).sort((a, b) => b[1].items.length - a[1].items.length)
             }
 
             return result
