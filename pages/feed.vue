@@ -12,37 +12,42 @@
             </slider-block>
         </div>
 
-        <div class="block-f p-0 +mt-20 +mt-10@s">
-            <p class="ft-title-2xs p-20">Mes prochaines sorties</p>
+        <template v-if="!isLoading">
+            <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
+                <p class="ft-title-2xs p-20">Mes prochaines sorties</p>
 
-            <slider-block :slots="upcomingEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
-                :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
-                <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
-                    <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
-                </div>
-            </slider-block>
-        </div>
+                <slider-block :slots="upcomingEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
+                    :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
+                    <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
+                        <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                    </div>
+                </slider-block>
+            </div>
 
-        <component
-            v-for="status in endedGatherings"
-            :is="status.type"
-            class="+mt-20 +mt-10@s"
-            v-bind="status"
-            :key="status._id"
-        />
+            <component
+                v-for="status in endedGatherings"
+                :is="status.type"
+                class="+mt-20 +mt-10@s"
+                v-bind="status"
+                :key="status._id"
+            />
 
-        <div class="fx-center mv-40">
-            <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
-            <hr class="Separator">
-        </div>
+            <div class="fx-center mv-40">
+                <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
+                <hr class="Separator">
+            </div>
 
-        <component
-            :is="status.type"
-            class="+mt-20 +mt-10@s"
-            v-for="status in statuses"
-            v-bind="status"
-            :key="status._id"
-        />
+            <component
+                :is="status.type"
+                class="+mt-20 +mt-10@s"
+                v-for="status in statuses"
+                v-bind="status"
+                :key="status._id"
+            />
+        </template>
+        <template v-else>
+            <placeholder class="+mt-20 +mt-10@s" :ratio="33" v-for="i in 10" :key="i" />
+        </template>
     </div>
 </template>
 
@@ -57,6 +62,16 @@ export default {
         await this.$store.dispatch('status/fetch', {
             type: 'feed', query: {}, softRefresh: true
         })
+
+        await this.$store.dispatch('gathering/softFetch', [
+            ...this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id)
+        ])
+
+        await this.$store.dispatch('user/softFetch', [
+            ...this.upcomingEvents.reduce((t, g) => [ ...t, ...g.users.map(u => u._id)], []),
+            ...this.endedGatherings.reduce((t, g) => [ ...t, ...g.users.map(u => u._id)], []),
+            ...this.statuses.map(s => s.owner)
+        ])
 
         this.isLoading = false
     },

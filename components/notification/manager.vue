@@ -28,7 +28,7 @@ export default {
         },
     },
     mounted () {
-        setTimeout(() => this.fetch(), 1000)
+        setTimeout(() => this.fetch(), 3000)
         setInterval(this.fetch, 80000)
     },
     beforeDestroy () {

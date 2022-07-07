@@ -14,11 +14,13 @@
                     />
                 </div>
 
-                <slider-block class="mt-20 " :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
-                    <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
-                        <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
-                    </div>
-                </slider-block>
+                <div class="pt-20">
+                    <slider-block :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
+                        <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
+                            <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                        </div>
+                    </slider-block>
+                </div>
             </div>
             <div class="block-f p-20 text-center bg-bg-strong" v-else>
                 Pas encore d'événements à venir
@@ -28,14 +30,19 @@
                 <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
                 <hr class="Separator">
             </div>
-
-            <component
-                v-for="feedItem in feed"
-                :is="feedItem.type"
-                class="+mt-20 +mt-10@s"
-                v-bind="feedItem"
-                :key="feedItem._id"
-            />
+            
+            <template v-if="!isLoading">
+                <component
+                    v-for="feedItem in feed"
+                    :is="feedItem.type"
+                    class="+mt-20 +mt-10@s"
+                    v-bind="feedItem"
+                    :key="feedItem._id"
+                />
+            </template>
+            <template v-else>
+                <placeholder class="+mt-20 +mt-10@s" :ratio="33" v-for="i in 10" :key="i" />
+            </template>
         </div>
     </div>
 </template>
@@ -51,6 +58,7 @@ export default {
         this.isLoading = true
 
         await this.$preFetch()
+
         await this.$store.dispatch('constellation/fetchFeed', this.$constellation._id)
 
         this.isLoading = false

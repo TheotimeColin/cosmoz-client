@@ -58,7 +58,7 @@ export default {
         isSlidable: true
     }),
     mounted () {
-        this.checkDimensions()
+        setTimeout(() => this.checkDimensions(), 100)
     },
     watch: {
         slots () {
