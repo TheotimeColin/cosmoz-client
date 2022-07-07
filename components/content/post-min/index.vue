@@ -1,7 +1,7 @@
 <template>
     <div>
         <nuxt-link :to="localePath(permaLink)" v-if="!isLoading && ownerData">
-            <div class="PostMin" :class="[ $modifiers ]" ref="container" >
+            <div class="PostMin" :class="[ $modifiers, { 'is-new': isNew } ]" ref="container" >
                 <div class="PostMin_icon fx-no-shrink">
                     <user-icon class="PostMin_user" :modifiers="['m']" v-bind="ownerData" v-if="ownerData" />
                 </div>
@@ -18,9 +18,11 @@
 
                 <content-reactions-min
                     :reactions="reactions"
-                    class="ml-10"
+                    class="ml-15"
                     v-if="reactions.length > 0"
                 />
+                
+                <div class="PostMin_notif ml-15" v-if="isNew"></div>
             </div>
         </nuxt-link>
         <div v-else>
@@ -68,6 +70,22 @@ export default {
         },
         maxDisplayedReactions () {
             return this.$smallerThan('xs') ? 8 : 12
+        },
+        lastVisit () {
+            if (this.user && this.user.constellationData) {
+                let constellationData = this.user.constellationData[this.constellation]
+
+                if (constellationData && constellationData.lastVisit) {
+                    return constellationData.lastVisit
+                } else {
+                    return this.$moment().subtract(1, 'months').toDate()
+                }
+            }
+
+            return this.$moment().subtract(1, 'months').toDate()
+        },
+        isNew () {
+            return this.$moment(this.createdAt).isAfter(this.$moment(this.lastVisit))
         }
     }
 }
@@ -76,16 +94,27 @@ export default {
 <style lang="scss" scoped>
     .PostMin {
         border-radius: 6px;
-        background-color: var(--color-bg-xweak);
+        background-color: color-opacity('bg-xweak', -50%);
         display: flex;
         align-items: center;
         position: relative;
-        padding: 10px;
+        padding: 10px 15px 10px 10px;
         @include shadow-s;
         transition: all 250ms ease;
+        color: var(--color-ft-weak);
         
+        &.is-new {
+            color: var(--color-ft-light);
+            background-color: var(--color-bg-xweak);
+
+            .PostMin_notif {
+                display: block;
+            }
+        }
+
         &:hover {
             transform: translateY(-2px);
+            color: var(--color-ft-light);
             background-color: var(--color-cosmoz);
             @include shadow;
         }
@@ -93,6 +122,16 @@ export default {
 
     .PostMin_main {
         position: relative;
+    }
+
+    .PostMin_notif {
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: radial-gradient(farthest-corner at top right, color-opacity('nebula', -50%), var(--color-cosmoz) 85%);
+        flex-shrink: 0;
+        @include shadow;
     }
 
     .PostMin_block.PostMin_reactions {

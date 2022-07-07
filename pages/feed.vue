@@ -2,6 +2,40 @@
     <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <block-advice class="mv-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
 
+        <div class="block p-0 +mt-20 +mt-10@s" v-if="constellations.length > 0">
+            <p class="ft-title-2xs ph-20 pt-20 d-none@xs">Mes constellations</p>
+
+            <slider-block :slots="constellations.map(c => c._id)"  :offset="20" :offset-v="20" :margin="10" :paddingT="20">
+                <div v-for="conste in constellations" :slot="conste._id" :key="conste._id">
+                    <const-icon v-bind="conste" :modifiers="['l']" />
+                </div>
+            </slider-block>
+        </div>
+
+        <div class="block-f p-0 +mt-20 +mt-10@s">
+            <p class="ft-title-2xs p-20">Mes prochaines sorties</p>
+
+            <slider-block :slots="upcomingEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
+                :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
+                <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
+                    <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                </div>
+            </slider-block>
+        </div>
+
+        <component
+            v-for="status in endedGatherings"
+            :is="status.type"
+            class="+mt-20 +mt-10@s"
+            v-bind="status"
+            :key="status._id"
+        />
+
+        <div class="fx-center mv-40">
+            <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
+            <hr class="Separator">
+        </div>
+
         <component
             :is="status.type"
             class="+mt-20 +mt-10@s"
@@ -40,10 +74,20 @@ export default {
                 _id: { $in: this.user.constellations }
             })
         },
+        upcomingEvents () {
+            let gatherings = this.$store.getters['gathering/find']({
+                status: 'active',
+                isPast: false,
+                isAttending: true
+            })
+
+            return gatherings
+        },
         endedGatherings () {
             let gatherings = this.$store.getters['gathering/find']({
                 status: 'active',
                 isPast: true,
+                isExpired: false,
                 isAttending: true
             }).slice(0, 3)
 
@@ -85,9 +129,7 @@ export default {
             let statuses = []
 
             statuses = [
-                ...this.consteUpdates,
-                ...this.weekGatherings,
-                ...this.endedGatherings,
+                ...this.consteUpdates
             ].filter(s => s.createdAt)
 
             return statuses.sort((a, b) => {
@@ -96,10 +138,11 @@ export default {
         },
         consteUpdates () {
             let result = this.$store.getters['status/find']({
-                constellation: { $in: this.user.constellations }
+                constellation: { $in: this.user.constellations },
+                sort: { createdAt: 'asc' }
             })
 
-            result = Object.entries(this.$groupBy(result, ['constellation', { createdAt: '$days7' }]))
+            result = Object.entries(this.$groupBy(result, ['constellation']))
 
             result = result.map(r => {
                 let posts = r[1].items.filter(s => s.content && s.images.length <= 0)

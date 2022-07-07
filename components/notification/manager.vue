@@ -37,7 +37,7 @@ export default {
     methods: {
         async fetch () {
             await this.$store.dispatch('notification/fetch', {
-                owner: this.user._id
+                query: { owner: this.user._id }
             })
 
             let origins = this.notifications.reduce((origins, n) => [ ...origins, ...n.origins ], [])

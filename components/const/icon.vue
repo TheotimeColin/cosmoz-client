@@ -152,7 +152,7 @@ export default {
     }
 
     .ConstIcon_name .LinkBase {
-        font: var(--ft-title-xs);
+        font-size: 16px;
     }
 }
 

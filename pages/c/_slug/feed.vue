@@ -1,6 +1,34 @@
 <template>
     <div class="page" v-if="!isLoading">
         <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+            <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
+                <div class="ph-20 pt-20">
+                    <h2 class="ft-title-xs">
+                        <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
+                        venir
+                    </h2>
+
+                    <block-gathering
+                        class="mt-20"
+                        v-bind="upcomingEvents[0]"
+                    />
+                </div>
+
+                <slider-block class="mt-20 " :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
+                    <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
+                        <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                    </div>
+                </slider-block>
+            </div>
+            <div class="block-f p-20 text-center bg-bg-strong" v-else>
+                Pas encore d'événements à venir
+            </div>
+
+            <div class="fx-center mv-40">
+                <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
+                <hr class="Separator">
+            </div>
+
             <component
                 v-for="feedItem in feed"
                 :is="feedItem.type"
@@ -33,23 +61,15 @@ export default {
     }),
     computed: {
         user () { return this.$store.getters['user/self'] },
-        gatherings () {
+        upcomingEvents () {
             let gatherings = this.$store.getters['gathering/find']({
                 constellation: this.$constellation._id,
-                isAttending: true,
                 status: 'active',
-                sort: { date: 'asc' },
-                date: { $and: [
-                    { $lte: this.$moment().add(10, 'days').toDate() },
-                    { $gte: this.$moment().subtract(10, 'days').toDate() },
-                ]}
+                isPast: false,
+                sort: { date: 'desc' }
             })
 
-            return gatherings.map(g => ({
-                ...g,
-                type: g.isPast ? 'content-gathering-end' : 'block-gathering',
-                sortDate: g.isPast ? g.date : this.$moment(g.date).subtract(2, 'days').toDate()
-            }))
+            return gatherings
         },
         mainStatus () {
             let statuses = this.$store.getters['status/find']({
@@ -97,7 +117,6 @@ export default {
 
             statuses = [
                 this.mainStatus,
-                ...this.gatherings,
                 ...this.tagStatuses,
             ].filter(s => s && s.sortDate)
 

@@ -2,8 +2,7 @@
     <div class="ConsteUpdate" v-if="constellation">
         <div class="pt-20 ph-20 fx-center">
             <const-icon v-bind="constellation" :display-name="true" :modifiers="['m']">
-                <p class="ft-s color-ft-weak" v-if="$moment(endDate).isBefore($moment().subtract(3, 'days'))">{{ $moment(endDate).fromNow() }}</p>
-                <p class="ft-s" v-else>Dernières publications 🔥</p>
+                <p class="ft-s color-ft-weak" v-if="getNewPosts() > 0">Nouvelles publications 🔥</p>
             </const-icon>
 
             <button-base :modifiers="['s']" class="ml-15"  icon-after="arrow-right" :to="{ name: 'c-slug-discussions', params: { slug: constellation.slug } }">
@@ -40,30 +39,30 @@ export default {
         constellation: { type: Object },
         statuses: { type: Object }
     },
-    methods: {
-        getNewPosts () {
-            let query = {
-                parent: '$null',
-                constellation: this.constellation._id,
-                createdAt: { $and: [
-                    { $gte: this.startDate },
-                    { $lte: this.endDate },
-                ] }
-            }
-
+    computed: {
+        lastVisit () {
             if (this.user && this.user.constellationData) {
                 let constellationData = this.user.constellationData[this.constellation._id]
 
                 if (constellationData && constellationData.lastVisit) {
-                    query.createdAt.$and = [
-                        ...query.createdAt.$and,
-                        { $gte: constellationData.lastVisit }
-                    ]
+                    return constellationData.lastVisit
+                } else {
+                    return this.$moment().subtract(1, 'months').toDate()
                 }
             }
 
+            return this.$moment().subtract(1, 'months').toDate()
+        }
+    },
+    methods: {
+        isNewPost () {
+
+        },
+        getNewPosts () {
             return this.$store.getters['status/find']({
-                ...query
+                parent: '$null',
+                constellation: this.constellation._id,
+                createdAt: { $gte: this.lastVisit }
             }).length
         }
     }
