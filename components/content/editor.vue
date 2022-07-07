@@ -80,6 +80,7 @@
 
 <script>
 import * as linkify from 'linkifyjs'
+import Debounce from 'lodash.debounce'
 
 export default {
     name: 'Editor',
@@ -139,7 +140,7 @@ export default {
                 this.formData.tags = v
             }
         },
-        async ['formData.content'] (v) {
+        ['formData.content']: Debounce(async function (v) {
             let links = linkify.find(v).filter(l => !this.excludedLinks.includes(l.href))
             
             if (links[0]) {
@@ -161,7 +162,7 @@ export default {
 
                 this.isEmbedLoading = false
             }
-        }
+        }, 1500)
     },
     methods: {
         reset () {
