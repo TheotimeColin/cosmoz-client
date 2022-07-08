@@ -28,5 +28,13 @@ export default {
         { id: 'débat', icon: 'keynote', description: 'Enflamme ta communauté avec une question !' },
         { id: 'passion', icon: 'face-smile-hearts', description: 'Partage tes passions.' },
         { id: 'hors-sujet', icon: 'cat-space', description: `Pour tes images drôle et tes traits d'humour.` },
-    ]
+    ],
+    hangouts: {
+        categories: {
+            eat: [ 'default', 'new', 'sweet' ],
+            party: [ 'default', 'taste', 'dance' ],
+            out: [ 'default', 'picnic', 'sport', 'hike'],
+            activities: [ 'default', 'movies', 'new', 'shopping'],
+        }
+    }
 }

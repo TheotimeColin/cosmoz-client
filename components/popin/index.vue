@@ -280,6 +280,15 @@ export default {
             transform: translateX(0);
         }
     }
+
+    &.PopinBase--full {
+        
+        .PopinBase_content {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
 
 .PopinBase--panel-bottom {

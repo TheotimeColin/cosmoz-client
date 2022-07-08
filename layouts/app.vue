@@ -18,6 +18,7 @@
 
         <popin-register />
         <popin-constellation-create />
+        <popin-hangout-create />
         <popin-confirm />
         <popin-emojis />
         
@@ -40,6 +41,8 @@ export default {
             await this.$store.dispatch('channel/fetch', {
                 query: { users: this.user._id }
             })
+
+            await this.$store.dispatch('user/softFetch', this.user.friends)
             
             await this.$store.dispatch('constellation/softFetch', [
                 ...this.user.followedConstellations,

@@ -4,6 +4,7 @@ moment.tz.setDefault('Europe/Paris')
 import { NuxtHammer } from 'nuxt-hammer'
 import CONSTANTS from '@/utils/constants'
 import striptags from 'striptags'
+import VCalendar from 'v-calendar';
 
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -21,6 +22,10 @@ library.add(far, faHeart, faDiscord, faInstagram, faTwitter, faWhatsapp, faLock,
 Vue.component('fa', FontAwesomeIcon)
 
 moment.locale('fr')
+
+Vue.use(VCalendar, {
+    locale: 'fr-FR'
+})
 
 Vue.mixin({
     filters: {
@@ -181,13 +186,6 @@ Vue.mixin({
         },
         $tClose () {
             this.$store.commit('tooltips/close')
-        },
-        $theme (value) {
-            let theme = { color: 'pond', fa: 'fa-heart' }
-
-            theme = this.$data.$categories[value]
-
-            return theme
         },
         $slugToCategory (slug) {
             let result = ''

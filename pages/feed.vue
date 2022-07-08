@@ -2,8 +2,10 @@
     <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <block-advice class="mv-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
 
+        <button-base :modifiers="['rect']" class="+mt-20 +mt-10@s" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { hangout: true })" />
+
         <div class="block p-0 +mt-20 +mt-10@s" v-if="constellations.length > 0">
-            <p class="ft-title-2xs ph-20 pt-20 d-none@xs">Mes constellations</p>
+            <p class="ft-title-xs ph-20 pt-20 d-none@xs">Mes constellations</p>
 
             <slider-block :slots="constellations.map(c => c._id)"  :offset="20" :offset-v="20" :margin="10" :paddingT="20">
                 <div v-for="conste in constellations" :slot="conste._id" :key="conste._id">
@@ -14,7 +16,7 @@
 
         <template v-if="!isLoading">
             <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
-                <p class="ft-title-2xs p-20">Mes prochaines sorties</p>
+                <p class="ft-title-xs p-20">Mes prochaines sorties</p>
 
                 <slider-block :slots="upcomingEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
                     :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">

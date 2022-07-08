@@ -135,5 +135,43 @@ export default {
             'unauthorized': `Tu n'es pas autorisé à modifier cet élément. Contacte notre support si tu penses que c'est une erreur.`,
             'no-content': `Cette publication doit avoir du contenu.`
         }
+    },
+    hangouts: {
+        categories: {
+            eat: {
+                label: `Manger quelque part`,
+                tags: {
+                    default: { emoji: '🍝', label: `Manger un truc bon` },
+                    new: { emoji: '🍤', label: `Tester quelque chose nouveau` },
+                    sweet: { emoji: '🍨', label: `S'accorder une petite douceur` },
+                }
+            },
+            party: {
+                label: `Faire la fête`,
+                tags: {
+                    default: { emoji: '🍻', label: `Prendre des verres` },
+                    taste: { emoji: '🍸', label: `Déguster un bon cocktail` },
+                    dance: { emoji: '💃', label: `Aller danser` },
+                }
+            },
+            out: {
+                label: `En plein air`,
+                tags: {
+                    default: { emoji: '🍃', label: `Se balader et aviser` },
+                    picnic: { emoji: '🌞', label: `Partager un pique-nique` },
+                    hike: { emoji: '🥾', label: `Faire une grande balade` },
+                    sport: { emoji: '🏃‍♀️', label: `Faire du sport` },
+                }
+            },
+            activities: {
+                label: `Activités`,
+                tags: {
+                    default: { emoji: '🙌', label: `Faire quelque chose ensemble` },
+                    movies: { emoji: '🍿', label: `Voir un bon film` },
+                    new: { emoji: '😱', label: `Faire dans l'original` },
+                    shopping: { emoji: '🛍', label: `Faire du shopping` },
+                }
+            },
+        },
     }
 }

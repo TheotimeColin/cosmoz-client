@@ -78,6 +78,21 @@ export default {
                 return handleErrors(e, commit, `Une erreur est survenue`)
             }
         },
+        async createHangout ({ commit }, params = {}) {
+            try {
+                const response = await this.$axios.$post('/hangout/create', {
+                    ...params
+                })
+                
+                if (response.status == 0) throw Error(response.errors[0])
+
+                if (response.data) commit('updateOne', response.data)
+                
+                return response
+            } catch (e) {
+                return handleErrors(e, commit, `Une erreur est survenue`)
+            }
+        },
         async delete ({ commit }, _id) {
             try {
                 const response = await this.$axios.$delete('/entities', {

@@ -74,7 +74,8 @@
     "stripchar": "^1.2.1",
     "striptags": "^3.2.0",
     "tiptap": "^1.30.0",
-    "tiptap-extensions": "^1.33.2"
+    "tiptap-extensions": "^1.33.2",
+    "v-calendar": "^2.4.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.7",

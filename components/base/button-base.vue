@@ -1,6 +1,6 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image, 'is-no-text': !text } ]" :to="localePath(to)"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image, 'is-no-text': !text, 'can-delete': canDelete } ]" :to="localePath(to)"
         :disabled="disabled || loading"
         :replace="replace"
         v-bind="computedAttrs"
@@ -48,6 +48,9 @@
             <fa :icon="`far fa-${iconLoading}`" />
         </div>
 
+        <span class="ButtonBase_delete" @click.stop.capture="$emit('delete')" v-if="canDelete">
+            <fa icon="far fa-times" />
+        </span>
     </component>
 </template>
 
@@ -66,6 +69,7 @@ export default {
         image: { type: String },
         ellipsis: { type: Number, default: 999 },
         notification: { type: Boolean },
+        canDelete: { type: Boolean },
         disabled: { type: Boolean, default: false },
         to: { type: [Object, Boolean], default: false },
         node: { type: Object, default: () => {} },
@@ -106,7 +110,8 @@ export default {
     line-height: 1;
     color: var(--color-ft-light);
     background-color: var(--color-bg-xstrong);
-    padding: 12px 20px;
+    padding: 4px 20px;
+    min-height: 38px;
     border-radius: 40px;
     transition: all 150ms ease;
     text-align: center;
@@ -134,6 +139,29 @@ export default {
 
     &.is-image {
         padding: 5px 15px 5px 5px;
+    }
+
+    &.can-delete {
+        padding-right: 4px;
+    }
+}
+
+.ButtonBase_delete {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: color-opacity('bg-weak', -85%);
+    margin-left: 10px;
+    z-index: 1;
+    position: relative;
+
+    &:hover {
+        transition: all 150ms ease;
+        color: var(--color-ft-light);
+        background-color: var(--color-error);
     }
 }
 
@@ -215,8 +243,16 @@ export default {
 
 /* MODIFIERS */
 
+.ButtonBase--l {
+    padding: 4px 25px;
+    font-size: 16px;
+    min-height: 42px;
+    box-shadow: 0 3px 12px 0 color-opacity('bg-2xstrong', -40%);
+}
+
 .ButtonBase--s {
-    padding: 10px 15px;
+    padding: 3px 15px;
+    min-height: 36px;
     font: var(--ft-title-3xs);
     box-shadow: 0 2px 6px 0 color-opacity('bg-2xstrong', -75%);
 
@@ -292,6 +328,7 @@ export default {
     background-color: var(--color-bg-weak);
     color: var(--color-ft-weak);
     border-color: transparent;
+    box-shadow: 0 3px 4px 0 color-opacity('bg-2xstrong', -75%);
 
     &.is-active,
     &:active {

@@ -37,7 +37,8 @@ export default {
             register: null,
             constellationCreate: null,
             confirm: null,
-            emojis: null
+            emojis: null,
+            hangout: null
         },
         meta: {
             title: ''
