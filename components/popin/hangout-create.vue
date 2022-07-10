@@ -1,6 +1,6 @@
 <template>
-    <popin :is-active="isActive" query="hangout-create" :modifiers="['panel', 'full']" @close="onClose">
-        <template slot="content">
+    <popin :is-active="entityId ? true : false" :modifiers="['panel', 'full']" @close="onClose">
+        <template slot="content" v-if="entityId">
             <div class="fx-grow strong">
                 <div class="p-40 p-30@xs" v-if="step == 0">
                     <p class="ft-title-m mb-20">Qu'as-tu envie de faire ?</p>
@@ -9,11 +9,10 @@
                         <div class="ft-s-medium color-ft-weak mb-10">
                             {{ $t(`hangouts.categories.${id}.label`) }}
                         </div>
-
                         <button-base
                             v-for="tag in cat"
                             class="mr-5 mb-5"
-                            :modifiers="formData.category == id + '.' + tag ? ['cosmoz'] : ['weak']"
+                            :modifiers="formData.category == id + '.' + tag ? ['cosmoz', 'l'] : ['weak', 'l']"
                             :emoji-before="$t(`hangouts.categories.${id}.tags.${tag}.emoji`)"
                             @click="formData.category = id + '.' + tag"
                             :key="tag"
@@ -23,7 +22,11 @@
                     </div>
                 </div>
                 <div class="" v-else-if="step == 1">
-                    <placeholder :ratio="25" />
+                    <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${cover})` }">
+                        <button-base icon-before="image" :modifiers="['round', 'light']" @click="options.cover = true" />
+                        
+                        <input-pexels :is-active="options.cover" toggle-overflow="false" @close="options.cover = false" @select="(v) => formData.cover = v" />
+                    </div>
 
                     <div class="p-40 p-30@xs">
                         <input-base class="+mt-15" v-model="formData.title" label="Donner un nom à la sortie" />
@@ -85,7 +88,7 @@
 
                         <div class="mt-20 row-xs">
                             <div class="col-6 col-12@xs mb-10" v-for="conste in constellations" :key="conste._id">
-                                <div class="Block_conste" :class="{ 'is-active': formData.constellation == conste._id }" @click="() => formData.constellation = formData.constellation == conste._id ? null : conste._id">
+                                <div class="Block_conste" :class="{ 'is-active': formData.constellation == conste._id }" @click="() => formData = { ...formData, constellation: formData.constellation == conste._id ? null : conste._id }">
                                     <const-icon displayName :no-link="true" v-bind="conste" />
                                 </div>
                             </div>
@@ -115,13 +118,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="" v-else-if="step == 3">
-                    <placeholder :ratio="25" />
-                    
+                <div v-else-if="step == 3">
+                    <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${cover})` }">
+                        <button-base icon-before="image" :modifiers="['round', 'light']" @click="step = 1" />
+                    </div>
+  
                     <div class="p-40 p-30@xs">
                         <div class="+mt-20">
                             <div class="ft-title-s">
-                                {{ formData.name ? formData.name : defaultTitle }}
+                                {{ formData.title ? formData.title : defaultTitle }}
                                 
                                 <button-base
                                     :modifiers="['round', '2xs']"
@@ -129,6 +134,12 @@
                                     icon-before="pen"
                                     @click="step = 1"
                                 />
+                            </div>
+                            
+                            <div class="mt-10" v-if="currentConstellation">
+                                <const-icon :modifiers="['m']" v-bind="currentConstellation" displayName>
+                                    <p class="ft-xs-medium color-ft-weak" slot="before">Publié dans</p>
+                                </const-icon>
                             </div>
                         </div>
 
@@ -188,7 +199,7 @@
                             />
                         </div>
 
-                        <div class="+mt-20 b-top pt-15" v-if="formData.invited.length > 0">
+                        <div class="+mt-20 b-top pt-15" v-if="(formData.constellation || formData.invited.length > 0) && !isUpdating">
                             <p class="ft-m-medium color-ft-weak pb-10">Invités :</p>
 
                             <button-base
@@ -259,7 +270,7 @@
             </div>
 
             <form-sticky :is-active="formData.category !== null">
-                <button-base type="button" class="mr-5" icon-after="arrow-left" :modifiers="['round', 's', 'weak']" @click="onStepBack" v-if="step > 0" />
+                <button-base type="button" class="mr-5" icon-after="arrow-left" :modifiers="['round', 's', 'weak']" @click="onStepBack" v-if="step > 0 && !isUpdating" />
 
                 <template v-if="step == 0">
                     <button-base type="button" icon-after="arrow-right" :modifiers="[isStepComplete ? 'cosmoz' : '', 'l']" @click="onStepComplete">
@@ -268,7 +279,7 @@
                 </template>
                 <template v-else-if="step == 1">
                     <button-base type="button" icon-after="arrow-right" :modifiers="[isStepComplete ? 'cosmoz' : '', 'l']" @click="onStepComplete">
-                        {{ isStepComplete ? 'Choisir les invités' : 'Continuer sans date' }}
+                        {{ isUpdating ? 'Récapitulatif avant envoi' : (isStepComplete ? 'Choisir les invités' : 'Continuer sans date') }}
                     </button-base>
                 </template>
                 <template v-else-if="step == 2">
@@ -287,31 +298,45 @@
 </template>
 
 <script>
+import EntityEditor from '@/mixins/entity-editor'
+
 export default {
     name: 'HangoutPopin',
+    mixins: [ EntityEditor ],
     data: () => ({
+        entityType: 'gathering',
+        inputs: ['category', 'constellation', 'max', 'title', 'description', 'location', 'address', 'cover', 'dates', 'invited', 'type', 'status'],
         errors: [],
-        step: 1,
+        step: 0,
         options: {
-            max: false
-        },
-        formData: {
-            category: null,
-            constellation: null,
-            max: 0,
-            title: '',
-            description: '',
-            location: '',
-            address: '',
-            userDates: true,
-            dates: [],
-            invited: []
+            max: false,
+            cover: false
         },
         dates: [],
         selectedDate: null,
-        isSuccess: false
+        isSuccess: false,
+        isUpdating: false
     }),
     computed: {
+        serverEntity () {
+            if (!this.entityId) return null
+
+            return this.$store.getters[`gathering/findOne`]({
+                id: this.entityId
+            }, true)
+        },
+        defaultFormData () {
+            return {
+                type: 'hangout',
+                status: 'active',
+                category: 'default',
+                dates: [],
+                invited: []
+            }
+        },
+        cover () {
+            return this.formData.cover?.src?.medium
+        },
         friends () {
             return this.$store.getters['user/find']({
                 _id: { $in: this.user.friends }
@@ -348,12 +373,12 @@ export default {
                 case 1:
                     return this.formData.dates.length > 0
                 case 2:
-                    return this.formData.invited.length > 0
+                    return this.formData.invited.length > 0 || this.formData.constellation
                 default: false
             }
         },
-        isActive () {
-            return this.$store.state.page.popins.hangout ? true : false
+        entityId () {
+            return this.$store.state.page.popins.eventCreate
         },
         defaultTitle () {
             if (!this.formData.category) return '✨ On sort ?'
@@ -362,6 +387,18 @@ export default {
         }
     },
     watch: {
+        serverEntity: {
+            immediate: true,
+            handler (v) {
+                this.isUpdating = v ? true : false
+            }
+        },
+        isUpdating: {
+            immediate: true,
+            handler (v) { 
+                this.step = v ? 3 : 0
+            }
+        },
         ['dates'] (v) {
             this.formData.dates = this.dates.map(d => d.date)
         },
@@ -369,7 +406,24 @@ export default {
             if (v) {
                 this.formData.invited = this.formData.invited.filter(i => !this.unavailableFriends.find(u => u._id == i))
             }
-        }
+        },
+        ['$route.query.eventCreate']: {
+            immediate: true,
+            handler (v) {
+                if (v && v != this.entityId) {
+                    this.$store.commit('page/popin', { eventCreate: v })
+                } else if (!v && this.entityId) {
+                    this.$store.commit('page/popin', { eventCreate: null })
+                }
+            }
+        },
+        entityId (v) {
+            if (v) {
+                this.$nextTick(() => this.$router.push({ query: { ...this.$route.query, ['eventCreate']: v, eventId: undefined } }))
+            } else {
+                this.$router.replace({ query: { ...this.$route.query, ['eventCreate']: undefined } })
+            }
+        },
     },
     methods: {
         inviteFriend (_id) {
@@ -413,7 +467,8 @@ export default {
                     this.step = 1
                     break
                 case 3:
-                    this.step = 2
+                    this.step = this.isUpdating ? 1 : 2
+
                     break
                 default:
                     this.step = 0
@@ -423,14 +478,14 @@ export default {
         onStepComplete () {
             switch (this.step) {
                 case 0:
-                    if (this.formData.category) {
+                    if (this.formData.category && !this.formData.title) {
                         this.formData.title = this.defaultTitle
                     }
 
                     this.step = 1
                     break
                 case 1:
-                    this.step = 2
+                    this.step = this.isUpdating ? 3 : 2
                     break
                 case 2:
                     this.step = 3
@@ -440,17 +495,10 @@ export default {
             }
         },
         onClose () {
-            this.$store.commit('page/popin', { hangout: false })
+            this.$store.commit('page/popin', { eventCreate: false })
         },
-        async onSubmit () {
-            this.isLoading = true
-
-            this.$store.dispatch('gathering/createHangout', {
-                ...this.formData,
-                title: this.formData.title ? this.formData.title : this.defaultTitle
-            })
-
-            this.isLoading = false
+        postSubmitSuccess () {
+            this.$router.replace({ query: { eventId: this.serverEntity?.id } })
         }
     }
 }

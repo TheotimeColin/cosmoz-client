@@ -42,6 +42,7 @@ export default {
         title: { type: String, default: '' },
         isActive: { type: Boolean, default: false },
         autoClose: { type: Boolean, default: true },
+        toggleOverflow: { type: Boolean, default: true },
         query: { type: [String, Boolean], default: false }
     },
     data: () => ({
@@ -64,7 +65,7 @@ export default {
                 if (!this.autoClose) return 
                 
                 if (v && this.listeners.close) {
-                    this.$store.commit('page/toggleOverflow',  false)
+                    if (this.toggleOverflow) this.$store.commit('page/toggleOverflow',  false)
 
                     setTimeout(() => {
                         document.addEventListener('click', this.listeners.close)
@@ -72,7 +73,7 @@ export default {
                 } else if (this.listeners.close) {
                     document.removeEventListener('click', this.listeners.close)
 
-                    this.$store.commit('page/toggleOverflow', true)
+                    if (this.toggleOverflow) this.$store.commit('page/toggleOverflow', true)
                 }
 
                 if (v && this.listeners.echap) {
@@ -95,7 +96,8 @@ export default {
     },
     beforeDestroy () {
         document.removeEventListener('click', this.listeners.close)
-        this.$store.commit('page/toggleOverflow', true)
+        
+        if (this.toggleOverflow) this.$store.commit('page/toggleOverflow', true)
     },
     mounted () {
         this.listeners.close = (e) => {
@@ -188,6 +190,7 @@ export default {
     flex-grow: 1;
     overflow: auto;
     position: relative;
+    @include mini-scrollbar;
 }
 
 .PopinBase_close {
@@ -215,7 +218,7 @@ export default {
         opacity: 1;
     }
 
-    .PopinBase_hider {
+    & > .PopinBase_hider {
         pointer-events: all;
         opacity: 1;
         background-color: color-opacity('bg-2xstrong', -15%);
@@ -264,7 +267,7 @@ export default {
 .PopinBase--panel {
     justify-content: flex-end;
 
-    .PopinBase_body {
+    & > .PopinBase_body {
         height: 100%;
         max-height: 100%;
         opacity: 1;
@@ -276,14 +279,14 @@ export default {
 
     &.is-active {
         
-        .PopinBase_body {
+        & > .PopinBase_body {
             transform: translateX(0);
         }
     }
 
     &.PopinBase--full {
         
-        .PopinBase_content {
+        & > .PopinBase_body > .PopinBase_content {
             min-height: 100%;
             display: flex;
             flex-direction: column;
@@ -326,7 +329,7 @@ export default {
 
     .PopinBase--panel {
 
-        .PopinBase_body {
+        & > .PopinBase_body {
             width: 90%;
         }
     }
@@ -343,7 +346,7 @@ export default {
         font-size: 26px;
     }
 
-    .PopinBase--panel .PopinBase_body {
+    .PopinBase--panel > .PopinBase_body {
         width: 100%;
     }
     
@@ -375,7 +378,7 @@ export default {
 
     .PopinBase--panel {
 
-        .PopinBase_body {
+        & > .PopinBase_body {
             border-radius: 0;
             box-shadow: none;
         }

@@ -62,7 +62,6 @@ export default {
     computed: {
         gatherings () {
             return this.$store.getters['gathering/find']({
-                date: '$notNull',
                 status: 'active',
                 isAttending: true,
                 sort: { date: 'desc' },

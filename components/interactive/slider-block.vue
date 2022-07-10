@@ -1,6 +1,6 @@
 <template>
     <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 
-    , 'is-height': height, 'is-init': isInit }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + (height ? height : computedHeight)) + 'px' }">
+    , 'is-height': height, 'is-init': isInit }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + (height ? height : computedHeight)) + 'px' }" v-show="slots.length > 0">
         <placeholder :ratio="ratio" :height="height" :class="[ itemClass ]" style="opacity: 0" />
 
         <div class="SliderBlock_container" ref="container">

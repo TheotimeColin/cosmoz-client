@@ -7,8 +7,10 @@ export default {
             }) : null
         },
         $gathering () {
-            return this.$route.params.eventId ? this.$store.getters['gathering/findOne']({
-                id: this.$route.params.eventId,
+            let gId = this.$route.params.eventId || this.$route.query.eventId
+            
+            return gId ? this.$store.getters['gathering/findOne']({
+                id: gId,
                 status: 'active'
             }) : null
         },
@@ -23,9 +25,17 @@ export default {
             return this.$constellation.members.includes(this.user._id)
         },
         $isConsteOrga () {
-            if (!this.$constellation || !this.user) return false
+            if (!this.user) return false
 
-            return this.user.role == 'admin' || [ ...this.$constellation.organizers, ...this.$constellation.admins ].includes(this.user._id)
+            if (this.user.role == 'admin' || this.$gathering && this.$gathering.owner == this.user._id) {
+                return true
+            }
+
+            if (this.$constellation) {
+                return [ ...this.$constellation.organizers, ...this.$constellation.admins ].includes(this.user._id)
+            }
+
+            return false
         },
         $isConsteAdmin () {
             if (!this.$constellation || !this.user) return false

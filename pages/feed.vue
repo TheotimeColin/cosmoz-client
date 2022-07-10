@@ -1,9 +1,6 @@
 <template>
     <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <block-advice class="mv-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
-
-        <button-base :modifiers="['rect']" class="+mt-20 +mt-10@s" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { hangout: true })" />
-
         <div class="block p-0 +mt-20 +mt-10@s" v-if="constellations.length > 0">
             <p class="ft-title-xs ph-20 pt-20 d-none@xs">Mes constellations</p>
 
@@ -25,6 +22,8 @@
                     </div>
                 </slider-block>
             </div>
+
+            <button-base :modifiers="['rect']" class="+mt-20 +mt-10@s" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { eventCreate: 'new' })" />
 
             <component
                 v-for="status in endedGatherings"

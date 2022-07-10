@@ -43,7 +43,7 @@ export default {
             return {
                 ...form,
                 status: status ? status.value : 'draft',
-                constellation: form && form.constellation ? form.constellation._id  : ''
+                // constellation: form && form.constellation ? form.constellation._id  : ''
             }
         },
         parse: async (form, $parent) => {

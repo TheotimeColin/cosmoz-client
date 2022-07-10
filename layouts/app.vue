@@ -21,6 +21,7 @@
         <popin-hangout-create />
         <popin-confirm />
         <popin-emojis />
+        <popin-event />
         
         <tooltip-manager />
     </div>

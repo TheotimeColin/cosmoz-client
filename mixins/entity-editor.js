@@ -12,6 +12,8 @@ export default {
     }),
     computed: {
         serverEntity () {
+            if (!this.currentId) return null
+
             return this.$store.getters[`${this.entityType}/findOne`]({
                 _id: this.currentId
             }, true)
@@ -35,29 +37,34 @@ export default {
                     ...form
                 }
 
-
                 this.prevFormData = { ...this.formData }
 
                 if (v) setTimeout(() => this.isInit = true, 50)
             }
+        },
+        entityId: {
+            immediate: true,
+            handler (v) {
+                this.init()
+            }
         }
     },
-    created () {
-        if (this.preCreated) this.preCreated()
-
-        this.currentId = this.entityId ? this.entityId : this.$route.params.id
-
-        this.formData = this.decodeForm({
-            ...(this.defaultFormData ? this.defaultFormData : {}),
-            ...this.formData,
-            ...this.serverEntity
-        })
-
-        this.isLoading = false
-
-        if (this.postCreated) this.postCreated()
-    },
     methods: {
+        async init () {
+            if (this.preCreated) this.preCreated()
+
+            this.currentId = this.entityId ? this.entityId : this.$route.params.id
+
+            this.formData = this.decodeForm({
+                ...(this.defaultFormData ? this.defaultFormData : {}),
+                // ...this.formData,
+                ...this.serverEntity
+            })
+
+            this.isLoading = false
+
+            if (this.postCreated) this.postCreated()
+        },
         async fetchEntity (id) {
             this.currentId = id
 

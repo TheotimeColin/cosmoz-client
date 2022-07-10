@@ -1,20 +1,21 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed || type == 'group' ? 'c-slug-feed' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
 
-        <client-only>
-            <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
-                <ripples v-if="!badge" />
+        <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
+            <ripples v-if="!badge" />
 
-                <div v-if="!logo && !pictureSrc">{{ name ? name.slice(0, 1) : '' }}</div>
+            <div v-if="!logo && !pictureSrc">{{ name ? name.slice(0, 1) : '' }}</div>
 
-                <div class="ConstIcon_badge" v-if="badge">
-                    <fa :icon="`far fa-${badge}`"></fa>
-                </div>
+            <div class="ConstIcon_badge" v-if="badge">
+                <fa :icon="`far fa-${badge}`"></fa>
             </div>
-        </client-only>
+        </div>
 
         <div class="ConstIcon_name" v-if="displayName">
+            <slot name="before"></slot>
+
             <link-base :invert="true" class="ellipsis-1">{{ name ? name : '' }}</link-base>
+
             <slot></slot>
         </div>
     </component>

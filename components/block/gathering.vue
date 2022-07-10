@@ -1,12 +1,12 @@
 <template>
-    <div class="BlockGathering" :class="[ ...$modifiers ]">
+    <div class="BlockGathering" :class="[ ...$modifiers ]" @click="$store.commit('page/popin', { event: id })">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" />
+                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" v-if="constellation" />
                 </div>
 
                 <div>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link>
+        <!-- <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link> -->
     </div>
 </template>
 
@@ -66,13 +66,12 @@ export default {
         constellation: { type: String, default: '' },
     },
     computed: {
-        
         constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
         defaultLink () {
-            return this.constellationData ? this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.id, slug: this.constellationData.slug } }) : ''
+            return this.constellationData ? this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.id, slug: this.constellationData.slug } }) : this.localePath({ name: 'events-eventId', params: { eventId: this.id } })
         },
         thumbnail () {
             let thumbnail = this.cover && this.cover.medias && this.cover.medias.find(m => m.size == 's')
@@ -110,7 +109,8 @@ export default {
 <style lang="scss" scoped>
 .BlockGathering {
     position: relative;
-
+    cursor: pointer;
+    
     &:hover {
     
     }

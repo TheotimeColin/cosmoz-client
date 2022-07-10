@@ -1,5 +1,5 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['s']" @close="$emit('close')">
+    <popin :is-active="isActive" :modifiers="['s']" @close="$emit('close')" v-if="constellation">
         <template slot="content">
             <div class="p-30 text-left">
                 <div class="mb-20 bg-bg-strong p-15 br-xs">

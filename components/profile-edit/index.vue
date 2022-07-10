@@ -65,7 +65,6 @@ export default {
         inputs: ['picture', 'name', 'alias', 'birthdate']
     }),
     computed: {
-        
         picture () {
             if (this.formData.removePicture) return null
 

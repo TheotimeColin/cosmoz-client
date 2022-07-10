@@ -65,28 +65,11 @@ export default {
         },
         async create ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$post('/entities', {
-                    ...params, type: 'gathering'
-                })
+                const response = await this.$axios.$post('/gathering/create', params)
                 
                 if (response.status == 0) throw Error(response.errors[0])
 
                 commit('updateOne', response.data)
-                
-                return response
-            } catch (e) {
-                return handleErrors(e, commit, `Une erreur est survenue`)
-            }
-        },
-        async createHangout ({ commit }, params = {}) {
-            try {
-                const response = await this.$axios.$post('/hangout/create', {
-                    ...params
-                })
-                
-                if (response.status == 0) throw Error(response.errors[0])
-
-                if (response.data) commit('updateOne', response.data)
                 
                 return response
             } catch (e) {
