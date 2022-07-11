@@ -46,7 +46,7 @@ export default {
     right: 0;
     transform: translateY(calc(100% + 5px));
     transition: all 100ms ease;
-
+    
     &.is-active,
     &:hover:not(.is-disabled) {
         opacity: 1;

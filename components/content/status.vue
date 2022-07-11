@@ -66,7 +66,7 @@ export default {
     .Status_content {
         padding: 20px;
         border-radius: 10px;
-        background-color: color-opacity('bg-strong', -50%);
+        background-color: var(--color-bg-strong);
     }
 
     @include breakpoint-xs {

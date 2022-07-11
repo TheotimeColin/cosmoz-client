@@ -175,7 +175,7 @@
                         <div class="+mt-20 b-top pt-20">
                             <p class="ft-m-medium color-ft-weak mb-10">Détails</p>
 
-                            <input-area class="n-mh-10" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" />
+                            <input-paper class="n-mh-10" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
                         </div>
 
                         <div class="+mt-20 b-top pt-20" v-if="formData.dates.length > 0">

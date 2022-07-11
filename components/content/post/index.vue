@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!isLoading && ownerData">
-            <div class="Post" :class="[ $modifiers, { 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden, 'is-no-footer': noFooter } ]" ref="container" >
+            <div class="Post" :class="[ $modifiers, { 'is-current': isCurrent, 'is-not-current': !isCurrent && gatheringData, 'is-no-link': noLink, 'is-forbidden': isForbidden, 'is-no-footer': noFooter } ]" ref="container">
                 <ripples :auto="false" :size="300" :modifiers="['weak']" v-if="!noLink && !isForbidden" ref="ripples"  />
 
                 <content-post-head

@@ -31,7 +31,7 @@
         <transition-group name="fade">
             <component
                 :is="'content-' + status.type"
-                v-for="status in displayedStatuses.filter(c => !isLoading)"
+                v-for="status in displayedStatuses.filter(c => !isLoadingFeed && !isLoading)"
                 class="Feed_item"
                 v-bind="status"
                 :active-gathering="gathering"
@@ -41,14 +41,14 @@
                 ref="posts"
             />
 
-            <placeholder class="Feed_item outflow@xs" v-for="i in 10" :ratio="$smallerThan('xs') ? 65 : 45" v-show="isLoading" :key="i" />
+            <placeholder class="Feed_item outflow@xs" v-for="i in 10" :ratio="$smallerThan('xs') ? 65 : 45" v-show="isLoadingFeed || isLoading" :key="i" />
         </transition-group>
 
-        <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoading">
+        <div class="Feed_item color-ft-xweak ft-s mt-20 text-center" v-if="displayedStatuses.length <= 0 && !isLoadingFeed && !isLoading">
             Aucun message sur ce fil.
         </div>
         
-        <div class="Feed_loader mt-20" v-if="isLoading || isSubmitLoading">
+        <div class="Feed_loader mt-20" v-if="isLoadingFeed || isLoading || isSubmitLoading">
             <button-base :modifiers="['light']" >
                 <fa icon="far fa-spinner-third" class="spin mr-5" /> Mise à jour du fil...
             </button-base>
@@ -64,8 +64,11 @@
 </template>
 
 <script>
+import AutoStatusesMixin from '@/mixins/auto-statuses'
+
 export default {
     name: 'Feed',
+    mixins: [ AutoStatusesMixin ],
     props: {
         read: { type: String, default: 'friends' },
         max: { type: Number, default: 10 },
@@ -77,6 +80,7 @@ export default {
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false },
+        isLoading: { type: Boolean, default: false },
         autoStatuses: { type: Array, default: () => [] }
     },
     data: () => ({
@@ -85,7 +89,7 @@ export default {
         errors: [],
         tags: [],
         isSubmitLoading: false,
-        isLoading: true,
+        isLoadingFeed: true,
         page: 0,
         checkedNext: false,
         checkingNext: false
@@ -94,15 +98,15 @@ export default {
         if (this.tag) this.tags = [ this.tag ]
         
         if (this.$store.getters['status/isFetched'](this.feedType)) {
-            this.isLoading = false
+            this.isLoadingFeed = false
 
             this.softRefresh()
         } else {
-            this.isLoading = true
+            this.isLoadingFeed = true
 
             await this.refresh()
 
-            this.isLoading = false
+            this.isLoadingFeed = false
         }
     },
     computed: {
@@ -118,6 +122,7 @@ export default {
 
             statuses = [
                 ...userPosts,
+                ...this.$autoStatuses,
                 ...this.autoStatuses
             ].filter(s => s.createdAt && this.$moment(s.createdAt).isBefore(this.$moment().add(30, 'seconds')))
 

@@ -1,37 +1,46 @@
 <template>
     <div>
-        <div :class="isMin ? '' : 'block bg-bg-weak p-0 br-none@xs'">
-            <div class="+mt-20 pt-20 ph-20">
-                <h1 class="+mt-20 ft-title-m">{{ gathering.title }}</h1>
-                <p class="ft-s color-ft-weak" v-if="gathering.isPast">{{ $moment(gathering.date).fromNow() }}</p>
-                
-                <template v-if="!gathering.isPast || gathering.isPast && !hasConfirmed">
-                    <div class="+mt-20 d-flex fxa-start" v-if="gathering.date">
-                        <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+        <div class="ManageEvent" :class="{ 'ManageEvent--min': isMin }">
 
-                        <div>
-                            <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
-                            <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
-                        </div>
+            <div class="ManageEvent_container">
+                <div class="ManageEvent_cover bg-cover-100 ratio-50 ratio-75@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }"></div>
+
+                <div class="ManageEvent_info">
+                    <div class="+mt-20">
+                        <h1 class="ft-title-m ft-title-s@xs">{{ gathering.title }}</h1>
+
+                        <p class="ft-s color-ft-weak" v-if="gathering.isPast">{{ $moment(gathering.date).fromNow() }}</p>
                     </div>
+                    
+                    <div class="+mt-20">
+                        <div class="+mt-20 d-flex fxa-start" v-if="gathering.date">
+                            <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-10 fx-no-shrink" fixed-width />
 
-                    <div class="+mt-20 d-flex fxa-start" v-if="gathering.location">
-                        <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 mr-10 fx-no-shrink" fixed-width />
-
-                        <div>
-                            <p class="ft-l-bold">{{ gathering.location }}</p>
-                            <p v-if="gathering.address">{{ gathering.address }}</p>
+                            <div>
+                                <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
+                                <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
+                            </div>
                         </div>
+
+                        <div class="+mt-20 d-flex fxa-start" v-if="gathering.location">
+                            <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 mr-10 fx-no-shrink" fixed-width />
+
+                            <div>
+                                <p class="ft-l-bold">{{ gathering.location }}</p>
+                                <p v-if="gathering.address">{{ gathering.address }}</p>
+                            </div>
+                        </div>
+
+                        <user-list class="+mt-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
                     </div>
-
-                    <user-list class="mv-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
-
-                    <hr class="Separator mt-20">
-                </template>
-
+                </div>
             </div>
-                
-            <div class="+mt-20" v-if="hasConfirmed && usersByStatus(['confirmed', 'attending']).length > 1">
+
+            <div class="p-20 bg-bg-xweak text-center" v-if="!gathering.isPast && !isMin">
+                <page-gathering-action-button :gathering="gathering" />
+            </div>
+
+            <!-- <div v-if="hasConfirmed && usersByStatus(['confirmed', 'attending']).length > 1">
                 <div class="ph-20">
                     <p class="ft-title-xs">
                         Tu les as rencontrés
@@ -82,32 +91,14 @@
                 <user-popin-mention :selected-user="selectedUser" :gathering="gathering._id" @close="selectedUser = null" />
 
                 <hr class="Separator">
-            </div>
-
-            <div class="+mt-20 ph-20 pb-20">
-                <div class="fx-center d-block@xs">
-                    <div class="fx-no-shrink ml-20 ml-0@xs mt-5@xs text-center@xs">
-                        <template v-if="gathering.isPast">
-                            <link-base class="mr-5" @click="isFull = true" v-if="gathering.type == 'official'">Détails</link-base>
-                            <button-base :modifiers="['light']" disabled>Événement terminé</button-base>
-                        </template>
-                        <template v-else>
-                            <link-base class="mr-5" @click="$store.commit('page/popin', { eventCreate: gathering.id })" v-if="$isConsteOrga">Modifier</link-base>
-
-                            <link-base class="mr-5" @click="isFull = true" v-if="gathering.type == 'official'">Détails</link-base>
-
-                            <page-gathering-action-button :gathering="gathering" @manage="isFull = true" />
-                        </template>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-20 text-center bg-bg-xweak" v-if="$isConsteOrga && gathering.type == 'official'">
-                <button-base @click="isManage = true">Gérer les participants</button-base>
-
-                <page-gathering-manage-users :is-active="isManage" :gathering="gathering" @close="isManage = false" />
-            </div>
+            </div> -->
+        
         </div>
+
+
+        <!-- <div class="+mt-20 block text-center" v-if="gathering && !gathering.isPast">
+            <page-gathering-action-button :gathering="gathering" />
+        </div> -->
         
         <!-- <page-gathering-full :is-active="isFull" :gathering="gathering" @close="isFull = false" @open="isFull = true" /> -->
 
@@ -184,6 +175,55 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.ManageEvent {
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--color-bg-weak);
+    
+    @include shadow-xs;
+}
 
+.ManageEvent_container {
+    display: flex;
+}
+
+.ManageEvent_info {
+    padding: 20px;
+}
+
+.ManageEvent_cover {
+    width: 50%;
+    background: var(--color-bg-strong);
+}
+
+.ManageEvent--min {
+    border-radius: 0;
+    
+    .ManageEvent_cover {
+        width: 40%;
+    }
+
+    .ManageEvent_info {
+        padding: 30px;
+    }
+}
+
+@include breakpoint-xs {
+
+    .ManageEvent {
+        display: block;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:not(.ManageEvent--min) {
+            margin-left: -20px;
+            margin-right: -20px;
+        }
+    }
+
+    .ManageEvent_cover {
+        width: 100%;
+    }
+}
 </style>

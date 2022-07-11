@@ -3,20 +3,17 @@
         <div class="bg-cover-100 ratio-15 ratio-35@xs" :style="{ '--background': `url(${$constellation.hero}` }"
             v-if="$constellation.hero"></div>
 
-        <div class="Page_wrapper d-flex Wrapper d-block@s">
-            <div class="fx-grow">
-                <div class="block mb-40 o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
+        <div class="Page_wrapper d-flex Wrapper Wrapper--s d-block@s">
+            <div class="fx-grow o-hidden">
+                <div class="+mt-20 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
                     <h1 class="ft-title-xs mb-15">
                         À propos du groupe
                     </h1>
 
-                    <div class="TextBody" :class="{ 'ellipsis-2': !showFull }" v-html="$constellation.description">
-                    </div>
-
-                    <link-base class="mt-20" @click="showFull = true" v-show="!showFull">En savoir plus</link-base>
+                    <text-body :value="$constellation.description" :truncate="100" />
                 </div>
 
-                <div v-if="upcomingEvents.length > 0">
+                <div class="+mt-20 " v-if="upcomingEvents.length > 0">
                     <div class="fx-center mb-20">
                         <h2 class="ft-title-xs">
                             <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
@@ -27,11 +24,10 @@
                             :to="{ name: 'c-slug-events', params: { slug: $constellation.slug } }">Voir tout
                         </button-base>
                     </div>
-                    <block-gathering class="mb-20" :status-only="true" v-bind="upcomingEvents[0]"
-                        :key="upcomingEvents[0]._id" />
+                    <block-gathering class="mb-20" :status-only="true" v-bind="upcomingEvents[0]" :key="upcomingEvents[0]._id" />
                 </div>
 
-                <div class="pt-20 br-s bg-bg-weak mv-20" v-if="pastEvents.length > 0">
+                <div class="+mt-20 pt-20 br-s bg-bg-weak" v-if="pastEvents.length > 0">
                     <p class="ft-title-xs mb-20 ph-20">
                         <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Événements passés
                     </p>

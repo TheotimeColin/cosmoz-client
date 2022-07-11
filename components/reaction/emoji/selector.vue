@@ -59,6 +59,7 @@ export default {
 .EmojiSelector {
     display: flex;
     flex-direction: column;
+    background: var(--color-bg-xstrong);
 
     &.is-active {
         
@@ -150,7 +151,7 @@ export default {
     z-index: 3;
     top: 0;
     padding: 10px 15px;
-    background: color-opacity('bg-xstrong', -5%);
+    background: color-opacity('bg-2xstrong', -10%);
     backdrop-filter: blur(5px);
     font: var(--ft-m-medium);
 }
@@ -164,7 +165,7 @@ export default {
     font-size: 20px;
     width: 50px;
     padding: 5px 0;
-    background: var(--color-bg-xstrong);
+    background: var(--color-bg-2xstrong);
     overflow: auto;
     @include hide-scrollbars;
 }

@@ -1,7 +1,15 @@
 <template>
     <div class="TextBody TextBody--no-edit" :class="[ ...$modifiers ]">
-        <div class v-html="value" v-if="!editor"></div>
-        <editor-content :editor="editor" ref="text" v-if="editor" />
+        <div v-if="truncate && !display">
+            {{ $ellipsis($options.filters.striptags(value), truncate) }}
+            <link-base v-if="$options.filters.striptags(value).length > truncate" @click="display = true">Afficher plus</link-base>
+        </div>
+        <template v-else>
+            <div class v-html="value" v-if="!editor"></div>
+            <editor-content :editor="editor" ref="text" v-if="editor" />
+
+            <link-base class="mt-20" v-if="truncate && $options.filters.striptags(value).length > truncate" @click="display = false">Afficher moins</link-base>
+        </template>
     </div>
 </template>
 
@@ -14,16 +22,19 @@ import StyledBlock from '@/plugins/tiptap/StyledBlock'
 import Iframe from '@/plugins/tiptap/Iframe'
 import Gallery from '@/plugins/tiptap/Gallery'
 import InsertBlock from '@/plugins/tiptap/InsertBlock'
+import LinkBase from '../base/link-base.vue'
 
 export default {
     name: 'TextBody',
-    components: { EditorContent },
+    components: { EditorContent, LinkBase },
     mixins: [ ModifiersMixin ],
     props: {
-        value: { type: String, default: '' }
+        value: { type: String, default: '' },
+        truncate: { type: Number, default: 0 }
     },
     data: () => ({
-        editor: null
+        editor: null,
+        display: false
     }),
     async mounted () {
         this.$data.editor = new Editor({
@@ -37,7 +48,7 @@ export default {
                 new Link(), new Iframe(), new StyledBlock(), new Gallery(),
                 new InsertBlock()
             ],
-            content: this.$props.value,
+            content: this.value
         })
     }
 }

@@ -47,7 +47,7 @@ export default {
 <style lang="scss" scoped>
     .Post_footer {
         background-color: var(--color-bg);
-        background-color: color-opacity('bg', -65%);
+        background-color: color-opacity('bg-strong', -60%);
         display: flex;
         justify-content: flex-end;
         padding: 5px;

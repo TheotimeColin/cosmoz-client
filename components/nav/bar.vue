@@ -1,25 +1,19 @@
 <template>
     <div class="NavBar" :class="{ 'is-start': this.scroll <= 20, 'is-scroll': hasScroll }">
-        <div class="NavBar_container" ref="container">
-            <div v-for="(item, i) in items.filter(item => !item.disabled)" :key="i">
-                <component
-                    :id="`navbar-${item.id}`"
-                    :is="item.href || item.to ? 'link-base' : 'div'"
-                    :modifiers="['m']" 
-                    :tag="item.href ? 'a' : 'nuxt-link'"
-                    :href="item.href" :attrs="{ to: localePath(item.to) }" 
-                    class="NavBar_item"
-                    :class="{ 'is-done': item.checked, 'is-active': value == item.id || !value && item.id == 'index' }"
-                    @click="() => onClick(item)"
-                    :ref="item.id"
-                >
-                    <span class="round round-s bg-emerald-xweak color-emerald-xstrong mr-10" v-if="item.checked">
-                        <i class="fal fa-check"></i>
-                    </span>
-
-                    {{ item.label }}
-                </component>
-            </div>
+        <div class="NavBar_container" :style="{ paddingLeft: ph + 'px', paddingRight: ph + 'px' }" ref="container">
+            <button-base
+                :id="`navbar-${item.id}`"
+                class="NavBar_item"
+                v-for="(item, i) in items.filter(item => !item.disabled)"
+                :modifiers="value == item.id || !value && item.id == 'index' ? ['s', 'cosmoz', 'no-s'] : ['s', 'weak', 'no-s']" 
+                :href="item.href"
+                :to="item.to"
+                @click="() => onClick(item)"
+                :key="i"
+                :ref="item.id"
+            >
+                {{ item.label }}
+            </button-base>
         </div>
     </div>
 </template>
@@ -33,6 +27,7 @@ export default {
     }),
     props: {
         value: { type: String },
+        ph: { type: Number, default: 0 },
         items: { type: Array, default: () => [] }
     },
     computed: {
@@ -53,17 +48,24 @@ export default {
         }
     },
     mounted () {
-        if (process.server) return
+        this.checkScroll()
 
-        this.hasScroll = this.$refs.container.scrollWidth > this.$refs.container.clientWidth
-
-        if (this.hasScroll) this.$nextTick(() => this.updateScroll())
+        new ResizeObserver(() => {
+            this.checkScroll()
+        }).observe(this.$el)
         
         this.$refs.container.addEventListener('scroll', () => {
             this.scroll = this.$refs.container.scrollLeft
         })
     },
     methods: {
+        checkScroll () {
+            if (!this.$refs.container) return 
+            
+            this.hasScroll = this.$refs.container.scrollWidth > this.$refs.container.clientWidth
+
+            if (this.hasScroll) this.$nextTick(() => this.updateScroll())
+        },
         onClick (item) {
             item.onClick ? item.onClick() : this.$emit('input', item.id)
             this.$nextTick(() => this.updateScroll())
@@ -93,9 +95,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.NavBar {
+    position: relative;
+    overflow: hidden;
+}
+
+.NavBar_container {
+
+}
+
+.NavBar_item {
+    margin: 1px 0;
+
+    & + & {
+        margin-left: 5px;
+    }
+}
+
+@include breakpoint-xs {
+    
+    .NavBar_container {
+        display: flex;
+        overflow: auto;
+    }
+
     .NavBar {
-        border-bottom: 1px solid var(--color-border);
-        position: relative;
 
         &.is-scroll {
             &::after,
@@ -104,7 +128,7 @@ export default {
                 display: block;
                 position: absolute;
                 top: 0;
-                width: 33%;
+                width: 30px;
                 height: 100%;
                 z-index: 2;
                 pointer-events: none;
@@ -113,24 +137,12 @@ export default {
 
             &::after {
                 right: -2px;
-                background: linear-gradient(to right, color-opacity('bg', -100%), color-opacity('bg', 0%));
+                background: linear-gradient(to right, color-opacity('bg', -100%), color-opacity('bg', -20%));
             }
 
             &::before {
-                width: 10%;
                 left: -2px;
-                background: linear-gradient(to left, color-opacity('bg', -100%), color-opacity('bg', 0%));
-            }
-
-            .NavBar_container {
-
-                &::after {
-                    content: "";
-                    display: block;
-                    width: 75%;
-                    height: 10px;
-                    flex-shrink: 0;
-                }
+                background: linear-gradient(to left, color-opacity('bg', -100%), color-opacity('bg', -20%));
             }
         }
 
@@ -140,55 +152,17 @@ export default {
                 opacity: 0;
             }
         }
-    }
 
-    .NavBar_container {
-        display: flex;
-        overflow: auto;
+        .NavBar_container {
 
-        &::-webkit-scrollbar {
-            width: 0px;
-            height: 0px;
-        }
-
-    }
-
-    .NavBar_item {
-        height: 45px;
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-        font: var(--ft-title-xs);
-        white-space: nowrap;
-        color: var(--color-ft-weak);
-        cursor: pointer;
-        position: relative;
-        transition: all 100ms ease;
-
-        &:hover {
-            color: var(--color-ft-light);
-        }
-
-        &::before {
-            content: "";
-            display: block;
-            position: absolute;
-            bottom: 0px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--color-ft-light);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        &.is-active {
-            color: var(--color-ft-light);
-            pointer-events: none;
-
-            &::before {
-                opacity: 1;
+            &::after {
+                content: "";
+                display: block;
+                width: 75%;
+                height: 10px;
+                flex-shrink: 0;
             }
         }
     }
+}
 </style>

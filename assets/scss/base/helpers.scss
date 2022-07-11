@@ -280,6 +280,14 @@
     }
 }
 
+.bg-cover-blur {
+    overflow: hidden;
+
+    &::before {
+        filter: blur(5px);
+    }
+}
+
 .bg-cover-100::before { opacity: 1; }
 .bg-cover-75::before { opacity: 0.75; }
 .bg-cover-50::before { opacity: 0.5; }

@@ -1,22 +1,59 @@
 <template>
-    <div class="Page page pb-150">
+    <div class="">
         <template v-if="!isLoading && gathering">
-            <div class="bg-cover-50 bg-bg-xstrong bg-cover-100@xs" :style="{ '--background': `url(${gathering.hero})` }">
-                <div class="Wrapper Wrapper--xs text-center pv-60 ratio-25@xs">
-                    <h1 class="ft-title-m d-none@xs">{{ gathering.title }}</h1>
-                </div>
+            <div class="bg-admin-weak p-10 text-right" v-if="$isConsteOrga">
+                <button-base @click="isManage = true" :modifiers="['s']">
+                    Gérer les participants
+                </button-base>
+
+                <button-base icon-before="pen" :modifiers="['light', 's']" @click="$store.commit('page/popin', { eventCreate: gathering.id })">
+                    Modifier
+                </button-base>
+
+                <page-gathering-manage-users :is-active="isManage" :gathering="gathering" @close="isManage = false" />
             </div>
-            <div class="Wrapper Wrapper--xs n-mt-20 p-relative n-mt-0@xs">
-                <page-gathering-manage :gathering="gathering" ref="manage" />
-            
-                <content-feed
-                    class="mt-20 mt-10@xs"
-                    read="public"
-                    :max="8"
-                    :auto-statuses="autoStatuses"
-                    :gathering="gathering._id"
-                    ref="feed"
+
+            <div class="bg-cover-25 bg-cover-blur bg-bg-xstrong pv-100 d-none@xs" :style="{ '--background': `url(${gathering.hero})` }"></div>
+
+            <div class="Wrapper Wrapper--s n-mt-150 p-relative n-mt0@xs">
+                <page-gathering-manage
+                    :gathering="gathering"
+                    ref="manage"
                 />
+            </div>
+
+            <div class="Wrapper Wrapper--xs p-relative">
+                <div class="mv-40" v-if="(gathering.description && gathering.description !== '<p></p>') || (gathering.important && gathering.important !== '<p></p>')">
+                    <div class="+mt-40">
+                        <p class="ft-title-s mb-15">Détails</p>
+                        <text-body
+                            :modifiers="['gathering']"
+                            :value="gathering.description"
+                            :truncate="100"
+                        />
+                    </div>
+
+                    <div class="+mt-40" v-if="gathering.important && gathering.important !== '<p></p>'">
+                        <p class="ft-title-xs tape mb-15 ph-15">Important</p>
+                        <text-body
+                            :modifiers="['gathering']"
+                            :value="gathering.important"
+                            :truncate="220"
+                        />
+                    </div>
+                </div>
+                
+                <div class="mt-40 mt-10@xs">
+                    <p class="ft-title-s mb-20">Fil d'actualité</p>
+
+                    <content-feed
+                        class=""
+                        read="public"
+                        :max="8"
+                        :gathering="gathering._id"
+                        ref="feed"
+                    />
+                </div>
             </div>
         </template>
         <template v-else-if="isLoading">
@@ -99,116 +136,6 @@ export default {
         },
         hasBooked () {
             return this.gathering.users.find(s => s.status == 'confirmed' && s._id == this.user._id)
-        },
-        autoStatuses () {
-            let statuses = []
-
-            if (!this.gathering) return statuses
-
-            statuses = [ ...statuses,  {
-                _id: `gathering-created-${this.gathering._id}`,
-                type: 'status',
-                title: this.gathering.title,
-                subtitle: `On espère que tu as hâte de participer !`,
-                createdAt: this.$moment(this.gathering.createdAt),
-                actions: this.gathering.isPast ? [] : [
-                    {
-                        text: 'Poser une question',
-                        modifiers: ['s'],
-                        iconBefore: 'comments-question',
-                        on: {
-                            click: () => {
-                                if (this.$refs.feed) this.$refs.feed.openEditor()
-                            }
-                        }
-                    }, { 
-                        text: 'Je participe !',
-                        modifiers: ['light'],
-                        iconBefore: 'arrow-right',
-                        on: {
-                            click: () => {
-                                if (this.$refs.manage) this.$refs.manage.openFull()
-                            }
-                        }
-                    }
-                ]
-            } ]
-
-            statuses = [ ...statuses,  {
-                _id: `gathering-soon-${this.gathering._id}`,
-                type: 'status',
-                title: `L'événement commence bientôt 😱`,
-                subtitle: `Tu as hâte ? N'oublie pas de te désinscrire si tu as un empêchement !`,
-                enableReactions: true,
-                createdAt: this.$moment(this.gathering.date).subtract(1, 'days'),
-                actions: this.gathering.isPast ? [] : [
-                    {
-                        text: 'Se désinscrire',
-                        modifiers: ['xs', 'weak'],
-                        on: {
-                            click: () => {
-                                if (this.$refs.manage) this.$refs.manage.openFull()
-                            }
-                        }
-                    }
-                ]
-            } ]
-
-            statuses = [ ...statuses,  {
-                _id: 'step-start',
-                type: 'step',
-                title: `Début de l'événement`,
-                createdAt: this.$moment(this.gathering.date),
-            } ]
-
-            statuses = [ ...statuses,  {
-                _id: `gathering-during-${this.gathering._id}`,
-                type: 'status',
-                title: `L'événement bat son plein 🔥`,
-                createdAt: this.$moment(this.gathering.date).add(1, 'seconds'),
-                actions: [
-                    {
-                        text: 'Poster des photos',
-                        modifiers: ['cosmoz'],
-                        iconBefore: 'images',
-                        on: {
-                            click: () => {
-                                if (this.$refs.feed) this.$refs.feed.openEditor()
-                            }
-                        }
-                    }
-                ]
-            } ]
-
-            statuses = [ ...statuses,  {
-                _id: 'step-end',
-                type: 'step',
-                title: `Fin de l'événement`,
-                createdAt: this.$moment(this.gathering.date).add(3, 'hours').subtract(1, 'second'),
-            } ]
-
-            statuses = [ ...statuses,  {
-                _id: `gathering-end-${this.gathering._id}`,
-                type: 'status',
-                title: `Tout les bonnes choses ont une fin...`,
-                subtitle: `Merci d'avoir participé à l'événement. Prends un moment pour remercier les organisateurs !`,
-                enableReactions: true,
-                createdAt: this.$moment(this.gathering.date).add(3, 'hours'),
-                actions: [
-                    {
-                        text: 'Poster un message',
-                        modifiers: ['light'],
-                        iconBefore: 'heart',
-                        on: {
-                            click: () => {
-                                if (this.$refs.feed) this.$refs.feed.openEditor()
-                            }
-                        }
-                    }
-                ]
-            } ]
-
-            return statuses
         }
     },
     head () {

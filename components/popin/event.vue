@@ -1,5 +1,5 @@
 <template>
-    <popin :is-active="eventId ? true : false" :modifiers="['s']" @close="onClose">
+    <popin :is-active="eventId ? true : false" :modifiers="['m']" @close="onClose">
         <template slot="content" slot-scope="{ isPopinVisible }">
             <div v-show="!isPopinVisible">
                 <placeholder :ratio="35" />
@@ -11,15 +11,58 @@
                     <placeholder class="+mt-10" :ratio="15" />
                 </div>
             </div>
-            <div v-show="isPopinVisible">
-                <div class="ratio-35 bg-bg-strong"></div>
+            <div v-show="isPopinVisible" v-if="gathering">
+                <page-gathering-manage
+                    :gathering="gathering"
+                    isMin
+                />
 
-                <div class="p-0" v-if="gathering">
-                    <page-gathering-manage
-                        :gathering="gathering"
-                        isMin
+                <nav-bar class="pv-20" :ph="$smallerThan('xs') ? 20 : 40" v-model="type" :items="[
+                    { id: 'index', label: `Détails` },
+                    { id: 'feed', label: `Fil d'actualité` },
+                    { id: 'settings', label: `Paramètres` }
+                ]" />
+                
+                <div class="pb-20 ph-40 ph-20@xs">
+                    <template v-if="(gathering.description && gathering.description !== '<p></p>' || gathering.important && gathering.important !== '<p></p>') && type == 'index'">
+                        <div class="+mt-40">
+                            <text-body
+                                :modifiers="['gathering']"
+                                :value="gathering.description"
+                                :truncate="100"
+                            />
+                        </div>
+
+                        <div class="+mt-40" v-if="gathering.important && gathering.important !== '<p></p>'">
+                            <p class="ft-title-xs tape mb-15 ph-15">Important</p>
+                            <text-body
+                                :modifiers="['gathering']"
+                                :value="gathering.important"
+                                :truncate="220"
+                            />
+                        </div>
+                    </template>
+
+                    <content-feed
+                        read="public"
+                        :max="8"
+                        :is-loading="isFeedLoading"
+                        :gathering="gathering._id"
+                        v-else-if="type == 'feed'"
+                        ref="feed"
                     />
+
+                    <template v-else-if="type == 'settings'">
+                        <button-base icon-before="pen" :modifiers="['light']" @click="$store.commit('page/popin', { eventCreate: gathering.id })">
+                            Modifier l'événement
+                        </button-base>
+                    </template>
                 </div>
+            </div>
+        </template>
+        <template slot="footer">
+            <div class="p-20 text-right fx-grow" v-if="gathering && !gathering.isPast">
+                <page-gathering-action-button :gathering="gathering" />
             </div>
         </template>
     </popin>
@@ -30,7 +73,8 @@
 export default {
     name: 'EventPopin',
     data: () => ({
-        isLoading: true
+        type: 'index',
+        isFeedLoading: false
     }),
     computed: {
         eventId () {
@@ -43,6 +87,14 @@ export default {
         }
     },
     watch: {
+        type (v) {
+            if (v == 'feed') {
+                this.isFeedLoading = true
+                setTimeout(() => this.isFeedLoading = false, 500)
+            } else {
+                this.isFeedLoading = false
+            }
+        },
         ['$route.query.eventId']: {
             immediate: true,
             handler (v) {

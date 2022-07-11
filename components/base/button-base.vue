@@ -42,7 +42,7 @@
             </span>
         </div>
 
-        <ripples v-show="!disabled" />
+        <ripples class="ButtonBase_ripples" v-show="!disabled" />
 
         <div class="ButtonBase_iconLoading">
             <fa :icon="`far fa-${iconLoading}`" />
@@ -348,6 +348,28 @@ export default {
     }
 }
 
+.ButtonBase--color-weak {
+    color: var(--color-ft-weak);
+
+    &.is-active {
+        color: var(--color-ft-light);
+    }
+}
+
+.ButtonBase--border {
+    background-color: transparent;
+    color: var(--color-ft-light);
+    border: 1px solid color-opacity('border', -50%);
+    color: var(--color-ft-weak);
+    box-shadow: none;
+
+    &.is-active {
+        color: var(--color-ft-light);
+        border-color: var(--color-ft-light);
+        background-color: var(--color-bg-strong);
+    }
+}
+
 .ButtonBase--transparent {
     background-color: transparent;
     color: var(--color-ft-light);
@@ -469,6 +491,10 @@ export default {
 .ButtonBase.is-disabled {
     opacity: 0.5;
     pointer-events: none;
+
+    .ButtonBase_ripples {
+        display: none;
+    }
 }
 
 .ButtonBase--user {
@@ -618,7 +644,7 @@ export default {
     box-shadow: none !important;
 }
 
-@media(hover: hover) and (pointer: fine) {
+// @media(hover: hover) and (pointer: fine) {
     .ButtonBase:hover {
         background-color: var(--color-bg-light);
         color: var(--color-ft);
@@ -697,7 +723,14 @@ export default {
             opacity: 0;
         }
     }
+// }
 
 
+.ButtonBase--no-click {
+    pointer-events: none;
+
+    .ButtonBase_ripples {
+        display: none;
+    }
 }
 </style>

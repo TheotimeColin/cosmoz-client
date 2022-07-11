@@ -248,7 +248,6 @@ export default {
     }
 }
 
-
 .PopinBase--m {
     
     .PopinBase_body {
