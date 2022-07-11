@@ -127,9 +127,9 @@ export default {
                     thumbnail,
                     isAttending: root.auth.user && item.users.find(u => u._id == root.auth.user._id && (u.status == 'attending' || u.status == 'confirmed')) ? true : false,
                     isFull: item.max != 0 && item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
-                    isPast: moment(item.date).isBefore(moment()),
-                    isExpired: moment(item.date).add(4, 'days').isBefore(moment()),
-                    display: moment(item.date).isBefore(moment()),
+                    isPast: item.date ? moment(item.date).isBefore(moment()) : false,
+                    isExpired: item.date ? moment(item.date).add(4, 'days').isBefore(moment()) : false,
+                    display: item.date ? moment(item.date).isBefore(moment()) : true,
                     hero
                 }
             })

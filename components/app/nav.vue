@@ -263,7 +263,7 @@ export default {
     display: flex;
     width: var(--nav-width);
     height: 100%;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 }
 
@@ -273,7 +273,7 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 10px;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg-2xstrong);
 }
 
 .AppNav_icon {

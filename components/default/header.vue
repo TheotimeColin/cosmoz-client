@@ -75,7 +75,7 @@ export default {
     top: 0;
     width: 100%;
     z-index: 110;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     transition: all 200ms ease;
     
     &.is-transparent {
@@ -86,12 +86,12 @@ export default {
         }
 
         &.is-scrolled {
-            background-color: var(--color-bg-strong);
+            background-color: var(--color-bg-xstrong);
         }
     }
 
     &.is-open {
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg-xstrong);
     }
 }
 

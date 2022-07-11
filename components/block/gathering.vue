@@ -7,15 +7,19 @@
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
                     <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" v-if="constellation" />
+                    <user-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="userData" v-else-if="userData" />
                 </div>
 
                 <div>
                     <user-list class="fx-grow mb-5" :modifiers="['transparent', 's']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
                     
                     <div class="BlockGathering_details fx-center">
-                        <p v-if="date || location">
+                        <p>
                             <template v-if="date">
                                 {{ $moment(date).fromNow() }}
+                            </template>
+                            <template v-else>
+                                Date à définir
                             </template>
                             
                             <span class="BlockGathering_location">
@@ -64,9 +68,11 @@ export default {
         constShort: { type: Boolean, default: false },
         displayIntro: { type: Boolean, default: false },
         constellation: { type: String, default: '' },
+        owner: { type: String, default: '' },
     },
     computed: {
         constellationData () { return this.$store.getters['constellation/findOne']({ _id: this.constellation }) },
+        userData () { return this.$store.getters['user/findOne']({ _id: this.owner }) },
         hasBooked () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'attending') : false },
         hasConfirmed () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'confirmed') : false },
         hasGhosted () { return this.user ? this.users.find(u => u._id == this.user._id && u.status == 'ghosted') : false },
@@ -78,7 +84,7 @@ export default {
             return thumbnail ? thumbnail.src : ''
         },
         attending () {
-            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(u => this.$getUser(u._id)).filter(u => u)
+            return this.users.filter(u => u.status == 'attending' || u.status == 'confirmed').map(u => this.$getUser(u._id)).filter(u => u && (this.constellation ? true : u._id != this.owner))
         },
         waiting () {
             return this.users.filter(u => u.status == 'waiting')

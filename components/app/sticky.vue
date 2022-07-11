@@ -94,7 +94,7 @@ export default {
     width: 100%;
     z-index: 20;
     bottom: 0;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     transform: translate(0%);
     transition: all 200ms ease;
     display: none;

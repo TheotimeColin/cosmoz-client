@@ -37,18 +37,18 @@ export default {
     .UserList {
         display: flex;
         cursor: pointer;
-
+        
         &:hover {
             .UserList_icons,
             .UserList_title {
-                background-color: var(--color-bg-strong);
+                background-color: var(--color-bg-xstrong);
             }
         }
     }
 
     .UserList_icons,
     .UserList_title {
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-strong);
         padding: 5px;
         transition: all 150ms ease;
     }

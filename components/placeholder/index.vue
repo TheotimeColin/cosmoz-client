@@ -20,7 +20,7 @@ export default {
 <style lang="scss" scoped>
 .Placeholder {
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: color-opacity('bg-xstrong', -50%);
     position: relative;
     overflow: hidden;
 

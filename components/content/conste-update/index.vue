@@ -24,7 +24,7 @@
 
         <template v-if="statuses.photos && statuses.photos.length > 0">
             <slider-block :class="{ 'mt-20': !statuses.posts || statuses.posts.length <= 0 }" :slots="statuses.photos.map(p => p._id).slice(0, 6)" :offset="20" :offset-v="20" :height="175" :margin="10">
-                <content-images-min v-for="photos in statuses.photos.slice(0, 6)" :slot="photos._id" :key="photos._id" v-bind="photos" />
+                <content-images-min style="height: 250px" v-for="photos in statuses.photos.slice(0, 6)" :slot="photos._id" :key="photos._id" v-bind="photos" />
             </slider-block>
         </template>
     </div>

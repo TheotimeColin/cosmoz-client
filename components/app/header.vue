@@ -91,11 +91,11 @@ export default {
     top: 0;
     width: 100%;
     z-index: 110;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     transition: all 100ms ease;
 
     &.is-open {
-        background-color: var(--color-bg-strong);
+        background-color: var(--color-bg-xstrong);
     }
 }
 

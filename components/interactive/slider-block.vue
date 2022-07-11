@@ -1,7 +1,7 @@
 <template>
     <div class="SliderBlock" :class="{ 'is-slideable': maxSteps > 0 
-    , 'is-height': height, 'is-init': isInit }" :style="{ '--step': step, paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', '--margin': margin + 'px', '--height': (offsetV + (height ? height : computedHeight)) + 'px' }" v-show="slots.length > 0">
-        <placeholder :ratio="ratio" :height="height" :class="[ itemClass ]" style="opacity: 0" />
+    , 'is-height': height, 'is-init': isInit }" :style="{ '--step': step,  '--margin': margin + 'px', '--height': (offsetV + (height ? height : computedHeight)) + 'px' }" v-show="slots.length > 0">
+        <!-- <placeholder :ratio="ratio" :height="height" :class="[ itemClass ]" style="opacity: 0" /> -->
 
         <div class="SliderBlock_container" ref="container">
             <div class="SliderBlock_rail" :style="{ paddingLeft: offset + 'px', paddingBottom: offsetV + 'px', paddingTop: paddingT + 'px', }" ref="rail">
@@ -58,18 +58,9 @@ export default {
         isSlidable: true
     }),
     mounted () {
-        setTimeout(() => this.checkDimensions(), 100)
-    },
-    watch: {
-        slots () {
-            setTimeout(() => this.checkDimensions(), 100)
-        },
-        isLoading (v) {
-            if (!v) setTimeout(() => this.checkDimensions(), 100)
-        },
-        breakpoint () {
-            setTimeout(() => this.checkDimensions(), 100)
-        }
+        new ResizeObserver(() => {
+            this.checkDimensions()
+        }).observe(this.$el)
     },
     methods: {
         checkDimensions () {
@@ -106,28 +97,29 @@ export default {
 <style lang="scss" scoped>
     .SliderBlock {
         position: relative;
+        overflow: hidden;
         
 
-        &.is-height {
+        // &.is-height {
 
-            .SliderBlock_container,
-            .SliderBlock_rail,
-            .SliderBlock_item {
-                height: 100%;
-            }
-        }
+        //     .SliderBlock_container,
+        //     .SliderBlock_rail,
+        //     .SliderBlock_item {
+        //         height: 100%;
+        //     }
+        // }
 
-        &.is-init {
-            height: var(--height, 0px);
-        }
+        // &.is-init {
+        //     height: var(--height, 0px);
+        // }
     }
 
     .SliderBlock_container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        overflow: hidden;
+        // position: absolute;
+        // top: 0;
+        // left: 0;
+        // width: 100%;
+        // overflow: hidden;
     }
 
     .SliderBlock_rail {

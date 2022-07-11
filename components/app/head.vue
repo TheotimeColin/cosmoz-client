@@ -139,7 +139,7 @@ export default {
     left: var(--nav-width);
     width: 100%;
     z-index: 90;
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-xstrong);
     transition: all 100ms ease;
     overflow: hidden;
     @include shadow;

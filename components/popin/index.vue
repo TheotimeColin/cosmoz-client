@@ -20,7 +20,7 @@
             </div>
 
             <div class="PopinBase_content">
-                <slot name="content"></slot>
+                <slot name="content" :is-popin-visible="isPopinVisible"></slot>
             </div>
 
             <div class="PopinBase_footer" v-if="$slots.footer || $slots.footerLeft || $slots.footerRight">
@@ -46,6 +46,7 @@ export default {
         query: { type: [String, Boolean], default: false }
     },
     data: () => ({
+        isPopinVisible: false,
         listeners: {
             close: null,
             echap: null
@@ -81,6 +82,16 @@ export default {
                 } else if (this.listeners.echap) {
                     document.removeEventListener('keydown', this.listeners.echap)
                 }
+
+                if (v) {
+                    setTimeout(() => {
+                        if (v) this.isPopinVisible = true
+                    }, 600)
+                } else {
+                    setTimeout(() => {
+                        if (!v) this.isPopinVisible = false
+                    }, 600)
+                }
             }
         },
         [`$route.query`]: {
@@ -100,6 +111,8 @@ export default {
         if (this.toggleOverflow) this.$store.commit('page/toggleOverflow', true)
     },
     mounted () {
+        this.isPopinVisible = this.isActive
+
         this.listeners.close = (e) => {
             // if (!this.$refs.body.contains(e.target)) this.$emit('close')
         }
@@ -143,7 +156,7 @@ export default {
 
 .PopinBase_body {
     background-color: var(--color-bg);
-    border-radius: 4px;
+    border-radius: 12px;
     width: 90%;
     max-width: 700px;
     max-height: 90%;
