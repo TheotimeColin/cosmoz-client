@@ -17,13 +17,13 @@
                     isMin
                 />
 
-                <nav-bar class="pv-20" :ph="$smallerThan('xs') ? 20 : 40" v-model="type" :items="[
+                <nav-bar class="pt-20" :ph="20" v-model="type" :items="[
                     { id: 'index', label: `Détails` },
                     { id: 'feed', label: `Fil d'actualité` },
                     { id: 'settings', label: `Paramètres` }
                 ]" />
                 
-                <div class="pb-20 ph-40 ph-20@xs">
+                <div class="p-20">
                     <template v-if="(gathering.description && gathering.description !== '<p></p>' || gathering.important && gathering.important !== '<p></p>') && type == 'index'">
                         <div class="+mt-40">
                             <text-body

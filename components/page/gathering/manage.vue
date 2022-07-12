@@ -199,13 +199,17 @@ export default {
 
 .ManageEvent--min {
     border-radius: 0;
+
+    .ManageEvent_container {
+        display: block;
+    }
     
     .ManageEvent_cover {
-        width: 40%;
-    }
+        width: 100%;
 
-    .ManageEvent_info {
-        padding: 30px;
+        &::after {
+            padding-bottom: 33%;
+        }
     }
 }
 

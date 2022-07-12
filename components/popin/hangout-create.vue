@@ -22,10 +22,8 @@
                     </div>
                 </div>
                 <div class="" v-else-if="step == 1">
-                    <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${cover})` }">
+                    <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${coverSrc})` }">
                         <button-base icon-before="image" :modifiers="['round', 'light']" @click="options.cover = true" />
-                        
-                        <input-pexels :is-active="options.cover" toggle-overflow="false" @close="options.cover = false" @select="(v) => formData.cover = v" />
                     </div>
 
                     <div class="p-40 p-30@xs">
@@ -33,50 +31,61 @@
                         <input-base class="+mt-15" v-model="formData.location" label="Nom du lieu" />
                         <input-base class="+mt-15" v-model="formData.address" label="Entrer une adresse" />
 
-                        <div class="d-flex +mt-15">
-                            <v-date-picker
-                                :value="dates.find(d => d.id == selectedDate)"
-                                @input="updateDate"
-                                mode="dateTime"
-                                :minute-increment="5"
-                                is24hr 
-                                :is-dark="true"
-                                :min-date="$moment().subtract(1, 'hours').toDate()"
-                            />
+                        <div class="mt-30 block-r">
+                            <p class="ft-title-xs">On fait ça quand ?</p>
 
-                            <div class="pl-20">
-                                <p class="ft-s-medium mb-10">Dates proposées</p>
+                            <div class="d-flex mt-15">
+                                <v-date-picker
+                                    :value="dates.find(d => d.id == selectedDate) ? dates.find(d => d.id == selectedDate).date : null"
+                                    @input="updateDate"
+                                    mode="dateTime"
+                                    :minute-increment="5"
+                                    is24hr 
+                                    :is-dark="true"
+                                    :min-date="$moment().subtract(1, 'hours').toDate()"
+                                />
 
-                                <transition-group name="transition-list">
-                                    <button-base
-                                        v-for="date in dates"
-                                        class="mr-3 mb-3"
-                                        :modifiers="['s' , date.id == selectedDate ? 'light' : '']"
-                                        @click="selectedDate = date.id"
-                                        @delete="deleteDate(date.id)"
-                                        canDelete
-                                        :key="date.id"
-                                    >
-                                        {{ $moment(date.date).format('D MMMM YYYY à H:mm') }}
-                                    </button-base>
+                                <div class="pl-20">
+                                    <transition-group name="transition-list">
+                                        <button-base
+                                            v-for="date in dates"
+                                            class="mr-3 mb-3"
+                                            :modifiers="['s' , date.id == selectedDate ? 'light' : '']"
+                                            @click="selectedDate = date.id"
+                                            @delete="deleteDate(date.id)"
+                                            canDelete
+                                            :key="date.id"
+                                        >
+                                            {{ $moment(date.date).format('D MMMM YYYY à H:mm') }}
+                                        </button-base>
 
-                                    <button-base
-                                        class="mr-3 mb-3"
-                                        icon-before="plus"
-                                        :modifiers="['round']"
-                                        @click="addDate"
-                                        key="add"
-                                    />
-                                </transition-group>
+                                        <button-base
+                                            class="mr-3 mb-3"
+                                            icon-before="plus"
+                                            :modifiers="['round']"
+                                            @click="addDate"
+                                            key="add"
+                                            v-if="options.multipleDates || dates.length == 0"
+                                        />
+                                    </transition-group>
 
-                                <label class="block-r d-block mt-15">
-                                    <input-toggle v-model="formData.userDates" />
+                                    <label class="block-r d-flex bg-bg-strong mt-15 +mt-10">
+                                        <input-toggle v-model="options.multipleDates" />
 
-                                    <div class="mt-15">
-                                        <p>Tout le monde peut proposer des dates</p>
-                                        <div class="ft-s color-ft-weak">Tu auras le dernier mot sur la date choisie.</div>
-                                    </div>
-                                </label>
+                                        <div class="ml-15">
+                                            <p>Proposer plusieurs dates</p>
+                                            <div class="ft-s color-ft-weak">Tu auras le dernier mot sur la date choisie.</div>
+                                        </div>
+                                    </label>
+
+                                    <label class="block-r d-flex bg-bg-strong mt-15 +mt-10" v-if="options.multipleDates">
+                                        <input-toggle v-model="formData.userDates" />
+
+                                        <div class="ml-15">
+                                            <p>Tout le monde peut proposer des dates</p>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,67 +127,58 @@
                         </div>
                     </div>
                 </div>
-                <div v-else-if="step == 3">
-                    <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${cover})` }">
-                        <button-base icon-before="image" :modifiers="['round', 'light']" @click="step = 1" />
+                <div class="p-40 p-30@xs" v-else-if="step == 3">
+                    <!-- <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${coverPreview})` }">
+                        <button-base icon-before="image" :modifiers="['round', 'light']" @click="options.cover = true" />
+                    </div> -->
+
+                    <div class="d-flex">
+                        <block-gathering
+                            :modifiers="['square']"
+                            class="width-2xs"
+                            v-bind="formData"
+                            :cover="coverPreview"
+                            :no-link="true"
+                        />
+
+                        <div class="fx-grow pl-30">
+                            <div class="+mt-20">
+                                <div class="ft-title-s">
+                                    {{ formData.title ? formData.title : defaultTitle }}
+                                </div>
+                            </div>
+
+                            <div class="+mt-20 b-top d-flex fxa-center pt-20">
+                                <div class="pr-15 fx-grow">
+                                    <div class="ft-title-2xs">
+                                        <span v-if="formData.location">{{ formData.location }}</span>
+                                        <span class="color-ft-weak" v-else>Pas de lieu</span>
+                                    </div>
+                                    <div class="ft-m-medium color-ft-weak mt-3">
+                                        <span v-if="formData.address">{{ formData.address }}</span>
+                                        <span class="color-ft-weak" v-else>Pas d'adresse</span>
+                                    </div>
+                                </div>
+
+                                <fa icon="far fa-map-marker-alt" />
+                            </div>
+
+                            <button-base
+                                :modifiers="['s']"
+                                class="+mt-20 "
+                                icon-before="pen"
+                                text="Modifier les détails"
+                                @click="step = 1"
+                            />
+                        </div>
                     </div>
-  
-                    <div class="p-40 p-30@xs">
-                        <div class="+mt-20">
-                            <div class="ft-title-s">
-                                {{ formData.title ? formData.title : defaultTitle }}
-                                
-                                <button-base
-                                    :modifiers="['round', '2xs']"
-                                    class="ml-5"
-                                    icon-before="pen"
-                                    @click="step = 1"
-                                />
-                            </div>
-                            
-                            <div class="mt-10" v-if="currentConstellation">
-                                <const-icon :modifiers="['m']" v-bind="currentConstellation" displayName>
-                                    <p class="ft-xs-medium color-ft-weak" slot="before">Publié dans</p>
-                                </const-icon>
-                            </div>
+
+                    <div class="mt-20">
+                        <div class="+mt-10 block-r p-0">
+                            <input-paper class="n-mh-10@xs" label="Détails" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
                         </div>
 
-                        <div class="+mt-20 b-top d-flex fxa-center pt-20">
-                            <div class="pr-15 fx-grow">
-                                <div class="ft-title-2xs">
-                                    <span v-if="formData.location">{{ formData.location }}</span>
-                                    <span class="color-ft-weak" v-else>Pas de lieu</span>
-
-                                    <button-base
-                                        :modifiers="['round', '2xs']"
-                                        class="ml-5"
-                                        icon-before="pen"
-                                        @click="step = 1"
-                                    />
-                                </div>
-                                <div class="ft-m-medium color-ft-weak">
-                                    <span v-if="formData.address">{{ formData.address }}</span>
-                                    <span class="color-ft-weak" v-else>Pas d'adresse</span>
-
-                                    <button-base
-                                        :modifiers="['round', '2xs']"
-                                        class="ml-5"
-                                        icon-before="pen"
-                                        @click="step = 1"
-                                    />
-                                </div>
-                            </div>
-
-                            <fa icon="far fa-map-marker-alt" />
-                        </div>
-
-                        <div class="+mt-20 b-top pt-20">
-                            <p class="ft-m-medium color-ft-weak mb-10">Détails</p>
-
-                            <input-paper class="n-mh-10" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
-                        </div>
-
-                        <div class="+mt-20 b-top pt-20" v-if="formData.dates.length > 0">
+                        <div class="+mt-10 block-r" v-if="formData.dates.length > 0">
                             <p class="ft-m-medium color-ft-weak mb-10">Je propose ces dates :</p>
 
                             <button-base
@@ -199,7 +199,7 @@
                             />
                         </div>
 
-                        <div class="+mt-20 b-top pt-15" v-if="(formData.constellation || formData.invited.length > 0) && !isUpdating">
+                        <div class="+mt-10 block-r" v-if="(formData.constellation || formData.invited.length > 0) && !isUpdating">
                             <p class="ft-m-medium color-ft-weak pb-10">Invités :</p>
 
                             <button-base
@@ -229,7 +229,7 @@
                             />
                         </div>
 
-                        <div class="+mt-20 b-top pt-20" v-if="options.max">
+                        <div class="+mt-10 block-r" v-if="options.max">
                             <input-base label="Limiter le nombre d'inscriptions" suffix="participants" type="number" v-model="formData.max" :attrs="{ min: 0 }" />
 
                             <div class="mt-10 text-right">
@@ -237,7 +237,7 @@
                             </div>
                         </div>
 
-                        <div class="+mt-20 b-top pt-15">
+                        <div class="mt-20 b-top pt-20">
                             <button-base
                                 :modifiers="['s']"
                                 class="mr-3 mb-5"
@@ -268,6 +268,8 @@
                     </div>
                 </div>
             </div>
+
+            <input-pexels :is-active="options.cover" toggle-overflow="false" @close="options.cover = false" @select="(v) => formData.coverSelect = v" />
 
             <form-sticky :is-active="formData.category !== null">
                 <button-base type="button" class="mr-5" icon-after="arrow-left" :modifiers="['round', 's', 'weak']" @click="onStepBack" v-if="step > 0 && !isUpdating" />
@@ -305,12 +307,13 @@ export default {
     mixins: [ EntityEditor ],
     data: () => ({
         entityType: 'gathering',
-        inputs: ['category', 'constellation', 'max', 'title', 'description', 'location', 'address', 'cover', 'dates', 'invited', 'type', 'status'],
+        inputs: ['category', 'constellation', 'max', 'title', 'description', 'location', 'address', 'cover', 'date', 'dates', 'invited', 'type', 'status'],
         errors: [],
         step: 0,
         options: {
             max: false,
-            cover: false
+            cover: false,
+            multipleDates: false
         },
         dates: [],
         selectedDate: null,
@@ -330,12 +333,30 @@ export default {
                 type: 'hangout',
                 status: 'active',
                 category: 'default',
+                coverSelect: '',
                 dates: [],
                 invited: []
             }
         },
-        cover () {
-            return this.formData.cover?.src?.medium
+        coverPreview () {
+            let preview = {}
+
+            if (this.formData.coverSelect) {
+                preview = {
+                    medias: [
+                        { size: 's', src: this.formData.coverSelect.src.medium },
+                        { size: 'm', src: this.formData.coverSelect.src.large }
+                    ]
+                }
+            } else if (this.formData.cover) {
+                preview = this.formData.cover
+            }
+            
+            return preview
+        },
+        coverSrc () {
+            let media = this.coverPreview?.medias?.find(m => m.size == 'm')
+            return media ? media.src : ''
         },
         friends () {
             return this.$store.getters['user/find']({
@@ -399,8 +420,17 @@ export default {
                 this.step = v ? 3 : 0
             }
         },
+        ['options.multipleDates'] (v) {
+            if (!v) this.dates = this.dates.slice(0, 1)
+        },
         ['dates'] (v) {
-            this.formData.dates = this.dates.map(d => d.date)
+            if (this.options.multipleDates) {
+                this.formData.date = null
+                this.formData.dates = this.dates.map(d => d.date)
+            } else {
+                this.formData.date = this.dates[0]?.date
+                this.formData.dates = []
+            }
         },
         ['formData.constellation'] (v) {
             if (v) {
@@ -423,7 +453,7 @@ export default {
             } else {
                 this.$router.replace({ query: { ...this.$route.query, ['eventCreate']: undefined } })
             }
-        },
+        }
     },
     methods: {
         inviteFriend (_id) {
@@ -444,7 +474,7 @@ export default {
                 this.dates = [ ...this.dates, { id, date: v }]
             }
 
-            this.dates.sort((a, b) => {
+            this.dates = this.dates.sort((a, b) => {
                 return this.$moment(a.date).valueOf() - this.$moment(b.date).valueOf()
             })
         },

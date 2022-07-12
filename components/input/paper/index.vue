@@ -47,15 +47,16 @@
         <media-library v-bind="libraryProps" @input="libraryProps.onInput" v-if="libraryProps" @close="libraryProps = false" />
 
         <div class="TextBody" v-html="value" v-if="!editor"></div>
-        <editor-content class="TextEditor_content TextBody" :editor="editor" placeholder="Ldd" ref="text" v-if="editor" />
+        <editor-content class="TextEditor_content TextBody" :editor="editor" ref="text" v-if="editor" />
     </div>
 </template>
 
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
-import { Heading, Bold, Blockquote, Image, History, Italic, OrderedList, BulletList, ListItem } from 'tiptap-extensions'
+import { Heading, Bold, Blockquote, Image, History, Italic, OrderedList, BulletList, ListItem, Placeholder } from 'tiptap-extensions'
 import Link from '@/plugins/tiptap/Link'
 import Iframe from '@/plugins/tiptap/Iframe'
+
 import Gallery from '@/plugins/tiptap/Gallery'
 import InsertBlock from '@/plugins/tiptap/InsertBlock'
 import StyledBlock from '@/plugins/tiptap/StyledBlock'
@@ -73,6 +74,7 @@ export default {
     components: { EditorContent, EditorMenuBar, ButtonEditor, ButtonHeadings, ButtonInsert, ButtonBlocks, MediaLibrary, PopinLink, PopinYoutube, PopinGif },
     props: {
         value: { type: String, default: '' },
+        placeholder: { type: String, default: '' },
         label: { type: String, default: '' },
         base: { type: Boolean, default: false },
         editable: { type: Boolean, default: true }
@@ -94,7 +96,9 @@ export default {
     async mounted () {
         this.$data.editor = new Editor({
             editable: this.$props.editable,
+            content: this.$props.value,
             extensions: [
+                new Placeholder({ placeholder: 'lol' }),
                 new Heading({ levels: [1, 2, 3] }),
                 new Bold(), new Italic(),
                 new OrderedList(), new BulletList(), new ListItem(),
@@ -104,7 +108,6 @@ export default {
                 new Link(), new StyledBlock(), new Iframe, new Gallery(),
                 new InsertBlock()
             ],
-            content: this.$props.value,
         })
 
         this.$data.groups = this.base ? [
@@ -187,14 +190,15 @@ export default {
     .ProseMirror {
         min-height: 100px;
         border: 1px solid var(--color-border);
-        border-top: none;
         outline: none;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        transition: all 100ms ease;
+
     }
 
     .ProseMirror-focused {
-        border-color: var(--color-ft-light);
+        border-color: var(--color-ft-xweak);
     }
 }
 
@@ -211,6 +215,8 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .TextEditor_first {

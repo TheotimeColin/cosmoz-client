@@ -1,5 +1,5 @@
 <template>
-    <div class="BlockGathering" :class="[ ...$modifiers ]" @click="$store.commit('page/popin', { event: id })">
+    <div class="BlockGathering" :class="{ ...$modifiers, 'is-no-link': noLink }" @click="$store.commit('page/popin', { event: id })">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
@@ -119,6 +119,10 @@ export default {
     
     &:hover {
     
+    }
+
+    &.is-no-link {
+        pointer-events: none;
     }
 }
 
