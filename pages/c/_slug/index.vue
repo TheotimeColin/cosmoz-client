@@ -1,8 +1,5 @@
 <template>
     <div v-if="$constellation">
-        <div class="bg-cover-100 ratio-15 ratio-35@xs" :style="{ '--background': `url(${$constellation.hero}` }"
-            v-if="$constellation.hero"></div>
-
         <div class="Page_wrapper d-flex Wrapper Wrapper--s d-block@s">
             <div class="fx-grow o-hidden">
                 <div class="+mt-20 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">

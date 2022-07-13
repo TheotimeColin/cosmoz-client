@@ -11,34 +11,24 @@
             v-hammer:pancancel="onPanEnd"
         >
             <div class="AppNav_content">
-                <div class="AppNav_primary">
-                    <div class="+mt-10 p-relative">
-                        <div class="Att_ripples" v-if="!$store.getters['user/notif']('home-menu', 'onboarding')"></div>
-                        
-                        <button-base class="AppNav_icon AppNav_icon--home" :class="{ 'is-active': !isExplore && !selectConst }" 
-                        @mouseenter.native="(e) => $tOpen('Mon espace', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"
-                        :modifiers="['round', 'weak', 'm']" :to="{ name: 'feed' }" icon-before="home" />
-                    </div>
+                <nav-list class="p-15" :items="nav" />
+                
+                <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
+                    <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: constellation.slug } })" class="AppNav_const" :class="{ 'is-active': $route.params.slug == constellation.slug }" v-for="constellation in constellations" :key="constellation._id" >
+                        <const-icon v-bind="constellation" :no-link="true" />
 
-                    <hr class="+mt-10 Separator bg-bg" v-if="constellations.length > 0 || selectConst">
+                        <div class="ph-10">
+                            <div class="ft-title-2xs ellipsis-1 ellipsis-break">{{ constellation.name }} </div>
+                            <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
+                                2 événements et 3 publications
+                            </div>
+                        </div>
 
-                    <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
-                        <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == constellation.slug }" :modifiers="['m']" :feed="true" v-for="constellation in constellations" @mouseenter.native="(e) => $tOpen(constellation.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="constellation" :key="constellation._id" />
-
-                        <const-icon class="AppNav_const AppNav_icon" :class="{ 'is-active': $route.params.slug == selectConst.slug }" :modifiers="['m']" :feed="true"  @mouseenter.native="(e) => $tOpen(selectConst.name, e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" v-bind="selectConst" :key="selectConst._id" v-if="selectConst && !constellations.find(c => c._id == selectConst._id)" />
-                    </div>
-
-                    <hr class="+mt-10 Separator bg-bg">
-                    
-                    <div class="+mt-10 p-relative" @click="$store.dispatch('user/updateNotification', { id: 'explore-menu', type: 'onboarding' })">
-                        <div class="Att_ripples" v-if="!$store.getters['user/notif']('explore-menu', 'onboarding')"></div>
-                    
-                        <button-base class="AppNav_icon AppNav_icon--explore" :attention="true" :modifiers="['round', 'weak', 'm']" :to="{ name: 'explore' }" icon-before="compass" @mouseenter.native="(e) => $tOpen('Explorer', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose" />
-                    </div>
-                    
-                    <button-base class="+mt-10 AppNav_icon AppNav_icon--create" :modifiers="['round', 'weak', 'm']" @click="$store.commit('page/popin', { constellationCreate: true })" icon-before="plus" @mouseenter.native="(e) => $tOpen('Créer une constellation', e, { delay: 400, pos: 'right' })" @mouseleave.native="$tClose"  v-if="user" />
+                        <fa icon="far fa-angle-right" class="AppNav_constIcon" />
+                    </nuxt-link>
                 </div>
-                <div class="AppNav_sub">
+                
+                <!-- <div class="AppNav_sub">
                     <div class="AppNav_subContent" v-if="!selected && !isExplore" key="selected">
                         <div class="AppNav_header bg-cover bg-night" v-if="user">
                             <user-icon v-bind="user" :modifiers="['m']" :display-name="true" />
@@ -77,7 +67,7 @@
                         v-bind="selectConst"
                         v-else-if="selected && selectConst" :key="selectConst._id"
                     />
-                </div>
+                </div> -->
             </div>
 
             <div class="AppNav_hider" :style="{ opacity: translate }" @click="isActive = false"></div>
@@ -153,10 +143,8 @@ export default {
         nav () {
             return [
                 { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
-                { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' }, isParent: true, number: this.$store.getters['gathering/find']({
-                    status: 'active', isPast: false, isAttending: true
-                }).length },
-                { label: `Mes constellations`, fa: 'sparkles', to: { name: 'constellation' } },
+                { label: `Explorer`, fa: 'compass', to: { name: 'explore' } },
+                { label: `Messagerie`, fa: 'paper-plane', to: { name: 'messages-channel' } },
             ]
         },
     },
@@ -187,7 +175,7 @@ export default {
 
 <style lang="scss">
     :root {
-        --nav-width: 340px;
+        --nav-width: 300px;
     }
 </style>
 
@@ -260,75 +248,38 @@ export default {
 }
 
 .AppNav_content {
-    display: flex;
     width: var(--nav-width);
     height: 100%;
     background-color: var(--color-bg-xstrong);
     box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
-}
-
-.AppNav_primary {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    background-color: var(--color-bg-2xstrong);
-}
-
-.AppNav_icon {
-    cursor: pointer;
-    transition: all 100ms ease-out;
-    opacity: 0.5;
-
-    &:hover {
-        transform: scale(0.95);
-        opacity: 1;
-    }
-
-    &:active {
-        transform: scale(0.90);
-    }
-
-    &.is-active {
-        opacity: 1;
-        pointer-events: none;
-        transform: scale(0.95);
-    }
-}
-
-.AppNav_const {
-    
-    & + & {
-        margin-top: 7px;
-    }
-}
-
-.AppNav_constellations {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: scroll;
-    padding: 0;
     @include hide-scrollbars;
 }
 
-.AppNav_icon--explore {
+.AppNav_constellations {
+}
 
-    &:hover,
+.AppNav_const {
+    display: flex;
+    align-items: center;
+    padding: 18px 10px;
+
     &.is-active {
-        background-color: var(--color-emerald);
-        color: var(--color-ft-light);
+        background: var(--color-bg-weak);
+        @include shadow;
+
+        .AppNav_constIcon {
+            opacity: 0;
+        }
+    }
+    
+    & + & {
+        border-top: 1px solid var(--color-bg);
     }
 }
 
-.AppNav_icon--create {
-
-    &:hover,
-    &.is-active {
-        background-color: var(--color-cosmoz);
-        color: var(--color-ft-light);
-    }
+.AppNav_constIcon {
+    color: var(--color-ft-weak);
+    margin-left: 10px;
 }
 
 .AppNav_sub {

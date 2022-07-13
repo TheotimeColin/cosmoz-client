@@ -546,6 +546,7 @@ export default {
         .ButtonBase_iconAfter,
         .ButtonBase_iconBefore {
             margin: 0;
+            font-size: 20px;
         }
 
     }

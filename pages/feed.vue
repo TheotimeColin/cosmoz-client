@@ -1,30 +1,15 @@
 <template>
-    <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
-        <block-advice class="mv-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
-        <div class="block p-0 +mt-20 +mt-10@s" v-if="constellations.length > 0">
-            <p class="ft-title-xs ph-20 pt-20 d-none@xs">Mes constellations</p>
-
-            <slider-block :slots="constellations.map(c => c._id)"  :offset="20" :offset-v="20" :margin="10" :paddingT="20">
-                <div v-for="conste in constellations" :slot="conste._id" :key="conste._id">
-                    <const-icon v-bind="conste" :modifiers="['l']" />
-                </div>
-            </slider-block>
-        </div>
+    <div class="Page_wrapper Wrapper Wrapper--xs">
+        <block-advice class="mb-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
 
         <template v-if="!isLoading">
-            <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
-                <p class="ft-title-xs p-20">Mes prochaines sorties</p>
 
-                <slider-block :slots="upcomingEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
-                    :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
-                    <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
-                        <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
-                    </div>
-                </slider-block>
+            <button-base :modifiers="['rect']" class="+mt-15" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { eventCreate: 'new' })" />
+            
+            <div class="+mt-15" v-for="gathering in upcomingEvents" :key="gathering._id">
+                <block-gathering v-bind="gathering" />
             </div>
-
-            <button-base :modifiers="['rect']" class="+mt-20 +mt-10@s" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { eventCreate: 'new' })" />
-
+<!-- 
             <component
                 v-for="status in endedGatherings"
                 :is="status.type"
@@ -44,7 +29,7 @@
                 v-for="status in statuses"
                 v-bind="status"
                 :key="status._id"
-            />
+            /> -->
         </template>
         <template v-else>
             <placeholder class="+mt-20 +mt-10@s" :ratio="33" v-for="i in 10" :key="i" />
@@ -60,9 +45,9 @@ export default {
     async fetch () {
         this.isLoading = true
 
-        await this.$store.dispatch('status/fetch', {
-            type: 'feed', query: {}, softRefresh: true
-        })
+        // await this.$store.dispatch('status/fetch', {
+        //     type: 'feed', query: {}, softRefresh: true
+        // })
 
         await this.$store.dispatch('gathering/softFetch', [
             ...this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id)

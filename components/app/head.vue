@@ -1,44 +1,38 @@
 <template>
-    <div class="AppHeader"
-        :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }"
-        v-if="$appMeta">
-        <div class="AppHeader_wrapper">
-            <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
-                <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" v-if="prev.isPanel" />
-                    <fa class="AppHeader_icon" :icon="`far fa-${prev.fa}`" fixed-width v-else-if="prev.fa" />
+    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }" v-if="$appMeta">
+        <div class="Wrappers Wrappers--xs">
+            <div class="AppHeader_wrapper pl-15 pl-0@s">
+                <button-base icon-before="bars" class="mr-5" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
+
+                <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
+                    <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                        {{ prev.title }}
+                    </h1>
                 </div>
 
-                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                    {{ prev.title }}
-                </h1>
-            </div>
-
-            <div class="AppHeader_left">
-                <div class="AppHeader_iconContainer">
-                    <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left"  @click="onIconClick" v-if="$appMeta.isPanel" />
-                    <fa class="AppHeader_icon" :icon="`far fa-${$appMeta.fa}`" fixed-width v-else-if="$appMeta.fa" />
+                <div class="AppHeader_left">
+                    <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                        {{ $appMeta.title }}
+                    </h1>
                 </div>
-
-                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                    {{ $appMeta.title }}
-                </h1>
             </div>
+            
+            <!-- <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation.hero}` }" v-if="$constellation && $constellation.hero"></div> -->
 
-            <div class="AppHeader_right" v-if="user">
-                <button-icon class="AppHeader_button" :to="{ name: 'messages-channel' }" fa="paper-plane" :notification="channels.length" />
-
-                <button-icon class="AppHeader_button" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
+            <div class="AppHeader_secondary p-10" v-if="items.length > 0">
+                <nav-bar :items="items" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import ConstellationMixin from '@/mixins/constellation'
 import { getMeta } from '@/utils/meta'
 
 export default {
     name: 'AppHeader',
+    mixins: [ ConstellationMixin ],
     data: () => ({
         prev: {},
         changed: false,
@@ -56,6 +50,37 @@ export default {
                 owner: this.user._id,
                 state: 'unread'
             }) : []
+        },
+        items () {
+            if (!this.$constellation) return []
+            
+            return [
+                {
+                    id: 'index',
+                    label: `Activité`,
+                    fa: 'home',
+                    to: { name: 'c-slug-feed', params: { slug: this.$constellation.slug } }
+                },
+                {
+                    id: 'events',
+                    label: `Événements`,
+                    fa: 'calendar',
+                    to: { name: 'c-slug-events', params: { slug: this.$constellation.slug } },
+                    disabled: this.type == 'group'
+                },
+                {
+                    id: 'feed',
+                    label: `Discussions`,
+                    fa: 'comments',
+                    to: { name: 'c-slug-discussions', params: { slug: this.$constellation.slug } }
+                },
+                {
+                    id: 'members',
+                    label: `Membres`,
+                    fa: 'users',
+                    to: { name: 'c-slug-members', params: { slug: this.$constellation.slug } }
+                },
+            ]
         }
     },
     watch: {
@@ -120,24 +145,20 @@ export default {
 
 <style lang="scss">
     :root {
-        --app-height: 60px;
-    }
-
-    @include breakpoint-s {
-
-        :root {
-            --app-height: 60px;
-        }
+        --app-height: 0px;
     }
 </style>
 
 <style lang="scss" scoped>
 
 .AppHeader {
-    position: fixed;
-    top: var(--header-height);
-    left: var(--nav-width);
-    width: 100%;
+    position: sticky;
+    top: 0;
+    // position: fixed;
+    margin-top: var(--header-height);
+    margin-left: var(--nav-width);
+    left: 0;
+    // width: 100%;
     z-index: 90;
     background-color: var(--color-bg-xstrong);
     transition: all 100ms ease;
@@ -159,9 +180,19 @@ export default {
     }
 }
 
+.AppHeader_banner {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+
+.AppHeader_secondary {
+    background-color: var(--color-bg-strong);
+}
+
 .AppHeader_iconContainer {
     flex-shrink: 0;
-    height: var(--app-height);
+    // height: var(--app-height);
     width: 45px;
     display: flex;
     align-items: center;
@@ -178,6 +209,7 @@ export default {
 
 .AppHeader_left {
     display: flex;
+    height: 60px;
     align-items: center;
     position: relative;
     z-index: 30;
@@ -195,7 +227,7 @@ export default {
 .AppHeader_wrapper {
     height: var(--app-height);
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     position: relative;
 }
 
@@ -207,8 +239,8 @@ export default {
 
 @include breakpoint-s {
     .AppHeader {
-        left: 0;
-        top: 0;
+        margin-left: 0;
+        margin-top: 0;
     }
 }
 </style>

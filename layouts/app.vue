@@ -1,7 +1,7 @@
 <template>
     <div class="Layout LayoutApp" :class="[ classes, { 'is-open-nav': isOpenNav, 'is-transition': isTransition } ]">
         <app-header @navOpen="onNavOpen" />
-        <app-head />
+        <app-head @navOpen="onNavOpen" />
         
         <app-notifications v-if="user" />
 
@@ -160,7 +160,7 @@ export default {
     touch-action: pan-y !important;
     user-select: auto !important;
     margin-left: var(--nav-width);
-    margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
+    // margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
     position: relative;
     user-select: auto !important;
 }

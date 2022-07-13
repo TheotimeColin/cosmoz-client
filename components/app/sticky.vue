@@ -1,5 +1,5 @@
 <template>
-    <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel), 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
+    <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel) || selectConst, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="fx-center p-15 bg-cosmoz" v-if="selectConst && !selectConst.isMember">
             <div class="mr-10" v-if="selectConst.isFollower">
                 <p class="ft-title-2xs ellipsis-1">Demande envoyée</p>
@@ -14,9 +14,12 @@
         </div>
         <div>
             <div class="Sticky_wrapper">
-                <const-icon class="Sticky_current" :no-link="true" v-bind="selectConst" @click.native="onOpen" v-if="selectConst" />
-
-                <app-sticky-item v-for="item in items.filter(i => !i.disabled)" v-bind="item" :key="item.fa" />
+                <component
+                    :is="item.add ? 'app-add' : 'app-sticky-item'"
+                    v-for="item in items.filter(i => !i.disabled)"
+                    v-bind="item"
+                    :key="item.fa"
+                />
             </div>
         </div>
     </div>
@@ -40,28 +43,28 @@ export default {
         },
         items () {
             return this.selectConst ? [
-                {
-                    label: 'Activité', fa: 'home',
-                    to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }}
-                }, {
-                    label: 'Événements', disabled: this.selectConst.type == 'group', fa: 'calendar-star',
-                    to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }}
-                }, {
-                    label: 'Sorties',  fa: 'hand-wave',
-                    to: { name: 'c-slug-hangouts', params: { slug: this.selectConst.slug }}
-                }, {
-                    label: 'Discussions',  fa: 'comments',
-                    to: { name: 'c-slug-discussions', params: { slug: this.selectConst.slug }}
-                }, {
-                    label: 'Membres', disabled: this.selectConst.type == 'community', fa: 'users',
-                    to: { name: 'c-slug-members', params: { slug: this.selectConst.slug }}
-                },
+                // {
+                //     label: 'Activité', fa: 'home',
+                //     to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }}
+                // }, {
+                //     label: 'Événements', disabled: this.selectConst.type == 'group', fa: 'calendar-star',
+                //     to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }}
+                // }, { add: true }, {
+                //     label: 'Sorties',  fa: 'hand-wave',
+                //     to: { name: 'c-slug-hangouts', params: { slug: this.selectConst.slug }}
+                // }, {
+                //     label: 'Discussions',  fa: 'comments',
+                //     to: { name: 'c-slug-discussions', params: { slug: this.selectConst.slug }}
+                // }, {
+                //     label: 'Membres', disabled: this.selectConst.type == 'community', fa: 'users',
+                //     to: { name: 'c-slug-members', params: { slug: this.selectConst.slug }}
+                // },
             ] : [
-                { label: 'Menu', fa: 'bars', onClick: this.onOpen },
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
-                { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
-                { label: 'Mes constellations', fa: 'sparkles', to: { name: 'constellation' } },
                 { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
+                { add: true },
+                { label: 'Notifications', fa: 'bell', onClick: () => this.$store.commit('page/toggleNotifs', true) },
+                { label: 'Messagerie', fa: 'paper-plane', to: { name: 'messages-channel' } },
             ]
         }
     },
@@ -98,7 +101,6 @@ export default {
     transform: translate(0%);
     transition: all 200ms ease;
     display: none;
-    overflow: hidden;
     box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
 
     &.is-active {

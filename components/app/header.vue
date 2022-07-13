@@ -10,7 +10,9 @@
             </div>
 
             <div class="Header_right" v-if="user">
-                <button-icon :to="{ name: 'admin' }" class="Header_button" fa="crown" v-if="user.role == 'admin'" />
+                <button-icon class="Header_button" fa="home" :to="{ name: 'feed' }" />
+                
+                <button-icon class="Header_button" fa="compass" :to="{ name: 'explore' }" />
 
                 <button-icon class="Header_button" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
