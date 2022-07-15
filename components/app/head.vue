@@ -1,27 +1,59 @@
 <template>
     <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }" v-if="$appMeta">
-        <div class="Wrappers Wrappers--xs">
-            <div class="AppHeader_wrapper pl-15 pl-0@s">
-                <button-base icon-before="bars" class="mr-5" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
+        <div class="AppHeader_wrapper pl-15 pl-5@s">
+            <button-base icon-before="bars" class="mr-3" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
+            <div v-else-if="$constellation">
+                <const-icon class="mr-10" v-bind="$constellation" />
+            </div>
+            <div v-else>
+                <fa icon="far fa-home" class="mr-10" />
+            </div>
 
-                <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
-                    <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                        {{ prev.title }}
-                    </h1>
-                </div>
+            <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
+                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                    {{ prev.title }}
+                </h1>
+            </div>
 
-                <div class="AppHeader_left">
-                    <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                        {{ $appMeta.title }}
-                    </h1>
+            <div class="AppHeader_left">
+                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                    {{ $appMeta.title }}
+                </h1>
+            </div>
+
+            <div class="AppHeader_right" v-if="user">
+                <button-icon class="ml-20" fa="home" :to="{ name: 'feed' }" v-if="$biggerThan('s')" />
+                
+                <button-icon class="ml-20" fa="compass" :to="{ name: 'explore' }" v-if="$biggerThan('s')" />
+
+                <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
+
+                <button-icon class="ml-20" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
+        
+                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20" :to="{ name: 'p-userId', params: { userId: user.id } }" v-if="$biggerThan('s')">
+                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
+                </button-base>
+            </div>
+            <div class="AppHeader_right" v-else>
+                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
+                </link-base>
+
+                <link-base class="Header_navItem" :modifiers="['current']"
+                    @click="$store.commit('page/register', 'login')">
+                    Se connecter</link-base>
+
+                <div class="Header_navItem Header_navItem--button">
+                    <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">
+                        Je m'inscris
+                    </button-base>
                 </div>
             </div>
-            
-            <!-- <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation.hero}` }" v-if="$constellation && $constellation.hero"></div> -->
+        </div>
+        
+        <!-- <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation.hero}` }" v-if="$constellation && $constellation.hero"></div> -->
 
-            <div class="AppHeader_secondary p-10" v-if="items.length > 0">
-                <nav-bar :items="items" />
-            </div>
+        <div class="AppHeader_secondary p-10" v-if="items.length > 0">
+            <nav-bar :items="items" />
         </div>
     </div>
 </template>
@@ -145,7 +177,7 @@ export default {
 
 <style lang="scss">
     :root {
-        --app-height: 0px;
+        --app-height: 60px;
     }
 </style>
 
@@ -155,15 +187,15 @@ export default {
     position: sticky;
     top: 0;
     // position: fixed;
-    margin-top: var(--header-height);
-    margin-left: var(--nav-width);
+    // margin-top: var(--header-height);
+    // margin-left: var(--nav-width);
     left: 0;
     // width: 100%;
     z-index: 90;
-    background-color: var(--color-bg-xstrong);
+    background-color: var(--color-bg);
     transition: all 100ms ease;
     overflow: hidden;
-    @include shadow;
+    // @include shadow;
 
     &.is-init {
 
@@ -192,7 +224,7 @@ export default {
 
 .AppHeader_iconContainer {
     flex-shrink: 0;
-    // height: var(--app-height);
+    height: var(--app-height);
     width: 45px;
     display: flex;
     align-items: center;
@@ -222,6 +254,14 @@ export default {
     left: 0;
     transform: translateY(0%);
     opacity: 1;
+}
+
+.AppHeader_right {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
 }
 
 .AppHeader_wrapper {

@@ -5,7 +5,7 @@
                 :id="`navbar-${item.id}`"
                 class="NavBar_item"
                 v-for="(item, i) in items.filter(item => !item.disabled)"
-                :modifiers="value == item.id || !value && item.id == 'index' ? ['s', 'cosmoz', 'no-s'] : ['s', 'weak', 'no-s']" 
+                :modifiers="activeItem == item.id ? ['s', 'cosmoz', 'no-s'] : ['s', 'weak', 'no-s']" 
                 :href="item.href"
                 :to="item.to"
                 @click="() => onClick(item)"
@@ -23,7 +23,7 @@ export default {
     name: 'NavBar',
     data: () => ({
         scroll: 0,
-        hasScroll: false
+        hasScroll: false,
     }),
     props: {
         value: { type: String },
@@ -31,6 +31,19 @@ export default {
         items: { type: Array, default: () => [] }
     },
     computed: {
+        activeItem () {
+            let active = 'index'
+
+            this.items.forEach(item => {
+                if (item.to && this.$route && this.$route.name.includes(item.to.name)) {
+                    active = item.id
+                } else if (this.value == item.id) {
+                    active = item.id
+                }
+            })
+        
+            return active
+        },
         availableItems () {
             return this.items.filter(i => !i.disabled && !i.checked)
         },
@@ -50,13 +63,16 @@ export default {
     mounted () {
         this.checkScroll()
 
-        new ResizeObserver(() => {
-            this.checkScroll()
-        }).observe(this.$el)
+        if (this.$refs.container) {
+            new ResizeObserver(() => {
+                this.checkScroll()
+            }).observe(this.$el)
         
-        this.$refs.container.addEventListener('scroll', () => {
-            this.scroll = this.$refs.container.scrollLeft
-        })
+        
+            this.$refs.container.addEventListener('scroll', () => {
+                this.scroll = this.$refs.container.scrollLeft
+            })
+        }
     },
     methods: {
         checkScroll () {
@@ -122,6 +138,7 @@ export default {
     .NavBar {
 
         &.is-scroll {
+
             &::after,
             &::before {
                 content: "";
@@ -154,6 +171,7 @@ export default {
         }
 
         .NavBar_container {
+            @include hide-scrollbars;
 
             &::after {
                 content: "";

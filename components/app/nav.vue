@@ -11,21 +11,27 @@
             v-hammer:pancancel="onPanEnd"
         >
             <div class="AppNav_content">
-                <nav-list class="p-15" :items="nav" />
-                
-                <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
-                    <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: constellation.slug } })" class="AppNav_const" :class="{ 'is-active': $route.params.slug == constellation.slug }" v-for="constellation in constellations" :key="constellation._id" >
-                        <const-icon v-bind="constellation" :no-link="true" />
+                <nuxt-link :to="localePath(user ? { name: 'feed' } : { name: 'index' })" class="AppNav_logo">
+                    <img :src="assets.logo" height="25" class="n-mt-5">
+                </nuxt-link>
 
-                        <div class="ph-10">
-                            <div class="ft-title-2xs ellipsis-1 ellipsis-break">{{ constellation.name }} </div>
-                            <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
-                                2 événements et 3 publications
+                <div class="fx-grow">
+                    <nav-list class="p-15" :items="nav" />
+                    
+                    <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
+                        <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: constellation.slug } })" class="AppNav_const" :class="{ 'is-active': $route.params.slug == constellation.slug }" v-for="constellation in constellations" :key="constellation._id" >
+                            <const-icon v-bind="constellation" :no-link="true" />
+
+                            <div class="ph-15 fx-grow">
+                                <div class="ft-title-2xs ellipsis-1 ellipsis-break">{{ constellation.name }} </div>
+                                <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
+                                    2 événements et 3 publications
+                                </div>
                             </div>
-                        </div>
 
-                        <fa icon="far fa-angle-right" class="AppNav_constIcon" />
-                    </nuxt-link>
+                            <fa icon="far fa-angle-right" class="AppNav_constIcon" />
+                        </nuxt-link>
+                    </div>
                 </div>
                 
                 <!-- <div class="AppNav_sub">
@@ -88,6 +94,8 @@
 </template>
 
 <script>
+import logo from '@/assets/img/logo/logo_white_sparkles.webp'
+
 export default {
     name: 'AppNav',
     props: {
@@ -95,6 +103,7 @@ export default {
         isPanning: { type: Boolean, default: false },
     },
     data: () => ({
+        assets: { logo },
         isActive: false,
         exploreNav: [],
         isClosePanning: false,
@@ -182,13 +191,16 @@ export default {
 <style lang="scss" scoped>
 .AppNav {
     position: fixed;
-    top: var(--header-height);
+    // top: var(--header-height);
     left: 0;
     transform: translateX(-100%);
     transition: all 200ms ease;
-    z-index: 100;
-    height: calc(100% - var(--header-height));
+    z-index: 50;
+    // height: calc(100% - var(--header-height));
     
+    top: 0;
+    height: 100%;
+
     &.is-desktop:hover,
     &.is-const,
     &.is-active:not(.is-panning):not(.is-closing) {
@@ -220,7 +232,7 @@ export default {
     }
 
     &.is-const {
-        top: var(--header-height);
+        // top: var(--header-height);
         
         .AppNav_hider {
             display: none;
@@ -250,9 +262,20 @@ export default {
 .AppNav_content {
     width: var(--nav-width);
     height: 100%;
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-bg-xstrong);
-    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
+    // box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
     @include hide-scrollbars;
+}
+
+.AppNav_logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    height: 100px;
+    background-color: var(--color-bg-2xstrong);
 }
 
 .AppNav_constellations {
@@ -261,7 +284,8 @@ export default {
 .AppNav_const {
     display: flex;
     align-items: center;
-    padding: 18px 10px;
+    padding: 18px 15px;
+    flex-grow: 1;
 
     &.is-active {
         background: var(--color-bg-weak);
@@ -304,13 +328,7 @@ export default {
     pointer-events: none;
     opacity: 0;
     transition: opacity 150ms ease;
-}
-
-.AppNav_logo {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 30;
+    display: none;
 }
 
 .AppNav_header {
@@ -388,6 +406,7 @@ export default {
         top: 0;
         display: none;
         transition: none;
+        z-index: 100;
 
         &.is-mounted {
             display: block;
@@ -459,9 +478,6 @@ export default {
             margin: 0 auto 5px;
         }
     }
-}
-
-@include breakpoint-xs {
 
     .AppNav {
         width: 100vw;
@@ -469,10 +485,15 @@ export default {
     
     .AppNav_content {
         width: calc(100% - 50px);
+        max-width: 400px;
+        z-index: 60;
+        position: relative;
     }
 
     .AppNav_hider {
-        left: calc(100% - 50px);
+        left: 0;
+        z-index: 50;
+        width: 200%;
     }
 }
 </style>

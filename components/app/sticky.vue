@@ -95,7 +95,7 @@ export default {
 .Sticky {
     position: fixed;
     width: 100%;
-    z-index: 20;
+    z-index: 90;
     bottom: 0;
     background-color: var(--color-bg-xstrong);
     transform: translate(0%);

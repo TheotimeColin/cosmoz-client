@@ -1,7 +1,6 @@
 <template>
     <div class="Layout LayoutApp" :class="[ classes, { 'is-open-nav': isOpenNav, 'is-transition': isTransition } ]">
-        <app-header @navOpen="onNavOpen" />
-        <app-head @navOpen="onNavOpen" />
+        
         
         <app-notifications v-if="user" />
 
@@ -11,6 +10,8 @@
             v-hammer:pan.horizontal="onPan"
             v-hammer:panend="onPanEnd"
         >
+            <app-head @navOpen="onNavOpen" />
+
             <Nuxt />
         </div>
 
@@ -157,12 +158,15 @@ export default {
 
 .LayoutApp_content {
     min-height: calc(100vh - var(--header-height) - var(--app-height));
+    min-height: 100vh;
     touch-action: pan-y !important;
     user-select: auto !important;
     margin-left: var(--nav-width);
     // margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
     position: relative;
+    z-index: 60;
     user-select: auto !important;
+    box-shadow: 0 0 20px 0 color-opacity('bg-2xstrong', -70%);
 }
 
 .page-enter-active,
