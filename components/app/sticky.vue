@@ -15,7 +15,7 @@
         <div>
             <div class="Sticky_wrapper">
                 <component
-                    :is="item.add ? 'app-add' : 'app-sticky-item'"
+                    :is="item.add ? 'app-add' : item.user ? 'app-user' : 'app-sticky-item'"
                     v-for="item in items.filter(i => !i.disabled)"
                     v-bind="item"
                     :key="item.fa"
@@ -61,10 +61,10 @@ export default {
                 // },
             ] : [
                 { label: 'Mon activité', fa: 'home', to: { name: 'feed' } },
-                { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
+                { label: 'Mon agenda', fa: 'calendar', to: { name: 'agenda' } },
                 { add: true },
-                { label: 'Notifications', fa: 'bell', onClick: () => this.$store.commit('page/toggleNotifs', true) },
-                { label: 'Messagerie', fa: 'paper-plane', to: { name: 'messages-channel' } },
+                { label: 'Explorer', fa: 'compass', to: { name: 'explore' } },
+                { user: true },
             ]
         }
     },

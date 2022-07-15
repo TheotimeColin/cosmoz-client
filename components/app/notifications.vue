@@ -1,7 +1,7 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['panel', 'panel-bottom', 's']" :title="'Notifications'" query="notifications" @close="() => $store.commit('page/toggleNotifs', false)">
+    <popin :is-active="isActive" :modifiers="['panel', 's']" :title="'Notifications'" query="notifications" @close="() => $store.commit('page/toggleNotifs', false)">
         <template slot="headerRight">
-            <button-base :modifiers="['s']" @click="readAll">Tout marquer comme lu</button-base>
+            <button-base :modifiers="['s']" @click="readAll">Marquer comme lu</button-base>
         </template>
         <div slot="content">
             <notification-manager ref="manager" />

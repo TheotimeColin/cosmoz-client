@@ -176,6 +176,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
     padding: 0 10px 0 0;
     border-color: var(--color-border-weak);
     overflow: hidden;

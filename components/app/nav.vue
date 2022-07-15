@@ -450,8 +450,13 @@ export default {
         padding: 6px;
     }
 
+    .AppNav_logo {
+        background-color: var(--color-bg-xstrong);
+    }
+
     .AppNav_content {
         height: 100%;
+        background-color: var(--color-bg-strong);
     }
 
     .AppNav_barLabel {
@@ -491,6 +496,7 @@ export default {
         left: 0;
         z-index: 50;
         width: 200%;
+        display: block;
     }
 }
 </style>
