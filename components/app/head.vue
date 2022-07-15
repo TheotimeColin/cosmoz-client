@@ -22,10 +22,6 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <button-icon class="ml-20" fa="home" :to="{ name: 'feed' }" v-if="$biggerThan('s')" />
-                
-                <button-icon class="ml-20" fa="compass" :to="{ name: 'explore' }" v-if="$biggerThan('s')" />
-
                 <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
                 <button-icon class="ml-20" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />

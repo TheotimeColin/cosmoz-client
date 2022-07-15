@@ -286,6 +286,7 @@ export default {
     align-items: center;
     padding: 18px 15px;
     flex-grow: 1;
+    border-top: 1px solid var(--color-bg);
 
     &.is-active {
         background: var(--color-bg-weak);
@@ -294,10 +295,6 @@ export default {
         .AppNav_constIcon {
             opacity: 0;
         }
-    }
-    
-    & + & {
-        border-top: 1px solid var(--color-bg);
     }
 }
 
@@ -321,7 +318,7 @@ export default {
 .AppNav_hider {
     position: fixed;
     top: 0;
-    left: var(--nav-width);
+    left: var(--nav-width, 300px);
     width: 120vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);

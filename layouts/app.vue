@@ -161,7 +161,7 @@ export default {
     min-height: 100vh;
     touch-action: pan-y !important;
     user-select: auto !important;
-    margin-left: var(--nav-width);
+    margin-left: var(--nav-width, 300px);
     // margin-top: calc(var(--header-height, 0px) + var(--app-height, 0px));
     position: relative;
     z-index: 60;
