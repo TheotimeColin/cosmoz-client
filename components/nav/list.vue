@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="Nav_cat" :class="{ 'is-open-parent': cat.children && cat.children.length > 0 }" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
-            <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item" v-if="cat.label">
+            <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item" v-if="cat.label" @click.native="$emit('nav')">
                 <ripples :size="300" :modifiers="['weak']" />
                 <div class="G_cosmoz"></div>
 
@@ -18,7 +18,7 @@
 
             <template v-if="cat.children && cat.children.length > 0">
                 <div v-for="item in cat.children.filter(c => !c.disabled).slice(0, cat.showMore ? cat.max + (cat.showMore * showMore.reduce((t, id) => t + (id == i ? 1 : 0), 0)) : 9999)" :key="item.label">
-                    <nuxt-link class="Nav_item Nav_item--sub" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)">
+                    <nuxt-link class="Nav_item Nav_item--sub" :class="{ 'is-parent': item.isParent }" :to="localePath(item.to)" @click.native="$emit('nav')">
                         <ripples :size="300" :modifiers="['weak']" />
 
                         <div class="Nav_itemMain">

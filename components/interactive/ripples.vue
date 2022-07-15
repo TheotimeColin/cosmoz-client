@@ -51,7 +51,7 @@ export default {
     overflow: hidden;
 
     &.is-auto {
-        pointer-events: all;
+        pointer-events: inherit;
         overflow: visible;
     }
 }

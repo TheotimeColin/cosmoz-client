@@ -2,21 +2,20 @@
     <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }" v-if="$appMeta">
         <div class="AppHeader_wrapper pl-15 pl-5@s">
             <button-base icon-before="bars" class="mr-3" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
-            <div v-else-if="$constellation">
-                <const-icon class="mr-10" v-bind="$constellation" />
-            </div>
-            <div v-else>
-                <fa icon="far fa-home" class="mr-10" />
-            </div>
 
-            <div class="AppHeader_left AppHeader_left--prev" v-if="prev">
-                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                    {{ prev.title }}
-                </h1>
+            <div v-if="$constellation">
+                <const-icon class="mr-15" v-bind="$constellation" />
+            </div>
+            <div v-else-if="$biggerThan('s')">
+                <fa icon="far fa-home" class="mr-15" />
             </div>
 
             <div class="AppHeader_left">
-                <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
+                <div class="AppHeader_leftPrev ft-title-xs line-1 ellipsis-1 ellipsis-break" v-if="prev">
+                    {{ prev.title }}
+                </div>
+
+                <h1 class="AppHeader_leftCurrent ft-title-xs line-1 ellipsis-1 ellipsis-break">
                     {{ $appMeta.title }}
                 </h1>
             </div>
@@ -25,10 +24,14 @@
                 <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
                 <button-icon class="ml-20" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
-        
-                <button-base :modifiers="['', 's', 'user']" class="Header_profile ml-20" :to="{ name: 'p-userId', params: { userId: user.id } }" v-if="$biggerThan('s')">
-                    <user-icon :display-name="true" :no-link="true" v-bind="user" />
-                </button-base>
+
+                <div class="Header_profile ml-20"  v-if="$biggerThan('s')">
+                    <button-base :modifiers="['s']" :image="user.profileSmall" :text="user.name" />
+
+                    <div class="Header_profileNav">
+                        <nav-list :items="userItems" />
+                    </div>
+                </div>
             </div>
             <div class="AppHeader_right" v-else>
                 <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
@@ -79,6 +82,29 @@ export default {
                 state: 'unread'
             }) : []
         },
+        userItems () {
+            if (!this.user) return []
+
+            return [
+                {
+                    label: `Mon réseau`,
+                    fa: 'sparkles',
+                    to: { name: 'constellation' }
+                }, {
+                    label: `Voir mon profil`,
+                    fa: 'user',
+                    to: { name: 'p-userId', params: { userId: this.user.id } }
+                }, {
+                    label: `Mes paramètres`,
+                    fa: 'cog',
+                    to: { name: 'compte' }
+                }, {
+                    label: `Me déconnecter`,
+                    fa: 'arrow-right-from-bracket',
+                    to: { name: 'compte-logout' }
+                }
+            ]
+        },
         items () {
             if (!this.$constellation) return []
             
@@ -119,13 +145,13 @@ export default {
                 document.documentElement.style.setProperty('--app-height', '0px')
             }
 
-            if (v.isPanel) {
-                setTimeout(() => {
-                    document.documentElement.style.setProperty('--sticky-height', '0px')
-                }, 300)
-            } else {
-                document.documentElement.style.removeProperty('--sticky-height', '0px')
-            }
+            // if (v.isPanel) {
+            //     setTimeout(() => {
+            //         document.documentElement.style.setProperty('--sticky-height', '0px')
+            //     }, 300)
+            // } else {
+            //     document.documentElement.style.removeProperty('--sticky-height', '0px')
+            // }
 
             if (this.prev?.title !== v?.title && !this.changed) {
                 this.changed = true
@@ -190,18 +216,17 @@ export default {
     z-index: 90;
     background-color: var(--color-bg);
     transition: all 100ms ease;
-    overflow: hidden;
     // @include shadow;
 
     &.is-init {
 
-        .AppHeader_left {
+        .AppHeader_leftCurrent {
             transform: translateY(0%);
             opacity: 1;
             transition: all 200ms ease;
         }
         
-        .AppHeader_left--prev {
+        .AppHeader_leftPrev {
             transform: translateY(-100%);
             opacity: 0;
         }
@@ -230,22 +255,27 @@ export default {
     font-size: 15px;
 }
 
-
 .AppHeader_button {
     padding: 0 10px;
 }
 
 .AppHeader_left {
-    display: flex;
-    height: 60px;
-    align-items: center;
+    flex-grow: 1;
     position: relative;
     z-index: 30;
+    overflow: hidden;
+}
+
+.AppHeader_leftPrev,
+.AppHeader_leftCurrent {
+    display: block;
+    white-space: nowrap;
+    align-items: center;
     transform: translateY(100%);
     opacity: 0;
 }
 
-.AppHeader_left--prev {
+.AppHeader_leftPrev {
     position: absolute;
     left: 0;
     transform: translateY(0%);
@@ -258,6 +288,7 @@ export default {
     align-items: center;
     justify-content: flex-end;
     flex-grow: 1;
+    padding-right: 15px;
 }
 
 .AppHeader_wrapper {
@@ -267,10 +298,38 @@ export default {
     position: relative;
 }
 
-.AppHeader_right {
-    display: flex;
-    margin-left: 20px;
-    padding-right: 10px;
+.Header_profile {
+    position: relative;
+
+    &:hover .Header_profileNav {
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.Header_profileNav {
+    position: absolute;
+    bottom: -6px;
+    right: 0;
+    width: 250px;
+    transform: translateY(100%);
+    padding: 6px;
+    border-radius: 6px;
+    background-color: var(--color-bg-xstrong);
+    @include shadow;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: all 150ms ease;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -15px;
+        height: 15px;
+        width: 100%;
+    }
 }
 
 @include breakpoint-s {

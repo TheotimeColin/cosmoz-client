@@ -30,6 +30,7 @@
 
 <script>
 import Debounce from 'lodash.debounce'
+import Throttle from 'lodash.throttle'
 import ioMixin from '@/mixins/io'
 
 export default {
@@ -123,7 +124,7 @@ export default {
             }
 
             this.isPanning = true
-            this.pan = Math.min(300, v.deltaX)
+            this.updatePan(Math.min(300, v.deltaX))
         },
         onPanStart (v) {
             this.isPanCancelled = false
@@ -137,8 +138,11 @@ export default {
             this.isPanCancelled = false
             this.isPanning = false
             
-            this.$nextTick(() => this.pan = 0)
-        }
+            this.updatePan(0)
+        },
+        updatePan: Throttle(function (v) {
+            this.pan = v
+        }, 20)
     }
 }
 </script>

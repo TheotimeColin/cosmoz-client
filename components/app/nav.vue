@@ -152,8 +152,8 @@ export default {
         nav () {
             return [
                 { label: `Mon activité`, fa: 'home', to: { name: 'feed' } },
-                { label: `Explorer`, fa: 'compass', to: { name: 'explore' } },
-                { label: `Messagerie`, fa: 'paper-plane', to: { name: 'messages-channel' } },
+                { label: `Mon agenda`, fa: 'calendar', to: { name: 'agenda' } },
+                { label: `Explorer`, fa: 'compass', to: { name: 'explore' } }
             ]
         },
     },

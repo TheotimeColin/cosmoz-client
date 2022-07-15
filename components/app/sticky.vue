@@ -16,6 +16,7 @@
             <div class="Sticky_wrapper">
                 <component
                     :is="item.add ? 'app-add' : item.user ? 'app-user' : 'app-sticky-item'"
+                    :class="{ 'Sticky_add': item.add }"
                     v-for="item in items.filter(i => !i.disabled)"
                     v-bind="item"
                     :key="item.fa"
@@ -105,11 +106,19 @@ export default {
 
     &.is-active {
         transform: translateY(100%) !important;
+
+        .Sticky_add {
+            transform: scale(0);
+        }
     }
 
     &.is-panning {
         transition: none;
     }
+}
+
+.Sticky_add {
+    transition: all 200ms ease;
 }
 
 .Sticky_wrapper {
