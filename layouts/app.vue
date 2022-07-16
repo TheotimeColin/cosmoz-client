@@ -18,13 +18,16 @@
         <app-nav :pan="pan" :is-panning="isPanning" @open="onPanEnd" ref="nav" />
 
         <popin-create />
-        <popin-register />
+
         <popin-constellation-create />
         <popin-hangout-create />
-        <popin-confirm />
-        <popin-emojis />
+
         <popin-event />
         <popin-editor v-if="user" />
+        
+        <popin-confirm />
+        <popin-emojis />
+        <popin-register />
         
         <tooltip-manager />
     </div>

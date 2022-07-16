@@ -1,5 +1,6 @@
 <template>
     <div v-if="$constellation">
+
         <div class="Page_wrapper d-flex Wrapper Wrapper--s d-block@s">
             <div class="fx-grow o-hidden">
                 <div class="+mt-20 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">

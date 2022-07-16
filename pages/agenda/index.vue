@@ -1,7 +1,5 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--xs">
-        <button-base :modifiers="['rect']" class="mb-20" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { eventCreate: 'new' })" />
-
+    <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <template v-if="gatherings.length > 0">
             <div class="Date" v-for="gathering in gatherings" :key="gathering._id">
                 <placeholder class="Gatherings_item" :ratio="40" v-if="isLoading" />

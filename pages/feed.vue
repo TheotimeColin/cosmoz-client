@@ -1,16 +1,39 @@
 <template>
-    <div class="Page_wrapper Wrapper Wrapper--xs">
+    <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
         <block-advice class="mb-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
 
         <template v-if="!isLoading">
-
-            <button-base :modifiers="['rect']" class="+mt-15" icon-before="party-horn" text="Créer une sortie" subtitle="Envie de voir du monde ? C'est ici !" icon-after="plus" @click="$store.commit('page/popin', { eventCreate: 'new' })" />
-            
-            <div class="+mt-15" v-for="gathering in upcomingEvents" :key="gathering._id">
-                <block-gathering v-bind="gathering" />
+            <div class="+mt-30 row-xs">
+                <div class="col-6 mb-10" v-for="conste in constellations" :key="conste._id">
+                    <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: conste.slug }})" class="block-r d-block p-15 p-10@xs">
+                        <const-icon v-bind="conste" :display-name="true" :no-link="true">
+                            <div class="ft-s-medium color-ft-weak line-2 mt-3 ellipsis-1 ellipsis-break">2 événements et 56 publications</div>
+                        </const-icon>
+                    </nuxt-link>
+                </div>
             </div>
-<!-- 
-            <component
+
+            <div class="+mt-30 block-f p-0">
+                <div class="ph-20 pt-20">
+                    <h2 class="ft-title-xs">
+                        <span class="round-s bg-bg-xstrong mr-5">{{ upcomingEvents.length }}</span> Mes événements à
+                        venir
+                    </h2>
+                </div>
+
+                <div class="pt-20">
+                    <slider-block :slots="upcomingEvents.map(e => e._id)" :ratio="130" item-class="width-2xs" :offset="20" :offset-v="20" :margin="10" v-if="upcomingEvents.length - 1 > 0">
+                        <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
+                            <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                        </div>
+                    </slider-block>
+                </div>
+            </div>
+            <content-feed
+                class="+mt-30"
+            />
+
+            <!-- <component
                 v-for="status in endedGatherings"
                 :is="status.type"
                 class="+mt-20 +mt-10@s"

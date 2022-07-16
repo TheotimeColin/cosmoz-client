@@ -7,7 +7,7 @@
             :constellation="constellation"
             :is-trigger="true"
             @focus="$store.commit('page/popin', { editor: {
-                placeholder, read, constellation, enableTags, defaultTags: tags
+                placeholder, read, constellation, enableTags, defaultTags: tags, gathering
             } })"
             v-if="!disableCreate"
         />

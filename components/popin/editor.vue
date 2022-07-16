@@ -2,9 +2,7 @@
     <popin :is-active="isActive ? true : false" :modifiers="['s']" query="publish" @close="$store.commit('page/popin', { editor: false })">
         <div class="Editor_content" slot="content">
             <div class="d-flex fxa-center p-15">
-                <button-base :modifiers="['s', 'light']" icon-before="earth" v-if="read == 'public'">
-                    Tout le monde
-                </button-base>
+                <button-base :modifiers="['s', 'light']" :image="gatheringData.thumbnail" :ellipsis="20" :text="gatheringData.title" v-if="gatheringData" />
 
                 <input-conste-select placeholder="Où veux-tu publier ?" :max="1" v-model="constellation" class="fx-grow" ref="consteSelect" v-else />
             </div>
@@ -76,6 +74,7 @@ export default {
         isTagFocused: false,
         isEmbedLoading: false,
         constellation: '',
+        gathering: '',
         placeholder: '',
         read: '',
         defaultTags: [],
@@ -92,6 +91,11 @@ export default {
     computed: {
         isActive () {
             return this.$store.state.page.popins.editor
+        },
+        gatheringData () {
+            if (!this.gathering) return null
+
+            return this.$store.getters['gathering/findOne']({ _id: this.gathering })
         },
         images () {
             return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []

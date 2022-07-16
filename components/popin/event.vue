@@ -12,20 +12,23 @@
                 </div>
             </div>
             <div v-show="isPopinVisible" v-if="gathering">
-                <page-gathering-manage
-                    :gathering="gathering"
-                    isMin
-                />
+                <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }"></div>
 
-                <nav-bar class="pt-20" :ph="20" v-model="type" :items="[
+                <nav-bar class="pv-10 bg-bg-weak" :ph="10" v-model="type" :items="[
                     { id: 'index', label: `Détails` },
                     { id: 'feed', label: `Fil d'actualité` },
                     { id: 'settings', label: `Paramètres` }
                 ]" />
                 
                 <div class="p-20">
-                    <template v-if="(gathering.description && gathering.description !== '<p></p>' || gathering.important && gathering.important !== '<p></p>') && type == 'index'">
-                        <div class="+mt-40">
+                    <template v-if="type == 'index'">
+                        <page-gathering-manage
+                            class="+mt-30"
+                            :gathering="gathering"
+                            isMin
+                        />
+                        
+                        <div class="+mt-30">
                             <text-body
                                 :modifiers="['gathering']"
                                 :value="gathering.description"
@@ -33,7 +36,7 @@
                             />
                         </div>
 
-                        <div class="+mt-40" v-if="gathering.important && gathering.important !== '<p></p>'">
+                        <div class="+mt-30" v-if="gathering.important && gathering.important !== '<p></p>'">
                             <p class="ft-title-xs tape mb-15 ph-15">Important</p>
                             <text-body
                                 :modifiers="['gathering']"
@@ -110,6 +113,11 @@ export default {
                 this.$router.push({ query: { ...this.$route.query, ['eventId']: v } })
             } else {
                 this.$router.replace({ query: { ...this.$route.query, ['eventId']: undefined } })
+            }
+        },
+        eventId (v) {
+            if (!v) {
+                this.type = 'index'
             }
         }
     },

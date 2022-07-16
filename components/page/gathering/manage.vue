@@ -3,7 +3,7 @@
         <div class="ManageEvent" :class="{ 'ManageEvent--min': isMin }">
 
             <div class="ManageEvent_container">
-                <div class="ManageEvent_cover bg-cover-100 ratio-50 ratio-75@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }"></div>
+                <div class="ManageEvent_cover bg-cover-100 ratio-50 ratio-75@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }" v-if="!isMin"></div>
 
                 <div class="ManageEvent_info">
                     <div class="+mt-20">
@@ -13,13 +13,14 @@
                     </div>
                     
                     <div class="+mt-20">
-                        <div class="+mt-20 d-flex fxa-start" v-if="gathering.date">
-                            <fa icon="fal fa-calendar-lines" size="lg" class="mt-5 mr-10 fx-no-shrink" fixed-width />
+                        <div class="+mt-20 fx-center" v-if="gathering.date">
 
                             <div>
                                 <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
                                 <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
                             </div>
+
+                            <fa icon="fal fa-calendar-lines" size="lg" class="ml-10 fx-no-shrink" fixed-width />
                         </div>
 
                         <div class="+mt-20 d-flex fxa-start" v-if="gathering.location">
@@ -199,17 +200,15 @@ export default {
 
 .ManageEvent--min {
     border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
 
     .ManageEvent_container {
         display: block;
     }
-    
-    .ManageEvent_cover {
-        width: 100%;
 
-        &::after {
-            padding-bottom: 33%;
-        }
+    .ManageEvent_info {
+        padding: 0;
     }
 }
 

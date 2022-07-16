@@ -118,7 +118,7 @@ export default {
     margin-left: 10px;
 
     & > * {
-        display: block;
+        display: -webkit-box;
     }
 
     .LinkBase  {

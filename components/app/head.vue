@@ -1,5 +1,5 @@
 <template>
-    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed }" v-if="$appMeta">
+    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed, 'is-hero': $constellation && $constellation.hero }" v-if="$appMeta">
         <div class="AppHeader_wrapper pl-15 pl-5@s">
             <button-base icon-before="bars" class="mr-3" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
 
@@ -49,10 +49,10 @@
             </div>
         </div>
         
-        <!-- <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation.hero}` }" v-if="$constellation && $constellation.hero"></div> -->
+        <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation ? $constellation.hero : ''}` }"></div>
 
-        <div class="AppHeader_secondary p-10" v-if="items.length > 0">
-            <nav-bar :items="items" />
+        <div class="AppHeader_secondary pv-10" v-if="items.length > 0">
+            <nav-bar :items="items" :ph="10" />
         </div>
     </div>
 </template>
@@ -214,9 +214,7 @@ export default {
     left: 0;
     // width: 100%;
     z-index: 90;
-    background-color: var(--color-bg);
     transition: all 100ms ease;
-    // @include shadow;
 
     &.is-init {
 
@@ -231,16 +229,24 @@ export default {
             opacity: 0;
         }
     }
+
+    &.is-hero {
+        top: calc(-200px + var(--app-height));
+
+        .AppHeader_banner {
+            height: 200px;
+        }
+    }
 }
 
 .AppHeader_banner {
-    height: 150px;
+    height: var(--app-height);
     background-size: cover;
     background-position: center;
 }
 
 .AppHeader_secondary {
-    background-color: var(--color-bg-strong);
+    background-color: var(--color-bg-weak);
 }
 
 .AppHeader_iconContainer {
@@ -293,9 +299,12 @@ export default {
 
 .AppHeader_wrapper {
     height: var(--app-height);
+    background-color: var(--color-bg);
     display: flex;
     align-items: center;
-    position: relative;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .Header_profile {

@@ -82,7 +82,7 @@ export default {
     loadingIndicator: {
         name: 'chasing-dots',
         color: '#471ffe',
-        background: '#1d1b27'
+        background: '#31315b'
     },
     
     pwa: {
