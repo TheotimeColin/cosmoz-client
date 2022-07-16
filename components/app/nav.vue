@@ -15,7 +15,7 @@
                     <img :src="assets.logo" height="25" class="n-mt-5">
                 </nuxt-link>
 
-                <div class="fx-grow">
+                <div class="fx-grow o-auto">
                     <nav-list class="p-15" :items="nav" />
                     
                     <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">

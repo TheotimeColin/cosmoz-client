@@ -31,7 +31,7 @@
             </div>
         </div>
         <template slot="footer">
-            <div class="fx-grow">
+            <div class="fx-grow" v-show="constellation || read == 'public'">
                 <div class="p-15 bg-bg-xstrong" v-if="enableTags">
                     <input-tag-select
                         :value="formData.tags"

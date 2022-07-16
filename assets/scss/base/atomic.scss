@@ -90,6 +90,10 @@ $value in $breakpoints {
       overflow: hidden;
     }
 
+    .o-auto#{$name} {
+      overflow: auto;
+    }
+
     .o-visible#{$name} {
       overflow: visible;
     }

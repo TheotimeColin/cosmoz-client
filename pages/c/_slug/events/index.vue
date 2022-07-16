@@ -1,7 +1,7 @@
 <template>
     <div v-if="$constellation">
         <div class="Page_wrapper Wrapper Wrapper--xs">
-            <nav-bar class="mb-20" v-model="type" :items="[
+            <nav-bar class="mb-20" v-model="type" :weak="true" :items="[
                 { id: 'index', label: 'À venir' },
                 { id: 'past', label: 'Passés' },
             ]" />

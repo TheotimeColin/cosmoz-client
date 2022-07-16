@@ -5,7 +5,7 @@
                 :id="`navbar-${item.id}`"
                 class="NavBar_item"
                 v-for="(item, i) in items.filter(item => !item.disabled)"
-                :modifiers="activeItem == item.id ? ['s', 'cosmoz', 'no-s'] : ['s', 'weak', 'no-s']" 
+                :modifiers="activeItem == item.id ? ['s', weak ? 'light' : 'cosmoz', 'no-s'] : ['s', weak ? 'xweak' : 'weak', 'no-s']" 
                 :href="item.href"
                 :to="item.to"
                 @click="() => onClick(item)"
@@ -27,6 +27,7 @@ export default {
     }),
     props: {
         value: { type: String },
+        weak: { type: Boolean, default: false },
         ph: { type: Number, default: 0 },
         items: { type: Array, default: () => [] }
     },
