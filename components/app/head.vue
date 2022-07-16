@@ -303,8 +303,9 @@ export default {
     display: flex;
     align-items: center;
     position: fixed;
+    left: var(--nav-width);
     top: 0;
-    width: 100%;
+    width: calc(100% - var(--nav-width));
 }
 
 .Header_profile {
@@ -345,6 +346,11 @@ export default {
     .AppHeader {
         margin-left: 0;
         margin-top: 0;
+    }
+
+    .AppHeader_wrapper {
+        left: 0;
+        width: 100%;
     }
 }
 </style>

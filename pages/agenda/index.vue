@@ -1,11 +1,17 @@
 <template>
     <div class="Page_wrapper Page_wrapper--feed Wrapper Wrapper--xs">
+        <nav-bar class="mb-20" v-model="type" :weak="true" :items="[
+            { id: 'index', label: 'À venir' },
+            { id: 'ideas', label: 'Date à choisir' },
+            { id: 'past', label: 'Passés' },
+        ]" />
+        
         <template v-if="gatherings.length > 0">
             <div class="Date" v-for="gathering in gatherings" :key="gathering._id">
-                <placeholder class="Gatherings_item" :ratio="40" v-if="isLoading" />
+                <placeholder :ratio="40" v-if="isLoading" />
 
                 <block-gathering
-                    class="Gatherings_item" v-show="!isLoading"
+                    v-show="!isLoading"
                     v-bind="gathering"
                     :display-intro="true"
                 />
@@ -19,24 +25,6 @@
             <button-base :modifiers="['light', 's']" icon-before="compass" :to="{ name: 'explore' }">
                 Trouver des sorties
             </button-base>
-        </div>
-    
-        <div class="block-r mt-20" v-if="pastGatherings.length > 0">
-            <h2 class="ft-title-xs mb-20">
-                Mes sorties passées
-            </h2>
-
-            <div class="+mt-10" v-for="gathering in pastGatherings" :key="gathering._id">
-                <template v-if="isLoading">
-                    <placeholder class="+mt-10" :ratio="40" v-for="i in 2" :key="i" />
-                </template>
-
-                <block-gathering
-                    v-bind="gathering"
-                    :display-intro="true"
-                    v-else
-                />
-            </div>
         </div>
     </div>
 </template>
@@ -54,28 +42,32 @@ export default {
         this.isLoading = false
     },
     data: () => ({
+        type: 'index',
         isLoading: true,
         format: 'YYYYDDD'
     }),
     computed: {
         gatherings () {
-            return this.$store.getters['gathering/find']({
-                status: 'active',
-                isAttending: true,
-                sort: { date: 'desc' },
-                display: false
-            })
-        },
-        constellations () {
-            return this.$store.getters['constellation/find']({
-            })
-        },
-        pastGatherings () {
-            return this.$store.getters['gathering/find']({
-                status: 'active',
-                sort: { date: 'asc' },
+            let query = {
+                isPast: false,
+                isNoDate: false,
+                sort: { date: 'desc'}
+            }
+
+            if (this.type == 'past') query = {
                 isPast: true,
+                isNoDate: false,
+                sort: { date: 'asc' }
+            }
+
+            if (this.type == 'ideas') query = {
+                isNoDate: true
+            }
+
+            return this.$store.getters['gathering/find']({
+                status: 'active',
                 isAttending: true,
+                ...query
             })
         }
     }
@@ -87,7 +79,7 @@ export default {
 .Date {
 
     & + & {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 }
 </style>

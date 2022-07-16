@@ -91,6 +91,7 @@ export default {
         }
 
         &:hover {
+            color: var(--color-ft-light);
             background-color: var(--color-bg);
         }
 

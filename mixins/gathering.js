@@ -12,13 +12,16 @@ export default {
             return this.$shuffle(this.usersByStatus(['attending', 'confirmed'])).slice(0, 2).map(u => u.name).join(', ')
         },
         hasBooked () {
-            return this.user && this.usersByStatus(['attending']).find(u => u._id == this.user._id)
+            return this.user && this.usersByStatus(['attending', 'confirmed']).find(u => u._id == this.user._id)
         },
         isWaiting () {
             return this.user && this.usersByStatus(['waiting']).find(u => u._id == this.user._id)
         },
         hasWaitingList () {
-            return this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
+            return this.gathering.max && this.usersByStatus(['attending', 'confirmed']).length >= this.gathering.max
+        },
+        roomLeft () {
+            return Math.max(this.gathering.max - this.usersByStatus(['attending', 'confirmed']).length, 0) 
         },
         hasConfirmed () {
             return this.user && this.usersByStatus(['confirmed', 'attending']).find(u => u._id == this.user._id) ? true : false

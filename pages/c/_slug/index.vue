@@ -1,39 +1,27 @@
 <template>
     <div v-if="$constellation">
-
-        <div class="Page_wrapper d-flex Wrapper Wrapper--s d-block@s">
-            <div class="fx-grow o-hidden">
-
-                <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
+        <div class="Page_wrapper Page_wrapper--feed d-flex Wrapper Wrapper--s d-block@s">
+            <div class="fx-grow o-hidden o-visible@s mt-10@s">
+                <div class="+mt-20 block-f p-0 +mt-10@s" v-if="upcomingEvents.length > 0">
                     <div class="ph-20 pt-20">
                         <h2 class="ft-title-xs">
-                            <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
+                            <span class="round-s bg-bg-xstrong mr-5">{{ upcomingEvents.length }}</span> Mes événements à
                             venir
                         </h2>
-
-                        <block-gathering
-                            class="mt-20"
-                            v-bind="upcomingEvents[0]"
-                        />
                     </div>
 
                     <div class="pt-20">
-                        <slider-block :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
-                            <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
+                        <slider-block :slots="upcomingEvents.map(e => e._id)" :ratio="130" item-class="width-2xs" :offset="20" :offset-v="20" :margin="10" v-if="upcomingEvents.length > 0">
+                            <div v-for="gathering in upcomingEvents" :slot="gathering._id" :key="gathering._id">
                                 <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
                             </div>
                         </slider-block>
                     </div>
                 </div>
-                <div class="block-f p-20 text-center bg-bg-strong" v-else>
+                <div class="+mt-20 block-f p-20 text-center bg-bg-strong +mt-10@s" v-else>
                     Pas encore d'événements à venir
                 </div>
 
-                <div class="fx-center mv-40">
-                    <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
-                    <hr class="Separator">
-                </div>
-                
                 <template v-if="!isLoading">
                     <component
                         v-for="feedItem in feed"
@@ -48,7 +36,7 @@
                 </template>
             </div>
 
-            <div class="width-s ml-30 fx-no-shrink ml-0@s width-100@s">     
+            <div class="width-s ml-30 fx-no-shrink ml-0@s width-100@s mt-20@s">     
                 <div class="+mt-10 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
                     <h1 class="ft-title-xs mb-15">
                         À propos du groupe
@@ -97,14 +85,14 @@
 
 <script>
 import ConstellationMixin from '@/mixins/constellation'
+import PermissionsMixin from '@/mixins/permissions'
 
 export default {
-    mixins: [ ConstellationMixin ],
+    mixins: [ ConstellationMixin, PermissionsMixin ],
     layout: 'app',
     async fetch() {
         await this.$preFetch(true)
         
-
         if (this.$constellation) {
             await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
 
@@ -133,9 +121,6 @@ export default {
                 status: 'active',
                 constellation: this.$constellation._id
             })
-        },
-        isFollowed () {
-            return this.user ? this.user.followed.includes(this.$constellation._id) : false
         },
         upcomingEvents () {
             return this.gatherings.filter(g => !g.isPast)
@@ -182,6 +167,8 @@ export default {
             }).filter(t => t)
         },
         feed () {
+            if (!this.$isConsteMember) return []
+
             let statuses = []
 
             statuses = [

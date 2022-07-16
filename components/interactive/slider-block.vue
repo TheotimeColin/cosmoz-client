@@ -161,6 +161,7 @@ export default {
         
             .SliderBlock_container {
                 overflow: auto;
+                @include hide-scrollbars;
             }
         }
 

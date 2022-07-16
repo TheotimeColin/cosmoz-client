@@ -9,7 +9,7 @@
             @focus="$store.commit('page/popin', { editor: {
                 placeholder, read, constellation, enableTags, defaultTags: tags, gathering
             } })"
-            v-if="!disableCreate"
+            v-if="!disableCreate && !hideEditor"
         />
 
         <!-- <client-only>
@@ -82,6 +82,7 @@ export default {
         placeholder: { type: String, default: 'Publier quelque chose...' },
         disableInteract: { type: Boolean, default: false },
         disableCreate: { type: Boolean, default: false },
+        hideEditor: { type: Boolean, default: false },
         isLoading: { type: Boolean, default: false },
         autoStatuses: { type: Array, default: () => [] }
     },
@@ -141,7 +142,8 @@ export default {
             return 'feed'
         },
         query () {
-            let query = { parent: '$null', $updateUser: true }
+            let query = { parent: '$null', $updateUser: true,
+             constellation: { $in: this.user.constellations } }
 
             if (this.tag) query.tags = { $broad: this.tag }
 

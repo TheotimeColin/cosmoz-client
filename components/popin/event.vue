@@ -14,7 +14,7 @@
             <div v-show="isPopinVisible" v-if="gathering">
                 <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }"></div>
 
-                <nav-bar class="pv-10 bg-bg-weak" :ph="10" v-model="type" :items="[
+                <nav-bar class="pv-10 bg-bg-weak" style="position: sticky; top: 0; z-index: 20" :ph="10" v-model="type" :items="[
                     { id: 'index', label: `Détails` },
                     { id: 'feed', label: `Fil d'actualité` },
                     { id: 'settings', label: `Paramètres` }
@@ -28,21 +28,21 @@
                             isMin
                         />
                         
-                        <div class="+mt-30">
+                        <div class="+mt-30 block-r">
                             <text-body
                                 :modifiers="['gathering']"
                                 :value="gathering.description"
                                 :truncate="100"
                             />
-                        </div>
 
-                        <div class="+mt-30" v-if="gathering.important && gathering.important !== '<p></p>'">
-                            <p class="ft-title-xs tape mb-15 ph-15">Important</p>
-                            <text-body
-                                :modifiers="['gathering']"
-                                :value="gathering.important"
-                                :truncate="220"
-                            />
+                            <div class="mt-20" v-if="gathering.important && gathering.important !== '<p></p>'">
+                                <p class="ft-title-2xs tape mb-15 ph-15">Important</p>
+                                <text-body
+                                    :modifiers="['gathering']"
+                                    :value="gathering.important"
+                                    :truncate="220"
+                                />
+                            </div>
                         </div>
                     </template>
 
@@ -64,7 +64,7 @@
             </div>
         </template>
         <template slot="footer">
-            <div class="p-20 text-right fx-grow" v-if="gathering && !gathering.isPast">
+            <div class="p-15 text-right fx-grow" v-if="gathering && !gathering.isPast">
                 <page-gathering-action-button :gathering="gathering" />
             </div>
         </template>

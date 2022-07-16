@@ -24,12 +24,12 @@
                         </div>
 
                         <div class="+mt-20 d-flex fxa-start" v-if="gathering.location">
-                            <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 mr-10 fx-no-shrink" fixed-width />
-
-                            <div>
+                            <div class="fx-grow">
                                 <p class="ft-l-bold">{{ gathering.location }}</p>
                                 <p v-if="gathering.address">{{ gathering.address }}</p>
                             </div>
+
+                            <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 ml-10 fx-no-shrink" fixed-width />
                         </div>
 
                         <user-list class="+mt-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
@@ -106,23 +106,14 @@
         <popin :is-active="isList" :modifiers="['s']" @close="isList = false">
             <template slot="content">
                 <div class="p-20">
-                    <div class="+mt-30" v-if="organizers && organizers.length > 0">
-                        <h2 class="ft-title-xs mb-10">Équipe d'organisation</h2>
-
-                        <div class="row-xs">
-                            <div class="col-6 col-12@xs mt-10" v-for="user in organizers" :key="user._id">
-                                <user-icon v-bind="user" :display-name="true" class="mr-10 fx-no-shrink"
-                                    :modifiers="['m']" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="+mt-30 ft-title-xs mb-5">Participations</p>
+                    <p class="ft-title-xs mb-5">Participations</p>
 
                     <div class="row-xs">
                         <div class="col-6 pt-10 col-12@xs"
                             v-for="participant in usersByStatus(['attending', 'confirmed'])" :key="participant._id">
-                                <user-icon :display-name="true" :modifiers="['m']" v-bind="participant" />
+                                <user-icon :display-name="true" :modifiers="['m']" v-bind="participant">
+                                    <p class="ft-s color-ft-weak" v-if="gathering.organizers.includes(participant._id)">Organisation</p>
+                                </user-icon>
                         </div>
                     </div>
                 </div>

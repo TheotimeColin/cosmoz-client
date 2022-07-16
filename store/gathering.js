@@ -128,6 +128,7 @@ export default {
                     isAttending: root.auth.user && item.users.find(u => u._id == root.auth.user._id && (u.status == 'attending' || u.status == 'confirmed')) ? true : false,
                     isFull: item.max != 0 && item.users.filter(u => u.status == 'attending' || u.status == 'confirmed').length >= item.max,
                     isPast: item.date ? moment(item.date).isBefore(moment()) : false,
+                    isNoDate: !item.date,
                     isExpired: item.date ? moment(item.date).add(4, 'days').isBefore(moment()) : false,
                     display: item.date ? moment(item.date).isBefore(moment()) : true,
                     hero
