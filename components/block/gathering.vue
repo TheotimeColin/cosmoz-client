@@ -1,5 +1,5 @@
 <template>
-    <div class="BlockGathering" :class="{ ...$modifiers, 'is-no-link': noLink }" @click="$store.commit('page/popin', { event: id })">
+    <div class="BlockGathering" :class="{ ...$modifiers, 'is-no-link': noLink }" @click="() => noLink ? {} : $store.commit('page/popin', { event: id })">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
@@ -122,7 +122,7 @@ export default {
     }
 
     &.is-no-link {
-        pointer-events: none;
+        cursor: default;
     }
 }
 
@@ -146,7 +146,7 @@ export default {
 
 .BlockGathering_actions {
     position: absolute;
-    z-index: 7;
+    z-index: 10;
     top: 0;
     right: 0;
     padding: 15px;

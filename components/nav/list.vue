@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="NavList" :class="[ ...$modifiers ]">
         <div class="Nav_cat" :class="{ 'is-open-parent': cat.children && cat.children.length > 0 }" v-for="(cat, i) in items.filter(c => !c.disabled)" :key="i">
             <component :is="cat.to ? 'nuxt-link' : 'div'" :to="localePath(cat.to)" class="Nav_item" v-if="cat.label" @click.native="$emit('nav')">
                 <ripples :size="300" :modifiers="['weak']" />
@@ -42,7 +42,11 @@
 </template>
 
 <script>
+import { ModifiersMixin } from 'instant-coffee-core'
+
 export default {
+    name: 'NavList',
+    mixins: [ ModifiersMixin ],
     props: {
         items: { type: Array, default: () => ([]) }
     },
@@ -172,6 +176,21 @@ export default {
         &.is-active-exact {
             color: var(--color-ft-light);
             background-color: var(--color-bg-weak);
+        }
+    }
+
+    .NavList--light {
+
+        .Nav_item {
+            color: var(--color-ft-light);
+        }
+
+        .Nav_cat {
+            margin-top: 2px;
+
+            &:first-child {
+                margin-top: 0;
+            }
         }
     }
 </style>

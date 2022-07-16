@@ -286,7 +286,7 @@ export default {
     align-items: center;
     padding: 18px 15px;
     flex-grow: 1;
-    border-top: 1px solid var(--color-bg);
+    border-top: 1px solid var(--color-bg-weak);
 
     &.is-active {
         background: var(--color-bg-weak);
@@ -487,7 +487,7 @@ export default {
     
     .AppNav_content {
         width: calc(100% - 50px);
-        max-width: 400px;
+        max-width: 320px;
         z-index: 60;
         position: relative;
     }

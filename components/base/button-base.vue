@@ -306,6 +306,10 @@ export default {
     }
 }
 
+.ButtonBase--bordered {
+    border: 1px solid var(--color-border);
+}
+
 .ButtonBase.is-loading {
     pointer-events: none;
 

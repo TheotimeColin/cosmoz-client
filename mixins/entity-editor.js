@@ -105,7 +105,7 @@ export default {
                     this.currentId = response.data._id
                     
                     if (this.$route.params.id !== this.currentId) {
-                        if (this.postSubmitSuccess) this.postSubmitSuccess()
+                        if (this.postSubmitSuccess) this.postSubmitSuccess(response.data)
                     }
                 } else {
                     this.errors = [ response.error ]

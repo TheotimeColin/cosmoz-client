@@ -1,5 +1,5 @@
 <template>
-    <div class="Sticky" :class="{ 'is-active': isActive || ($appMeta && $appMeta.isPanel) || selectConst, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
+    <div class="Sticky" :class="{ 'is-active': isActive || selectConst, 'is-panning': isPanning }" :style="{ transform: `translateY(${100 * translate}%)` }">
         <div class="fx-center p-15 bg-cosmoz" v-if="selectConst && !selectConst.isMember">
             <div class="mr-10" v-if="selectConst.isFollower">
                 <p class="ft-title-2xs ellipsis-1">Demande envoyée</p>
@@ -98,11 +98,12 @@ export default {
     width: 100%;
     z-index: 90;
     bottom: 0;
-    background-color: var(--color-bg-xstrong);
+    background-color: color-opacity('bg', -10%);
+    backdrop-filter: blur(12px);
     transform: translate(0%);
     transition: all 200ms ease;
     display: none;
-    box-shadow: 0 0 10px 0 color-opacity('bg-xstrong', -50%);
+    @include shadow;
 
     &.is-active {
         transform: translateY(100%) !important;

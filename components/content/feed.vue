@@ -6,11 +6,13 @@
             :read="read"
             :constellation="constellation"
             :is-trigger="true"
-            @focus="isEditorActive = true"
+            @focus="$store.commit('page/popin', { editor: {
+                placeholder, read, constellation, enableTags, defaultTags: tags
+            } })"
             v-if="!disableCreate"
         />
 
-        <client-only>
+        <!-- <client-only>
             <content-editor
                 :is-active="isEditorActive"
                 :placeholder="placeholder"
@@ -26,7 +28,7 @@
                 v-if="!disableCreate"
                 ref="editor"
             />
-        </client-only>
+        </client-only> -->
 
         <transition-group name="fade">
             <component

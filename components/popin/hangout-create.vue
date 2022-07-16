@@ -12,7 +12,7 @@
                         <button-base
                             v-for="tag in cat"
                             class="mr-5 mb-5"
-                            :modifiers="formData.category == id + '.' + tag ? ['cosmoz', 'l'] : ['weak', 'l']"
+                            :modifiers="formData.category == id + '.' + tag ? ['cosmoz', 'l', 'no-s'] : ['weak', 'l', 'no-s']"
                             :emoji-before="$t(`hangouts.categories.${id}.tags.${tag}.emoji`)"
                             @click="formData.category = id + '.' + tag"
                             :key="tag"
@@ -27,25 +27,26 @@
                     </div>
 
                     <div class="p-40 p-30@xs">
-                        <input-base class="+mt-15" v-model="formData.title" label="Donner un nom à la sortie" />
-                        <input-base class="+mt-15" v-model="formData.location" label="Nom du lieu" />
-                        <input-base class="+mt-15" v-model="formData.address" label="Entrer une adresse" />
+                        <input-base class="+mt-10" v-model="formData.title" label="Donner un nom à la sortie" />
+                        <input-base class="+mt-10" v-model="formData.location" label="Nom du lieu" />
+                        <input-base class="+mt-10" v-model="formData.address" label="Entrer une adresse" />
 
                         <div class="mt-30 block-r">
                             <p class="ft-title-xs">On fait ça quand ?</p>
 
-                            <div class="d-flex mt-15">
+                            <div class="d-flex mt-15 d-block@xs">
                                 <v-date-picker
                                     :value="dates.find(d => d.id == selectedDate) ? dates.find(d => d.id == selectedDate).date : null"
                                     @input="updateDate"
                                     mode="dateTime"
+                                    :is-expanded="$smallerThan('xs')"
                                     :minute-increment="5"
                                     is24hr 
                                     :is-dark="true"
                                     :min-date="$moment().subtract(1, 'hours').toDate()"
                                 />
 
-                                <div class="pl-20">
+                                <div class="pl-20 pl-0@xs mt-15@xs">
                                     <transition-group name="transition-list">
                                         <button-base
                                             v-for="date in dates"
@@ -128,21 +129,25 @@
                     </div>
                 </div>
                 <div class="p-40 p-30@xs" v-else-if="step == 3">
-                    <!-- <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${coverPreview})` }">
-                        <button-base icon-before="image" :modifiers="['round', 'light']" @click="options.cover = true" />
-                    </div> -->
+                   <!-- <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${coverPreview})` }" v-if="$smallerThan('xs')"></div> -->
 
-                    <div class="d-flex">
+                    <div class="d-flex d-block@xs">
                         <block-gathering
-                            :modifiers="['square']"
-                            class="width-2xs"
+                            :modifiers="$smallerThan('xs') ? [] : ['square']"
+                            class="width-2xs width-100@xs"
                             v-bind="formData"
                             :cover="coverPreview"
                             :no-link="true"
-                        />
+                        >
+                            <button-base
+                                :modifiers="['s', 'round']"
+                                icon-before="pen"
+                                @click="step = 1"
+                            />
+                        </block-gathering>
 
-                        <div class="fx-grow pl-30">
-                            <div class="+mt-20">
+                        <div class="fx-grow pl-30 pl-0@xs mt-20@xs">
+                            <div class="+mt-20 d-none@xs">
                                 <div class="ft-title-s">
                                     {{ formData.title ? formData.title : defaultTitle }}
                                 </div>
@@ -160,22 +165,18 @@
                                     </div>
                                 </div>
 
-                                <fa icon="far fa-map-marker-alt" />
+                                <button-base
+                                    :modifiers="['s', 'round']"
+                                    icon-before="pen"
+                                    @click="step = 1"
+                                />
                             </div>
-
-                            <button-base
-                                :modifiers="['s']"
-                                class="+mt-20 "
-                                icon-before="pen"
-                                text="Modifier les détails"
-                                @click="step = 1"
-                            />
                         </div>
                     </div>
 
                     <div class="mt-20">
                         <div class="+mt-10 block-r p-0">
-                            <input-paper class="n-mh-10@xs" label="Détails" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
+                            <input-paper label="Détails" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
                         </div>
 
                         <div class="+mt-10 block-r" v-if="formData.dates.length > 0">
@@ -392,7 +393,7 @@ export default {
                 case 0:
                     return this.formData.category !== null
                 case 1:
-                    return this.formData.dates.length > 0
+                    return this.formData.date || this.options.multipleDates && this.formData.dates.length > 0
                 case 2:
                     return this.formData.invited.length > 0 || this.formData.constellation
                 default: false
@@ -421,15 +422,22 @@ export default {
             }
         },
         ['options.multipleDates'] (v) {
-            if (!v) this.dates = this.dates.slice(0, 1)
-        },
-        ['dates'] (v) {
-            if (this.options.multipleDates) {
-                this.formData.date = null
-                this.formData.dates = this.dates.map(d => d.date)
+            if (!v) {
+                this.dates = this.dates.slice(0, 1)
             } else {
-                this.formData.date = this.dates[0]?.date
-                this.formData.dates = []
+                this.addDate()
+            }
+        },
+        ['dates']: {
+            immediate: true,
+            handler (v) {
+                if (this.options.multipleDates) {
+                    this.formData.date = null
+                    this.formData.dates = this.dates.map(d => d.date)
+                } else {
+                    this.formData.date = this.dates[0]?.date
+                    this.formData.dates = []
+                }
             }
         },
         ['formData.constellation'] (v) {
@@ -454,6 +462,12 @@ export default {
                 this.$router.replace({ query: { ...this.$route.query, ['eventCreate']: undefined } })
             }
         }
+    },
+    created () {
+        let id = Math.random()
+
+        this.selectedDate = id
+        this.dates = [ { id, date: this.$moment().add(1, 'days').hour(18).minutes(30).toDate() } ]
     },
     methods: {
         inviteFriend (_id) {
@@ -484,9 +498,10 @@ export default {
         },
         addDate () {
             let id = Math.random()
+            let defaultDate = this.dates.length > 0 ? this.$moment(this.dates[this.dates.length - 1].date).add(1, 'days').hours(18).minutes(30) : this.$moment() 
 
             this.selectedDate = id
-            this.dates = [ { id, date: new Date() }, ...this.dates ]
+            this.dates = [ { id, date: defaultDate.toDate() }, ...this.dates ]
         },
         onStepBack () {
             switch (this.step) {
@@ -527,8 +542,8 @@ export default {
         onClose () {
             this.$store.commit('page/popin', { eventCreate: false })
         },
-        postSubmitSuccess () {
-            this.$router.replace({ query: { eventId: this.serverEntity?.id } })
+        postSubmitSuccess (v) {
+            this.$router.replace({ query: { eventId: v.id } })
         }
     }
 }

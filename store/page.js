@@ -39,7 +39,9 @@ export default {
             confirm: null,
             emojis: null,
             eventCreate: null,
-            event: null
+            event: null,
+            create: null,
+            editor: null
         },
         meta: {
             title: ''
@@ -62,7 +64,21 @@ export default {
                 register: v
             }
         },
+        resetPopin (state) {
+            state.popins = {
+                register: null,
+                constellationCreate: null,
+                confirm: null,
+                emojis: null,
+                eventCreate: null,
+                event: null,
+                create: null,
+                editor: null
+            }
+        },
         popin (state, v) {
+            if (v.reset) this.commit('page/resetPopin')
+            
             state.popins = {
                 ...state.popins,
                 ...v

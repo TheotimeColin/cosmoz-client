@@ -1,15 +1,17 @@
 <template>
-    <popin :is-active="isActive" :modifiers="['s']" query="publish" @close="$emit('close')" @open="$emit('open')" v-if="user">
+    <popin :is-active="isActive ? true : false" :modifiers="['s']" query="publish" @close="$store.commit('page/popin', { editor: false })">
         <div class="Editor_content" slot="content">
-            <div class="fx-center p-15">
-                <user-icon :display-name="true" :no-link="true" v-bind="user" />
+            <div class="d-flex fxa-center p-15">
+                <button-base :modifiers="['s', 'light']" icon-before="earth" v-if="read == 'public'">
+                    Tout le monde
+                </button-base>
 
-                <div></div>
+                <input-conste-select placeholder="Où veux-tu publier ?" :max="1" v-model="constellation" class="fx-grow" ref="consteSelect" v-else />
             </div>
             
             <hr class="Separator bg-bg-weak" />
 
-            <form @submit.prevent="onSubmit" class="Editor_main">
+            <form @submit.prevent="onSubmit" class="Editor_main" v-show="constellation || read == 'public'">
                 <input-area class="fx-grow" :placeholder="placeholder" v-model="formData.content" ref="input" />
             </form>
 
@@ -51,22 +53,6 @@
                         </div>
                     </div>
 
-                    <div class="mb-15 pv-5 pr-5 pl-15 br-xs bg-bg-weak fx-center">
-                        <p class="ft-s-medium mr-10">Visible par :</p>
-
-                        <div>
-                            <button-base :modifiers="['s']" :image="consteData.logoSmall" :ellipsis="20" :text="consteData.name" v-if="consteData" />
-
-                            <button-base :modifiers="['s']" icon-before="earth" v-else-if="read == 'public'">
-                                Tout le monde
-                            </button-base>
-
-                            <button-base :modifiers="['s']" :image="user.profileSmall" v-else>
-                                Mes amis
-                            </button-base>
-                        </div>
-                    </div>
-
                     <div class="pv-5">
                         <button-base :modifiers="['cosmoz', 'full']" icon-before="paper-plane" type="submit" @click="onSubmit" :loading="isLoading">
                             Envoyer
@@ -84,25 +70,31 @@ import Debounce from 'lodash.debounce'
 
 export default {
     name: 'Editor',
-    props: {
-        constellation: { type: String },
-        isActive: { type: Boolean, default: false },
-        isLoading: { type: Boolean, default: false },
-        placeholder: { type: String },
-        read: { type: String, default: 'public' },
-        constellation: { type: String },
-        defaultTags: { type: Array, default: () => ['présentations'] },
-        enableTags: { type: Boolean, default: false },
-        errors: { type: Array, default: () => [] }
-    },
-    computed: {  
+    data: () => ({
+        excludedTags: [],
+        excludedLinks: [],
+        isTagFocused: false,
+        isEmbedLoading: false,
+        constellation: '',
+        placeholder: '',
+        read: '',
+        defaultTags: [],
+        enableTags: true,
+        isLoading: false,
+        errors: [],
+        formData: {
+            content: '',
+            images: [],
+            tags: [],
+            embed: null
+        }
+    }),
+    computed: {
+        isActive () {
+            return this.$store.state.page.popins.editor
+        },
         images () {
             return this.formData.images ? this.formData.images.map(image => URL.createObjectURL(image)) : []
-        },
-        consteData () {
-            if (!this.constellation) return null
-
-            return this.$store.getters['constellation/findOne']({ _id: this.constellation })
         },
         availableTags () {
             return this.$store.getters['tag/find']({
@@ -118,21 +110,24 @@ export default {
             return matches ? matches.map(m => m.replace(/[-'`~!@#$%^&*()_|+=?;: '",.<>\{\}\[\]\\\/]/gi, '')).filter(m => !this.excludedTags.includes(m)) : []
         }
     },
-    data: () => ({
-        excludedTags: [],
-        excludedLinks: [],
-        isTagFocused: false,
-        isEmbedLoading: false,
-        formData: {
-            content: '',
-            images: [],
-            tags: [],
-            embed: null
-        }
-    }),
     watch: {
         isActive (v) {
-            if (v && this.$refs.input) this.$refs.input.focus()
+            if (v) {
+                let data = {
+                    placeholder: 'Publier quelque chose...',
+                    ...v
+                }
+
+                Object.keys(data).forEach(key => {
+                    this.$set(this, key, data[key])
+                })
+
+                if (this.$refs.consteSelect && !this.constellation) {
+                    this.$refs.consteSelect.focus()
+                } else if (this.$refs.input) {
+                    this.$refs.input.focus()
+                }
+            }
         },
         defaultTags: {
             immediate: true,
@@ -175,10 +170,44 @@ export default {
 
             this.excludedLinks = []
             this.excludedTags = []
+
+            this.$store.commit('page/popin', { editor: false })
         },
-        onSubmit () {
+        async onSubmit () {
             this.formData.tags = [ ...this.formData.tags, ...this.dynTags ]
-            this.$emit('submit', this.formData)
+
+            this.isLoading = true
+            this.errors = []
+
+            try {
+                let data = { ...this.formData, read: this.read }
+
+                if (this.gathering) {
+                    data.gathering = this.gathering
+                    data.read = 'public'
+                }
+
+                if (this.constellation) {
+                    data.constellation = this.constellation
+                }
+
+                const response = await this.$store.dispatch('status/create', data)
+
+                if (response.status == 0) {
+                    this.errors = [ response.error ]
+                    throw Error(response.error)
+                }
+
+                if (this.formData.tags && this.formData.tags.includes('présentations')) {
+                    this.$emit('introduced')
+                }
+
+                this.reset()
+            } catch (e) {
+                console.error(e)
+            }
+
+            this.isLoading = false
         },
         addImages (v) {
             this.formData.images = [

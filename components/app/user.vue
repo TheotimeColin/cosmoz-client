@@ -1,7 +1,7 @@
 <template>
     <div class="AppUser">
         <div class="AppUser_list" :class="{ 'is-active': isActive }">
-            <nav-list :items="userItems" @nav="isActive = false" />
+            <nav-list :modifiers="['light']" :items="userItems" @nav="isActive = false" />
         </div>
         
         <user-icon v-bind="user" :no-link="true" :modifiers="['s']" @click.native="isActive = !isActive" />
@@ -71,7 +71,7 @@ export default {
         transform: translate3d(0%, calc(-100% + 10px), 0);
         padding: 6px;
         border-radius: 6px;
-        background-color: var(--color-bg-2xstrong);
+        background-color: var(--color-bg-weak);
         @include shadow;
 
         pointer-events: none;
