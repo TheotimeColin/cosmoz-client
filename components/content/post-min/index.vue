@@ -94,7 +94,7 @@ export default {
 <style lang="scss" scoped>
     .PostMin {
         border-radius: 6px;
-        background-color: color-opacity('bg-xweak', -50%);
+        background-color: var(--color-bg-xweak);
         display: flex;
         align-items: center;
         position: relative;

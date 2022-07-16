@@ -111,7 +111,7 @@ export default {
                     label: `Activité`,
                     isParent: true,
                     fa: 'home',
-                    to: { name: 'c-slug-feed', params: { slug: this.slug } }
+                    to: { name: 'c-slug', params: { slug: this.slug } }
                 },
                 {
                     label: `Membres`,

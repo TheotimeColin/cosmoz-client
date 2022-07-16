@@ -3,14 +3,12 @@
         <block-advice class="mb-20 shadow-s" v-if="!$store.state.auth.user.notifications.find(n => n.type == 'onboarding' && n.id == 'welcomed')" />
 
         <template v-if="!isLoading">
-            <div class="+mt-30 row-xs">
-                <div class="col-6 mb-10" v-for="conste in constellations" :key="conste._id">
-                    <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: conste.slug }})" class="block-r d-block p-15 p-10@xs">
-                        <const-icon v-bind="conste" :display-name="true" :no-link="true">
-                            <div class="ft-s-medium color-ft-weak line-2 mt-3 ellipsis-1 ellipsis-break">2 événements et 56 publications</div>
-                        </const-icon>
-                    </nuxt-link>
-                </div>
+            <div class="outflow@xs p-0">
+                <slider-block :slots="constellations.map(c => c._id)" :offset="$smallerThan('xs') ? 20 : 0" :offset-v="20" :margin="10">
+                    <div v-for="conste in constellations" :slot="conste._id" :key="conste._id">
+                        <const-icon v-bind="conste" :modifiers="['l']" />
+                    </div>
+                </slider-block>
             </div>
 
             <div class="+mt-30 block-f p-0">

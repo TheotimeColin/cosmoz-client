@@ -100,18 +100,18 @@ export default {
         overflow: hidden;
         
 
-        // &.is-height {
+        &.is-height {
 
-        //     .SliderBlock_container,
-        //     .SliderBlock_rail,
-        //     .SliderBlock_item {
-        //         height: 100%;
-        //     }
-        // }
+            .SliderBlock_container,
+            .SliderBlock_rail,
+            .SliderBlock_item {
+                height: 100%;
+            }
 
-        // &.is-init {
-        //     height: var(--height, 0px);
-        // }
+            &.is-init {
+                height: var(--height, 0px);
+            }
+        }
     }
 
     .SliderBlock_container {

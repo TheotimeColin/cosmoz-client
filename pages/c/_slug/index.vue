@@ -3,7 +3,53 @@
 
         <div class="Page_wrapper d-flex Wrapper Wrapper--s d-block@s">
             <div class="fx-grow o-hidden">
-                <div class="+mt-20 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
+
+                <div class="block-f p-0 +mt-20 +mt-10@s" v-if="upcomingEvents.length > 0">
+                    <div class="ph-20 pt-20">
+                        <h2 class="ft-title-xs">
+                            <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
+                            venir
+                        </h2>
+
+                        <block-gathering
+                            class="mt-20"
+                            v-bind="upcomingEvents[0]"
+                        />
+                    </div>
+
+                    <div class="pt-20">
+                        <slider-block :slots="upcomingEvents.slice(1, 15).map(g => g._id)" :ratio="130" item-class="width-2xs" :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20"  :margin="10" v-if="upcomingEvents.length - 1 > 0">
+                            <div v-for="gathering in upcomingEvents.slice(1, 15)" :slot="gathering._id" :key="gathering._id">
+                                <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
+                            </div>
+                        </slider-block>
+                    </div>
+                </div>
+                <div class="block-f p-20 text-center bg-bg-strong" v-else>
+                    Pas encore d'événements à venir
+                </div>
+
+                <div class="fx-center mv-40">
+                    <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>
+                    <hr class="Separator">
+                </div>
+                
+                <template v-if="!isLoading">
+                    <component
+                        v-for="feedItem in feed"
+                        :is="feedItem.type"
+                        class="+mt-20 +mt-10@s"
+                        v-bind="feedItem"
+                        :key="feedItem._id"
+                    />
+                </template>
+                <template v-else>
+                    <placeholder class="+mt-20 +mt-10@s" :ratio="33" v-for="i in 10" :key="i" />
+                </template>
+            </div>
+
+            <div class="width-s ml-30 fx-no-shrink ml-0@s width-100@s">     
+                <div class="+mt-10 block o-hidden" v-if="$constellation.description && $constellation.description != '<p></p>'">
                     <h1 class="ft-title-xs mb-15">
                         À propos du groupe
                     </h1>
@@ -11,36 +57,7 @@
                     <text-body :value="$constellation.description" :truncate="100" />
                 </div>
 
-                <div class="+mt-20 " v-if="upcomingEvents.length > 0">
-                    <div class="fx-center mb-20">
-                        <h2 class="ft-title-xs">
-                            <span class="round-s bg-bg-strong mr-5">{{ upcomingEvents.length }}</span> Événements à
-                            venir
-                        </h2>
-
-                        <button-base :modifiers="['s']"
-                            :to="{ name: 'c-slug-events', params: { slug: $constellation.slug } }">Voir tout
-                        </button-base>
-                    </div>
-                    <block-gathering class="mb-20" :status-only="true" v-bind="upcomingEvents[0]" :key="upcomingEvents[0]._id" />
-                </div>
-
-                <div class="+mt-20 pt-20 br-s bg-bg-weak" v-if="pastEvents.length > 0">
-                    <p class="ft-title-xs mb-20 ph-20">
-                        <span class="round-s bg-bg-xstrong mr-5">{{ pastEvents.length }}</span> Événements passés
-                    </p>
-
-                    <slider-block :slots="pastEvents.map(g => g._id)" :ratio="130" item-class="width-2xs"
-                        :offset="$smallerThan('xs') ? 15 : 20" :offset-v="20" :margin="10">
-                        <div v-for="gathering in pastEvents" :slot="gathering._id" :key="gathering._id">
-                            <block-gathering :modifiers="['square']" :status-only="true" v-bind="gathering" />
-                        </div>
-                    </slider-block>
-                </div>
-            </div>
-
-            <div class="width-xs ml-30 fx-no-shrink ml-0@s width-100@s">
-                <div class="block-r p-15 mb-10">
+                <div class="+mt-10 block-r p-15">
                     <div class="fx-center">
                         <h2 class="ft-title-2xs">
                             Organisateurs du groupe
@@ -57,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="block-r p-15" v-if="users.length > 5">
+                <div class="+mt-10 block-r p-15" v-if="users.length > 5">
                     <div class="fx-center">
                         <h2 class="ft-title-3xs">
                             <span class="round-s bg-bg-strong mr-5">{{ users.length }}</span> Membres
@@ -86,13 +103,14 @@ export default {
     layout: 'app',
     async fetch() {
         await this.$preFetch(true)
-
-        if (this.$constellation.type == 'group') this.$router.push(this.localePath({ name: 'c-slug-feed', params: { slug: this.$constellation.slug } }))
+        
 
         if (this.$constellation) {
             await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
 
             await this.$store.dispatch('user/softFetch', this.$constellation.members)
+
+            await this.$store.dispatch('constellation/fetchFeed', this.$constellation._id)
         }
     },
     data: () => ({
@@ -119,11 +137,61 @@ export default {
         isFollowed () {
             return this.user ? this.user.followed.includes(this.$constellation._id) : false
         },
-        pastEvents () {
-            return this.gatherings.filter(g => g.isPast)
-        },
         upcomingEvents () {
             return this.gatherings.filter(g => !g.isPast)
+        },
+        mainStatus () {
+            let statuses = this.$store.getters['status/find']({
+                constellation: this.$constellation._id,
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(3, 'days').toDate() }
+            })
+
+            if (!statuses || statuses.length <= 0) return null
+
+            let posts = statuses.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+            let photos = statuses.filter(i => i.images.length > 0).slice(0, 5)
+
+            return {
+                all: [ ...photos.map(s => s._id), ...posts.map(s => s._id) ],
+                statuses: { photos, posts },
+                type: 'content-conste-tag',
+                sortDate: this.$moment(statuses[0].createdAt).add(2, 'minutes').toDate()
+            }
+        },
+        tagStatuses () {
+            let statuses = this.$store.getters['status/find']({
+                _id: { $notIn: (this.mainStatus ? this.mainStatus.all : []) },
+                constellation: this.$constellation._id,
+                sort: { createdAt: 'asc' },
+                createdAt: { $gte: this.$moment().subtract(15, 'days').toDate() }
+            })
+
+            let byTags = Object.entries(this.$groupBy(statuses, 'tags'))
+
+            return byTags.map(s => {
+                let posts = s[1].items.filter(i => i.content && i.images.length <= 0).slice(0, 3)
+                let photos = s[1].items.filter(i => i.images.length > 0).slice(0, 5)
+
+                return s[1].items.length >= 3 ? {
+                    statuses: { photos, posts },
+                    hashtag: s[0],
+                    type: 'content-conste-tag',
+                    sortDate: s[1].items ? s[1].items[0].createdAt : null
+                } : null
+            }).filter(t => t)
+        },
+        feed () {
+            let statuses = []
+
+            statuses = [
+                this.mainStatus,
+                ...this.tagStatuses,
+            ].filter(s => s && s.sortDate)
+
+            return statuses.sort((a, b) => {
+                return this.$moment(b.sortDate).valueOf() - this.$moment(a.sortDate).valueOf()
+            })
         }
     }
 }

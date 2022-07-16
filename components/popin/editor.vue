@@ -133,6 +133,9 @@ export default {
                 }
             }
         },
+        constellation (v) {
+            if (v && this.$refs.input) setTimeout(() => this.$refs.input.focus(), 100)
+        },
         defaultTags: {
             immediate: true,
             handler (v) {
@@ -242,7 +245,7 @@ export default {
 .Editor_content {
     display: flex;
     flex-direction: column;
-    min-height: 100%;
+    min-height: 280px;
 }
 
 .Editor_main {

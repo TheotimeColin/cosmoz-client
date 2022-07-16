@@ -123,7 +123,7 @@ export default {
                 }
             } else if (this.constellationData && this.type == 'conste-enter') {
                 return {
-                    name: 'c-slug-feed',
+                    name: 'c-slug',
                     params: { slug: this.constellationData.slug }
                 }
             } else if (this.userData) {

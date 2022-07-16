@@ -46,7 +46,7 @@ export default {
             return this.selectConst ? [
                 // {
                 //     label: 'Activité', fa: 'home',
-                //     to: { name: 'c-slug-feed', params: { slug: this.selectConst.slug }}
+                //     to: { name: 'c-slug', params: { slug: this.selectConst.slug }}
                 // }, {
                 //     label: 'Événements', disabled: this.selectConst.type == 'group', fa: 'calendar-star',
                 //     to: { name: 'c-slug-events', params: { slug: this.selectConst.slug }}

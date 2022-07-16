@@ -113,7 +113,7 @@ export default {
                     id: 'index',
                     label: `Activité`,
                     fa: 'home',
-                    to: { name: 'c-slug-feed', params: { slug: this.$constellation.slug } }
+                    to: { name: 'c-slug', params: { slug: this.$constellation.slug } }
                 },
                 {
                     id: 'events',

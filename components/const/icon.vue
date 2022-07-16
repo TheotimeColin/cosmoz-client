@@ -1,5 +1,5 @@
 <template>
-    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed || type == 'group' ? 'c-slug-feed' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
+    <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed || type == 'group' ? 'c-slug' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
 
         <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
             <ripples v-if="!badge" />

@@ -79,7 +79,7 @@ export default {
             if (this.gatheringData && this.consteData) {
                 link = this.localePath({ name: 'c-slug-events-eventId', params: { eventId: this.gatheringData.id, slug: this.consteData.slug } })
             } else if (this.consteData) {
-                link = this.localePath({ name: 'c-slug-feed', params: { slug: this.consteData.slug } })
+                link = this.localePath({ name: 'c-slug', params: { slug: this.consteData.slug } })
             }
 
             return link

@@ -1,7 +1,7 @@
 <template>
     <popin :is-active="entityId ? true : false" :modifiers="['panel', 'full']" @close="onClose">
         <template slot="content" v-if="entityId">
-            <div class="fx-grow strong">
+            <div class="fx-grow">
                 <div class="p-40 p-30@xs" v-if="step == 0">
                     <p class="ft-title-m mb-20">Qu'as-tu envie de faire ?</p>
 
@@ -21,7 +21,7 @@
                         </button-base>
                     </div>
                 </div>
-                <div class="" v-else-if="step == 1">
+                <div class="strong" v-else-if="step == 1">
                     <div class="bg-bg-strong pv-60 text-center bgi-cover" :style="{ backgroundImage: `url(${coverSrc})` }">
                         <button-base icon-before="image" :modifiers="['round', 'light']" @click="options.cover = true" />
                     </div>
@@ -171,6 +171,17 @@
                                     @click="step = 1"
                                 />
                             </div>
+
+                            <div class="+mt-20 b-top d-flex fxa-center pt-20" v-if="formData.date && !options.multipleDates">
+                                <button-base
+                                    class="mr-5 mb-5"
+                                    :modifiers="['s', 'light']"
+                                    @click="step = 1"
+                                    :key="i"
+                                >
+                                    {{ $moment(formData.date).format('D MMMM YYYY à H:mm') }}
+                                </button-base>
+                            </div>
                         </div>
                     </div>
 
@@ -179,7 +190,7 @@
                             <input-paper label="Détails" placeholder="Ajouter des détails sur la sortie..." v-model="formData.description" :base="true" />
                         </div>
 
-                        <div class="+mt-10 block-r" v-if="formData.dates.length > 0">
+                        <div class="+mt-10 block-r" v-if="formData.dates.length > 0 && options.multipleDates">
                             <p class="ft-m-medium color-ft-weak mb-10">Je propose ces dates :</p>
 
                             <button-base
@@ -244,7 +255,7 @@
                                 class="mr-3 mb-5"
                                 icon-before="calendar-alt"
                                 text="Proposer une date"
-                                v-if="formData.dates.length <= 0"
+                                v-if="options.multipleDates && formData.dates.length <= 0 || !options.multipleDates && !formData.date"
                                 @click="step = 1"
                             />
                             
