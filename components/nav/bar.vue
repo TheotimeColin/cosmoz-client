@@ -8,6 +8,8 @@
                 :modifiers="activeItem == item.id ? ['s', weak ? 'light' : 'cosmoz', 'no-s'] : ['s', weak ? 'xweak' : 'weak', 'no-s']"
                 :href="item.href"
                 :to="item.to"
+                :number-before="item.number"
+                :notification="item.notification"
                 @click="() => onClick(item)"
                 :key="i"
                 :ref="item.id"

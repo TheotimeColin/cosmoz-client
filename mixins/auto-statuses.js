@@ -1,5 +1,12 @@
 export default {
     computed: {
+        $constellation () {
+            if (!this.constellation && !this.$gathering.constellation) return null
+
+            return this.$store.getters['constellation/findOne']({
+                _id: this.constellation || this.$gathering.constellation
+            })
+        },
         $gathering () {
             if (!this.gathering) return null
 
@@ -30,15 +37,19 @@ export default {
                         text: 'Poser une question',
                         modifiers: ['s'],
                         iconBefore: 'comments-question',
+                        isHidden: this.$gathering.isAttending || (this.$constellation && !this.$constellation.isMember),
                         on: {
                             click: () => {
-                                this.openEditor()
+                                this.$store.commit('page/popin', { editor: {
+                                    gathering: this.gathering
+                                } })
                             }
                         }
                     }, { 
                         text: 'Je participe !',
                         modifiers: ['light'],
                         iconBefore: 'arrow-right',
+                        isHidden: this.$gathering.isAttending || (this.$constellation && !this.$constellation.isMember),
                         on: {
                             click: () => {
                                 if (this.$refs.manage) this.$refs.manage.openFull()
@@ -87,7 +98,9 @@ export default {
                         iconBefore: 'images',
                         on: {
                             click: () => {
-                                this.openEditor()
+                                this.$store.commit('page/popin', { editor: {
+                                    gathering: this.gathering
+                                } })
                             }
                         }
                     }
@@ -115,7 +128,9 @@ export default {
                         iconBefore: 'heart',
                         on: {
                             click: () => {
-                                if (this.$refs.feed) this.$refs.feed.openEditor()
+                                this.$store.commit('page/popin', { editor: {
+                                    gathering: this.gathering
+                                } })
                             }
                         }
                     }

@@ -2,9 +2,17 @@ export default {
     computed: {
         $isUser () { return this.user ? true : false },
         $constellation () {
-            return this.$route.params.slug ? this.$store.getters['constellation/findOne']({
-                slug: this.$route.params.slug
-            }) : null
+            if (this.$route.params.slug) {
+                return this.$store.getters['constellation/findOne']({
+                    slug: this.$route.params.slug
+                })
+            } else {
+                let conste = this.constellation || this.gathering?.constellation
+            
+                return this.$store.getters['constellation/findOne']({
+                    _id: conste
+                })
+            }
         },
         $gathering () {
             let gId = this.$route.params.eventId || this.$route.query.eventId

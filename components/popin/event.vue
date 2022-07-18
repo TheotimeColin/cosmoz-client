@@ -17,7 +17,7 @@
                 <nav-bar class="pv-10 bg-bg-weak" style="position: sticky; top: 0; z-index: 20" :ph="10" v-model="type" :items="[
                     { id: 'index', label: `Détails` },
                     { id: 'feed', label: `Fil d'actualité` },
-                    { id: 'settings', label: `Paramètres` }
+                    { id: 'settings', label: `Paramètres`, disabled: !user || !(user && (gathering.owner == user._id || $isConsteOrga)) }
                 ]" />
                 
                 <div class="p-20">
@@ -51,12 +51,13 @@
                         :max="8"
                         :is-loading="isFeedLoading"
                         :gathering="gathering._id"
+                        :disable-create="!user"
                         v-else-if="type == 'feed'"
                         ref="feed"
                     />
 
                     <template v-else-if="type == 'settings'">
-                        <button-base icon-before="pen" :modifiers="['light']" @click="$store.commit('page/popin', { eventCreate: gathering.id })">
+                        <button-base icon-before="pen" :modifiers="['light']" @click="$store.commit('page/popin', { eventCreate: gathering.id, reset: true })">
                             Modifier l'événement
                         </button-base>
                     </template>
@@ -72,9 +73,11 @@
 </template>
 
 <script>
+import PermissionsMixin from '@/mixins/permissions'
 
 export default {
     name: 'EventPopin',
+    mixins: [ PermissionsMixin ],
     data: () => ({
         type: 'index',
         isFeedLoading: false

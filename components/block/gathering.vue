@@ -1,17 +1,19 @@
 <template>
-    <div class="BlockGathering" :class="{ ...$modifiers, 'is-no-link': noLink }" @click="() => noLink ? {} : $store.commit('page/popin', { event: id })">
+    <div class="BlockGathering" :class="{ ...$modifiers, 'is-no-link': noLink, 'BlockGathering--hangout': type !== 'official' }" @click="() => noLink ? {} : $store.commit('page/popin', { event: id })">
         <div class="BlockGathering_cover">
             <div class="BlockGathering_coverImage" :style="{ backgroundImage: `url(${thumbnail})` }">
             </div>
 
             <div class="BlockGathering_content">
                 <div class="BlockGathering_header">
-                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" v-if="constellation" />
-                    <user-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="userData" v-else-if="userData" />
+                    <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" v-if="type == 'official'" />
+                    <user-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="userData" v-else-if="userData">
+                        <span class="ft-s color-ft-weak" slot="before">Proposé par</span>
+                    </user-icon>
                 </div>
 
                 <div>
-                    <user-list class="fx-grow mb-5" :modifiers="['transparent', 's']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0" />
+                    <user-list class="fx-grow mb-5" :modifiers="['transparent', 's']" :items="attending" :max="4" :hide-text="true" v-if="attending.length > 0 && type == 'official'" />
                     
                     <div class="BlockGathering_details fx-center">
                         <p>
@@ -21,8 +23,12 @@
                             <template v-else>
                                 Date à définir
                             </template>
+
+                            <span class="BlockGathering_location" v-if="attending.length > 0">
+                                <span class="loc">·</span> {{ attending.length }} participent
+                            </span>
                             
-                            <span class="BlockGathering_location">
+                            <span class="BlockGathering_location" v-if="location">
                                 <span class="loc">·</span> {{ location ? location : '' }}
                             </span>
                         </p>
@@ -38,8 +44,6 @@
                 <slot></slot>
             </div>
         </div>
-
-        <!-- <nuxt-link class="BlockGathering_link" :to="replaceLink ? replaceLink : defaultLink" v-if="!noLink || replaceLink"></nuxt-link> -->
     </div>
 </template>
 
@@ -53,6 +57,7 @@ export default {
         id: { type: String },
         title: { type: String },
         intro: { type: String },
+        type: { type: String },
         max: { type: Number, default: 0 },
         users: { type: Array, default: () => [] },
         place: { type: String },
@@ -116,6 +121,7 @@ export default {
 .BlockGathering {
     position: relative;
     cursor: pointer;
+    @include shadow-s;
     
     &:hover {
     
@@ -206,6 +212,50 @@ export default {
     justify-content: space-between;
     font: var(--ft-title-3xs);
     width: 100%;
+}
+
+.BlockGathering--hangout:not(.BlockGathering--square) {
+    background-color: var(--color-bg-weak);
+    padding: 15px;
+    border-radius: 6px;
+    @include shadow-s;
+
+    .BlockGathering_cover {
+        background: transparent;
+        display: flex;
+        border-radius: 0px;
+        align-items: flex-start;
+
+        &::before {
+            display: none;
+        }
+    }
+    
+    .BlockGathering_coverImage {
+        position: relative;
+        opacity: 1;
+        width: 100px;
+        height: auto;
+        background-color: var(--color-bg-strong);
+        border-radius: 8px;
+
+        &::before {
+            @include ratio(100);
+        }
+    }
+
+    .BlockGathering_details {
+        margin: 15px 0 5px 0;
+    }
+
+    .BlockGathering_content {
+        position: relative;
+        opacity: 1;
+        width: auto;
+        height: auto;
+        flex-grow: 1;
+        padding: 0 0 0 20px;
+    }
 }
 
 .BlockGathering--square {

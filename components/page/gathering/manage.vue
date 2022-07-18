@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="p-20 bg-bg-xweak text-center" v-if="!gathering.isPast && !isMin">
+            <div class="p-20 bg-bg-weak b-top text-right" v-if="!gathering.isPast && !isMin">
                 <page-gathering-action-button :gathering="gathering" />
             </div>
 
@@ -181,6 +181,7 @@ export default {
 }
 
 .ManageEvent_info {
+    flex-grow: 1;
     padding: 20px;
 }
 

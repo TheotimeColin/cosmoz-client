@@ -8,6 +8,7 @@
             <Nuxt />
         </div>
         
+        <popin-event />
         <popin-register />
         <tooltip-manager />
         

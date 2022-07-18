@@ -7,9 +7,11 @@
         </div>
 
         <div class="UserIcon_nameContainer" v-if="displayName">
+            
+            
             <div class="d-flex fxa-center">
                 <component :is="noLink ? 'div' : 'link-base'" :invert="true" class="UserIcon_name">
-                    {{ name ? name : '' }}
+                    <slot name="before"></slot> {{ name ? name : '' }}
                 </component>
 
                 <slot name="name"></slot>

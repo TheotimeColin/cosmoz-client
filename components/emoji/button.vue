@@ -56,9 +56,9 @@ export default {
 }
 
 .EmojiButton_popinContainer {
-    width: 400px;
+    width: 330px;
     overflow: hidden;
-    height: 350px;
+    height: 300px;
     display: flex;
 }
 </style>

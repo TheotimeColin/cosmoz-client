@@ -1,5 +1,5 @@
 <template>
-    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed, 'is-hero': $constellation && $constellation.hero }" v-if="$appMeta">
+    <div class="AppHeader" :class="{ 'is-scrolled': $store.state.page.isScrolled, 'is-hidden': !$appMeta, 'is-back': $appMeta.back, 'is-init': !changed, 'is-hero': $constellation && $constellation.hero && !($route.params.eventId) }" v-if="$appMeta">
         <div class="AppHeader_wrapper pl-15 pl-5@s">
             <button-base icon-before="bars" class="mr-3" :modifiers="['', 'transparent', 'round']" @click="$emit('navOpen')" v-if="$smallerThan('s')" />
 
@@ -21,6 +21,8 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
+                <button-icon class="ml-20" fa="circle-plus" @click="$store.commit('page/popin', { eventCreate: true, reset: true })" />
+
                 <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
                 <button-icon class="ml-20" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
@@ -34,14 +36,14 @@
                 </div>
             </div>
             <div class="AppHeader_right" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
+                <link-base class="ml-20" :to="{ name: 'g' }" :modifiers="['current']">Nos rencontres
                 </link-base>
 
-                <link-base class="Header_navItem" :modifiers="['current']"
+                <link-base class="ml-20" :modifiers="['current']"
                     @click="$store.commit('page/register', 'login')">
                     Se connecter</link-base>
 
-                <div class="Header_navItem Header_navItem--button">
+                <div class="ml-20">
                     <button-base :modifiers="['light', 's']" @click="$store.commit('page/register', 'header')">
                         Je m'inscris
                     </button-base>
@@ -50,6 +52,19 @@
         </div>
         
         <div class="AppHeader_banner" :style="{ backgroundImage: `url(${$constellation ? $constellation.hero : ''}` }"></div>
+
+        <div class="fx-center p-15 bg-cosmoz" v-if="$constellation && !$constellation.isMember">
+            <div class="mr-10" v-if="$constellation.isFollower">
+                <p class="ft-title-2xs ellipsis-1">Demande envoyée</p>
+            </div>
+            <div class="mr-10" v-else>
+                <p class="ft-title-2xs ellipsis-1">Rejoins {{ $constellation.name }}</p>
+                <p class="ft-s mt-3" v-if="!$constellation.isFollower">Découvre les membres et le contenu publié par la communauté.</p>
+            </div>
+            
+            <link-base :to="{ name: 'c-slug-rejoindre', params: { slug: $constellation.slug } }" v-if="$constellation.isFollower">Voir la demande</link-base>
+            <button-base :to="{ name: 'c-slug-rejoindre', params: { slug: $constellation.slug } }" :modifiers="['round', 'light']" icon-before="arrow-right" v-else />
+        </div>
 
         <div class="AppHeader_secondary pv-10" v-if="items.length > 0">
             <nav-bar :items="items" :ph="10" />
@@ -118,6 +133,7 @@ export default {
                 {
                     id: 'events',
                     label: `Événements`,
+                    number: this.$gatherings.filter(g => !g.isPast).length,
                     fa: 'calendar',
                     to: { name: 'c-slug-events', params: { slug: this.$constellation.slug } },
                     disabled: this.type == 'group'
@@ -126,7 +142,8 @@ export default {
                     id: 'feed',
                     label: `Discussions`,
                     fa: 'comments',
-                    to: { name: 'c-slug-discussions', params: { slug: this.$constellation.slug } }
+                    to: { name: 'c-slug-discussions', params: { slug: this.$constellation.slug } },
+                    notification: true
                 },
                 {
                     id: 'members',

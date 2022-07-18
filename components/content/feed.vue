@@ -12,24 +12,6 @@
             v-if="!disableCreate && !hideEditor"
         />
 
-        <!-- <client-only>
-            <content-editor
-                :is-active="isEditorActive"
-                :placeholder="placeholder"
-                :read="read"
-                :constellation="constellation"
-                :is-loading="isSubmitLoading"
-                :errors="errors"
-                :enable-tags="enableTags"
-                :default-tags="tags"
-                @submit="onSubmit"
-                @open="isEditorActive = true"
-                @close="isEditorActive = false"
-                v-if="!disableCreate"
-                ref="editor"
-            />
-        </client-only> -->
-
         <transition-group name="fade">
             <component
                 :is="'content-' + status.type"
@@ -142,8 +124,7 @@ export default {
             return 'feed'
         },
         query () {
-            let query = { parent: '$null', $updateUser: true,
-             constellation: { $in: this.user.constellations } }
+            let query = { parent: '$null', $updateUser: true }
 
             if (this.tag) query.tags = { $broad: this.tag }
 
@@ -152,6 +133,8 @@ export default {
             } else if (this.constellation) {
                 query.constellation = this.constellation
                 query.gathering = '$null'
+            } else {
+                query.constellation = { $in: this.user ? this.user.constellations : [] }
             }
 
             return query

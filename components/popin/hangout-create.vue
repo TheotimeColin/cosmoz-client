@@ -303,7 +303,7 @@
                 </template>
                 <template v-else-if="step == 3">
                     <button-base type="button" icon-after="paper-plane" :modifiers="['l', 'cosmoz']" @click="onSubmit">
-                        Publier !
+                        {{ serverEntity ? 'Enregistrer' : 'Publier !' }} 
                     </button-base>
                 </template>
             </form-sticky>
@@ -404,7 +404,7 @@ export default {
                 case 0:
                     return this.formData.category !== null
                 case 1:
-                    return this.formData.date || this.options.multipleDates && this.formData.dates.length > 0
+                    return !this.options.multipleDates && this.formData.date || this.options.multipleDates && this.formData.dates.length > 0
                 case 2:
                     return this.formData.invited.length > 0 || this.formData.constellation
                 default: false

@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="Page_wrapper pt-0">
         <template v-if="!isLoading && gathering">
             <div class="bg-admin-weak p-10 text-right" v-if="$isConsteOrga">
                 <button-base @click="isManage = true" :modifiers="['s']">

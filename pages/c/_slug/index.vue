@@ -5,7 +5,7 @@
                 <div class="+mt-20 block-f p-0 +mt-10@s" v-if="upcomingEvents.length > 0">
                     <div class="ph-20 pt-20">
                         <h2 class="ft-title-xs">
-                            <span class="round-s bg-bg-xstrong mr-5">{{ upcomingEvents.length }}</span> Mes événements à
+                            <span class="round-s bg-bg-xstrong mr-5">{{ upcomingEvents.length }}</span> Événements à
                             venir
                         </h2>
                     </div>
@@ -123,7 +123,7 @@ export default {
             })
         },
         upcomingEvents () {
-            return this.gatherings.filter(g => !g.isPast)
+            return this.gatherings.filter(g => !g.isPast && g.type == 'official')
         },
         mainStatus () {
             let statuses = this.$store.getters['status/find']({

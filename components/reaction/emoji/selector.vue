@@ -96,9 +96,9 @@ export default {
     padding: 5px;
     border-radius: 3px;
     margin: 1px;
-    height: 45px;
-    min-width: 45px;
-    max-width: 60px;
+    height: 34px;
+    min-width: 30px;
+    max-width: 41px;
     flex-grow: 1;
     cursor: pointer;
     position: relative;
@@ -111,7 +111,7 @@ export default {
     span {
         line-height: 1;
         font-family: 'Segoe UI Emoji';
-        font-size: 27px;
+        font-size: 24px;
     }
 
     &:hover {
@@ -120,9 +120,9 @@ export default {
 }
 
 .EmojiSelector_item--l {
-    height: 52px;
-    min-width: 52px;
-    max-width: 52px;
+    height: 42px;
+    min-width: 42px;
+    max-width: 42px;
     
     &:hover {
         background: transparent;
@@ -133,7 +133,7 @@ export default {
     }
 
     span {
-        font-size: 50px;
+        font-size: 45px;
         transform: translate3d(-50%, -50%, 0) scale(0.60);
         transition: transform 100ms ease-out;
         transform-origin: center;

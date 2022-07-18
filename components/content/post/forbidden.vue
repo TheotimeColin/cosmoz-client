@@ -10,14 +10,12 @@
             </nuxt-link>
         </div>
         <div class="Post_forbidden" v-else-if="isForbidden && !user">
-            <div class="Post_forbiddenMessage Post_forbiddenMessage--user ft-s p-15 br-xs">
-                <div class="Post_forbiddenMessage fx-center ft-s p-15 br-xs" @click="$store.commit('page/register', 'header')">
-                    <ripples :size="300" />
+            <div class="Post_forbiddenMessage fx-center ft-s p-15 br-xs" @click="$store.commit('page/register', 'header')">
+                <ripples :size="300" />
 
-                    <p>Ce contenu n'est visible que par les membres.</p>
+                <p class="mr-10">Ce contenu n'est visible que par les membres.</p>
 
-                    <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
-                </div>
+                <button-base :modifiers="['round', 'xs', 'light']" icon-before="arrow-right" />
             </div>
         </div>
     </div>

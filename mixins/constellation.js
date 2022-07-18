@@ -5,6 +5,14 @@ export default {
                 slug: this.$route.params.slug
             })
         },
+        $gatherings () {
+            if (!this.$constellation) return []
+
+            return this.$store.getters['gathering/find']({
+                status: 'active',
+                constellation: this.$constellation._id
+            })
+        }
     },
     methods: {
         $preFetch (force = false) {

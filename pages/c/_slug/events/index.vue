@@ -2,7 +2,7 @@
     <div v-if="$constellation">
         <div class="Page_wrapper Wrapper Wrapper--xs">
             <nav-bar class="mb-20" v-model="type" :weak="true" :items="[
-                { id: 'index', label: 'À venir' },
+                { id: 'index', label: 'À venir', number: $gatherings.filter(g => !g.isPast).length },
                 { id: 'past', label: 'Passés' },
             ]" />
 
@@ -47,7 +47,6 @@ export default {
         type: 'index'
     }),
     computed: {
-        
         gatheringsByDate () {
             return this.$store.getters['gathering/groupBy']('date', {
                 constellation: this.$constellation._id,

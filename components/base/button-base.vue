@@ -1,6 +1,6 @@
 <template>
     <component :is="componentTag" class="ButtonBase"
-        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image, 'is-no-text': !text, 'can-delete': canDelete } ]" :to="localePath(to)"
+        :class="[ $modifiers, (node ? node.attrs.class : []), { 'is-loading': loading, 'is-disabled': disabled, 'is-image': image || numberBefore, 'is-no-text': !text, 'can-delete': canDelete } ]" :to="localePath(to)"
         :disabled="disabled || loading"
         :replace="replace"
         v-bind="computedAttrs"
@@ -11,9 +11,14 @@
         <div class="ButtonBase_content">
             <span class="ButtonBase_image" :style="{ backgroundImage: `url(${image})` }" v-if="image"></span>
 
+            <span class="ButtonBase_numberBefore" v-if="numberBefore">
+                {{ numberBefore > 99 ? '+99' : numberBefore }}
+            </span>
+
             <span class="ButtonBase_iconBefore" v-if="iconBefore">
                 <fa :icon="`far fa-${iconBefore}`" fixed-width />
             </span>
+
             <span class="ButtonBase_iconBefore ButtonBase_emoji" v-if="emojiBefore">
                 {{ emojiBefore }}
             </span>
@@ -29,6 +34,8 @@
 
                 <div class="ButtonBase_subtitle" v-if="subtitle">{{ subtitle }}</div>
             </span>
+
+            <span class="ButtonBase_notification" v-if="notification"></span>
             
             <span class="ButtonBase_after" v-if="$slots.after">
                 <slot name="after"></slot>
@@ -64,6 +71,7 @@ export default {
         tag: { type: String },
         href: { type: String },
         link: { type: String },
+        numberBefore: { type: Number, default: 0 },
         text: { type: [String, Number], default: '' },
         subtitle: { type: String },
         image: { type: String },
@@ -211,6 +219,21 @@ export default {
     line-height: 1;
 }
 
+.ButtonBase_numberBefore {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    font: var(--ft-title-4xs);
+    color: var(--color-ft-light);
+    line-height: 1;
+    justify-content: center;
+    background-color: var(--color-bg-strong);
+    margin-right: 8px;
+    transition: all 150ms ease;
+}
+
 .ButtonBase_subtitle {
     font: var(--ft-s-medium);
     margin-top: 5px;
@@ -239,6 +262,16 @@ export default {
     100% {
         transform: translate3d(-50%, -50%, 0) rotate(360deg);
     }
+}
+
+.ButtonBase_notification {
+    width: 6px;
+    height: 6px;
+    margin-top: -12px;
+    margin-left: 2px;
+    border-radius: 50%;
+    background: var(--color-bg-light);
+    flex-shrink: 0;
 }
 
 /* MODIFIERS */
@@ -399,6 +432,10 @@ export default {
             opacity: 0.75;
         }
     }
+
+    .ButtonBase_notification {
+        background: radial-gradient(farthest-corner at top right, color-opacity('nebula', -50%), var(--color-cosmoz) 85%);
+    }
 }
 
 .ButtonBase--cosmoz {
@@ -416,6 +453,11 @@ export default {
         .G_cosmoz {
             opacity: 0;
         }
+    }
+
+    .ButtonBase_numberBefore {
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
     }
 }
 
@@ -655,6 +697,10 @@ export default {
         color: var(--color-ft);
         transform: scale(0.99);
         box-shadow: 0 1px 4px 0 color-opacity('bg-2xstrong', -25%);
+
+        .ButtonBase_numberBefore {
+        
+        }
     }
 
     .ButtonBase--s:hover {
@@ -688,12 +734,22 @@ export default {
     .ButtonBase--weak:hover {
         color: var(--color-ft-light);
         background-color: var(--color-bg-strong);
+
+        .ButtonBase_numberBefore {
+            background-color: var(--color-bg-light);
+            color: var(--color-ft);
+        }
     }
 
     .ButtonBase--xweak:hover {
         background-color: var(--color-bg-xweak);
         color: var(--color-ft-light);
         box-shadow: none;
+
+        .ButtonBase_numberBefore {
+            background-color: var(--color-bg-light);
+            color: var(--color-ft);
+        }
     }
 
     .ButtonBase--transparent:hover {
@@ -726,6 +782,15 @@ export default {
 
         .G_cosmoz {
             opacity: 0;
+        }
+
+        .ButtonBase_numberBefore {
+            background-color: var(--color-bg-strong);
+            color: var(--color-ft-light);
+        }
+
+        .ButtonBase_notification {
+            background: radial-gradient(farthest-corner at top right, color-opacity('nebula', -50%), var(--color-cosmoz) 85%);
         }
     }
 // }

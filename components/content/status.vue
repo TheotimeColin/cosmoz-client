@@ -12,7 +12,6 @@
             
             <content-reactions
                 class="+mt-20"
-                :add="true"
                 :size="'m'"
                 :id="_id"
                 :reactions="reactions"
@@ -24,9 +23,9 @@
                 v-if="enableReactions"
             />
 
-            <div class="+mt-20" v-if="actions.length > 0">
+            <div class="+mt-20" v-if="actions.filter(a => !a.isHidden).length > 0">
                 <button-base
-                    v-for="(action, i) in actions"
+                    v-for="(action, i) in actions.filter(a => !a.isHidden)"
                     type="button"
                     class="m-3"
                     v-bind="action"
