@@ -6,7 +6,7 @@
                 <div class="ManageEvent_cover bg-cover-100 ratio-50 ratio-75@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }" v-if="!isMin"></div>
 
                 <div class="ManageEvent_info">
-                    <div class="+mt-20">
+                    <div class="+mt-20" v-if="!isMin">
                         <h1 class="ft-title-m ft-title-s@xs">{{ gathering.title }}</h1>
 
                         <p class="ft-s color-ft-weak" v-if="gathering.isPast">{{ $moment(gathering.date).fromNow() }}</p>
@@ -16,7 +16,7 @@
                         <div class="+mt-20 fx-center" v-if="gathering.date">
 
                             <div>
-                                <p class="ft-l-bold">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
+                                <p class="ft-title-xs">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
                                 <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
                             </div>
 
@@ -25,14 +25,22 @@
 
                         <div class="+mt-20 d-flex fxa-start" v-if="gathering.location">
                             <div class="fx-grow">
-                                <p class="ft-l-bold">{{ gathering.location }}</p>
+                                <p class="ft-title-xs">{{ gathering.location }}</p>
                                 <p v-if="gathering.address">{{ gathering.address }}</p>
                             </div>
 
                             <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 ml-10 fx-no-shrink" fixed-width />
                         </div>
 
-                        <user-list class="+mt-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" />
+                        <!-- <user-list class="+mt-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" /> -->
+
+                        <div class="+mt-20">
+                            <p class="ft-title-2xs mb-10">
+                                {{ usersByStatus(['attending', 'confirmed']).length }} personnes {{ gathering.isPast ? 'y sont allé' : 'y vont' }}
+                            </p>
+
+                            <user-icon v-for="user in usersByStatus(['attending', 'confirmed'])" class="mr-3" :modifiers="['s']" v-bind="user" :key="user._id" />
+                        </div>
                     </div>
                 </div>
             </div>

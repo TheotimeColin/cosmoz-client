@@ -12,12 +12,14 @@
                 </div>
             </div>
             <div v-show="isPopinVisible" v-if="gathering">
-                <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink" :style="{ '--background': `url(${gathering.hero})` }"></div>
+                <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink d-flex fxa-end" :style="{ '--background': `url(${gathering.hero})` }">
+                    <h1 class="bg-gradient ft-title-m ft-title-s@xs p-15 pt-30 fx-grow">{{ gathering.title }}</h1>
+                </div>
 
                 <nav-bar class="pv-10 bg-bg-weak" style="position: sticky; top: 0; z-index: 20" :ph="10" v-model="type" :items="[
-                    { id: 'index', label: `Détails` },
-                    { id: 'feed', label: `Fil d'actualité` },
-                    { id: 'settings', label: `Paramètres`, disabled: !user || !(user && (gathering.owner == user._id || $isConsteOrga)) }
+                    { sort: 1, id: 'index', label: `Détails` },
+                    { sort: gathering.isPast ? 0 : 2, id: 'feed', label: `Fil d'actualité` },
+                    { sort: 3, id: 'settings', label: `Paramètres`, disabled: !user || !(user && (gathering.owner == user._id || $isConsteOrga)) }
                 ]" />
                 
                 <div class="p-20">
@@ -28,14 +30,16 @@
                             isMin
                         />
                         
-                        <div class="+mt-30 block-r">
+                        <div class="+mt-30 block-r" v-if="(gathering.description && gathering.description !== '<p></p>') || (gathering.important && gathering.important !== '<p></p>')">
                             <text-body
                                 :modifiers="['gathering']"
+                                class="+mt-20"
                                 :value="gathering.description"
                                 :truncate="100"
+                                v-if="gathering.description && gathering.description !== '<p></p>'"
                             />
 
-                            <div class="mt-20" v-if="gathering.important && gathering.important !== '<p></p>'">
+                            <div class="+mt-20" v-if="gathering.important && gathering.important !== '<p></p>'">
                                 <p class="ft-title-2xs tape mb-15 ph-15">Important</p>
                                 <text-body
                                     :modifiers="['gathering']"
@@ -118,10 +122,8 @@ export default {
                 this.$router.replace({ query: { ...this.$route.query, ['eventId']: undefined } })
             }
         },
-        eventId (v) {
-            if (!v) {
-                this.type = 'index'
-            }
+        gathering (v) {
+            this.type = v && !v.isPast ? 'index' : 'feed'
         }
     },
     methods: {

@@ -24,16 +24,9 @@ export default {
                 })
         
                 if (!result || force) {
-                    result = await this.$store.dispatch('constellation/get', {
-                        query: { slug: this.$route.params.slug }
+                    await this.$store.dispatch('constellation/get', {
+                        slug: this.$route.params.slug
                     })
-
-                    await this.$store.dispatch('user/softFetch', [
-                        ...result.members,
-                        ...result.organizers,
-                        ...result.followers,
-                        ...result.admins
-                    ])
                 }
 
                 resolve(result)

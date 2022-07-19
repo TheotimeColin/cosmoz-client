@@ -1,6 +1,6 @@
 <template>
     <div v-if="$constellation">
-        <div class="Page_wrapper Page_wrapper--feed d-flex Wrapper Wrapper--s d-block@s">
+        <div class="Page_wrapper Page_wrapper--feed d-flex Wrapper d-block@s">
             <div class="fx-grow o-hidden o-visible@s mt-10@s">
                 <div class="+mt-20 block-f p-0 +mt-10@s" v-if="upcomingEvents.length > 0">
                     <div class="ph-20 pt-20">
@@ -94,10 +94,6 @@ export default {
         await this.$preFetch(true)
         
         if (this.$constellation) {
-            await this.$store.dispatch('gathering/softFetch', this.$constellation.gatherings)
-
-            await this.$store.dispatch('user/softFetch', this.$constellation.members)
-
             await this.$store.dispatch('constellation/fetchFeed', this.$constellation._id)
         }
     },

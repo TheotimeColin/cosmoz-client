@@ -21,7 +21,7 @@
             </div>
 
             <div class="AppHeader_right" v-if="user">
-                <button-icon class="ml-20" fa="circle-plus" @click="$store.commit('page/popin', { eventCreate: true, reset: true })" />
+                <button-icon class="ml-20" fa="circle-plus" @click="$store.commit('page/popin', { create: true, reset: true })" v-if="$biggerThan('s')" />
 
                 <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
 
@@ -143,7 +143,7 @@ export default {
                     label: `Discussions`,
                     fa: 'comments',
                     to: { name: 'c-slug-discussions', params: { slug: this.$constellation.slug } },
-                    notification: true
+                    notification: this.$constellation.lastPosts > 0
                 },
                 {
                     id: 'members',

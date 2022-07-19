@@ -4,7 +4,7 @@
             <button-base
                 :id="`navbar-${item.id}`"
                 class="NavBar_item"
-                v-for="(item, i) in items.filter(item => !item.disabled)"
+                v-for="(item, i) in items.filter(item => !item.disabled).sort((a, b) => a.sort - b.sort)"
                 :modifiers="activeItem == item.id ? ['s', weak ? 'light' : 'cosmoz', 'no-s'] : ['s', weak ? 'xweak' : 'weak', 'no-s']"
                 :href="item.href"
                 :to="item.to"

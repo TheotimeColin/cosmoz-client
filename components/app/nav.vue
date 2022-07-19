@@ -19,13 +19,19 @@
                     <nav-list class="p-15" :items="nav" />
                     
                     <div class="+mt-10 AppNav_constellations" v-if="constellations.length > 0 || selectConst">
-                        <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: constellation.slug } })" class="AppNav_const" :class="{ 'is-active': $route.params.slug == constellation.slug }" v-for="constellation in constellations" :key="constellation._id" >
-                            <const-icon v-bind="constellation" :no-link="true" />
+                        <nuxt-link :to="localePath({ name: 'c-slug', params: { slug: constellation.slug } })" class="AppNav_const" :class="{ 'is-active': $route.params.slug == constellation.slug }" v-for="constellation in constellations.sort((a, b) => a.name.localeCompare(b.name))" :key="constellation._id" >
+                            <const-icon
+                                v-bind="constellation"
+                                :modifiers="['m', 'border']"
+                                :no-link="true"
+                                :class="{ 'is-active': constellation.lastEvents > 0 }"
+                                :notification="constellation.lastPosts > 0"
+                            />
 
                             <div class="ph-15 fx-grow">
                                 <div class="ft-title-2xs ellipsis-1 ellipsis-break">{{ constellation.name }} </div>
                                 <div class="ft-s color-ft-weak ellipsis-1 ellipsis-break">
-                                    2 événements et 3 publications
+                                    {{ getUpdates(constellation) }}
                                 </div>
                             </div>
 
@@ -177,6 +183,14 @@ export default {
             this.isClosePanning = false
             
             this.$nextTick(() => this.closePan = 0)
+        },
+        getUpdates (conste) {
+            let items = []
+
+            if (conste.lastEvents && conste.lastEvents > 0) items.push(`${conste.lastEvents} événements`)
+            if (conste.lastPosts && conste.lastPosts > 0) items.push(`${conste.lastPosts > 15 ? '+15' : conste.lastPosts} publications`)
+
+            return items.join(' & ')
         }
     }
 }

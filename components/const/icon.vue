@@ -1,6 +1,5 @@
 <template>
     <component :is="noLink ? 'div' : 'nuxt-link'" :to="localePath(link ? link : { name: feed || type == 'group' ? 'c-slug' : 'c-slug', params: { slug }})" class="ConstIcon" :class="{ ...$modifiers, 'is-badge': badge }" >
-
         <div class="ConstIcon_image fx-no-shrink" :style="{ backgroundImage: src ? `url(${src})` : '' }">
             <ripples v-if="!badge" />
 
@@ -10,6 +9,8 @@
                 <fa :icon="`far fa-${badge}`"></fa>
             </div>
         </div>
+
+        <div class="ConstIcon_notif" v-if="notification"></div>
 
         <div class="ConstIcon_name" v-if="displayName">
             <slot name="before"></slot>
@@ -33,6 +34,7 @@ export default {
         type: { type: String },
         badge: { type: String },
         pictureSrc: { type: String },
+        notification: { type: Boolean, default: false },
         feed: { type: Boolean, default: false },
         displayName: { type: Boolean, default: false },
         logo: { type: Object },
@@ -57,6 +59,7 @@ export default {
     display: inline-flex;
     align-items: center;
     vertical-align: top;
+    position: relative;
 
     &.is-badge {
 
@@ -109,6 +112,19 @@ export default {
     }
 }
 
+.ConstIcon_notif {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    border-radius: 50%;
+    background: var(--color-bg-light);
+    border: 3px solid var(--color-bg);
+    box-sizing: content-box;
+    flex-shrink: 0;
+}
+
 .ConstIcon_name {
     font: var(--ft-title-2xs);
     display: flex;
@@ -123,6 +139,29 @@ export default {
 
     .LinkBase  {
         line-height: 1.2;
+    }
+}
+
+.ConstIcon--border {
+    border-radius: 50%;
+    padding: 2px;
+    background: var(--color-bg-weak);
+
+    .ConstIcon_image {
+        border: 3px solid var(--color-bg);
+    }
+
+    &.is-active {
+        background: radial-gradient(farthest-corner at top right, var(--color-nebula) 10%, var(--color-cosmoz) 100%);
+    }
+
+    &.ConstIcon--l {
+
+        .ConstIcon_image {
+            border: 3px solid var(--color-bg);
+            width: 50px;
+            height: 50px;
+        }
     }
 }
 

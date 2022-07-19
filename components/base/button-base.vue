@@ -708,6 +708,11 @@ export default {
         box-shadow: 0 1px 3px 0 color-opacity('bg-2xstrong', -50%);
     }
 
+    .ButtonBase--bordered:hover {
+        background-color: var(--color-bg-light);
+        color: var(--color-ft);
+    }
+
     .ButtonBase--highlight-strong:hover,
     .ButtonBase--highlight:hover {
         background-color: var(--color-bg-light);

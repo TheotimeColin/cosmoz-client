@@ -179,6 +179,7 @@ export default {
                 try {
                     await this.$store.dispatch('status/fetch', {
                         type: this.feedType, query: this.query,
+                        softRefresh: true,
                         options: {
                             sort: { createdAt: 'desc' },
                             limit: this.max * (this.page + 1), skip: this.max * this.page

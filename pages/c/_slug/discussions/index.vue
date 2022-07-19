@@ -31,6 +31,11 @@ export default {
     layout: 'app',
     async fetch () {
         await this.$preFetch()
+
+        this.$store.commit('constellation/updateProperty', {
+            _id: this.$constellation._id,
+            query: { lastPosts: 0 }
+        })
     },
     data: () => ({
         isLoading: false

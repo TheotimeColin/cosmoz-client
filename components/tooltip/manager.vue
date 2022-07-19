@@ -1,7 +1,7 @@
 <template>
     <div :class="{ 'is-tooltip-active': isActive }">
         <tooltip
-            v-for="tooltip in tooltips"
+            v-for="tooltip in tooltips.filter(t => t.content)"
             v-bind="tooltip"
             :key="tooltip.id"
         >

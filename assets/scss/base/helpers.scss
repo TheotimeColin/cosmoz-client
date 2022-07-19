@@ -57,6 +57,10 @@
     text-transform: uppercase;
 }
 
+.bg-gradient {
+    background: linear-gradient(to bottom, color-opacity('black', -100%), color-opacity('black', -15%));
+}
+
 .logo-sparkle,
 .logo-sparkle-a,
 .logo-sparkle-p {

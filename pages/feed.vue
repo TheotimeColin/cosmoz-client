@@ -4,9 +4,16 @@
 
         <template v-if="!isLoading">
             <div class="+mt-20 +mt-10@s outflow@xs p-0" v-if="constellations.length > 0">
-                <slider-block :slots="constellations.map(c => c._id)" :offset="$smallerThan('xs') ? 20 : 0" :offset-v="0" :margin="10">
+                <slider-block :slots="constellations.sort((a, b) => (b.lastPosts + b.lastEvents * 100) - (a.lastPosts + a.lastEvents * 100)).map(c => c._id)" :offset="$smallerThan('xs') ? 10 : 0" :offset-v="0" :margin="10">
                     <div v-for="conste in constellations" :slot="conste._id" :key="conste._id">
-                        <const-icon v-bind="conste" :modifiers="['l']" />
+                        <const-icon
+                            v-bind="conste"
+                            :modifiers="['l', 'border']"
+                            :class="{ 'is-active': conste.lastEvents > 0 }"
+                            :notification="conste.lastPosts > 0"
+                            @mouseenter.native="(e) => $tOpen(getUpdates(conste), e)"
+                            @mouseleave.native="$tClose"
+                        />
                     </div>
                 </slider-block>
             </div>
@@ -78,6 +85,16 @@ export default {
 
             return gatherings
         },
+    },
+    methods: {
+        getUpdates (conste) {
+            let items = []
+
+            if (conste.lastEvents && conste.lastEvents > 0) items.push(`${conste.lastEvents} événements`)
+            if (conste.lastPosts && conste.lastPosts > 0) items.push(`${conste.lastPosts > 15 ? '+15' : conste.lastPosts} publications`)
+
+            return items.join(' & ')
+        }
     }
 }
 </script>

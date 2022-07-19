@@ -9,7 +9,13 @@ export default {
         items: {}
     }),
     mutations: {
-        ...baseMutations
+        ...baseMutations,
+        updateProperty(state, params) {
+            let items = JSON.parse(JSON.stringify(state.items))
+            items[params._id] = { ...items[params._id], ...params.query }
+
+            state.items = items
+        }
     },
     actions: { 
         async fetch ({ state, commit }, params = {}) {
@@ -21,6 +27,8 @@ export default {
                 if (params.softRefresh) {
                     commit('softRefresh', response.data)
                 } else if (params.refresh !== false) commit('refresh', response.data)
+
+                console.log(response.data.test)
 
                 return response.data
             } catch (e) {
@@ -45,14 +53,15 @@ export default {
         },
         async get ({ commit }, params = {}) {
             try {
-                const response = await this.$axios.$get(getQuery('/entities/get', {
-                    ...params.query, type: 'constellation'
+                const response = await this.$axios.$get(getQuery('/constellation/get', {
+                    slug: params.slug, _id: params._id
                 }))
+                
+                commit('updateOne', response.data.constellation)
+                commit('gathering/softRefresh', response.data.gatherings, { root: true })
+                commit('user/softRefresh', response.data.users, { root: true })
 
-                let result = Array.isArray(response.data) ? response.data[0] : response.data
-   
-                commit('updateOne', result)
-                return result
+                return null
             } catch (e) {
                 console.error(e)
                 return null
