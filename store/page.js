@@ -41,7 +41,8 @@ export default {
             eventCreate: null,
             event: null,
             create: null,
-            editor: null
+            editor: null,
+            messages: null
         },
         meta: {
             title: ''

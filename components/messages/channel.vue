@@ -1,17 +1,5 @@
 <template>
-    <div class="Channel">
-        <div class="Channel_head" v-if="authorData">
-            <div class="Channel_iconContainer">
-                <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" @click="$router.replace({ query: {} })" />
-            </div>
-
-            <user-icon v-bind="authorData" class="mr-10" />
-
-            <h1 class="ft-title-xs line-1 ellipsis-1 ellipsis-break">
-                {{ authorData.name }}
-            </h1>
-        </div>
-        
+    <div class="Channel">        
         <div class="o-hidden p-relative fx-grow" v-if="isLoading">
             <placeholder :modifiers="['full']" />
         </div>
@@ -88,22 +76,6 @@ export default {
         this.$store.commit('channel/setCurrent', null)
     },
     computed: {
-        authorData () {
-            if (!this.channel) return null
-
-            let users = this.channel.users.filter(u => u != this.user._id).map(u => this.$getUser(u)).filter(u => u)
-
-            if (users.length == 1) {
-                return users[0]
-            } else if (users.length > 0) {
-                return {
-                    ...users[0],
-                    name: this.$pluralize(users.map(u => u.name))
-                }
-            }
-            
-            return null
-        },
         channel () {
             if (!this.id) return null
 
@@ -216,7 +188,7 @@ export default {
 .Channel_head {
     height: var(--app-height);
     flex-shrink: 0;
-    display: none;
+    display: flex;
     align-items: center;
     background-color: var(--color-bg-strong);
     @include shadow;

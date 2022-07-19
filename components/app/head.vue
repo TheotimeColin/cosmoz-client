@@ -23,7 +23,7 @@
             <div class="AppHeader_right" v-if="user">
                 <button-icon class="ml-20" fa="circle-plus" @click="$store.commit('page/popin', { create: true, reset: true })" v-if="$biggerThan('s')" />
 
-                <button-icon class="ml-20" fa="paper-plane" :to="{ name: 'messages-channel' }" :notification="channels.length" />
+                <button-icon class="ml-20" fa="paper-plane" @click="() => $store.commit('page/popin', { messages: true })" :notification="channels.length" />
 
                 <button-icon class="ml-20" fa="bell" @click="() => $store.commit('page/toggleNotifs', true)" :notification="notifications.length" />
 

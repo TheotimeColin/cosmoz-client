@@ -24,6 +24,7 @@
 
         <popin-event />
         <popin-editor v-if="user" />
+        <popin-messages />
         
         <popin-confirm />
         <popin-emojis />

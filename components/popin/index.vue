@@ -3,6 +3,8 @@
         <div class="PopinBase_hider" @click="$emit('close')"></div>
 
         <div class="PopinBase_body" ref="body">
+            <slot name="header"></slot>
+
             <div class="PopinBase_header" v-if="title">
                 <div class="PopinBase_headerLeft">
                     <button-base :modifiers="['round', 'transparent', 'ripples']" icon-before="arrow-left" @click="$emit('close')" />
@@ -124,7 +126,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .PopinBase {
     position: fixed;
     top: -9999px;
@@ -178,7 +180,7 @@ export default {
     justify-content: space-between;
     flex-shrink: 0;
     padding: 0 10px 0 0;
-    border-color: var(--color-border-weak);
+    border-bottom: 1px solid var(--color-border);
     overflow: hidden;
 }
 

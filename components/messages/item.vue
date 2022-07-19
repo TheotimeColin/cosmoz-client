@@ -66,12 +66,17 @@ export default {
                 border-bottom-right-radius: 12px;
             }
         }
+
+        .Message_container {
+            justify-content: flex-end;
+        }
     }
 }
 
 .Message_container {
     max-width: 60%;
     display: flex;
+    justify-content: flex-start;
 }
 
 .Message_author {
