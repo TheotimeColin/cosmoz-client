@@ -1,13 +1,12 @@
 <template>
     <div class="GatheringEnd">
         <div class="fx-center ph-20 pt-20">
-            <div>
-                <p class="ft-title-xs ellipsis-1 ellipsis-break">{{ title }}</p>
+            <div class="GatheringEnd_icon" :style="{ backgroundImage: `url(${hero})` }"></div>
+
+            <div class="fx-grow">
+                <link-base class="ft-title-xs mb-3" :modifiers="['l']" :to="{ name: 'c-slug-events-eventId', params: { slug: constellationData.slug, eventId: id } }">{{ $ellipsis(title, 30) }}</link-base>
                 <p class="ft-xs color-ft-weak">{{ $moment(date).fromNow() }}</p>
             </div>
-
-            <button-base :modifiers="$smallerThan('xs') ? ['round'] : ['s']" class="ml-15" icon-after="arrow-right" :to="{ name: 'c-slug-events-eventId', params: { slug: constellationData.slug, eventId: id } }" 
-            :text="$smallerThan('xs') ? '' : 'Voir la page'" v-if="constellationData" />
         </div>
 
         <div class="ph-20 mt-20">Merci d'avoir participé à cet événement ! Et si tu gardais le contact avec les personnes que tu as rencontrées ? ✨</div>
@@ -34,6 +33,7 @@ export default {
     props: {
         _id: { type: String },
         id: { type: String },
+        hero: { type: String },
         title: { type: String },
         date: { type: String },
         constellation: { type: String },
@@ -65,6 +65,16 @@ export default {
     @include shadow-s;
 }
 
+.GatheringEnd_icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    margin-right: 12px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-bg-strong);
+}
 
 @include breakpoint-xs {
 

@@ -298,9 +298,14 @@ export default {
 .AppNav_const {
     display: flex;
     align-items: center;
-    padding: 18px 15px;
+    padding: 12px 10px;
     flex-grow: 1;
     border-top: 1px solid var(--color-bg-weak);
+    transition: all 100ms ease;
+
+    &:hover {
+        background: var(--color-bg);
+    }
 
     &.is-active {
         background: var(--color-bg-weak);

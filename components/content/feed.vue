@@ -14,7 +14,7 @@
 
         <transition-group name="fade">
             <component
-                :is="'content-' + status.type"
+                :is="'content-' + status.blockType"
                 v-for="status in displayedStatuses.filter(c => !isLoadingFeed && !isLoading)"
                 class="Feed_item"
                 v-bind="status"
@@ -103,7 +103,7 @@ export default {
 
             let userPosts = this.$store.getters['status/find']({
                 ...query
-            }).map(s => ({ ...s, type: 'post' }))
+            }).map(s => ({ ...s, blockType: 'post' }))
 
             statuses = [
                 ...userPosts,

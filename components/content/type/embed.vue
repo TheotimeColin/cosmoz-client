@@ -2,14 +2,14 @@
     <component :is="disableLink ? 'div' : 'a'" class="Embed" :class="[ ...$modifiers ]" :href="href" target="_blank">
         <div class="Embed_main">
             <div>
-                <p class="ft-title-2xs ellipsis-2">
+                <p class="ft-title-xs ellipsis-2">
                     {{ title }}
                 </p>
                 <p class="ft-s mt-5 ellipsis-1 ellipsis-break d-none@xs" v-if="description">
                     {{ description }}
                 </p>
 
-                <p class="ft-s mt-10 color-ft-xweak ellipsis-1 ellipsis-break" v-if="href">
+                <p class="ft-s mt-5 color-ft-weak ellipsis-1 ellipsis-break" v-if="href">
                     <fa icon="far fa-link" class="mr-5" />{{ href.replace('https://', '').replace('http://', '').replace('www.', '') }}
                 </p>
             </div>
@@ -44,10 +44,9 @@ export default {
 <style lang="scss" scoped>
 .Embed {
     display: flex;
-    border: 1px solid var(--color-bg-xweak);
     background-color: var(--color-bg-xweak);
     @include shadow;
-    border-radius: 10px;
+    border-radius: 8px;
     position: relative;
     overflow: hidden;
 }

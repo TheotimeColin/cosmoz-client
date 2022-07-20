@@ -258,6 +258,10 @@ export default {
     }
 }
 
+.BlockGathering--weak {
+    background-color: var(--color-bg-xweak) !important;
+}
+
 .BlockGathering--square {
 
     .BlockGathering_content {

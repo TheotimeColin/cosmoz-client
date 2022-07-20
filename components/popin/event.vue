@@ -13,7 +13,7 @@
             </div>
             <div v-show="isPopinVisible" v-if="gathering">
                 <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink d-flex fxa-end" :style="{ '--background': `url(${gathering.hero})` }">
-                    <h1 class="bg-gradient ft-title-m ft-title-s@xs p-15 pt-30 fx-grow">{{ gathering.title }}</h1>
+                    <h1 class="bg-gradient ft-title-m ft-title-s@xs p-20 pt-30 fx-grow">{{ gathering.title }}</h1>
                 </div>
 
                 <nav-bar class="pv-10 bg-bg-weak" style="position: sticky; top: 0; z-index: 20" :ph="10" v-model="type" :items="[

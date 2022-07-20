@@ -14,12 +14,29 @@ export default {
                 _id: this.gathering
             })
         },
+        $events () {
+            if (!this.user) return []
+
+            return this.$store.getters['gathering/find']({
+                constellation: { $in: this.user.constellations }
+            })
+        },
         $autoStatuses () {
             let total = []
-
+            
             if (this.$gathering) total = [ ...total, ...this.$gatheringStatuses ]
+            if (!this.$gathering) total = [ ...total, ...this.$eventFeed ]
 
             return total
+        },
+        $eventFeed () {
+            let statuses = []
+
+            return this.$events.map(event => ({
+                ...event,
+                blockType: event.isPast ? 'gathering-end' : 'gathering-created',
+                createdAt: event.isPast ? event.date : event.createdAt
+            }))
         },
         $gatheringStatuses () {
             let statuses = []
@@ -28,7 +45,7 @@ export default {
 
             statuses = [ ...statuses,  {
                 _id: `gathering-created-${this.$gathering._id}`,
-                type: 'status',
+                blockType: 'status',
                 title: this.$gathering.title,
                 subtitle: `On espère que tu as hâte de participer !`,
                 createdAt: this.$moment(this.$gathering.createdAt),
@@ -61,7 +78,7 @@ export default {
 
             statuses = [ ...statuses,  {
                 _id: `gathering-soon-${this.$gathering._id}`,
-                type: 'status',
+                blockType: 'status',
                 title: `L'événement commence bientôt 😱`,
                 subtitle: `Tu as hâte ? N'oublie pas de te désinscrire si tu as un empêchement !`,
                 enableReactions: true,
@@ -81,14 +98,14 @@ export default {
 
             statuses = [ ...statuses,  {
                 _id: 'step-start',
-                type: 'step',
+                blockType: 'step',
                 title: `Début de l'événement`,
                 createdAt: this.$moment(this.$gathering.date),
             } ]
 
             statuses = [ ...statuses,  {
                 _id: `gathering-during-${this.$gathering._id}`,
-                type: 'status',
+                blockType: 'status',
                 title: `L'événement bat son plein 🔥`,
                 createdAt: this.$moment(this.$gathering.date).add(1, 'seconds'),
                 actions: [
@@ -109,14 +126,14 @@ export default {
 
             statuses = [ ...statuses,  {
                 _id: 'step-end',
-                type: 'step',
+                blockType: 'step',
                 title: `Fin de l'événement`,
                 createdAt: this.$moment(this.$gathering.date).add(3, 'hours').subtract(1, 'second'),
             } ]
 
             statuses = [ ...statuses,  {
                 _id: `gathering-end-${this.$gathering._id}`,
-                type: 'status',
+                blockType: 'status',
                 title: `Tout les bonnes choses ont une fin...`,
                 subtitle: `Merci d'avoir participé à l'événement. Prends un moment pour remercier les organisateurs !`,
                 enableReactions: true,

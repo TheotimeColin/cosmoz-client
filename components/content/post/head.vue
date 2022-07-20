@@ -2,37 +2,40 @@
     <div class="Post_head">
         <div class="d-flex fxa-center fx-grow">
             <div class="Post_icon fx-no-shrink" @click.stop>
-                <user-icon class="Post_user" :modifiers="['m']" v-bind="ownerData"  v-if="ownerData" />
+                <template v-if="ownerData && consteData && !isConstellation">
+                    <user-icon class="Post_user" :modifiers="['m']" v-bind="ownerData"  v-if="ownerData" />
 
-                <const-icon class="Post_conste" v-bind="consteData" :modifiers="['xs']" v-if="consteData" />
+                    <const-icon class="Post_conste" v-bind="consteData" :modifiers="['xs']" v-if="consteData" />
+                </template>
+                <const-icon class="Post_user" v-bind="consteData" :modifiers="['m']" v-else-if="consteData" />
             </div>
 
             <div class="ml-10 ft-xs line-1 fx-grow" @click.stop>
-                <component :is="titleLink ? 'nuxt-link' : 'div'" :to="titleLink" class="ft-title-2xs subtitle">
-                    {{ title }}
+                <component :is="titleLink ? 'nuxt-link' : 'span'" :to="titleLink" class="ft-title-2xs subtitle" v-if="computedTitle">
+                    {{ $ellipsis(computedTitle, 30) }}
                 </component>
 
                 <template v-if="parentData">
-                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" v-if="computedTitle" />
                     <link-base :to="consteData ? { name: 'c-slug-,postId', params: { slug: consteData.slug, postId: parentData._id } } : { name: 'post-postId', params: { postId: parentData._id } }" :modifiers="['l']">
                         {{ $ellipsis(parentData.content, 40) }}
                     </link-base>
                 </template>
                 <template v-else-if="gatheringData && !isCurrent">
-                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" v-if="computedTitle" />
                     <link-base :to="gatheringLink" :modifiers="['l']">
                         {{ $ellipsis(gatheringData.title, 40) }}
                     </link-base>
                 </template>
                 <template v-else-if="consteData && !isCurrent">
-                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" />
+                    <fa icon="far fa-angle-right" class="color-ft-weak mh-3" v-if="computedTitle" />
                     <link-base :to="gatheringLink" :modifiers="['l']">
                         {{ $ellipsis(consteData.name, 40) }}
                     </link-base>
                 </template>
 
-                <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break" v-if="ownerData">
-                    @{{ ownerData.id }} · {{ subtitle }}
+                <div class="color-ft-weak mt-5 ellipsis-1 ellipsis-break" v-if="ownerData || subtitle">
+                    <template v-if="ownerData && !isConstellation">@{{ ownerData.id }} ·</template> {{ subtitle }}
                 </div>
             </div>
 
@@ -55,16 +58,20 @@ export default {
     props: {
         _id: { type: String },
         owner: { type: String },
+        title: { type: [String, Boolean], default: '' },
         createdAt: { type: [String, Date] },
         forbidden: { type: Array, default: () => [] },
         reactions: { type: Array, default: () => [] },
         gathering: { type: String },
         constellation: { type: String },
+        isConstellation: { type: Boolean, default: false },
         noLink: { type: Boolean, default: false },
     },
     computed: {
-        title () {
-            return this.ownerData ? this.ownerData.name : ''
+        computedTitle () {
+            if (this.title === false || this.isConstellation) return false
+
+            return  this.ownerData ? this.ownerData.name : this.title ? this.title : ''
         },
         subtitle () {
             let subtitle = this.$moment(this.createdAt).fromNow()

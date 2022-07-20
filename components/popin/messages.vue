@@ -26,7 +26,7 @@
                             <placeholder class="+mt-10" :ratio="30" v-for="i in 10" :key="i" />
                         </template>
                         <template v-else>
-                            <slider-block class="+mt-15 pv-15 bg-bg-weak" :slots="inactiveFriends.map(u => u._id)" :offset="15" :offset-v="0" :margin="10" v-if="inactiveFriends.length > 0">
+                            <slider-block class="+mt-15 pv-15 bg-bg-strong" :slots="inactiveFriends.map(u => u._id)" :offset="15" :offset-v="0" :margin="10" v-if="inactiveFriends.length > 0">
                                 <div v-for="friend in friends" :slot="friend._id" :key="friend._id">
                                     <user-icon
                                         v-bind="friend"
