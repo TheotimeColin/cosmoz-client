@@ -215,7 +215,7 @@ export default {
     font-size: 22px;
     color: var(--color-ft-light);
     position: absolute;
-    z-index: 5;
+    z-index: 50;
     top: 0px;
     right: 0px;
     padding: 10px 15px;

@@ -208,6 +208,7 @@ export default {
     .LayoutApp_content {
         user-select: none !important;
         margin-left: 0;
+        position: initial;
     }
     
     .Footer {
