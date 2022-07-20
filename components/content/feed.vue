@@ -134,7 +134,10 @@ export default {
                 query.constellation = this.constellation
                 query.gathering = '$null'
             } else {
-                query.constellation = { $in: this.user ? this.user.constellations : [] }
+                query.$or = {
+                    gathering: { $in: this.user ? this.user.gatherings.filter(g => g.status == 'attending' || g.status == 'confirmed').map(g => g._id) : [] },
+                    constellation: { $in: this.user ? this.user.constellations : [] }
+                }
             }
 
             return query

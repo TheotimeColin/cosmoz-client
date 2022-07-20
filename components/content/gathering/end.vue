@@ -1,10 +1,10 @@
 <template>
     <div class="GatheringEnd">
         <div class="fx-center ph-20 pt-20">
-            <div class="GatheringEnd_icon" :style="{ backgroundImage: `url(${hero})` }"></div>
+            <div class="GatheringEnd_icon" @click="() => noLink ? {} : $store.commit('page/popin', { event: id })" :style="{ backgroundImage: `url(${hero})` }"></div>
 
             <div class="fx-grow">
-                <link-base class="ft-title-xs mb-3" :modifiers="['l']" :to="{ name: 'c-slug-events-eventId', params: { slug: constellationData.slug, eventId: id } }">{{ $ellipsis(title, 30) }}</link-base>
+                <link-base class="ft-title-xs mb-3" :modifiers="['l']" @click="() => noLink ? {} : $store.commit('page/popin', { event: id })">{{ $ellipsis(title, 30) }}</link-base>
                 <p class="ft-xs color-ft-weak">{{ $moment(date).fromNow() }}</p>
             </div>
         </div>
@@ -68,6 +68,7 @@ export default {
 .GatheringEnd_icon {
     width: 45px;
     height: 45px;
+    cursor: pointer;
     flex-shrink: 0;
     border-radius: 5px;
     margin-right: 12px;

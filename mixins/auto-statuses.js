@@ -34,15 +34,15 @@ export default {
 
             return this.$events.map(event => ({
                 ...event,
-                blockType: event.isPast ? 'gathering-end' : 'gathering-created',
-                createdAt: event.isPast ? event.date : event.createdAt
+                blockType: event.isPast && event.isAttending ? 'gathering-end' : 'gathering-created',
+                createdAt: event.isPast && event.isAttending ? event.date : event.createdAt
             }))
         },
         $gatheringStatuses () {
             let statuses = []
 
             if (!this.$gathering) return statuses
-
+            
             statuses = [ ...statuses,  {
                 _id: `gathering-created-${this.$gathering._id}`,
                 blockType: 'status',
@@ -76,25 +76,27 @@ export default {
                 ]
             } ]
 
-            statuses = [ ...statuses,  {
-                _id: `gathering-soon-${this.$gathering._id}`,
-                blockType: 'status',
-                title: `L'événement commence bientôt 😱`,
-                subtitle: `Tu as hâte ? N'oublie pas de te désinscrire si tu as un empêchement !`,
-                enableReactions: true,
-                createdAt: this.$moment(this.$gathering.date).subtract(1, 'days'),
-                actions: this.$gathering.isPast ? [] : [
-                    {
-                        text: 'Se désinscrire',
-                        modifiers: ['xs', 'weak'],
-                        on: {
-                            click: () => {
-                                if (this.$refs.manage) this.$refs.manage.openFull()
+            if (this.$gathering.isAttending) {
+                statuses = [ ...statuses,  {
+                    _id: `gathering-soon-${this.$gathering._id}`,
+                    blockType: 'status',
+                    title: `L'événement commence bientôt 😱`,
+                    subtitle: `Tu as hâte ? N'oublie pas de te désinscrire si tu as un empêchement !`,
+                    enableReactions: true,
+                    createdAt: this.$moment(this.$gathering.date).subtract(1, 'days'),
+                    actions: this.$gathering.isPast ? [] : [
+                        {
+                            text: 'Se désinscrire',
+                            modifiers: ['xs', 'weak'],
+                            on: {
+                                click: () => {
+                                    if (this.$refs.manage) this.$refs.manage.openFull()
+                                }
                             }
                         }
-                    }
-                ]
-            } ]
+                    ]
+                } ]
+            }
 
             statuses = [ ...statuses,  {
                 _id: 'step-start',
@@ -131,28 +133,38 @@ export default {
                 createdAt: this.$moment(this.$gathering.date).add(3, 'hours').subtract(1, 'second'),
             } ]
 
-            statuses = [ ...statuses,  {
-                _id: `gathering-end-${this.$gathering._id}`,
-                blockType: 'status',
-                title: `Tout les bonnes choses ont une fin...`,
-                subtitle: `Merci d'avoir participé à l'événement. Prends un moment pour remercier les organisateurs !`,
-                enableReactions: true,
-                createdAt: this.$moment(this.$gathering.date).add(3, 'hours'),
-                actions: [
-                    {
-                        text: 'Poster un message',
-                        modifiers: ['light'],
-                        iconBefore: 'heart',
-                        on: {
-                            click: () => {
-                                this.$store.commit('page/popin', { editor: {
-                                    gathering: this.gathering
-                                } })
+            
+            if (this.$gathering.isAttending) {
+                statuses = [ ...statuses,  {
+                    _id: `gathering-end-${this.$gathering._id}`,
+                    blockType: 'status',
+                    title: `Tout les bonnes choses ont une fin...`,
+                    subtitle: `Merci d'avoir participé à l'événement. Prends un moment pour remercier les organisateurs !`,
+                    enableReactions: true,
+                    createdAt: this.$moment(this.$gathering.date).add(3, 'hours'),
+                    actions: [
+                        {
+                            text: 'Poster un message',
+                            modifiers: ['light'],
+                            iconBefore: 'heart',
+                            on: {
+                                click: () => {
+                                    this.$store.commit('page/popin', { editor: {
+                                        gathering: this.gathering
+                                    } })
+                                }
                             }
                         }
-                    }
-                ]
-            } ]
+                    ]
+                } ]
+
+                statuses = [ ...statuses,  {
+                    _id: `gathering-match-${this.$gathering._id}`,
+                    blockType: 'gathering-end',
+                    ...this.$gathering,
+                    createdAt: this.$moment(this.$gathering.date).add(3.1, 'hours'),
+                } ]
+            }
 
             return statuses
         }

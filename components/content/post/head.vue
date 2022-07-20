@@ -23,7 +23,7 @@
                 </template>
                 <template v-else-if="gatheringData && !isCurrent">
                     <fa icon="far fa-angle-right" class="color-ft-weak mh-3" v-if="computedTitle" />
-                    <link-base :to="gatheringLink" :modifiers="['l']">
+                    <link-base @click="() => noLink ? {} : $store.commit('page/popin', { event: gatheringData.id })" :modifiers="['l']">
                         {{ $ellipsis(gatheringData.title, 40) }}
                     </link-base>
                 </template>

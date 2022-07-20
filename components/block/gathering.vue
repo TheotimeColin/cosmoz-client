@@ -148,6 +148,7 @@ export default {
     width: 100%;
     height: 100%;
     opacity: 0.25;
+    flex-shrink: 0;
     background-size: cover;
     background-position: center;
     transition: all 150ms ease;
