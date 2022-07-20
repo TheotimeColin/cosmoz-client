@@ -18,9 +18,6 @@
                         </slider-block>
                     </div>
                 </div>
-                <div class="+mt-20 block-f p-20 text-center bg-bg-strong +mt-10@s" v-else>
-                    Pas encore d'événements à venir
-                </div>
 
                 <template v-if="!isLoading">
                     <component

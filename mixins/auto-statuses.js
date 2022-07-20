@@ -18,7 +18,7 @@ export default {
             if (!this.user) return []
 
             return this.$store.getters['gathering/find']({
-                constellation: { $in: this.user.constellations }
+                constellation: this.constellation ? this.constellation : { $in: this.user.constellations }
             })
         },
         $autoStatuses () {

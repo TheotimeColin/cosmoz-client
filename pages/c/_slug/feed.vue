@@ -22,9 +22,6 @@
                     </slider-block>
                 </div>
             </div>
-            <div class="block-f p-20 text-center bg-bg-strong" v-else>
-                Pas encore d'événements à venir
-            </div>
 
             <div class="fx-center mv-40">
                 <p class="ft-title-3xs fx-no-shrink mr-15 color-ft-xweak">Publications</p>

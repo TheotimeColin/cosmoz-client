@@ -42,6 +42,9 @@
 
             <div class="BlockGathering_actions">
                 <slot></slot>
+                <div class="BlockGathering_success round bg-success" v-if="hasBooked">
+                    <fa icon="far fa-check" />
+                </div>
             </div>
         </div>
     </div>
@@ -216,32 +219,28 @@ export default {
 
 .BlockGathering--hangout:not(.BlockGathering--square) {
     background-color: var(--color-bg-weak);
-    padding: 15px;
     border-radius: 6px;
     @include shadow-s;
+    overflow: hidden;
 
     .BlockGathering_cover {
         background: transparent;
         display: flex;
+        flex-direction: row-reverse;
         border-radius: 0px;
-        align-items: flex-start;
 
         &::before {
             display: none;
         }
     }
-    
+
     .BlockGathering_coverImage {
         position: relative;
         opacity: 1;
-        width: 100px;
         height: auto;
+        width: 33%;
+        max-width: 150px;
         background-color: var(--color-bg-strong);
-        border-radius: 8px;
-
-        &::before {
-            @include ratio(100);
-        }
     }
 
     .BlockGathering_details {
@@ -254,7 +253,7 @@ export default {
         width: auto;
         height: auto;
         flex-grow: 1;
-        padding: 0 0 0 20px;
+        padding: 15px;
     }
 }
 
@@ -285,6 +284,10 @@ export default {
 
     .BlockGathering_title {
         font: var(--ft-title-xs);
+    }
+
+    .BlockGathering_success {
+        display: none;
     }
 }
 
