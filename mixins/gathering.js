@@ -8,6 +8,9 @@ export default {
                 slug: this.$route.params.slug
             }) : null
         },
+        ownerData () {
+            return this.$getUser(this.gathering.owner)
+        },
         attending () {
             return this.$shuffle(this.usersByStatus(['attending', 'confirmed'])).slice(0, 2).map(u => u.name).join(', ')
         },

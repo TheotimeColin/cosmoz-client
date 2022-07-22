@@ -15,10 +15,7 @@
                 </button-base>
             </div>
             <div class="Header_nav" v-else>
-                <link-base class="Header_navItem" :to="{ name: 'explore-events' }" :modifiers="['current']">Nos rencontres
-                </link-base>
-
-                <link-base class="Header_navItem" :to="{ name: 'explore' }" :modifiers="['current']">Les communautés
+                <link-base class="Header_navItem" :to="{ name: 'explore' }" :modifiers="['current']">Faire de nouvelles rencontres
                 </link-base>
 
                 <link-base class="Header_navItem" :modifiers="['current']"

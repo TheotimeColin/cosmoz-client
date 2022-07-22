@@ -242,7 +242,7 @@
                         </div>
 
                         <div class="+mt-10 block-r" v-if="options.max">
-                            <input-base label="Limiter le nombre d'inscriptions" suffix="participants" type="number" v-model="formData.max" :attrs="{ min: 0 }" />
+                            <input-base label="Limiter à" suffix="participants" type="number" v-model="formData.max" :attrs="{ min: 0 }" />
 
                             <div class="mt-10 text-right">
                                 <link-base @click="() => { options.max = false; formData.max = 0 }">Retirer la limite</link-base>

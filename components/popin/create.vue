@@ -3,15 +3,15 @@
         <div class="CreatePopin_wrapper" slot="content">
             <div class="row-xs">
                 <div class="col-4 text-center CreatePopin_item">
-                    <button-base :modifiers="['round', 'l', 'bordered']" icon-before="calendar" @click="$store.commit('page/popin', { eventCreate: 'new', reset: true })" />
+                    <button-base :modifiers="['round', 'l', 'bordered', 'no-s', 'xweak']" icon-before="calendar" @click="$store.commit('page/popin', { eventCreate: 'new', reset: true })" />
                     <p class="ft-s-medium mt-5 color-ft-weak">Sortie</p>
                 </div>
                 <div class="col-4 text-center CreatePopin_item">
-                    <button-base :modifiers="['round', 'l', 'bordered']" icon-before="message-plus" @click="$store.commit('page/popin', { editor: {}, reset: true })" />
+                    <button-base :modifiers="['round', 'l', 'bordered', 'no-s', 'xweak']" icon-before="message-plus" @click="$store.commit('page/popin', { editor: {}, reset: true })" />
                     <p class="ft-s-medium mt-5 color-ft-weak">Publication</p>
                 </div>
                 <div class="col-4 text-center CreatePopin_item">
-                    <button-base :modifiers="['round', 'l', 'bordered']" icon-before="sparkles" @click="$store.commit('page/popin', { constellationCreate: true, reset: true })" />
+                    <button-base :modifiers="['round', 'l', 'bordered', 'no-s', 'xweak']" icon-before="sparkles" @click="$store.commit('page/popin', { constellationCreate: true, reset: true })" />
                     <p class="ft-s-medium mt-5 color-ft-weak">Groupe</p>
                 </div>
             </div>

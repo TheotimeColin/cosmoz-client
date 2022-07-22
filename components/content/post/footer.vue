@@ -48,6 +48,7 @@ export default {
     .Post_footer {
         background-color: var(--color-bg);
         background-color: color-opacity('bg-strong', -60%);
+        background-color: #24246066;
         display: flex;
         justify-content: flex-end;
         padding: 5px;

@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div v-show="isPopinVisible" v-if="gathering">
-                <div class="bg-cover-100 ratio-35 ratio-35@xs fx-no-shrink d-flex fxa-end" :style="{ '--background': `url(${gathering.hero})` }">
+                <div class="bg-cover-100 ratio-35 ratio-50@xs fx-no-shrink d-flex fxa-end" :style="{ '--background': `url(${gathering.hero})` }">
                     <h1 class="bg-gradient ft-title-m ft-title-s@xs p-20 pt-30 fx-grow">{{ gathering.title }}</h1>
                 </div>
 
@@ -25,12 +25,12 @@
                 <div class="p-20">
                     <template v-if="type == 'index'">
                         <page-gathering-manage
-                            class="+mt-30"
+                            class="+mt-20"
                             :gathering="gathering"
                             isMin
                         />
                         
-                        <div class="+mt-30 block-r" v-if="(gathering.description && gathering.description !== '<p></p>') || (gathering.important && gathering.important !== '<p></p>')">
+                        <div class="+mt-20 block-r" v-if="(gathering.description && gathering.description !== '<p></p>') || (gathering.important && gathering.important !== '<p></p>')">
                             <text-body
                                 :modifiers="['gathering']"
                                 class="+mt-20"

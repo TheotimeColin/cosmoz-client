@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    name: 'ContentGatheringEnd',
+    name: 'ContentGatheringCreated',
     props: {
         _id: { type: String },
         id: { type: String },
@@ -27,7 +27,7 @@ export default {
         date: { type: String },
         owner: { type: String },
         date: { type: String },
-        cover: { type: Array, default: () => [] },
+        cover: { type: [Array, Object], default: () => [] },
         createdAt: { type: String },
         constellation: { type: String },
         users: { type: Array, default: () => [] }

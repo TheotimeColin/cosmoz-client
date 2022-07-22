@@ -14,10 +14,9 @@
                     
                     <div class="+mt-20">
                         <div class="+mt-20 fx-center" v-if="gathering.date">
-
                             <div>
                                 <p class="ft-title-xs">{{ $moment(gathering.date).format('dddd D MMMM YYYY') }}</p>
-                                <p>à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
+                                <p class="color-ft-weak">à partir de {{ $moment(gathering.date).format('HH:mm') }}</p>
                             </div>
 
                             <fa icon="fal fa-calendar-lines" size="lg" class="ml-10 fx-no-shrink" fixed-width />
@@ -32,9 +31,25 @@
                             <fa icon="fal fa-map-marker-alt" size="lg" class="mt-3 ml-10 fx-no-shrink" fixed-width />
                         </div>
 
-                        <!-- <user-list class="+mt-20" :max="5" :items="usersByStatus(['attending', 'confirmed'])" :suffix="gathering.isPast ? 'ont participé' : 'participent'" @click.native="isList = true" /> -->
+                        <div class="+mt-20 d-flex fxa-center" v-if="isMin && constellation && gathering.type == 'official'">
+                            <h2 class="fx-grow">
+                                <span class="ft-m d-block color-ft-weak">Organisé par </span>
+                                <span class="ft-title-xs ellipsis-1">{{ constellation.name }}</span>
+                            </h2>
 
-                        <div class="+mt-20">
+                            <const-icon v-bind="constellation" />
+                        </div>
+
+                        <div class="+mt-20 d-flex fxa-center" v-if="isMin && ownerData && gathering.type == 'hangout'">
+                            <h2 class="fx-grow">
+                                <span class="ft-m d-block color-ft-weak">Proposé par </span>
+                                <span class="ft-title-xs ellipsis-1">{{ ownerData.name }}</span>
+                            </h2>
+
+                            <user-icon v-bind="ownerData" />
+                        </div>
+
+                        <div class="+mt-20 block-r">
                             <p class="ft-title-2xs mb-10">
                                 {{ usersByStatus(['attending', 'confirmed']).length }} personnes {{ gathering.isPast ? 'y sont allé' : 'y vont' }}
                             </p>

@@ -1,7 +1,6 @@
 <template>
     <div class="Layout LayoutApp" :class="[ classes, { 'is-open-nav': isOpenNav, 'is-transition': isTransition } ]">
-        
-        
+    
         <app-notifications v-if="user" />
 
         <div
@@ -17,14 +16,14 @@
 
         <app-nav :pan="pan" :is-panning="isPanning" @open="onPanEnd" ref="nav" />
 
-        <popin-create />
+        <popin-create v-if="user" />
 
         <popin-constellation-create />
         <popin-hangout-create />
 
         <popin-event />
         <popin-editor v-if="user" />
-        <popin-messages />
+        <popin-messages v-if="user" />
         
         <popin-confirm />
         <popin-emojis />

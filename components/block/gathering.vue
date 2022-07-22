@@ -8,7 +8,7 @@
                 <div class="BlockGathering_header">
                     <const-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="constellationData" v-if="type == 'official'" />
                     <user-icon class="mr-10" :modifiers="['s']" :display-name="true" v-bind="userData" v-else-if="userData">
-                        <span class="ft-s color-ft-weak" slot="before">Proposé par</span>
+                        <span class="ft-s" slot="before">Proposé par</span>
                     </user-icon>
                 </div>
 
@@ -201,12 +201,13 @@ export default {
 }
 
 .BlockGathering_title {
-    font: var(--ft-title-xs);
+    font: var(--ft-title-s);
     transition: all 150ms ease; 
 }
 
 .BlockGathering_details {
     margin-bottom: 5px;
+    color: var(--color-ft-weak);
     font: var(--ft-s-medium);
 }
 
