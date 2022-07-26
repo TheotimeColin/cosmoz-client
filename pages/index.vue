@@ -5,7 +5,7 @@
             <div class="Wrapper Wrapper--m fx-center pv-60 pt-150@s d-block@s">
                 <div class="text-center@xs">
                     <h1 class="ft-title-xl ft-title-l@xs">
-                        Des communautés dans lesquelles tu te sentiras bien.
+                        mexson Des communautés dans lesquelles tu te sentiras bien.
                     </h1>
 
                     <p class="ft-l mt-20 max-width-m">Trouve ta place et rencontre d'autres personnes extraordinaires qui partagent tes passions.</p>
@@ -125,6 +125,7 @@ import landingAuthentic from '@/assets/img/landing/v2/authentic.webp'
 import feat1 from '@/assets/img/landing/v2/feat1.webp'
 import feat2 from '@/assets/img/landing/v2/feat2.webp'
 import feat3 from '@/assets/img/landing/v2/feat3.webp'
+import { PushNotifications } from '@capacitor/push-notifications';
 
 export default {
     name: 'Homepage',
@@ -146,12 +147,49 @@ export default {
         }
     },
     created () {
-        this.$store.commit('page/setHeader', { transparent: true })
+        alert('dd')
+        // start notification process
+        this.registerNotifications()
+        this.addListeners()
+
+        // this.$store.commit('page/setHeader', { transparent: true })
+
+    },
+    async registerNotifications() {
+        let permStatus = await PushNotifications.checkPermissions();
+
+        if (permStatus.receive === 'prompt') {
+            permStatus = await PushNotifications.requestPermissions();
+        }
+
+        if (permStatus.receive !== 'granted') {
+            throw new Error('User denied permissions!');
+        }
+
+        await PushNotifications.register();
+    },
+    async addListeners() {
+        await PushNotifications.addListener('registration', token => {
+            console.info('Registration token: ', token.value);
+        });
+
+        await PushNotifications.addListener('registrationError', err => {
+            console.error('Registration error: ', err.error);
+        });
+
+        await PushNotifications.addListener('pushNotificationReceived', notification => {
+            console.log('Push notification received: ', notification);
+        });
+
+        await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+            console.log('Push notification action performed', notification.actionId, notification.inputValue);
+        });
     },
     beforeDestroy () {
         this.$store.commit('page/setHeader', { transparent: false })
     },
     mounted () {
+        alert('dd')
         setInterval(() => {
             if (this.hasClicked) return
 

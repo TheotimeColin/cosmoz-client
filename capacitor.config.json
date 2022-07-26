@@ -5,5 +5,14 @@
   "bundledWebRuntime": false,
   "server": {
     "url": "https://www.cosmoz.dev"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#488AFF"
+    }
   }
 }
